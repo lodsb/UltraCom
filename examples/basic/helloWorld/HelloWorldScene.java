@@ -4,6 +4,8 @@ import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.input.inputProcessors.globalProcessors.CursorTracer;
+import org.mt4j.input.inputProcessors.globalProcessors.GlobalOSCInputProcessor;
+import org.mt4j.input.inputSources.osc.OSCInputSource;
 import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
@@ -17,6 +19,10 @@ public class HelloWorldScene extends AbstractScene {
 		this.setClearColor(new MTColor(146, 150, 188, 255));
 		//Show touches
 		this.registerGlobalInputProcessor(new CursorTracer(mtApplication, this));
+		mtApplication.getInputManager().registerInputSource(new OSCInputSource(mtApplication, 59000));
+		
+		
+		this.registerGlobalInputProcessor(new GlobalOSCInputProcessor("/4/xy"));
 		
 		IFont fontArial = FontManager.getInstance().createFont(mtApplication, "arial.ttf", 
 				50, 	//Font size

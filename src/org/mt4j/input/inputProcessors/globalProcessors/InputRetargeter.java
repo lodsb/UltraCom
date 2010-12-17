@@ -25,6 +25,10 @@ import org.mt4j.input.IHitTestInfoProvider;
 import org.mt4j.input.inputData.AbstractCursorInputEvt;
 import org.mt4j.input.inputData.InputCursor;
 import org.mt4j.input.inputData.MTInputEvent;
+import org.mt4j.input.inputData.osc.MTOSCControllerInputEvt;
+import org.mt4j.input.inputProcessors.globalProcessors.osc.GlobalOSCInputRedirectSingleton;
+
+import de.sciss.net.OSCMessage;
 
 /**
  * The Class InputRetargeter. This global input analyzer is automatically created with each new scene and listens
@@ -50,6 +54,20 @@ public class InputRetargeter extends AbstractGlobalInputProcessor {
 
 
 	public void processInputEvtImpl(MTInputEvent inputEvent) {
+		if (inputEvent instanceof MTOSCControllerInputEvt) {
+			GlobalOSCInputProcessor target;
+			
+			OSCMessage msg = ((MTOSCControllerInputEvt) inputEvent)
+							.getOSCMessage();
+			
+			target = GlobalOSCInputRedirectSingleton.getInstance()
+					.getTargetFromUrl(msg.getName());
+			
+			if(target != null) {
+				target.processInputEvent(inputEvent);
+			}
+		}
+		
 		if (inputEvent instanceof AbstractCursorInputEvt) {
 			AbstractCursorInputEvt posEvt = (AbstractCursorInputEvt) inputEvent;
 			InputCursor m = posEvt.getCursor();
@@ -105,7 +123,7 @@ public class InputRetargeter extends AbstractGlobalInputProcessor {
 //			logger.error("Warning in " + this  + " Dont know how to handle evt: " + inputEvent );
 			
 			//Just fire other input events to the current canvas by default
-			this.fireInputEvent(inputEvent);
+			//this.fireInputEvent(inputEvent);
 		}
 	}
 
