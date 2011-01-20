@@ -29,6 +29,8 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
 import org.mt4j.MTApplication;
 import org.mt4j.components.MTCanvas;
+import org.mt4j.input.IMTInputEventListener;
+import org.mt4j.input.inputData.MTInputEvent;
 import org.mt4j.input.inputProcessors.globalProcessors.AbstractGlobalInputProcessor;
 import org.mt4j.input.inputProcessors.globalProcessors.InputRetargeter;
 import org.mt4j.sceneManagement.transition.ITransition;
@@ -116,7 +118,7 @@ public abstract class AbstractScene implements Iscene {
 	 */
 	protected void registerDefaultGlobalInputProcessors(){
 		InputRetargeter inputRetargeter = new InputRetargeter(this.getCanvas());
-		inputRetargeter.addProcessorListener(this.getCanvas());
+		inputRetargeter.addProcessorListener((IMTInputEventListener)this.getCanvas());
 		this.registerGlobalInputProcessor(inputRetargeter);
 		
 //		this.registerGlobalInputProcessor(new InputRetargeter(this.getCanvas()));
@@ -312,7 +314,7 @@ public abstract class AbstractScene implements Iscene {
 	 */
 	public void unregisterGlobalInputProcessor(AbstractGlobalInputProcessor processor){
 		mtApplication.getInputManager().unregisterGlobalInputProcessor(processor);
-		processor.removeProcessorListener(this.getCanvas()); //FIXME can be removed now..?
+		processor.removeProcessorListener((IMTInputEventListener)this.getCanvas()); //FIXME can be removed now..?
 	}
 	
 	/**

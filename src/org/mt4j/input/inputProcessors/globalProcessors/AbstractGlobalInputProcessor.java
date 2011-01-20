@@ -25,13 +25,16 @@ import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
+import org.mt4j.components.IMTTargetable;
 import org.mt4j.components.interfaces.IMTComponent3D;
+import org.mt4j.input.GlobalInputProcessorVisitor;
 import org.mt4j.input.IMTInputEventListener;
 import org.mt4j.input.inputData.InputCursor;
+import org.mt4j.input.inputData.MTComponent3DInputEvent;
 import org.mt4j.input.inputData.MTInputEvent;
 import org.mt4j.input.inputProcessors.GestureUtils;
 import org.mt4j.input.inputProcessors.IInputProcessor;
-import org.mt4j.input.inputSources.IinputSourceListener;
+import org.mt4j.input.inputSources.IInputSourceListener;
 import org.mt4j.util.math.Tools3D;
 import org.mt4j.util.math.ToolsGeometry;
 import org.mt4j.util.math.Vector3D;
@@ -44,7 +47,7 @@ import processing.core.PApplet;
  * 
  * @author Christopher Ruff
  */
-public abstract class AbstractGlobalInputProcessor implements IinputSourceListener, IInputProcessor {
+public abstract class AbstractGlobalInputProcessor<T extends MTInputEvent> implements IInputSourceListener<T>, IInputProcessor<T> {
 	protected static final Logger logger = Logger.getLogger(AbstractGlobalInputProcessor.class.getName());
 	static{
 		logger.setLevel(Level.ERROR);
@@ -56,7 +59,7 @@ public abstract class AbstractGlobalInputProcessor implements IinputSourceListen
 	/** if disabled. */
 	private boolean disabled;
 	
-	private List<IMTInputEventListener> inputListeners;
+	private List<IMTInputEventListener<T>> inputListeners;
 	
 	/**
 	 * Instantiates a new abstract input processor.
@@ -64,7 +67,7 @@ public abstract class AbstractGlobalInputProcessor implements IinputSourceListen
 	public AbstractGlobalInputProcessor() {
 		this.disabled 	= false;
 //		this.gestureListeners = new ArrayList<IMTEventListener>();
-		inputListeners = new ArrayList<IMTInputEventListener>();
+		inputListeners = new ArrayList<IMTInputEventListener<T>>();
 	} 
 
 	
@@ -73,9 +76,19 @@ public abstract class AbstractGlobalInputProcessor implements IinputSourceListen
 	/* (non-Javadoc)
 	 * @see org.mt4j.input.inputSources.IinputSourceListener#processInputEvent(org.mt4j.input.test.MTInputEvent)
 	 */
-	final public boolean processInputEvent(MTInputEvent inputEvent){
+	public boolean processInputEvent(T inputEvent){
 //		if(!this.isDisabled()){ //this is commented because we try to handle that in the inputsources
+//			System.out.println(inputEvent+ " " + this);
+		
+		try {
+		
 			this.processInputEvtImpl(inputEvent);
+		} catch (Exception e) {
+			
+			System.err.println(e.getStackTrace());
+			System.err.println("-------");
+		}
+			
 			return true;
 //		}
 	}
@@ -86,7 +99,7 @@ public abstract class AbstractGlobalInputProcessor implements IinputSourceListen
 	 * 
 	 * @param inputEvent the input event
 	 */
-	abstract public void processInputEvtImpl(MTInputEvent inputEvent);
+	abstract public void processInputEvtImpl(T inputEvent);
 	
 	
 	//FIXME disabled property isnt honored anywhere anymore!
@@ -114,7 +127,7 @@ public abstract class AbstractGlobalInputProcessor implements IinputSourceListen
 	 * 
 	 * @param listener the listener
 	 */
-	public synchronized void addProcessorListener(IMTInputEventListener listener){
+	public synchronized void addProcessorListener(IMTInputEventListener<T> listener){
 		if (!inputListeners.contains(listener)){
 			inputListeners.add(listener);
 		}
@@ -126,7 +139,7 @@ public abstract class AbstractGlobalInputProcessor implements IinputSourceListen
 	 * 
 	 * @param listener the listener
 	 */
-	public synchronized void removeProcessorListener(IMTInputEventListener listener){
+	public synchronized void removeProcessorListener(IMTInputEventListener<T> listener){
 		if (inputListeners.contains(listener)){
 			inputListeners.remove(listener);
 		}
@@ -137,7 +150,7 @@ public abstract class AbstractGlobalInputProcessor implements IinputSourceListen
 	 * 
 	 * @return the processor listeners
 	 */
-	public synchronized IMTInputEventListener[] getProcessorListeners(){
+	public synchronized IMTInputEventListener<T>[] getProcessorListeners(){
 		return inputListeners.toArray(new IMTInputEventListener[this.inputListeners.size()]);
 	}
 	
@@ -146,8 +159,8 @@ public abstract class AbstractGlobalInputProcessor implements IinputSourceListen
 	 *
 	 * @param ie the ie
 	 */
-	protected void fireInputEvent(MTInputEvent ie) {
-		for (IMTInputEventListener listener : inputListeners){
+	protected void fireInputEvent(T ie) {
+		for (IMTInputEventListener<T> listener : inputListeners){
 			listener.processInputEvent(ie);
 		}
 	}
@@ -182,7 +195,4 @@ public abstract class AbstractGlobalInputProcessor implements IinputSourceListen
 		return GestureUtils.getPlaneIntersection(app, planeNormal, pointInPlane, c);
 	}
 	///////////
-	
-
-	
 }

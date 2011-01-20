@@ -34,7 +34,7 @@ import org.mt4j.input.inputProcessors.componentProcessors.rotateProcessor.Rotate
 import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleProcessor;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
-import org.mt4j.input.inputSources.IinputSourceListener;
+import org.mt4j.input.inputSources.IInputSourceListener;
 
 import processing.core.PApplet;
 
@@ -144,7 +144,7 @@ public class MTSvgButton extends MTSvg implements IclickableButton{
 	 * 
 	 * @param listener the listener
 	 */
-	public synchronized void removeActionListener(IinputSourceListener listener){
+	public synchronized void removeActionListener(IInputSourceListener listener){
 		if (registeredActionListeners.contains(listener)){
 			registeredActionListeners.remove(listener);
 		}

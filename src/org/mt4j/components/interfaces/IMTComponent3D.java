@@ -17,6 +17,7 @@
  ***********************************************************************/
 package org.mt4j.components.interfaces;
 
+import org.mt4j.components.IMTTargetable;
 import org.mt4j.util.camera.Icamera;
 import org.mt4j.util.math.Ray;
 import org.mt4j.util.math.Vector3D;
@@ -26,7 +27,7 @@ import org.mt4j.util.math.Vector3D;
  * The Interface IMTComponent3D.
  * @author Christopher Ruff
  */
-public interface IMTComponent3D extends IMTComponent{
+public interface IMTComponent3D extends IMTComponent  {
 	
 	
 	/**

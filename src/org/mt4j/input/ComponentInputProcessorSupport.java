@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.mt4j.components.MTComponent;
-import org.mt4j.input.inputData.MTInputEvent;
+import org.mt4j.input.inputData.MTComponent3DInputEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.AbstractComponentProcessor;
 
 import processing.core.PApplet;
@@ -33,7 +33,7 @@ import processing.core.PApplet;
  * 
  * @author Christopher Ruff
  */
-public class ComponentInputProcessorSupport implements IMTInputEventListener /*, IGestureEventListener*/ {
+public class ComponentInputProcessorSupport implements IMTInputEventListener<MTComponent3DInputEvent> /*, IGestureEventListener*/ {
 	
 	/** The registered processors. */
 	private List<AbstractComponentProcessor> registeredProcessors;
@@ -58,7 +58,7 @@ public class ComponentInputProcessorSupport implements IMTInputEventListener /*,
 	/* (non-Javadoc)
 	 * @see org.mt4j.input.IMTInputEventListener#processInputEvent(org.mt4j.input.inputData.MTInputEvent)
 	 */
-	public boolean processInputEvent(MTInputEvent inEvt){
+	public boolean processInputEvent(MTComponent3DInputEvent inEvt){
 //		/*
 		boolean handled = false;
 		

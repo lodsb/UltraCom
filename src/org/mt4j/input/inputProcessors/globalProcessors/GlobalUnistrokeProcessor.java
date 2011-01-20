@@ -7,6 +7,7 @@ import java.util.Map;
 import org.mt4j.components.MTCanvas;
 import org.mt4j.input.inputData.AbstractCursorInputEvt;
 import org.mt4j.input.inputData.InputCursor;
+import org.mt4j.input.inputData.MTComponent3DInputEvent;
 import org.mt4j.input.inputData.MTInputEvent;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.unistrokeProcessor.UnistrokeContext;

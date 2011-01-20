@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.mt4j.MTApplication;
+import org.mt4j.input.inputData.MTComponent3DInputEvent;
 import org.mt4j.input.inputData.MTInputEvent;
 
 
@@ -34,17 +35,18 @@ import org.mt4j.input.inputData.MTInputEvent;
  * 
  * @author Christopher Ruff
  */
-public abstract class AbstractInputSource {
+public abstract class AbstractInputSource<T extends MTInputEvent> {
 	
 	/** The input listeners. */
-	private List<IinputSourceListener> inputListeners;
+	private ArrayList<IInputSourceListener<T>> inputListeners;
 	
 	/** The event queue. */
-	private Deque<MTInputEvent> eventQueue;
+	private Deque<T> eventQueue;
 	
 	private MTApplication app;
 	
-	private List<IinputSourceListener> inputProcessorsToFireTo;
+	private List<IInputSourceListener<T>> inputProcessorsToFireTo;
+	
 	
 	/**
 	 * Instantiates a new abstract input source.
@@ -52,12 +54,12 @@ public abstract class AbstractInputSource {
 	 * @param mtApp the mt app
 	 */
 	public AbstractInputSource(MTApplication mtApp) {
-		this.inputListeners = new ArrayList<IinputSourceListener>();
-		this.eventQueue 	= new ArrayDeque<MTInputEvent>(20);
+		this.inputListeners = new ArrayList<IInputSourceListener<T>>();
+		this.eventQueue 	= new ArrayDeque<T>(20);
 		
 		this.app = mtApp;
 		
-		inputProcessorsToFireTo = new ArrayList<IinputSourceListener>(10);
+		inputProcessorsToFireTo = new ArrayList<IInputSourceListener<T>>(10);
 	} 
 	
 	
@@ -95,7 +97,7 @@ public abstract class AbstractInputSource {
 	 * 
 	 * @param inputEvt the input evt
 	 */
-	protected void enqueueInputEvent(MTInputEvent inputEvt){ 
+	protected void enqueueInputEvent(T inputEvt){ 
 //		System.out.println("ENQUEUE EVENT: Cursor: " +  ((MTFingerInputEvt)inputEvt).getCursor().getId() + " Evt-ID: " +  ((MTFingerInputEvt)inputEvt).getId());
 		this.eventQueue.addLast(inputEvt); //TODO synchronize access?
 	}
@@ -155,7 +157,7 @@ public abstract class AbstractInputSource {
 			
 			//FIXME problem that this can get called twice - because called again in initiateScenechange
 			inputProcessorsToFireTo.clear();
-			for (IinputSourceListener listener : inputListeners){  
+			for (IInputSourceListener<T> listener : inputListeners){  
 				if (!listener.isDisabled()){
 					inputProcessorsToFireTo.add(listener);
 				}
@@ -163,7 +165,7 @@ public abstract class AbstractInputSource {
 			
 			while (!eventQueue.isEmpty()){
 				try {
-					MTInputEvent te = eventQueue.pollFirst();
+					T te = eventQueue.pollFirst();
 					this.fireInputEvent(te);
 				} catch (NoSuchElementException e) {
 					e.printStackTrace();
@@ -183,11 +185,14 @@ public abstract class AbstractInputSource {
 	 * 
 	 * @param inputEvt the input evt
 	 */
-	private void fireInputEvent(MTInputEvent inputEvt){
+	private void fireInputEvent(T inputEvt){
 		//Adds the events to the cursors one by one before firing
-		inputEvt.onFired();
+		if(inputEvt instanceof MTComponent3DInputEvent) {
+			//TODO: fixme
+			((MTComponent3DInputEvent)inputEvt).onFired();
+		}
 
-        for (IinputSourceListener anInputProcessorsToFireTo : inputProcessorsToFireTo) {
+        for (IInputSourceListener<T> anInputProcessorsToFireTo : inputProcessorsToFireTo) {
             anInputProcessorsToFireTo.processInputEvent(inputEvt);
         }
 		/*
@@ -202,7 +207,7 @@ public abstract class AbstractInputSource {
 	 * Adds the input listener.
 	 * @param listener the listener
 	 */
-	public synchronized void addInputListener(IinputSourceListener listener){
+	public synchronized void addInputListener(IInputSourceListener<T> listener){
 		if (!inputListeners.contains(listener)){
 				inputListeners.add(listener);
 		}
@@ -213,7 +218,7 @@ public abstract class AbstractInputSource {
 	 * Removes the input listener.
 	 * @param listener the listener
 	 */
-	public synchronized void removeInputListener(IinputSourceListener listener){
+	public synchronized void removeInputListener(IInputSourceListener<T> listener){
 		if (inputListeners.contains(listener)){
 			inputListeners.remove(listener);
 		}
@@ -223,8 +228,8 @@ public abstract class AbstractInputSource {
 	 * Gets the input listeners.
 	 * @return the input listeners
 	 */
-	public synchronized IinputSourceListener[] getInputListeners(){
-		return inputListeners.toArray(new IinputSourceListener[this.inputListeners.size()]);
+	public synchronized IInputSourceListener<T>[] getInputListeners(){
+		return inputListeners.toArray(new IInputSourceListener[this.inputListeners.size()]);
 	}
 	
 	

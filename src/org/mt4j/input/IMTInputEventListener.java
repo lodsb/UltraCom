@@ -17,6 +17,8 @@
  ***********************************************************************/
 package org.mt4j.input;
 
+import org.mt4j.components.IMTTargetable;
+import org.mt4j.input.inputData.MTComponent3DInputEvent;
 import org.mt4j.input.inputData.MTInputEvent;
 
 /**
@@ -28,11 +30,13 @@ import org.mt4j.input.inputData.MTInputEvent;
  * the IMTInputEvent event occurs, that object's appropriate
  * method is invoked.
  * 
- * @see MTInputEvent
+ * @see MTComponent3DInputEvent
  * 
  * @author Christopher Ruff
  */
-public interface IMTInputEventListener {
+
+@SuppressWarnings("rawtypes")
+public interface IMTInputEventListener<T extends MTInputEvent> {
 	
 	/**
 	 * Process input event.
@@ -41,7 +45,7 @@ public interface IMTInputEventListener {
 	 * 
 	 * @return true, if successful
 	 */
-	public boolean processInputEvent(MTInputEvent inEvt);
+	public boolean processInputEvent(T inEvt);
 	
 
 //	/**

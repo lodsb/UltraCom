@@ -3,7 +3,7 @@ package advanced.simpleParticles;
 import org.mt4j.MTApplication;
 import org.mt4j.input.IMTInputEventListener;
 import org.mt4j.input.inputData.AbstractCursorInputEvt;
-import org.mt4j.input.inputData.MTInputEvent;
+import org.mt4j.input.inputData.MTComponent3DInputEvent;
 import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.util.MT4jSettings;
 import org.mt4j.util.camera.MTCamera;
@@ -40,7 +40,7 @@ public class SimpleParticlesExample extends MTApplication {
 			final PImage texture = getMTApplication().loadImage(path + "particle.png");
 			
 			getCanvas().addInputListener(new IMTInputEventListener() {
-				public boolean processInputEvent(MTInputEvent inEvt) {
+				public boolean processInputEvent(MTComponent3DInputEvent inEvt) {
 					if (inEvt instanceof AbstractCursorInputEvt) {
 						AbstractCursorInputEvt ce = (AbstractCursorInputEvt) inEvt;
 						mtPs.getParticleSystem().addParticle(new ImageParticle(getMTApplication(), new PVector(ce.getScreenX(), ce.getScreenY()), texture));

@@ -28,7 +28,7 @@ import org.mt4j.components.clusters.Cluster;
 import org.mt4j.components.clusters.ClusterManager;
 import org.mt4j.components.interfaces.IMTComponent3D;
 import org.mt4j.input.IHitTestInfoProvider;
-import org.mt4j.input.inputData.MTInputEvent;
+import org.mt4j.input.inputData.MTComponent3DInputEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor;
 import org.mt4j.input.inputProcessors.componentProcessors.rotateProcessor.RotateProcessor;
 import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleProcessor;
@@ -428,9 +428,9 @@ public class MTCanvas extends MTComponent implements IHitTestInfoProvider{
 	 * @see org.mt4j.components.MTComponent#processInputEvent(org.mt4j.input.inputData.MTInputEvent)
 	 */
 	@Override
-	public boolean processInputEvent(MTInputEvent inEvt) {
+	public boolean processInputEvent(MTComponent3DInputEvent inEvt) {
 		//TODO not very elegant - better approach??
-		if (inEvt.hasTarget() && inEvt.getEventPhase() != MTInputEvent.BUBBLING_PHASE){
+		if (inEvt.hasTarget() && inEvt.getEventPhase() != MTComponent3DInputEvent.BUBBLING_PHASE){
 			if (!inEvt.getTarget().equals(this)){ //Avoid recursion
 				//Send directed event to the target component
 				return inEvt.getTarget().processInputEvent(inEvt);

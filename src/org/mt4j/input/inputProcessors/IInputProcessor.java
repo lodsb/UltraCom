@@ -17,6 +17,8 @@
  ***********************************************************************/
 package org.mt4j.input.inputProcessors;
 
+import org.mt4j.components.IMTTargetable;
+import org.mt4j.input.inputData.MTComponent3DInputEvent;
 import org.mt4j.input.inputData.MTInputEvent;
 
 
@@ -25,7 +27,7 @@ import org.mt4j.input.inputData.MTInputEvent;
  * 
  * @author Christopher Ruff
  */
-public interface IInputProcessor {
+public interface IInputProcessor<T extends MTInputEvent> {
 	
 //	/**
 //	 * Gets the motion locking priority.
@@ -47,7 +49,7 @@ public interface IInputProcessor {
 	 * 
 	 * @param inputEvent the input event
 	 */
-	abstract public boolean processInputEvent(MTInputEvent inputEvent);
+	abstract public boolean processInputEvent(T inputEvent);
 	
 	
 	/**

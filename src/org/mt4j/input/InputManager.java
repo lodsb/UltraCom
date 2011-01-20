@@ -25,6 +25,7 @@ import java.awt.image.MemoryImageSource;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -42,7 +43,7 @@ import org.apache.log4j.SimpleLayout;
 import org.mt4j.MTApplication;
 import org.mt4j.input.inputProcessors.globalProcessors.AbstractGlobalInputProcessor;
 import org.mt4j.input.inputSources.AbstractInputSource;
-import org.mt4j.input.inputSources.IinputSourceListener;
+import org.mt4j.input.inputSources.IInputSourceListener;
 import org.mt4j.input.inputSources.KeyboardInputSource;
 import org.mt4j.input.inputSources.MouseInputSource;
 import org.mt4j.input.inputSources.MultipleMiceInputSource;
@@ -196,6 +197,16 @@ public class InputManager {
 	 * @param newInputSource the new input source
 	 */
 	public void registerInputSource(AbstractInputSource newInputSource){
+		
+		if(newInputSource.getClass().getGenericInterfaces().length > 0) {
+			for(Type t : newInputSource.getClass().getGenericInterfaces()) {
+				System.err.println(t+" -- ");
+			}
+		}
+		
+	//	System.err.println(newInputSource.getClass().)
+		
+		
 		if (!registeredInputSources.contains(newInputSource)){
 			registeredInputSources.add(newInputSource);
 			//Add all processors to the new input source
@@ -292,7 +303,7 @@ public class InputManager {
 		//that fire the event type that the processor is interested in
 //		if (source.firesEventType(inputprocessor.getListenEventType())){
 		
-			List<IinputSourceListener> sourceListener = Arrays.asList(source.getInputListeners());
+			List<IInputSourceListener> sourceListener = Arrays.asList(source.getInputListeners());
 			if (!sourceListener.contains(inputprocessor)){ //Prevent adding same global input processor twice
 				source.addInputListener(inputprocessor);
 			}

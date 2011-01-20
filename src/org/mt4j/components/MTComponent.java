@@ -38,7 +38,7 @@ import org.mt4j.input.ComponentInputProcessorSupport;
 import org.mt4j.input.GestureEventSupport;
 import org.mt4j.input.IMTInputEventListener;
 import org.mt4j.input.inputData.InputCursor;
-import org.mt4j.input.inputData.MTInputEvent;
+import org.mt4j.input.inputData.MTComponent3DInputEvent;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.IInputProcessor;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
@@ -67,7 +67,7 @@ import processing.opengl.PGraphicsOpenGL;
  * 
  * @author Christopher Ruff
  */
-public class MTComponent implements IMTComponent3D, IMTInputEventListener, IGestureEventListener{ 
+public class MTComponent implements IMTComponent3D, IGestureEventListener{ 
 	/** The Constant logger. */
 	private static final Logger logger = Logger.getLogger(MTComponent.class.getName());
 	static{
@@ -2812,7 +2812,7 @@ public class MTComponent implements IMTComponent3D, IMTInputEventListener, IGest
 	 * 
 	 * @param iEvt the i evt
 	 */
-	protected boolean dispatchInputEvent(MTInputEvent iEvt){
+	protected boolean dispatchInputEvent(MTComponent3DInputEvent iEvt){
 		boolean handled = false; //TODO REALLY IMPLEMENT, CHECK LISTENERS WHAT THEY RETURN, PROPAGET ETC!
 		for (IMTInputEventListener listener : inputListeners){
 			boolean handledListener = listener.processInputEvent(iEvt);
@@ -2933,9 +2933,9 @@ public class MTComponent implements IMTComponent3D, IMTInputEventListener, IGest
 	/* (non-Javadoc)
 	 * @see org.mt4j.components.interfaces.IMTComponent#processInputEvent(org.mt4j.input.inputData.MTInputEvent)
 	 */
-	public boolean processInputEvent(MTInputEvent inEvt) {
-		if (inEvt.getEventPhase() != MTInputEvent.BUBBLING_PHASE && inEvt.getTarget().equals(this) /*&& inEvt.bubbles()*/){
-			inEvt.setEventPhase(MTInputEvent.AT_TARGET);
+	public boolean processInputEvent(MTComponent3DInputEvent inEvt) {
+		if (inEvt.getEventPhase() != MTComponent3DInputEvent.BUBBLING_PHASE && inEvt.getTarget().equals(this) /*&& inEvt.bubbles()*/){
+			inEvt.setEventPhase(MTComponent3DInputEvent.AT_TARGET);
 		}
 		
 		if (this.isEnabled()){
@@ -2957,11 +2957,11 @@ public class MTComponent implements IMTComponent3D, IMTInputEventListener, IGest
 		}
 		
 		
-		if (inEvt.getBubbles() && !inEvt.isPropagationStopped() && inEvt.getEventPhase() == MTInputEvent.AT_TARGET){
-			inEvt.setEventPhase(MTInputEvent.BUBBLING_PHASE);	
+		if (inEvt.getBubbles() && !inEvt.isPropagationStopped() && inEvt.getEventPhase() == MTComponent3DInputEvent.AT_TARGET){
+			inEvt.setEventPhase(MTComponent3DInputEvent.BUBBLING_PHASE);	
 		}
 
-		if (inEvt.getBubbles() && !inEvt.isPropagationStopped() && inEvt.getEventPhase() == MTInputEvent.BUBBLING_PHASE){
+		if (inEvt.getBubbles() && !inEvt.isPropagationStopped() && inEvt.getEventPhase() == MTComponent3DInputEvent.BUBBLING_PHASE){
 			MTComponent theParent = this.getParent();
 			if (theParent != null){
 				inEvt.setCurrentTarget(theParent);

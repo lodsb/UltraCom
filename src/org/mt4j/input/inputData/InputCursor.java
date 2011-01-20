@@ -494,7 +494,7 @@ public class InputCursor{
 	 */
 	public IMTComponent3D getTarget(){
 		if (this.getCurrentEvent() != null){
-			return this.getCurrentEvent().getTarget();
+			return (IMTComponent3D) this.getCurrentEvent().getTarget();
 		}else{
 			return null;
 		}
@@ -502,7 +502,7 @@ public class InputCursor{
 	
 	public IMTComponent3D getCurrentTarget(){
 		if (this.getCurrentEvent() != null){
-			return this.getCurrentEvent().getCurrentTarget();
+			return (IMTComponent3D) this.getCurrentEvent().getCurrentTarget();
 		}else{
 			return null;
 		}

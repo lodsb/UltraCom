@@ -20,10 +20,12 @@ package org.mt4j.input.inputProcessors.globalProcessors;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.mt4j.components.IMTTargetable;
 import org.mt4j.components.interfaces.IMTComponent3D;
 import org.mt4j.input.IHitTestInfoProvider;
 import org.mt4j.input.inputData.AbstractCursorInputEvt;
 import org.mt4j.input.inputData.InputCursor;
+import org.mt4j.input.inputData.MTComponent3DInputEvent;
 import org.mt4j.input.inputData.MTInputEvent;
 import org.mt4j.input.inputData.osc.MTOSCControllerInputEvt;
 import org.mt4j.input.inputProcessors.globalProcessors.osc.GlobalOSCInputRedirectSingleton;
@@ -53,22 +55,24 @@ public class InputRetargeter extends AbstractGlobalInputProcessor {
 	}
 
 
+	@Override
 	public void processInputEvtImpl(MTInputEvent inputEvent) {
 		if (inputEvent instanceof MTOSCControllerInputEvt) {
+			MTOSCControllerInputEvt oscEvent = (MTOSCControllerInputEvt) inputEvent;
 			GlobalOSCInputProcessor target;
 			
-			OSCMessage msg = ((MTOSCControllerInputEvt) inputEvent)
-							.getOSCMessage();
+			OSCMessage msg = oscEvent.getControllerMessage();
 			
 			target = GlobalOSCInputRedirectSingleton.getInstance()
 					.getTargetFromUrl(msg.getName());
 			
 			if(target != null) {
-				target.processInputEvent(inputEvent);
+				//oscEvent.setTarget(target)
+				//target.processInputEvent(inputEvent);
 			}
 		}
 		
-		if (inputEvent instanceof AbstractCursorInputEvt) {
+		if (inputEvent instanceof MTComponent3DInputEvent) {
 			AbstractCursorInputEvt posEvt = (AbstractCursorInputEvt) inputEvent;
 			InputCursor m = posEvt.getCursor();
 			
@@ -83,7 +87,7 @@ public class InputRetargeter extends AbstractGlobalInputProcessor {
 					posEvt.setTarget(obj);
 //					posEvt.setCurrentTarget(obj.getRoot()); //Enable this if using event CAPTURING PHASE
 					posEvt.setCurrentTarget(obj);
-					posEvt.setEventPhase(MTInputEvent.CAPTURING_PHASE);
+					posEvt.setEventPhase(MTComponent3DInputEvent.CAPTURING_PHASE);
 					this.fireInputEvent(posEvt);
 				}
 			}
@@ -95,7 +99,7 @@ public class InputRetargeter extends AbstractGlobalInputProcessor {
 					posEvt.setTarget(associatedObj);
 //					posEvt.setCurrentTarget(associatedObj.getRoot());//Enable this if using event CAPTURING PHASE
 					posEvt.setCurrentTarget(associatedObj);
-					posEvt.setEventPhase(MTInputEvent.CAPTURING_PHASE);
+					posEvt.setEventPhase(MTComponent3DInputEvent.CAPTURING_PHASE);
 					this.fireInputEvent(posEvt);
 				}
 			}
@@ -108,7 +112,7 @@ public class InputRetargeter extends AbstractGlobalInputProcessor {
 					posEvt.setTarget(associatedObj);
 //					posEvt.setCurrentTarget(associatedObj.getRoot());//Enable this if using event CAPTURING PHASE
 					posEvt.setCurrentTarget(associatedObj);
-					posEvt.setEventPhase(MTInputEvent.CAPTURING_PHASE);
+					posEvt.setEventPhase(MTComponent3DInputEvent.CAPTURING_PHASE);
 					this.fireInputEvent(posEvt);
 //					motionToObjectMap.remove(m);
 				}

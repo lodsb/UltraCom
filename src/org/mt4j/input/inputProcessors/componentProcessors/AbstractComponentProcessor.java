@@ -24,7 +24,9 @@ import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
+import org.mt4j.components.IMTTargetable;
 import org.mt4j.input.IMTInputEventListener;
+import org.mt4j.input.inputData.MTComponent3DInputEvent;
 import org.mt4j.input.inputData.MTInputEvent;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.IInputProcessor;
@@ -34,7 +36,7 @@ import org.mt4j.input.inputProcessors.MTGestureEvent;
  * The Class AbstractComponentProcessor.
  * @author Christopher Ruff
  */
-public abstract class AbstractComponentProcessor implements IMTInputEventListener, IInputProcessor,  Comparable<AbstractComponentProcessor> {
+public abstract class AbstractComponentProcessor implements IMTInputEventListener<MTComponent3DInputEvent>, IInputProcessor<MTComponent3DInputEvent>,  Comparable<AbstractComponentProcessor> {
 	protected static final Logger logger = Logger.getLogger(AbstractComponentProcessor.class.getName());
 	static{
 		logger.setLevel(Level.ERROR);
@@ -97,12 +99,12 @@ public abstract class AbstractComponentProcessor implements IMTInputEventListene
 	 * @see org.mt4j.input.IMTInputEventListener#processInputEvent(org.mt4j.input.inputData.MTInputEvent)
 	 */
 	//@Override
-	public boolean processInputEvent(MTInputEvent inEvt){
+	public boolean processInputEvent(MTComponent3DInputEvent inEvt){
 //	public void processInputEvent(MTInputEvent inEvt){
 		if(!this.isDisabled() && inEvt.hasTarget()){ //Allow component processors to recieve inputevts only if they have a target (Canvas is target if null is picked..)
 			
 			//FIXME TEST
-			if (this.isBubbledEventsEnabled()  ||  (inEvt.getEventPhase() == MTInputEvent.AT_TARGET)){
+			if (this.isBubbledEventsEnabled()  ||  (inEvt.getEventPhase() == MTComponent3DInputEvent.AT_TARGET)){
 				this.processInputEvtImpl(inEvt);
 			}
 			
@@ -118,14 +120,14 @@ public abstract class AbstractComponentProcessor implements IMTInputEventListene
 	
 	
 	/**
-	 * Pre process. Called before {@link #processInputEvent(MTInputEvent)} is called.
+	 * Pre process. Called before {@link #processInputEvent(MTComponent3DInputEvent)} is called.
 	 *
 	 * @param inEvt the in evt
 	 */
-	public void preProcess(MTInputEvent inEvt) {
+	public void preProcess(MTComponent3DInputEvent inEvt) {
 		//FIXME TEST
 		if(!this.isDisabled() && inEvt.hasTarget()){
-			if (this.isBubbledEventsEnabled()  ||  (inEvt.getEventPhase() == MTInputEvent.AT_TARGET) ){
+			if (this.isBubbledEventsEnabled()  ||  (inEvt.getEventPhase() == MTComponent3DInputEvent.AT_TARGET) ){
 				preProcessImpl(inEvt);
 			}
 		}
@@ -136,9 +138,9 @@ public abstract class AbstractComponentProcessor implements IMTInputEventListene
 	 * 
 	 * @param inputEvent the input event
 	 */
-	abstract protected void processInputEvtImpl(MTInputEvent inputEvent);
+	abstract protected void processInputEvtImpl(MTComponent3DInputEvent inputEvent);
 	
-	abstract protected void preProcessImpl(MTInputEvent inputEvent);
+	abstract protected void preProcessImpl(MTComponent3DInputEvent inputEvent);
 	
 	
 	
@@ -152,7 +154,7 @@ public abstract class AbstractComponentProcessor implements IMTInputEventListene
 	 * 
 	 * @return true, if is interested in
 	 */
-	abstract public boolean isInterestedIn(MTInputEvent inputEvt);
+	abstract public boolean isInterestedIn(MTComponent3DInputEvent inputEvt);
 	
 	
 	/**

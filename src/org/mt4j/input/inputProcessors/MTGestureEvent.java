@@ -18,7 +18,7 @@
 package org.mt4j.input.inputProcessors;
 
 import org.mt4j.components.interfaces.IMTComponent3D;
-import org.mt4j.input.inputData.MTInputEvent;
+import org.mt4j.input.inputData.MTComponent3DInputEvent;
 
 
 
@@ -26,7 +26,7 @@ import org.mt4j.input.inputData.MTInputEvent;
  * The Class GestureEvent.
  * @author Christopher Ruff
  */
-public abstract class MTGestureEvent extends MTInputEvent {
+public abstract class MTGestureEvent extends MTComponent3DInputEvent {
 	
 	/** The id. */
 	private int id;

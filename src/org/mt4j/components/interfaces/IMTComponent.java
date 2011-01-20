@@ -17,7 +17,9 @@
  ***********************************************************************/
 package org.mt4j.components.interfaces;
 
-import org.mt4j.input.inputData.MTInputEvent;
+import org.mt4j.components.IMTTargetable;
+import org.mt4j.input.IMTInputEventListener;
+import org.mt4j.input.inputData.MTComponent3DInputEvent;
 import org.mt4j.input.inputProcessors.IInputProcessor;
 import org.mt4j.util.math.Vector3D;
 
@@ -28,7 +30,7 @@ import processing.core.PGraphics;
  * The Interface IMTComponent.
  * @author Christopher Ruff
  */
-public interface IMTComponent {
+public interface IMTComponent extends IMTInputEventListener<MTComponent3DInputEvent>, IMTTargetable {
 
 	/**
 	 * Rotates the component around its z-axis and the rotation point (in world coordiantes).
@@ -176,7 +178,7 @@ public interface IMTComponent {
 	 * 
 	 * @return true, if successful
 	 */
-	public boolean processInputEvent(MTInputEvent inEvt);
+	//public boolean processInputEvent(MTComponent3DInputEvent inEvt);
 	
 	public IMTComponent3D getRoot();
 	

@@ -19,6 +19,7 @@ package org.mt4j.input.inputProcessors.globalProcessors;
 
 
 import org.mt4j.input.inputData.MTFingerInputEvt;
+import org.mt4j.input.inputData.MTComponent3DInputEvent;
 import org.mt4j.input.inputData.MTInputEvent;
 
 

@@ -17,6 +17,7 @@
  ***********************************************************************/
 package org.mt4j.input.inputData;
 
+import org.mt4j.components.IMTTargetable;
 import org.mt4j.components.interfaces.IMTComponent3D;
 import org.mt4j.input.inputSources.AbstractInputSource;
 import org.mt4j.util.math.Vector3D;
@@ -31,7 +32,7 @@ import org.mt4j.util.math.Vector3D;
  * 
  * @author Christopher Ruff
  */
-public abstract class AbstractCursorInputEvt extends MTInputEvent {
+public abstract class AbstractCursorInputEvt extends MTComponent3DInputEvent  {
 	
 //	public enum InputState{
 //		INPUT_DETECTED,

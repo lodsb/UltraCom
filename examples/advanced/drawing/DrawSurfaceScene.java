@@ -8,7 +8,7 @@ import org.mt4j.components.visibleComponents.shapes.AbstractShape;
 import org.mt4j.input.IMTInputEventListener;
 import org.mt4j.input.inputData.AbstractCursorInputEvt;
 import org.mt4j.input.inputData.InputCursor;
-import org.mt4j.input.inputData.MTInputEvent;
+import org.mt4j.input.inputData.MTComponent3DInputEvent;
 import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.sceneManagement.IPreDrawAction;
 import org.mt4j.util.MTColor;
@@ -68,7 +68,7 @@ public class DrawSurfaceScene extends AbstractScene {
 		this.cursorToLastDrawnPoint = new HashMap<InputCursor, Vector3D>();
 		
 		this.getCanvas().addInputListener(new IMTInputEventListener() {
-			public boolean processInputEvent(MTInputEvent inEvt){
+			public boolean processInputEvent(MTComponent3DInputEvent inEvt){
 				if(inEvt instanceof AbstractCursorInputEvt){
 					final AbstractCursorInputEvt posEvt = (AbstractCursorInputEvt)inEvt;
 					final InputCursor m = posEvt.getCursor();

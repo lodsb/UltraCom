@@ -29,7 +29,7 @@ import org.mt4j.input.inputData.AbstractCursorInputEvt;
 import org.mt4j.input.inputData.ActiveCursorPool;
 import org.mt4j.input.inputData.InputCursor;
 import org.mt4j.input.inputData.MTFingerInputEvt;
-import org.mt4j.input.inputData.MTInputEvent;
+import org.mt4j.input.inputData.MTComponent3DInputEvent;
 import org.mt4j.input.inputProcessors.GestureUtils;
 import org.mt4j.input.inputProcessors.IInputProcessor;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
@@ -62,7 +62,7 @@ public abstract class AbstractCursorProcessor extends AbstractComponentProcessor
 	
 
 	@Override
-	public boolean isInterestedIn(MTInputEvent inputEvt) {
+	public boolean isInterestedIn(MTComponent3DInputEvent inputEvt) {
 //		return inputEvt instanceof AbstractCursorInputEvt;
 		return inputEvt instanceof MTFingerInputEvt 
 			&& inputEvt.hasTarget();
@@ -70,7 +70,7 @@ public abstract class AbstractCursorProcessor extends AbstractComponentProcessor
 
 
 	@Override
-	public void preProcessImpl(MTInputEvent inputEvent) {
+	public void preProcessImpl(MTComponent3DInputEvent inputEvent) {
 		MTFingerInputEvt posEvt = (MTFingerInputEvt)inputEvent;
 		InputCursor c = posEvt.getCursor();
 		switch (posEvt.getId()) {
@@ -92,7 +92,7 @@ public abstract class AbstractCursorProcessor extends AbstractComponentProcessor
 	
 
 	@Override
-	protected void processInputEvtImpl(MTInputEvent inputEvent) {
+	protected void processInputEvtImpl(MTComponent3DInputEvent inputEvent) {
 //		AbstractCursorInputEvt posEvt = (AbstractCursorInputEvt)inputEvent;
 		MTFingerInputEvt posEvt = (MTFingerInputEvt)inputEvent;
 		InputCursor c = posEvt.getCursor();

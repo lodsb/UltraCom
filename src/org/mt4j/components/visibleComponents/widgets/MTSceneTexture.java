@@ -25,7 +25,7 @@ import org.mt4j.MTApplication;
 import org.mt4j.components.visibleComponents.shapes.MTRectangle;
 import org.mt4j.input.inputData.AbstractCursorInputEvt;
 import org.mt4j.input.inputData.InputCursor;
-import org.mt4j.input.inputData.MTInputEvent;
+import org.mt4j.input.inputData.MTComponent3DInputEvent;
 import org.mt4j.input.inputProcessors.globalProcessors.AbstractGlobalInputProcessor;
 import org.mt4j.input.inputProcessors.globalProcessors.CursorTracer;
 import org.mt4j.sceneManagement.Iscene;
@@ -227,7 +227,7 @@ public class MTSceneTexture extends MTRectangle {
 	
 
 	@Override
-	public boolean processInputEvent(MTInputEvent inEvt) {
+	public boolean processInputEvent(MTComponent3DInputEvent inEvt) {
 		//We have to retarget inputevents for this component to the windowed scene
 		if (inEvt instanceof AbstractCursorInputEvt){
 			AbstractCursorInputEvt posEvt = (AbstractCursorInputEvt)inEvt;

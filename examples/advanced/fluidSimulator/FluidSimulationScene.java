@@ -29,7 +29,7 @@ import org.mt4j.components.MTComponent;
 import org.mt4j.input.IMTInputEventListener;
 import org.mt4j.input.inputData.AbstractCursorInputEvt;
 import org.mt4j.input.inputData.InputCursor;
-import org.mt4j.input.inputData.MTInputEvent;
+import org.mt4j.input.inputData.MTComponent3DInputEvent;
 import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.util.MT4jSettings;
 import org.mt4j.util.math.Vector3D;
@@ -91,7 +91,7 @@ public class FluidSimulationScene extends AbstractScene{
         
         this.getCanvas().addInputListener(new IMTInputEventListener() {
         	//@Override
-        	public boolean processInputEvent(MTInputEvent inEvt){
+        	public boolean processInputEvent(MTComponent3DInputEvent inEvt){
         		if(inEvt instanceof AbstractCursorInputEvt){
         			AbstractCursorInputEvt posEvt = (AbstractCursorInputEvt)inEvt;
         			if (posEvt.hasTarget() && posEvt.getTargetComponent().equals(getCanvas())){

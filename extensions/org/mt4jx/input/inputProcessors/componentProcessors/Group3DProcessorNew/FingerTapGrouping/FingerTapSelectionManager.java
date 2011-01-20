@@ -17,7 +17,7 @@ import org.mt4j.components.interfaces.IMTComponent3D;
 import org.mt4j.input.MTEvent;
 import org.mt4j.input.inputData.AbstractCursorInputEvt;
 import org.mt4j.input.inputData.InputCursor;
-import org.mt4j.input.inputData.MTInputEvent;
+import org.mt4j.input.inputData.MTComponent3DInputEvent;
 import org.mt4j.input.inputProcessors.IInputProcessor;
 import org.mt4j.input.inputProcessors.componentProcessors.AbstractComponentProcessor;
 
@@ -31,7 +31,7 @@ import org.mt4jx.input.inputProcessors.componentProcessors.Group3DProcessorNew.I
 import org.mt4jx.input.inputProcessors.componentProcessors.Group3DProcessorNew.MTClusterEvent;
 import org.mt4jx.util.extension3D.ComponentHelper;
 
-public class FingerTapSelectionManager extends AbstractGlobalInputProcessor implements ISelectionManager {
+public class FingerTapSelectionManager extends AbstractGlobalInputProcessor<MTComponent3DInputEvent> implements ISelectionManager {
 
 	protected static final Logger logger = Logger.getLogger(FingerTapSelectionManager.class.getName());
 	
@@ -118,7 +118,7 @@ public class FingerTapSelectionManager extends AbstractGlobalInputProcessor impl
 	}
 
 	@Override
-	public void processInputEvtImpl(MTInputEvent inputEvent) {
+	public void processInputEvtImpl(MTComponent3DInputEvent inputEvent) {
 		if (inputEvent instanceof AbstractCursorInputEvt) {
 			AbstractCursorInputEvt cursorEvt = (AbstractCursorInputEvt)inputEvent;
 			InputCursor c = ((AbstractCursorInputEvt)inputEvent).getCursor();

@@ -11,7 +11,7 @@ import org.mt4j.components.visibleComponents.shapes.MTEllipse;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.input.IMTInputEventListener;
 import org.mt4j.input.inputData.MTFiducialInputEvt;
-import org.mt4j.input.inputData.MTInputEvent;
+import org.mt4j.input.inputData.MTComponent3DInputEvent;
 import org.mt4j.input.inputProcessors.globalProcessors.RawFiducialProcessor;
 import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.util.MTColor;
@@ -43,7 +43,7 @@ public class FiducialScene extends AbstractScene implements IMTInputEventListene
 	}
 
 	//Global input processor listener implementation (IMTInputEventListener)
-	public boolean processInputEvent(MTInputEvent inEvt) {
+	public boolean processInputEvent(MTComponent3DInputEvent inEvt) {
 		if (inEvt instanceof MTFiducialInputEvt) {
 			MTFiducialInputEvt fEvt = (MTFiducialInputEvt)inEvt;
 			int fID = fEvt.getFiducialId();

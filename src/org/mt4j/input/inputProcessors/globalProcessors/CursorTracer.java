@@ -28,6 +28,7 @@ import org.mt4j.components.visibleComponents.shapes.MTEllipse;
 import org.mt4j.components.visibleComponents.widgets.MTOverlayContainer;
 import org.mt4j.input.inputData.AbstractCursorInputEvt;
 import org.mt4j.input.inputData.InputCursor;
+import org.mt4j.input.inputData.MTComponent3DInputEvent;
 import org.mt4j.input.inputData.MTInputEvent;
 import org.mt4j.sceneManagement.Iscene;
 import org.mt4j.util.MTColor;
@@ -41,7 +42,7 @@ import processing.core.PApplet;
  * 
  * @author Christopher Ruff
  */
-public class CursorTracer extends AbstractGlobalInputProcessor{
+public class CursorTracer extends AbstractGlobalInputProcessor {
 	
 	/** The app. */
 	private MTApplication app;
