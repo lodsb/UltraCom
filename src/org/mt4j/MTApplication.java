@@ -92,7 +92,7 @@ public abstract class MTApplication extends PApplet {
 		ConsoleAppender ca = new ConsoleAppender(l);
 		logger.addAppender(ca);
 	}
-	
+	public void _sinit() {initialize();}
 	public static String CUSTOM_OPENGL_GRAPHICS = "org.mt4j.util.opengl.CustomPGraphicsOpenGL"; //PApplet.OPENGL
 	
 	/** The Constant serialVersionUID. */

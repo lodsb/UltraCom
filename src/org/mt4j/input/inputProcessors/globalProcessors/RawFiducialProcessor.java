@@ -27,13 +27,13 @@ import org.mt4j.input.inputData.MTInputEvent;
  * 
  * @author Christopher Ruff
  */
-public class RawFiducialProcessor extends AbstractGlobalInputProcessor {
+public class RawFiducialProcessor extends AbstractGlobalInputProcessor<MTFiducialInputEvt> {
 
 	/* (non-Javadoc)
 	 * @see org.mt4j.input.inputProcessors.globalProcessors.AbstractGlobalInputProcessor#processInputEvtImpl(org.mt4j.input.inputData.MTInputEvent)
 	 */
 	@Override
-	public void processInputEvtImpl(MTInputEvent inputEvent) {
+	public void processInputEvtImpl(MTFiducialInputEvt inputEvent) {
 		if (inputEvent instanceof MTFiducialInputEvt){
 			MTFiducialInputEvt fEvt = (MTFiducialInputEvt)inputEvent;
 //			InputCursor motion = fEvt.getCursor();

@@ -42,7 +42,7 @@ import de.sciss.net.OSCMessage;
  * 
  * @author Christopher Ruff
  */
-public class InputRetargeter extends AbstractGlobalInputProcessor {
+public class InputRetargeter extends AbstractGlobalInputProcessor<MTInputEvent> {
 	private Map<InputCursor, IMTComponent3D> cursorToObjectMap;
 	
 	/** The app info provider. */
@@ -55,6 +55,9 @@ public class InputRetargeter extends AbstractGlobalInputProcessor {
 	}
 
 
+	@Override
+	protected boolean canHandleEvent(MTInputEvent e) {return true;}
+	
 	@Override
 	public void processInputEvtImpl(MTInputEvent inputEvent) {
 		if (inputEvent instanceof MTOSCControllerInputEvt) {

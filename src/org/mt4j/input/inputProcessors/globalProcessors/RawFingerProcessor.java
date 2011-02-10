@@ -31,9 +31,9 @@ import org.mt4j.input.inputData.MTInputEvent;
  * 
  * @author Christopher Ruff
  */
-public class RawFingerProcessor extends AbstractGlobalInputProcessor {
+public class RawFingerProcessor extends AbstractGlobalInputProcessor<MTFingerInputEvt> {
 	
-	public void processInputEvtImpl(MTInputEvent inputEvent){ 
+	public void processInputEvtImpl(MTFingerInputEvt inputEvent){ 
 //		MTFingerInputEvt touchEvt = (MTFingerInputEvt)inputEvent;
 		
 		if (inputEvent instanceof MTFingerInputEvt){

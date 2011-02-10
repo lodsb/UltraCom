@@ -29,6 +29,7 @@ import org.mt4j.components.visibleComponents.widgets.MTOverlayContainer;
 import org.mt4j.input.inputData.AbstractCursorInputEvt;
 import org.mt4j.input.inputData.InputCursor;
 import org.mt4j.input.inputData.MTComponent3DInputEvent;
+import org.mt4j.input.inputData.MTFingerInputEvt;
 import org.mt4j.input.inputData.MTInputEvent;
 import org.mt4j.sceneManagement.Iscene;
 import org.mt4j.util.MTColor;
@@ -42,7 +43,7 @@ import processing.core.PApplet;
  * 
  * @author Christopher Ruff
  */
-public class CursorTracer extends AbstractGlobalInputProcessor {
+public class CursorTracer extends AbstractGlobalInputProcessor<MTFingerInputEvt> {
 	
 	/** The app. */
 	private MTApplication app;
@@ -173,7 +174,7 @@ public class CursorTracer extends AbstractGlobalInputProcessor {
 	 * @see org.mt4j.input.inputProcessors.globalProcessors.AbstractGlobalInputProcessor#processInputEvtImpl(org.mt4j.input.inputData.MTInputEvent)
 	 */
 	@Override
-	public void processInputEvtImpl(MTInputEvent inputEvent) {
+	public void processInputEvtImpl(MTFingerInputEvt inputEvent) {
 		if (inputEvent instanceof AbstractCursorInputEvt) {
 			AbstractCursorInputEvt cursorEvt = (AbstractCursorInputEvt)inputEvent;
 			InputCursor c = ((AbstractCursorInputEvt)inputEvent).getCursor();

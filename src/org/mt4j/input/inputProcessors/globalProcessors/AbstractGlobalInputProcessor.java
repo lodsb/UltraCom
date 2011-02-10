@@ -18,7 +18,9 @@
 package org.mt4j.input.inputProcessors.globalProcessors;
 
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.ConsoleAppender;
@@ -38,6 +40,7 @@ import org.mt4j.input.inputSources.IInputSourceListener;
 import org.mt4j.util.math.Tools3D;
 import org.mt4j.util.math.ToolsGeometry;
 import org.mt4j.util.math.Vector3D;
+
 
 import processing.core.PApplet;
 
@@ -70,23 +73,50 @@ public abstract class AbstractGlobalInputProcessor<T extends MTInputEvent> imple
 		inputListeners = new ArrayList<IMTInputEventListener<T>>();
 	} 
 
-	
-	
+
+	/*
+	 * Std Impl searches for method with matching signature for Event of type T
+	 * 
+	 * 
+	 */
+	private HashMap<Class<?>, Boolean> eventClassMap = 
+											new HashMap<Class<?>, Boolean>();
+    protected boolean canHandleEvent(MTInputEvent e) {
+    	Boolean ret = null;
+    	
+    	ret = this.eventClassMap.get(e.getClass());
+    	
+    	if(ret == null) {
+    		for (Method m : this.getClass().getDeclaredMethods()) {
+    			if (m.getName().equals("processInputEvtImpl")) {
+    				Class<?>[] params = m.getParameterTypes();
+    				
+    				if (!this.eventClassMap.containsKey(e.getClass()) && 
+    					!params[0].getName().equals(e.getClass().getName())) {
+    					this.eventClassMap.put(e.getClass(), false);
+    				}
+    				this.eventClassMap.put(params[0], true);
+     			}
+    		}
+    	}
+    	
+    	ret = this.eventClassMap.get(e.getClass());
+    	
+    	return ret;
+    }
 	
 	/* (non-Javadoc)
 	 * @see org.mt4j.input.inputSources.IinputSourceListener#processInputEvent(org.mt4j.input.test.MTInputEvent)
 	 */
 	public boolean processInputEvent(T inputEvent){
-//		if(!this.isDisabled()){ //this is commented because we try to handle that in the inputsources
-//			System.out.println(inputEvent+ " " + this);
-		
 		try {
-		
-			this.processInputEvtImpl(inputEvent);
+			if(this.canHandleEvent(inputEvent)) {
+				this.processInputEvtImpl(inputEvent);
+			}
 		} catch (Exception e) {
 			
 			System.err.println(e.getStackTrace());
-			System.err.println("-------");
+			System.err.println("--- SHIT ! ---");
 		}
 			
 			return true;

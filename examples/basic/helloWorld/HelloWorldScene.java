@@ -4,6 +4,7 @@ import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.input.IMTInputEventListener;
+import org.mt4j.input.inputData.MTFingerInputEvt;
 import org.mt4j.input.inputData.osc.MTOSCControllerInputEvt;
 import org.mt4j.input.inputProcessors.globalProcessors.CursorTracer;
 import org.mt4j.input.inputProcessors.globalProcessors.GlobalOSCInputProcessor;

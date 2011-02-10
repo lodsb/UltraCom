@@ -67,8 +67,9 @@ public class DrawSurfaceScene extends AbstractScene {
 		
 		this.cursorToLastDrawnPoint = new HashMap<InputCursor, Vector3D>();
 		
-		this.getCanvas().addInputListener(new IMTInputEventListener() {
+		this.getCanvas().addInputListener(new IMTInputEventListener<MTComponent3DInputEvent>() {
 			public boolean processInputEvent(MTComponent3DInputEvent inEvt){
+				System.err.println("asdf");
 				if(inEvt instanceof AbstractCursorInputEvt){
 					final AbstractCursorInputEvt posEvt = (AbstractCursorInputEvt)inEvt;
 					final InputCursor m = posEvt.getCursor();
