@@ -92,8 +92,12 @@ public abstract class MTApplication extends PApplet {
 		ConsoleAppender ca = new ConsoleAppender(l);
 		logger.addAppender(ca);
 	}
-	public void _sinit() {initialize();}
-	public static String CUSTOM_OPENGL_GRAPHICS = "org.mt4j.util.opengl.CustomPGraphicsOpenGL"; //PApplet.OPENGL
+	public void initFromScala(String name) {
+         initialize();
+        //initialize(this.getClass().getName());
+    }
+
+    public static String CUSTOM_OPENGL_GRAPHICS = "org.mt4j.util.opengl.CustomPGraphicsOpenGL"; //PApplet.OPENGL
 	
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -255,12 +259,14 @@ public abstract class MTApplication extends PApplet {
 		sceneChangeLocked = false;
 		cssStyleManager = new CSSStyleManager(this);
 	}
-	
+
+
 	/**
 	 * Initializes the processings settings.
 	 * Call this method in your main method prior to anything else!
 	 */
 	public static void initialize(){
+
 		initialize(new CurrentClassGetter().getClassName());
 	}
 	
@@ -315,17 +321,57 @@ public abstract class MTApplication extends PApplet {
 							"--bgcolor=#000000", 
 							"--hide-stop",
 							classToInstantiate}
-					); 
+					);
 				}
 			}else{
-				PApplet.main(new String[] { 
+                System.err.println("Classfile: " + classToInstantiate);
+				PApplet.main(new String[] {
 						"--display=" + MT4jSettings.getInstance().getDisplay(),
-						classToInstantiate }); 
+						classToInstantiate });
+
+
 			}
 		}
-
 	}
-	
+
+    public void execute(boolean showSettingsMenu) {
+        logger.debug(this.getClass().getName()+" started execution in PApplect context.");
+
+		//FIXME TEST
+		if (showSettingsMenu){
+			settingsLoadedFromFile = true;
+			SettingsMenu menu = new SettingsMenu(this.getClass().getName());
+			menu.setVisible(true);
+		}else{
+			getSettingsFromFile();
+
+			// Launch processing PApplet main() function
+			if (MT4jSettings.getInstance().isFullscreen()){
+				if (MT4jSettings.getInstance().isFullscreenExclusive()){
+					PApplet.runSketch(new String[] {
+							"--display=" + MT4jSettings.getInstance().getDisplay(),
+							"--present",
+							"--exclusive",
+							"--bgcolor=#000000",
+							"--hide-stop"},
+                            this
+					);
+				}else{
+					PApplet.runSketch(new String[] {
+							"--display=" + MT4jSettings.getInstance().getDisplay(),
+							"--present",
+							"--bgcolor=#000000",
+							"--hide-stop"},
+                            this
+					);
+				}
+			}else{
+				PApplet.runSketch(new String[] {
+						"--display=" + MT4jSettings.getInstance().getDisplay()},
+                            this);
+			}
+		}
+    }
 	
 	private static void getSettingsFromFile(){
 		 //Load some properties from Settings.txt file
@@ -1258,6 +1304,10 @@ public abstract class MTApplication extends PApplet {
 		 * @return the class name
 		 */
 		public String getClassName() {
+
+            for(Class<?> c : getClassContext()) {
+                System.err.println(c);
+            }
 			return getClassContext()[2].getName(); //FIXME is this reliable to always work?
 		}
 	}

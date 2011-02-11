@@ -1,14 +1,13 @@
 package org.mt4jx.input.inputProcessors.componentProcessors.Group3DProcessorNew.FingerTapGrouping;
 
-import java.util.ArrayList;
-
 import org.mt4j.components.MTCanvas;
 import org.mt4j.components.MTComponent;
 import org.mt4j.input.inputData.InputCursor;
-import org.mt4j.input.inputProcessors.componentProcessors.lassoProcessor.IdragClusterable;
 import org.mt4jx.input.inputProcessors.componentProcessors.Group3DProcessorNew.Cluster;
 import org.mt4jx.input.inputProcessors.componentProcessors.Group3DProcessorNew.ClusterDataManager;
 import org.mt4jx.input.inputProcessors.componentProcessors.Group3DProcessorNew.ISelection;
+
+import java.util.ArrayList;
 
 public class FingerTapSelection implements ISelection {
 
@@ -85,8 +84,9 @@ public class FingerTapSelection implements ISelection {
 	}
 
 	public synchronized void setState(FingerTapState state) {
-		this.state = state;		
-		this.state.stateEntry(this);
+		this.state = state;
+
+		//this.state.stateEntry(this);
 	}
 
 	public FingerTapState getState() {

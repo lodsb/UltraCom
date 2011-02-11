@@ -18,9 +18,6 @@
 package org.mt4j.components.clusters;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import org.mt4j.components.MTComponent;
 import org.mt4j.components.TransformSpace;
 import org.mt4j.components.bounds.BoundsArbitraryPlanarPolygon;
@@ -31,8 +28,10 @@ import org.mt4j.util.math.ConvexQuickHull2D;
 import org.mt4j.util.math.Matrix;
 import org.mt4j.util.math.Vector3D;
 import org.mt4j.util.math.Vertex;
-
 import processing.core.PApplet;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * The Class Cluster.
@@ -230,11 +229,11 @@ public class Cluster extends MTComponent { //extends MTComponent/implements IMTC
 	}
 	
 	
-	//TODO GANZE CLUSTERING ÜBERARBEITEN
+	//TODO GANZE CLUSTERING ueBERARBEITEN
 	//SO GIBTS PROBLEME WENN GECLUSTERTE OBJECTE IN VERSCHIEDENEN PARENTS SIND
 	// => DANN WERDEN SIE VERSCHIEDEN TRANSFORMIERT
 	//  aM BESTEN ALLE ALS KINDER DES CLUSTERPOLYS MACHEN UND DAS AUF COMPOSITE=TRUE MACHEN
-	//  ABER WOHIN GEHEN SIE WENN SIE AUS DEM CLUSTER GELÖST WERDEN? VIELLEICHT GIBTS DIE ALTE GRUPPE NICHT MEHR?
+	//  ABER WOHIN GEHEN SIE WENN SIE AUS DEM CLUSTER GELï¿½ST WERDEN? VIELLEICHT GIBTS DIE ALTE GRUPPE NICHT MEHR?
 	//  DANN AUF DEN WORLD CANVAS SETZEN; => ABER AN GLEICHER STELLE!
 	
 	

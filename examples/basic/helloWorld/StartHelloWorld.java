@@ -1,4 +1,4 @@
-package basic.helloWorld;
+
 
 import org.mt4j.MTApplication;
 
@@ -11,6 +11,6 @@ public class StartHelloWorld extends MTApplication {
 	@Override
 	public void startUp() {
 		
-		addScene(new HelloWorldScene(this, "Hello World Scene"));
+		//addScene(new HelloWorldScene(this, "Hello World Scene"));
 	}
 }

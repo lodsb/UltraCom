@@ -1,35 +1,23 @@
 package org.mt4jx.input.inputProcessors.componentProcessors.Group3DProcessorNew.FingerTapGrouping;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.mt4j.components.MTCanvas;
-import org.mt4j.components.MTComponent;
-import org.mt4j.components.PickResult;
-import org.mt4j.components.StateChange;
-import org.mt4j.components.StateChangeEvent;
-import org.mt4j.components.StateChangeListener;
+import org.mt4j.components.*;
 import org.mt4j.components.PickResult.PickEntry;
 import org.mt4j.components.interfaces.IMTComponent3D;
 import org.mt4j.input.MTEvent;
 import org.mt4j.input.inputData.AbstractCursorInputEvt;
 import org.mt4j.input.inputData.InputCursor;
 import org.mt4j.input.inputData.MTComponent3DInputEvent;
-import org.mt4j.input.inputProcessors.IInputProcessor;
-import org.mt4j.input.inputProcessors.componentProcessors.AbstractComponentProcessor;
-
 import org.mt4j.input.inputProcessors.componentProcessors.lassoProcessor.IdragClusterable;
 import org.mt4j.input.inputProcessors.globalProcessors.AbstractGlobalInputProcessor;
 import org.mt4j.util.math.Vector3D;
-import org.mt4jx.input.inputProcessors.componentProcessors.Group3DProcessorNew.Cluster;
-import org.mt4jx.input.inputProcessors.componentProcessors.Group3DProcessorNew.ClusterDataManager;
-import org.mt4jx.input.inputProcessors.componentProcessors.Group3DProcessorNew.ISelectionListener;
-import org.mt4jx.input.inputProcessors.componentProcessors.Group3DProcessorNew.ISelectionManager;
-import org.mt4jx.input.inputProcessors.componentProcessors.Group3DProcessorNew.MTClusterEvent;
+import org.mt4jx.input.inputProcessors.componentProcessors.Group3DProcessorNew.*;
 import org.mt4jx.util.extension3D.ComponentHelper;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class FingerTapSelectionManager extends AbstractGlobalInputProcessor<MTComponent3DInputEvent> implements ISelectionManager {
 
@@ -157,7 +145,7 @@ public class FingerTapSelectionManager extends AbstractGlobalInputProcessor<MTCo
 						logger.debug("While INPUT_DETECTED Component " + comp.getName() + " added to objectCursorState Map with OBJECTWITHNOTAP  cursor-id: " + c.getId());
 						objectCursorState.put(mtComp, FingerTapCursorState.OBJECTWITHNOTAP);
 					}
-					objectCursorState.get(mtComp).tapPress(this,mtComp,c);
+					//objectCursorState.get(mtComp).tapPress(this,mtComp,c);
 					
 					//update selection state of complete selection
 					if(!selection.getCurrentlyPressedCursors().contains(c))
@@ -166,7 +154,7 @@ public class FingerTapSelectionManager extends AbstractGlobalInputProcessor<MTCo
 						selection.getCurrentlyPressedCursors().add(c);
 					
 					}
-					selection.getState().tapPress(selection,c,mtComp);
+					//selection.getState().tapPress(selection,c,mtComp);//;tapPress(selection,c,mtComp);
 												
 					break;
 				case AbstractCursorInputEvt.INPUT_UPDATED:										
@@ -180,13 +168,13 @@ public class FingerTapSelectionManager extends AbstractGlobalInputProcessor<MTCo
 						logger.debug("While INPUT_ENDED Component " + comp.getName() + " added to objectCursorState Map with OBJECTWITHNOTAP  cursor-id: " + c.getId());
 						objectCursorState.put(mtComp, FingerTapCursorState.OBJECTWITHNOTAP);
 					}
-					objectCursorState.get(mtComp).tapRelease(this,mtComp,c);
+					//objectCursorState.get(mtComp).tapRelease(this,mtComp,c);
 					//update selection state of complete selection
 					if(selection.getCurrentlyPressedCursors().contains(c))
 					{
 						logger.debug("While INPUT_ENDED Component " + comp.getName() + " removed from currentlyPressedCursor cursor-id: " + c.getId());
 						selection.getCurrentlyPressedCursors().remove(c);
-						selection.getState().tapRelease(selection,c,mtComp);
+					//	selection.getState().tapRelease(selection,c,mtComp);
 						
 					}
 					

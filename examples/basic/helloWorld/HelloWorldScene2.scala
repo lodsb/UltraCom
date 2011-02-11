@@ -13,11 +13,12 @@ import org.mt4j.MTApplication
 import org.mt4j.sceneManagement.AbstractScene
 import org.mt4j.input.IMTInputEventListener
 
-class HelloWorldScene2(mtApplication: MTApplication, name: String) 
+
+class HelloWorldScene2(mtApplication: MTApplication, name: String)
 						extends AbstractScene(mtApplication, name) 
 						with IMTInputEventListener[MTOSCControllerInputEvt]{
 	
-	
+    val clazz = this.getClass
 		var white = new MTColor(255,255,255);
 		this.setClearColor(new MTColor(146, 150, 188, 255));
 		//Show touches
@@ -29,12 +30,12 @@ class HelloWorldScene2(mtApplication: MTApplication, name: String)
 		
 		//this.registerGlobalInputProcessor(proc);
 		
-		var fontArial = FontManager.getInstance().createFont(mtApplication, "arial.ttf", 
+		/*var fontArial = FontManager.getInstance().createFont(mtApplication, "arial.ttf",
 				50, 	//Font size
 				white,  //Font fill color
 				white);	//Font outline color
-		//Create a textfield
-		var textField = new MTTextArea(mtApplication, fontArial); 
+		*///Create a textfield
+		var textField = new MTTextArea(mtApplication);//, fontArial);
 		
 		textField.setNoStroke(true);
 		textField.setNoFill(true);
@@ -44,12 +45,21 @@ class HelloWorldScene2(mtApplication: MTApplication, name: String)
 		textField.setPositionGlobal(new Vector3D(mtApplication.width/2f, mtApplication.height/2f));
 		//Add the textfield to our canvas
 		this.getCanvas().addChild(textField);
+
+  override def processInputEvent(sdf: MTOSCControllerInputEvt )  = { true};
+
+     private val serialVersionUID = 1L;
 }
 
 object Test extends MTApplication {
 	
 	def main(args: Array[String]) : Unit = {
-		Test._sinit();
+		this.execute(false)
 	}
+
+  override def startUp() = {
+    System.out.println("SADSDFSDF");
+    this.addScene(new HelloWorldScene2(this, "FPPPP"))
+  }
 	
 }
