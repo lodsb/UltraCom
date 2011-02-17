@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009 Christopher Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -53,240 +53,261 @@ import processing.core.PApplet;
  * The Class LassoProcessor. This gesture processor should only be
  * registered with a MTCanvas component.
  * Fires LassoEvent gesture events.
- * 
+ *
  * @author Christopher Ruff
  */
 public class LassoProcessor extends AbstractCursorProcessor {
 
-	/** The pa. */
-	private PApplet pa;
-	
-	/** The canvas. */
-	private MTCanvas canvas;
-	
-	/** The cursor to context. */
-	private Hashtable<InputCursor, ClusteringContext> cursorToContext;
-	
-	/** The drag selectables. */
-	private List<IdragClusterable> dragSelectables;
-	
-	/** The camera. */
-	private Icamera camera;
-	
-	/** The plane normal. */
-	private Vector3D planeNormal;
-	
-	/** The point in plane. */
-	private Vector3D pointInPlane;
-	
-	
+    /**
+     * The pa.
+     */
+    private PApplet pa;
 
-	/**
-	 * Instantiates a new lasso processor.
-	 * 
-	 * @param pa the pa
-	 * @param canvas the canvas
-	 * @param camera the camera
-	 */
-	public LassoProcessor(PApplet pa, MTCanvas canvas, Icamera camera) {
-		super();
-		this.pa = pa;
-		this.canvas = canvas;
-		this.camera = camera;
-		this.dragSelectables = new ArrayList<IdragClusterable>();
-		cursorToContext = new Hashtable<InputCursor, ClusteringContext>();
-		planeNormal = new Vector3D(0,0,1);
-		pointInPlane = new Vector3D(0,0,0);
-		this.setLockPriority(1);
-	}
-	
-	
-	
-	/* (non-Javadoc)
-	 * @see org.mt4j.input.inputProcessors.componentProcessors.AbstractCursorProcessor#cursorStarted(org.mt4j.input.inputData.InputCursor, org.mt4j.input.inputData.AbstractCursorInputEvt)
-	 */
-	@Override
-	public void cursorStarted(InputCursor c, MTFingerInputEvt positionEvent) {
-		if (this.getLock(c)){
-			ClusteringContext context = new ClusteringContext(c);
-			if (!context.gestureAborted){
-				cursorToContext.put(c, context);
-				//To speed things up, selection is only checked at the end of the gesture
-				IdragClusterable[] selectedComps = new IdragClusterable[0]; //no things selected anyway yet
-				this.fireGestureEvent(new LassoEvent(this, MTGestureEvent.GESTURE_DETECTED, canvas, c, context.getPolygon(), selectedComps));
-			}
-		}
-		
-	}
+    /**
+     * The canvas.
+     */
+    private MTCanvas canvas;
+
+    /**
+     * The cursor to context.
+     */
+    private Hashtable<InputCursor, ClusteringContext> cursorToContext;
+
+    /**
+     * The drag selectables.
+     */
+    private List<IdragClusterable> dragSelectables;
+
+    /**
+     * The camera.
+     */
+    private Icamera camera;
+
+    /**
+     * The plane normal.
+     */
+    private Vector3D planeNormal;
+
+    /**
+     * The point in plane.
+     */
+    private Vector3D pointInPlane;
 
 
-
-	/* (non-Javadoc)
-	 * @see org.mt4j.input.inputProcessors.componentProcessors.AbstractCursorProcessor#cursorUpdated(org.mt4j.input.inputData.InputCursor, org.mt4j.input.inputData.AbstractCursorInputEvt)
-	 */
-	@Override
-	public void cursorUpdated(InputCursor c, MTFingerInputEvt positionEvent) {
-		ClusteringContext context = cursorToContext.get(c);
-		if (context != null){ //cursor was used here
-			if (!context.gestureAborted){
-				context.update(c);
-				//TODO visually mark selected cards and give back real selected cards again..
-				IdragClusterable[] selectedComps = new IdragClusterable[0];
-				this.fireGestureEvent(new LassoEvent(this, MTGestureEvent.GESTURE_UPDATED, canvas, c, context.getPolygon(), selectedComps));
-			}
-		}
-	}
-	
-	
-	/* (non-Javadoc)
-	 * @see org.mt4j.input.inputProcessors.componentProcessors.AbstractCursorProcessor#cursorEnded(org.mt4j.input.inputData.InputCursor, org.mt4j.input.inputData.AbstractCursorInputEvt)
-	 */
-	@Override
-	public void cursorEnded(InputCursor c, MTFingerInputEvt positionEvent) {
-		logger.debug(this.getName() + " INPUT_ENDED RECIEVED - cursor: " + c.getId());
-		ClusteringContext context = cursorToContext.get(c);
-		if (context != null){ //cursor was used here
-			cursorToContext.remove(c); 
-			IdragClusterable[] selectedComps = context.getselectedComps();
-			this.fireGestureEvent(new LassoEvent(this, MTGestureEvent.GESTURE_ENDED, canvas, c, context.getPolygon(), selectedComps));
-			this.unLock(c);
-		}
-	}
+    /**
+     * Instantiates a new lasso processor.
+     *
+     * @param pa     the pa
+     * @param canvas the canvas
+     * @param camera the camera
+     */
+    public LassoProcessor(PApplet pa, MTCanvas canvas, Icamera camera) {
+        super();
+        this.pa = pa;
+        this.canvas = canvas;
+        this.camera = camera;
+        this.dragSelectables = new ArrayList<IdragClusterable>();
+        cursorToContext = new Hashtable<InputCursor, ClusteringContext>();
+        planeNormal = new Vector3D(0, 0, 1);
+        pointInPlane = new Vector3D(0, 0, 0);
+        this.setLockPriority(1);
+    }
 
 
+    /* (non-Javadoc)
+      * @see org.mt4j.input.inputProcessors.componentProcessors.AbstractCursorProcessor#cursorStarted(org.mt4j.input.inputData.InputCursor, org.mt4j.input.inputData.AbstractCursorInputEvt)
+      */
+    @Override
+    public void cursorStarted(InputCursor c, MTFingerInputEvt positionEvent) {
+        if (this.getLock(c)) {
+            ClusteringContext context = new ClusteringContext(c);
+            if (!context.gestureAborted) {
+                cursorToContext.put(c, context);
+                //To speed things up, selection is only checked at the end of the gesture
+                IdragClusterable[] selectedComps = new IdragClusterable[0]; //no things selected anyway yet
+                this.fireGestureEvent(new LassoEvent(this, MTGestureEvent.GESTURE_DETECTED, canvas, c, context.getPolygon(), selectedComps));
+            }
+        }
 
-	@Override
-	public void cursorLocked(InputCursor c, IInputProcessor lockingAnalyzer) {
-		if (lockingAnalyzer instanceof AbstractComponentProcessor){
-			logger.debug(this.getName() + " Recieved cursor LOCKED by (" + ((AbstractComponentProcessor)lockingAnalyzer).getName()  + ") - cursor ID: " + c.getId());
-		}else{
-			logger.debug(this.getName() + " Recieved cursor LOCKED by higher priority signal - cursor ID: " + c.getId());
-		}
-		this.abortGesture(c);
-	}
+    }
 
 
+    /* (non-Javadoc)
+      * @see org.mt4j.input.inputProcessors.componentProcessors.AbstractCursorProcessor#cursorUpdated(org.mt4j.input.inputData.InputCursor, org.mt4j.input.inputData.AbstractCursorInputEvt)
+      */
+    @Override
+    public void cursorUpdated(InputCursor c, MTFingerInputEvt positionEvent) {
+        ClusteringContext context = cursorToContext.get(c);
+        if (context != null) { //cursor was used here
+            if (!context.gestureAborted) {
+                context.update(c);
+                //TODO visually mark selected cards and give back real selected cards again..
+                IdragClusterable[] selectedComps = new IdragClusterable[0];
+                this.fireGestureEvent(new LassoEvent(this, MTGestureEvent.GESTURE_UPDATED, canvas, c, context.getPolygon(), selectedComps));
+            }
+        }
+    }
 
-	@Override
-	public void cursorUnlocked(InputCursor c) {
-		logger.debug(this.getName() + " Recieved UNLOCKED signal for cursor ID: " + c.getId());
-		//Do nothing here, we dont want this gesture to be resumable
-	}
 
-	
-	/**
-	 * Abort gesture.
-	 * 
-	 * @param c the involved cursor
-	 */
-	public void abortGesture(InputCursor c){
-		ClusteringContext context = cursorToContext.get(c);
-		if (context != null){ //cursor was used here
-			cursorToContext.remove(c); 
-			context.update(c);
-			//because of aborting we send an empty selection array 
-			IdragClusterable[] selectedComps = new IdragClusterable[0];
-			this.fireGestureEvent(new LassoEvent(this, MTGestureEvent.GESTURE_ENDED, canvas, c, context.getPolygon(), selectedComps));
-			logger.debug(this.getName() + " cursor:" + c.getId() + " cursor LOCKED. Was an active cursor in this gesture!");
-		}else{
-			logger.debug(this.getName() + " cursor LOCKED. But it was NOT an active cursor in this gesture!");
-		}
-	}
-	
-	
-	/**
-	 * Adds the clusterable.
-	 * 
-	 * @param selectable the selectable
-	 */
-	public synchronized void addClusterable(IdragClusterable selectable){
-		dragSelectables.add(selectable);
-		if (selectable instanceof MTComponent) {
-			MTComponent baseComp = (MTComponent) selectable;
+    /* (non-Javadoc)
+      * @see org.mt4j.input.inputProcessors.componentProcessors.AbstractCursorProcessor#cursorEnded(org.mt4j.input.inputData.InputCursor, org.mt4j.input.inputData.AbstractCursorInputEvt)
+      */
+    @Override
+    public void cursorEnded(InputCursor c, MTFingerInputEvt positionEvent) {
+        logger.debug(this.getName() + " INPUT_ENDED RECIEVED - cursor: " + c.getId());
+        ClusteringContext context = cursorToContext.get(c);
+        if (context != null) { //cursor was used here
+            cursorToContext.remove(c);
+            IdragClusterable[] selectedComps = context.getselectedComps();
+            this.fireGestureEvent(new LassoEvent(this, MTGestureEvent.GESTURE_ENDED, canvas, c, context.getPolygon(), selectedComps));
+            this.unLock(c);
+        }
+    }
 
-			baseComp.addStateChangeListener(StateChange.COMPONENT_DESTROYED, new StateChangeListener(){
-				public void stateChanged(StateChangeEvent evt) {
-					if (evt.getSource() instanceof IdragClusterable) {
-						IdragClusterable clusterAble = (IdragClusterable) evt.getSource();
-						removeClusterable(clusterAble);
-						//logger.debug("Removed comp from cluster gesture analyzers tracking");
-					}
-				}
-			});
-			
-		}
-	}
-	
-	
-	/**
-	 * Removes the clusterable.
-	 * 
-	 * @param selectable the selectable
-	 */
-	public synchronized  void removeClusterable(IdragClusterable selectable){
-		dragSelectables.remove(selectable);
-	}
-	
-	/**
-	 * Gets the tracked selectables.
-	 * 
-	 * @return the tracked selectables
-	 */
-	public IdragClusterable[] getTrackedSelectables(){
-		return dragSelectables.toArray(new IdragClusterable[this.dragSelectables.size()]);
-	}
-	
-	
-	/**
-	 * The Class ClusteringContext.
-	 * 
-	 * @author Besitzer
-	 */
-	private class ClusteringContext{
-		
-		/** The polygon. */
-		private MTStencilPolygon polygon;
-		
-		/** The last position. */
-		private Vector3D lastPosition;
-		
-		/** The new position. */
-		private Vector3D newPosition;
-		
-		/** The cursor. */
-		private InputCursor cursor;
-		
-		/** The selected comps. */
-		private ArrayList<IdragClusterable> selectedComps;
-		
-		/** The gesture aborted. */
-		protected boolean gestureAborted;
-		
-		
-		/**
-		 * Instantiates a new clustering context.
-		 * 
-		 * @param cursor the cursor
-		 */
-		public ClusteringContext(InputCursor cursor) {
-			gestureAborted = false;
-			this.cursor = cursor;
-			
-			Vector3D newPos = ToolsGeometry.getRayPlaneIntersection(
-					Tools3D.getCameraPickRay(pa, camera, cursor.getCurrentEvent().getScreenX(), cursor.getCurrentEvent().getScreenY()), 
-					planeNormal, 
-					pointInPlane);
-			
-			if (newPos == null){
-				logger.error(getName() + " intersection with plane was null in class: " + this.getClass().getName());
-				gestureAborted = true;
-				abortGesture(cursor);
-				return;
-			}
-			
-			this.newPosition = newPos;
-			this.lastPosition = newPos;
-			
+
+    @Override
+    public void cursorLocked(InputCursor c, IInputProcessor lockingAnalyzer) {
+        if (lockingAnalyzer instanceof AbstractComponentProcessor) {
+            logger.debug(this.getName() + " Recieved cursor LOCKED by (" + ((AbstractComponentProcessor) lockingAnalyzer).getName() + ") - cursor ID: " + c.getId());
+        } else {
+            logger.debug(this.getName() + " Recieved cursor LOCKED by higher priority signal - cursor ID: " + c.getId());
+        }
+        this.abortGesture(c);
+    }
+
+
+    @Override
+    public void cursorUnlocked(InputCursor c) {
+        logger.debug(this.getName() + " Recieved UNLOCKED signal for cursor ID: " + c.getId());
+        //Do nothing here, we dont want this gesture to be resumable
+    }
+
+
+    /**
+     * Abort gesture.
+     *
+     * @param c the involved cursor
+     */
+    public void abortGesture(InputCursor c) {
+        ClusteringContext context = cursorToContext.get(c);
+        if (context != null) { //cursor was used here
+            cursorToContext.remove(c);
+            context.update(c);
+            //because of aborting we send an empty selection array
+            IdragClusterable[] selectedComps = new IdragClusterable[0];
+            this.fireGestureEvent(new LassoEvent(this, MTGestureEvent.GESTURE_ENDED, canvas, c, context.getPolygon(), selectedComps));
+            logger.debug(this.getName() + " cursor:" + c.getId() + " cursor LOCKED. Was an active cursor in this gesture!");
+        } else {
+            logger.debug(this.getName() + " cursor LOCKED. But it was NOT an active cursor in this gesture!");
+        }
+    }
+
+
+    /**
+     * Adds the clusterable.
+     *
+     * @param selectable the selectable
+     */
+    public synchronized void addClusterable(IdragClusterable selectable) {
+        dragSelectables.add(selectable);
+        if (selectable instanceof MTComponent) {
+            MTComponent baseComp = (MTComponent) selectable;
+
+            baseComp.addStateChangeListener(StateChange.COMPONENT_DESTROYED, new StateChangeListener() {
+                public void stateChanged(StateChangeEvent evt) {
+                    if (evt.getSource() instanceof IdragClusterable) {
+                        IdragClusterable clusterAble = (IdragClusterable) evt.getSource();
+                        removeClusterable(clusterAble);
+                        //logger.debug("Removed comp from cluster gesture analyzers tracking");
+                    }
+                }
+            });
+
+        }
+    }
+
+
+    /**
+     * Removes the clusterable.
+     *
+     * @param selectable the selectable
+     */
+    public synchronized void removeClusterable(IdragClusterable selectable) {
+        dragSelectables.remove(selectable);
+    }
+
+    /**
+     * Gets the tracked selectables.
+     *
+     * @return the tracked selectables
+     */
+    public IdragClusterable[] getTrackedSelectables() {
+        return dragSelectables.toArray(new IdragClusterable[this.dragSelectables.size()]);
+    }
+
+
+    /**
+     * The Class ClusteringContext.
+     *
+     * @author Besitzer
+     */
+    private class ClusteringContext {
+
+        /**
+         * The polygon.
+         */
+        private MTStencilPolygon polygon;
+
+        /**
+         * The last position.
+         */
+        private Vector3D lastPosition;
+
+        /**
+         * The new position.
+         */
+        private Vector3D newPosition;
+
+        /**
+         * The cursor.
+         */
+        private InputCursor cursor;
+
+        /**
+         * The selected comps.
+         */
+        private ArrayList<IdragClusterable> selectedComps;
+
+        /**
+         * The gesture aborted.
+         */
+        protected boolean gestureAborted;
+
+
+        /**
+         * Instantiates a new clustering context.
+         *
+         * @param cursor the cursor
+         */
+        public ClusteringContext(InputCursor cursor) {
+            gestureAborted = false;
+            this.cursor = cursor;
+
+            Vector3D newPos = ToolsGeometry.getRayPlaneIntersection(
+                    Tools3D.getCameraPickRay(pa, camera, cursor.getCurrentEvent().getScreenX(), cursor.getCurrentEvent().getScreenY()),
+                    planeNormal,
+                    pointInPlane);
+
+            if (newPos == null) {
+                logger.error(getName() + " intersection with plane was null in class: " + this.getClass().getName());
+                gestureAborted = true;
+                abortGesture(cursor);
+                return;
+            }
+
+            this.newPosition = newPos;
+            this.lastPosition = newPos;
+
 //			polygon = new MTPolygon(
 //					new Vertex[]{
 //							new Vertex(newPos.getX(), newPos.getY(), newPos.getZ()),
@@ -294,45 +315,45 @@ public class LassoProcessor extends AbstractCursorProcessor {
 //							new Vertex(newPos.getX(), newPos.getY()+0.1f, newPos.getZ()),
 //							new Vertex(newPos.getX(), newPos.getY(), newPos.getZ())},
 //					pa);
-			polygon = new MTStencilPolygon(
-					pa,
-					new Vertex[]{
-							new Vertex(newPos.getX(), newPos.getY(), newPos.getZ()),
-							new Vertex(newPos.getX()+0.1f, newPos.getY(), newPos.getZ()),
-							new Vertex(newPos.getX(), newPos.getY()+0.1f, newPos.getZ()),
-							new Vertex(newPos.getX(), newPos.getY(), newPos.getZ())});
-			polygon.setPickable(true);
-			polygon.setNoStroke(false);
-			polygon.setNoFill(false);
-			polygon.setFillColor(new MTColor(100, 150, 250, 55));
+            polygon = new MTStencilPolygon(
+                    pa,
+                    new Vertex[]{
+                            new Vertex(newPos.getX(), newPos.getY(), newPos.getZ()),
+                            new Vertex(newPos.getX() + 0.1f, newPos.getY(), newPos.getZ()),
+                            new Vertex(newPos.getX(), newPos.getY() + 0.1f, newPos.getZ()),
+                            new Vertex(newPos.getX(), newPos.getY(), newPos.getZ())});
+            polygon.setPickable(true);
+            polygon.setNoStroke(false);
+            polygon.setNoFill(false);
+            polygon.setFillColor(new MTColor(100, 150, 250, 55));
 //			polygon.setStrokeColor(150,150,250,255);
-			polygon.setStrokeColor(new MTColor(0,0,0,255));
-			polygon.setStrokeWeight(1.5f);
-			polygon.setDrawSmooth(true);
-			polygon.setUseDirectGL(true);
-			polygon.setLineStipple((short)0xBBBB);
-			polygon.setName("SelectPoly");
-			
-			polygon.setGestureAllowance(RotateProcessor.class, false);
-			polygon.setGestureAllowance(ScaleProcessor.class, false);
-			polygon.setGestureAllowance(TapProcessor.class, false);
-			
-			polygon.setGestureAllowance(DragProcessor.class, false);
-			
-			polygon.setBoundsAutoCompute(false);
-			polygon.setBoundsBehaviour(AbstractShape.BOUNDS_DONT_USE);
-			
+            polygon.setStrokeColor(new MTColor(0, 0, 0, 255));
+            polygon.setStrokeWeight(1.5f);
+            polygon.setDrawSmooth(true);
+            polygon.setUseDirectGL(true);
+            polygon.setLineStipple((short) 0xBBBB);
+            polygon.setName("SelectPoly");
+
+            polygon.setGestureAllowance(RotateProcessor.class, false);
+            polygon.setGestureAllowance(ScaleProcessor.class, false);
+            polygon.setGestureAllowance(TapProcessor.class, false);
+
+            polygon.setGestureAllowance(DragProcessor.class, false);
+
+            polygon.setBoundsAutoCompute(false);
+            polygon.setBoundsBehaviour(AbstractShape.BOUNDS_DONT_USE);
+
 //			polygon.setComposite(true);
-			selectedComps = new ArrayList<IdragClusterable>();
-		}
-		
-		/**
-		 * Gets the selected comps.
-		 * 
-		 * @return the selected comps
-		 */
-		public IdragClusterable[] getselectedComps() {
-			selectedComps.clear();
+            selectedComps = new ArrayList<IdragClusterable>();
+        }
+
+        /**
+         * Gets the selected comps.
+         *
+         * @return the selected comps
+         */
+        public IdragClusterable[] getselectedComps() {
+            selectedComps.clear();
             for (IdragClusterable currentCard : dragSelectables) {
                 Vector3D globCenter = new Vector3D(currentCard.getCenterPointGlobal());
                 globCenter.setZ(0);
@@ -341,18 +362,18 @@ public class LassoProcessor extends AbstractCursorProcessor {
                     selectedComps.add(currentCard);
                 }
             }
-			return selectedComps.toArray(new IdragClusterable[this.selectedComps.size()]);
-		}
+            return selectedComps.toArray(new IdragClusterable[this.selectedComps.size()]);
+        }
 
-		
-		/**
-		 * Update.
-		 * 
-		 * @param cursor the cursor
-		 */
-		public void update(InputCursor cursor){
-			if (!gestureAborted){
-				lastPosition = newPosition;
+
+        /**
+         * Update.
+         *
+         * @param cursor the cursor
+         */
+        public void update(InputCursor cursor) {
+            if (!gestureAborted) {
+                lastPosition = newPosition;
 
 //				pa.pushMatrix();
 //				camera.update();
@@ -360,80 +381,77 @@ public class LassoProcessor extends AbstractCursorProcessor {
 //				this.newPosition = Tools3D.unprojectScreenCoords(pa, cursor.getLastEvent().getPositionX(), cursor.getLastEvent().getPositionY());			
 //				pa.popMatrix();
 
-				this.newPosition = Tools3D.unprojectScreenCoords(pa, camera, cursor.getCurrentEvent().getScreenX(), cursor.getCurrentEvent().getScreenY());
+                this.newPosition = Tools3D.unprojectScreenCoords(pa, camera, cursor.getCurrentEvent().getScreenX(), cursor.getCurrentEvent().getScreenY());
 
-				Vector3D rayStartPoint = camera.getPosition(); //default cam
-				Vector3D newPos = ToolsGeometry.getRayPlaneIntersection(new Ray(rayStartPoint, newPosition), planeNormal, pointInPlane);
-				newPosition = newPos;
+                Vector3D rayStartPoint = camera.getPosition(); //default cam
+                Vector3D newPos = ToolsGeometry.getRayPlaneIntersection(new Ray(rayStartPoint, newPosition), planeNormal, pointInPlane);
+                newPosition = newPos;
 
-				if (newPosition != null && !lastPosition.equalsVector(newPosition)){
-					Vertex[] newArr = new Vertex[this.getPolygon().getVertexCount()+1];
+                if (newPosition != null && !lastPosition.equalsVector(newPosition)) {
+                    Vertex[] newArr = new Vertex[this.getPolygon().getVertexCount() + 1];
 
-					Vertex[] polyVertices = this.getPolygon().getVerticesGlobal();
+                    Vertex[] polyVertices = this.getPolygon().getVerticesGlobal();
 
-					//set the old last point to the next index
-					System.arraycopy(polyVertices, 0, newArr, 0, this.getPolygon().getVertexCount());
-					newArr[newArr.length-1] = polyVertices[0]; //close poly correctly
+                    //set the old last point to the next index
+                    System.arraycopy(polyVertices, 0, newArr, 0, this.getPolygon().getVertexCount());
+                    newArr[newArr.length - 1] = polyVertices[0]; //close poly correctly
 
-					//Create the new vertex
-					Vertex newVert = new Vertex(newPosition.getX(), newPosition.getY(), newPosition.getZ(), 100,150,250,255);
-					newVert.setA(120);
-					newArr[newArr.length-2] = newVert; //set the new value to be the length-2 one
+                    //Create the new vertex
+                    Vertex newVert = new Vertex(newPosition.getX(), newPosition.getY(), newPosition.getZ(), 100, 150, 250, 255);
+                    newVert.setA(120);
+                    newArr[newArr.length - 2] = newVert; //set the new value to be the length-2 one
 
-					polygon.setVertices(newArr);
-				}
-			}
-		}
+                    polygon.setVertices(newArr);
+                }
+            }
+        }
 
-		/**
-		 * Gets the last position.
-		 * 
-		 * @return the last position
-		 */
-		public Vector3D getLastPosition() {
-			return lastPosition;
-		}
-		
-		/**
-		 * Gets the cursor.
-		 * 
-		 * @return the cursor
-		 */
-		public InputCursor getCursor() {
-			return cursor;
-		}
-		
-		/**
-		 * Gets the new position.
-		 * 
-		 * @return the new position
-		 */
-		public Vector3D getNewPosition() {
-			return newPosition;
-		}
-		
-		/**
-		 * Gets the polygon.
-		 * 
-		 * @return the polygon
-		 */
-		public MTPolygon getPolygon() {
-			return polygon;
-		}
-		
-	}
-	
-	
+        /**
+         * Gets the last position.
+         *
+         * @return the last position
+         */
+        public Vector3D getLastPosition() {
+            return lastPosition;
+        }
 
-	/* (non-Javadoc)
-	 * @see org.mt4j.input.inputProcessors.componentProcessors.AbstractComponentProcessor#getName()
-	 */
-	@Override
-	public String getName() {
-		return "Lasso";
-	}
+        /**
+         * Gets the cursor.
+         *
+         * @return the cursor
+         */
+        public InputCursor getCursor() {
+            return cursor;
+        }
+
+        /**
+         * Gets the new position.
+         *
+         * @return the new position
+         */
+        public Vector3D getNewPosition() {
+            return newPosition;
+        }
+
+        /**
+         * Gets the polygon.
+         *
+         * @return the polygon
+         */
+        public MTPolygon getPolygon() {
+            return polygon;
+        }
+
+    }
 
 
+    /* (non-Javadoc)
+      * @see org.mt4j.input.inputProcessors.componentProcessors.AbstractComponentProcessor#getName()
+      */
+    @Override
+    public String getName() {
+        return "Lasso";
+    }
 
-	
+
 }

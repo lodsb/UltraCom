@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009 Christopher Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -20,13 +20,13 @@ package org.mt4j.util;
 
 /**
  * The Class NodeRenderer.
- * 
+ *
  * @author Christopher Ruff
  */
 public class NodeRenderer {
-	
-	//Externalize drawing so that we can say nodedrawer.drawNode(mtcanvas); with all children..
-	
+
+    //Externalize drawing so that we can say nodedrawer.drawNode(mtcanvas); with all children..
+
 //	/**
 //	 * Draw the whole canvas update recursive.
 //	 * 

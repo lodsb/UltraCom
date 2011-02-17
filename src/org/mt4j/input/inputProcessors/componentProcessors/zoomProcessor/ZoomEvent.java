@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009, C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -26,77 +26,85 @@ import org.mt4j.util.camera.Icamera;
 
 /**
  * The Class ZoomEvent.
+ *
  * @author Christopher Ruff
  */
 public class ZoomEvent extends MTGestureEvent {
 
-	/** The first cursor. */
-	private InputCursor firstCursor;
-	
-	/** The second cursor. */
-	private InputCursor secondCursor;
-	
-	/** The cam zoom amount. */
-	private float camZoomAmount;
-	
-	/** The camera. */
-	private Icamera camera;
+    /**
+     * The first cursor.
+     */
+    private InputCursor firstCursor;
 
-	/**
-	 * Instantiates a new zoom event.
-	 * 
-	 * @param source the source
-	 * @param id the id
-	 * @param targetComponent the target component
-	 * @param firstCursor the first cursor
-	 * @param secondCursor the second cursor
-	 * @param camZoomAmount the cam zoom amount
-	 * @param camera the camera
-	 */
-	public ZoomEvent(IInputProcessor source, int id, IMTComponent3D targetComponent, InputCursor firstCursor, InputCursor secondCursor, float camZoomAmount, Icamera camera) {
-		super(source, id, targetComponent);
-		this.firstCursor = firstCursor;
-		this.secondCursor = secondCursor;
-		this.camZoomAmount = camZoomAmount;
-		this.camera = camera;
-	}
+    /**
+     * The second cursor.
+     */
+    private InputCursor secondCursor;
 
-	/**
-	 * Gets the cam zoom amount.
-	 * 
-	 * @return the cam zoom amount
-	 */
-	public float getCamZoomAmount() {
-		return camZoomAmount;
-	}
+    /**
+     * The cam zoom amount.
+     */
+    private float camZoomAmount;
 
-	/**
-	 * Gets the first cursor.
-	 * 
-	 * @return the first cursor
-	 */
-	public InputCursor getFirstCursor() {
-		return firstCursor;
-	}
+    /**
+     * The camera.
+     */
+    private Icamera camera;
 
-	/**
-	 * Gets the second cursor.
-	 * 
-	 * @return the second cursor
-	 */
-	public InputCursor getSecondCursor() {
-		return secondCursor;
-	}
+    /**
+     * Instantiates a new zoom event.
+     *
+     * @param source          the source
+     * @param id              the id
+     * @param targetComponent the target component
+     * @param firstCursor     the first cursor
+     * @param secondCursor    the second cursor
+     * @param camZoomAmount   the cam zoom amount
+     * @param camera          the camera
+     */
+    public ZoomEvent(IInputProcessor source, int id, IMTComponent3D targetComponent, InputCursor firstCursor, InputCursor secondCursor, float camZoomAmount, Icamera camera) {
+        super(source, id, targetComponent);
+        this.firstCursor = firstCursor;
+        this.secondCursor = secondCursor;
+        this.camZoomAmount = camZoomAmount;
+        this.camera = camera;
+    }
 
-	/**
-	 * Gets the camera.
-	 * 
-	 * @return the camera
-	 */
-	public Icamera getCamera() {
-		return camera;
-	}
+    /**
+     * Gets the cam zoom amount.
+     *
+     * @return the cam zoom amount
+     */
+    public float getCamZoomAmount() {
+        return camZoomAmount;
+    }
 
-	
-	
+    /**
+     * Gets the first cursor.
+     *
+     * @return the first cursor
+     */
+    public InputCursor getFirstCursor() {
+        return firstCursor;
+    }
+
+    /**
+     * Gets the second cursor.
+     *
+     * @return the second cursor
+     */
+    public InputCursor getSecondCursor() {
+        return secondCursor;
+    }
+
+    /**
+     * Gets the camera.
+     *
+     * @return the camera
+     */
+    public Icamera getCamera() {
+        return camera;
+    }
+
+
 }

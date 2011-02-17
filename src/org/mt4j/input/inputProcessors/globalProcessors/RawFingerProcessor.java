@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009, C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -28,41 +28,41 @@ import org.mt4j.input.inputData.MTInputEvent;
  * all finger input without any input processing involved. Useful where we only
  * need the raw finger data. The corresponding MTFingerInputEvt thus has null
  * as its targetComponent!
- * 
+ *
  * @author Christopher Ruff
  */
 public class RawFingerProcessor extends AbstractGlobalInputProcessor<MTFingerInputEvt> {
-	
-	public void processInputEvtImpl(MTFingerInputEvt inputEvent){ 
+
+    public void processInputEvtImpl(MTFingerInputEvt inputEvent) {
 //		MTFingerInputEvt touchEvt = (MTFingerInputEvt)inputEvent;
-		
-		if (inputEvent instanceof MTFingerInputEvt){
-			MTFingerInputEvt te = (MTFingerInputEvt)inputEvent;
-			this.fireInputEvent(te); 
-			/*
-			InputCursor motion = te.getCursor();
-			
-			switch (te.getId()) {
-			case MTFingerInputEvt.INPUT_DETECTED:
-				fireInputEvent(new RawFingerEvent(this, MTGestureEvent.GESTURE_DETECTED, null, motion, new Vector3D(te.getPosX(),te.getPosY(), 0), new Vector3D(te.getPosX(),te.getPosY(), 0)));
-				break;
-			case MTFingerInputEvt.INPUT_UPDATED:
-				AbstractCursorInputEvt previousEvent = motion.getPreviousEventOf(te);
-				if (previousEvent != null){
-//					logger.debug("Prev " + previousEvent.getPositionX() +"," + previousEvent.getPositionY());
-//					logger.debug("now " + te.getPositionX() +"," + te.getPositionY());
-					fireInputEvent(new RawFingerEvent(this, MTGestureEvent.GESTURE_UPDATED, null, motion, new Vector3D(previousEvent.getPosX(), previousEvent.getPosY(), 0) , new Vector3D(te.getPosX(),te.getPosY(), 0)));
-				}
-				break;
-			case MTFingerInputEvt.INPUT_ENDED:
-				fireInputEvent(new RawFingerEvent(this, MTGestureEvent.GESTURE_ENDED, null, motion, new Vector3D(te.getPosX(),te.getPosY(), 0), new Vector3D(te.getPosX(),te.getPosY(), 0)));
-				break;
-			default:
-				break;
-			}
-			*/
-		}
-	}
+
+        if (inputEvent instanceof MTFingerInputEvt) {
+            MTFingerInputEvt te = (MTFingerInputEvt) inputEvent;
+            this.fireInputEvent(te);
+            /*
+               InputCursor motion = te.getCursor();
+
+               switch (te.getId()) {
+               case MTFingerInputEvt.INPUT_DETECTED:
+                   fireInputEvent(new RawFingerEvent(this, MTGestureEvent.GESTURE_DETECTED, null, motion, new Vector3D(te.getPosX(),te.getPosY(), 0), new Vector3D(te.getPosX(),te.getPosY(), 0)));
+                   break;
+               case MTFingerInputEvt.INPUT_UPDATED:
+                   AbstractCursorInputEvt previousEvent = motion.getPreviousEventOf(te);
+                   if (previousEvent != null){
+   //					logger.debug("Prev " + previousEvent.getPositionX() +"," + previousEvent.getPositionY());
+   //					logger.debug("now " + te.getPositionX() +"," + te.getPositionY());
+                       fireInputEvent(new RawFingerEvent(this, MTGestureEvent.GESTURE_UPDATED, null, motion, new Vector3D(previousEvent.getPosX(), previousEvent.getPosY(), 0) , new Vector3D(te.getPosX(),te.getPosY(), 0)));
+                   }
+                   break;
+               case MTFingerInputEvt.INPUT_ENDED:
+                   fireInputEvent(new RawFingerEvent(this, MTGestureEvent.GESTURE_ENDED, null, motion, new Vector3D(te.getPosX(),te.getPosY(), 0), new Vector3D(te.getPosX(),te.getPosY(), 0)));
+                   break;
+               default:
+                   break;
+               }
+               */
+        }
+    }
 
 
 //	@Override
@@ -70,5 +70,5 @@ public class RawFingerProcessor extends AbstractGlobalInputProcessor<MTFingerInp
 //		return MTFingerInputEvt.class;
 //	}
 
-	
+
 }

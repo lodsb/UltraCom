@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009 C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -20,72 +20,80 @@ package org.mt4j.util.camera;
 /**
  * The Class ViewportSetting.
  */
-public class ViewportSetting{
-	
-	/** The width. */
-	int width;
-	
-	/** The height. */
-	int height;
-	
-	/** The start x. */
-	float startX;
-	
-	/** The start y. */
-	float startY;
-	
-	/**
-	 * Instantiates a new viewport setting.
-	 * 
-	 * @param startX the start x
-	 * @param startY the start y
-	 * @param width the width
-	 * @param height the height
-	 */
-	public ViewportSetting(float startX, float startY, int width, int height) {
-		super();
-		this.width = width;
-		this.height = height;
-		this.startX = startX;
-		this.startY = startY;
-		
-		
-	}
+public class ViewportSetting {
 
-	/**
-	 * Gets the height.
-	 * 
-	 * @return the height
-	 */
-	public int getHeight() {
-		return height;
-	}
+    /**
+     * The width.
+     */
+    int width;
 
-	/**
-	 * Gets the start x.
-	 * 
-	 * @return the start x
-	 */
-	public float getStartX() {
-		return startX;
-	}
+    /**
+     * The height.
+     */
+    int height;
 
-	/**
-	 * Gets the start y.
-	 * 
-	 * @return the start y
-	 */
-	public float getStartY() {
-		return startY;
-	}
+    /**
+     * The start x.
+     */
+    float startX;
 
-	/**
-	 * Gets the width.
-	 * 
-	 * @return the width
-	 */
-	public int getWidth() {
-		return width;
-	}
-	
+    /**
+     * The start y.
+     */
+    float startY;
+
+    /**
+     * Instantiates a new viewport setting.
+     *
+     * @param startX the start x
+     * @param startY the start y
+     * @param width  the width
+     * @param height the height
+     */
+    public ViewportSetting(float startX, float startY, int width, int height) {
+        super();
+        this.width = width;
+        this.height = height;
+        this.startX = startX;
+        this.startY = startY;
+
+
+    }
+
+    /**
+     * Gets the height.
+     *
+     * @return the height
+     */
+    public int getHeight() {
+        return height;
+    }
+
+    /**
+     * Gets the start x.
+     *
+     * @return the start x
+     */
+    public float getStartX() {
+        return startX;
+    }
+
+    /**
+     * Gets the start y.
+     *
+     * @return the start y
+     */
+    public float getStartY() {
+        return startY;
+    }
+
+    /**
+     * Gets the width.
+     *
+     * @return the width
+     */
+    public int getWidth() {
+        return width;
+    }
+
 }

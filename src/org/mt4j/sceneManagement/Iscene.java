@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009, C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -25,81 +25,81 @@ import org.mt4j.util.camera.Icamera;
 import processing.core.PGraphics;
 
 
-
 /**
  * The Interface Iscene.
  * Represents a scene in a program.
- * 
+ *
  * @author Christopher Ruff
  */
 public interface Iscene {
-	
-	/**
-	 * Inits the scene.
-	 */
-	public void init();
-	
-	/**
-	 * Gets the main canvas.
-	 * 
-	 * @return the main canvas
-	 */
-	public MTCanvas getCanvas();
-	
-	/**
-	 * Gets the scene cam.
-	 * 
-	 * @return the scene cam
-	 */
-	public Icamera getSceneCam();
-	
-	//public void reset(); //?
-	
+
+    /**
+     * Inits the scene.
+     */
+    public void init();
+
+    /**
+     * Gets the main canvas.
+     *
+     * @return the main canvas
+     */
+    public MTCanvas getCanvas();
+
+    /**
+     * Gets the scene cam.
+     *
+     * @return the scene cam
+     */
+    public Icamera getSceneCam();
+
+    //public void reset(); //?
+
 //	public void update(long timeDelta);
-	
+
 //	public void draw();
-	
-	//if you use this, dont use draw(); and update(..);!
-	/**
-	 * Draw and update.
-	 * @param graphics 
-	 * 
-	 * @param timeDelta the time delta
-	 */
-	public void drawAndUpdate(PGraphics graphics, long timeDelta);
-	
-	/**
-	 * Shedule a action to be processed before the next drawing.
-	 * 
-	 * @param action the action
-	 */
-	public void registerPreDrawAction(IPreDrawAction action);
-		
-	/**
-	 * Shut down scene.
-	 */
-	public void shutDown();
-	
-	/**
-	 * Gets the name of the scene.
-	 * 
-	 * @return the name
-	 */
-	public String getName();
-	
-	
-	/**
-	 * Gets the transition.
-	 * 
-	 * @return the transition
-	 */
-	public ITransition getTransition();
-	
-	
-	/**
-	 * Destroy the scene.
-	 */
-	public boolean destroy();
-	
-	
+
+    //if you use this, dont use draw(); and update(..);!
+
+    /**
+     * Draw and update.
+     *
+     * @param graphics
+     * @param timeDelta the time delta
+     */
+    public void drawAndUpdate(PGraphics graphics, long timeDelta);
+
+    /**
+     * Shedule a action to be processed before the next drawing.
+     *
+     * @param action the action
+     */
+    public void registerPreDrawAction(IPreDrawAction action);
+
+    /**
+     * Shut down scene.
+     */
+    public void shutDown();
+
+    /**
+     * Gets the name of the scene.
+     *
+     * @return the name
+     */
+    public String getName();
+
+
+    /**
+     * Gets the transition.
+     *
+     * @return the transition
+     */
+    public ITransition getTransition();
+
+
+    /**
+     * Destroy the scene.
+     */
+    public boolean destroy();
+
+
 }

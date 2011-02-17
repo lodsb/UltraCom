@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009 C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -30,197 +30,197 @@ import processing.core.PApplet;
 
 /**
  * This class can be used to display a rounded rectangle shape.
- * 
+ *
  * @author Christopher Ruff
  */
 public class MTRoundRectangle extends MTPolygon {
-	
-	//Draw first lines
-	private Vertex upperLineP1;
-	private Vertex upperLineP2;
-	
-	private Vertex rLinep1;
-	private Vertex rLinep2;
-	
-	//Draw the first arc
-	private Vertex lowerLinep1;
-	private Vertex lowerLinep2;
-	
-	private Vertex lLinep1;
-	private Vertex lLinep2;
-	
-	private float arcWidth;
-	private float arcHeight;
-	private int arcSegments;
-	
-	private float x,y,z;
-	private float width;
-	private float height;
-	
-	
-	/**
-	 * Instantiates a new mT round rectangle.
-	 *
-	 * @param x the x
-	 * @param y the y
-	 * @param z the z
-	 * @param width the width
-	 * @param height the height
-	 * @param arcWidth the arc width
-	 * @param arcHeight the arc height
-	 * @param pApplet the applet
-	 * @deprecated constructor will be deleted! Please , use the constructor with the PApplet instance as the first parameter.
-	 */
-	public MTRoundRectangle(float x, float y, float z, float width, float height, float arcWidth, float arcHeight,  PApplet pApplet) {
-		this(pApplet, x, y, z, width, height, arcWidth, arcHeight);
-	}
-	
-	/**
-	 * Instantiates a new mT round rectangle.
-	 * @param pApplet the applet
-	 * @param x the x
-	 * @param y the y
-	 * @param z the z
-	 * @param width the width
-	 * @param height the height
-	 * @param arcWidth the arc width
-	 * @param arcHeight the arc height
-	 */
-	public MTRoundRectangle(PApplet pApplet, float x, float y, float z, float width, float height, float arcWidth,  float arcHeight) {
-		this(pApplet, x, y, z, width, height, arcWidth, arcHeight, 50);
-	}
 
-	
-	/**
-	 * Instantiates a new mT round rectangle.
-	 *
-	 * @param x the x
-	 * @param y the y
-	 * @param z the z
-	 * @param width the width
-	 * @param height the height
-	 * @param arcWidth the arc width
-	 * @param arcHeight the arc height
-	 * @param segments the segments
-	 * @param pApplet the applet
-	 * @deprecated constructor will be deleted! Please , use the constructor with the PApplet instance as the first parameter.
-	 */
-	public MTRoundRectangle(float x, float y, float z, float width, float height, float arcWidth, float arcHeight, int segments, PApplet pApplet) {
-		this(pApplet, x, y, z, width, height, arcWidth, arcHeight, segments);
-	}
-	
-	/**
-	 * Instantiates a new mT round rectangle.
-	 * @param pApplet the applet
-	 * @param x the x
-	 * @param y the y
-	 * @param z the z
-	 * @param width the width
-	 * @param height the height
-	 * @param arcWidth the arc width
-	 * @param arcHeight the arc height
-	 * @param segments the segments
-	 */
-	public MTRoundRectangle(PApplet pApplet, float x, float y, float z, float width, float height, float arcWidth, float arcHeight, int segments) {
-		super(pApplet, new Vertex[]{});
-		
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.arcWidth = arcWidth;
-		this.arcHeight = arcHeight;
-		this.width = width;
-		this.height = height;
-		
-		//defines the resolution and thereby the vertex count of the arcs
-		this.arcSegments = segments;
-		
-		//Arc Width may not be greater than the rectangles width
-		//and Arc height may not be greater than rectangles height!
-		this.setVertices(this.getRoundRectVerts(x, y, z, width, height, arcWidth, arcHeight, segments, true));
-		
-		this.setBoundsBehaviour(AbstractShape.BOUNDS_ONLY_CHECK);
-	}
+    //Draw first lines
+    private Vertex upperLineP1;
+    private Vertex upperLineP2;
 
-	@Override
-	protected IBoundingShape computeDefaultBounds(){
-		return new BoundsZPlaneRectangle(this);
-	}
+    private Vertex rLinep1;
+    private Vertex rLinep2;
 
-	/**
-	 * Gets the round rect verts.
-	 * 
-	 * @param x the x
-	 * @param y the y
-	 * @param z the z
-	 * @param width the width
-	 * @param height the height
-	 * @param arcWidth the arc width
-	 * @param arcHeight the arc height
-	 * @param segments the segments
-	 * 
-	 * @return the round rect verts
-	 */
-	private Vertex[] getRoundRectVerts(float x, float y, float z, float width, float height, float arcWidth, float arcHeight, int segments, boolean createTexCoords){
-		MTColor currentFillColor = getFillColor();
-		
-		//Draw first lines
-		Vertex upperLineP1 	= new Vertex(x + arcWidth, y, 0);
-		Vertex upperLineP2 	= new Vertex(x + width - arcWidth , y, 0);
+    //Draw the first arc
+    private Vertex lowerLinep1;
+    private Vertex lowerLinep2;
+
+    private Vertex lLinep1;
+    private Vertex lLinep2;
+
+    private float arcWidth;
+    private float arcHeight;
+    private int arcSegments;
+
+    private float x, y, z;
+    private float width;
+    private float height;
+
+
+    /**
+     * Instantiates a new mT round rectangle.
+     *
+     * @param x         the x
+     * @param y         the y
+     * @param z         the z
+     * @param width     the width
+     * @param height    the height
+     * @param arcWidth  the arc width
+     * @param arcHeight the arc height
+     * @param pApplet   the applet
+     * @deprecated constructor will be deleted! Please , use the constructor with the PApplet instance as the first parameter.
+     */
+    public MTRoundRectangle(float x, float y, float z, float width, float height, float arcWidth, float arcHeight, PApplet pApplet) {
+        this(pApplet, x, y, z, width, height, arcWidth, arcHeight);
+    }
+
+    /**
+     * Instantiates a new mT round rectangle.
+     *
+     * @param pApplet   the applet
+     * @param x         the x
+     * @param y         the y
+     * @param z         the z
+     * @param width     the width
+     * @param height    the height
+     * @param arcWidth  the arc width
+     * @param arcHeight the arc height
+     */
+    public MTRoundRectangle(PApplet pApplet, float x, float y, float z, float width, float height, float arcWidth, float arcHeight) {
+        this(pApplet, x, y, z, width, height, arcWidth, arcHeight, 50);
+    }
+
+
+    /**
+     * Instantiates a new mT round rectangle.
+     *
+     * @param x         the x
+     * @param y         the y
+     * @param z         the z
+     * @param width     the width
+     * @param height    the height
+     * @param arcWidth  the arc width
+     * @param arcHeight the arc height
+     * @param segments  the segments
+     * @param pApplet   the applet
+     * @deprecated constructor will be deleted! Please , use the constructor with the PApplet instance as the first parameter.
+     */
+    public MTRoundRectangle(float x, float y, float z, float width, float height, float arcWidth, float arcHeight, int segments, PApplet pApplet) {
+        this(pApplet, x, y, z, width, height, arcWidth, arcHeight, segments);
+    }
+
+    /**
+     * Instantiates a new mT round rectangle.
+     *
+     * @param pApplet   the applet
+     * @param x         the x
+     * @param y         the y
+     * @param z         the z
+     * @param width     the width
+     * @param height    the height
+     * @param arcWidth  the arc width
+     * @param arcHeight the arc height
+     * @param segments  the segments
+     */
+    public MTRoundRectangle(PApplet pApplet, float x, float y, float z, float width, float height, float arcWidth, float arcHeight, int segments) {
+        super(pApplet, new Vertex[]{});
+
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.arcWidth = arcWidth;
+        this.arcHeight = arcHeight;
+        this.width = width;
+        this.height = height;
+
+        //defines the resolution and thereby the vertex count of the arcs
+        this.arcSegments = segments;
+
+        //Arc Width may not be greater than the rectangles width
+        //and Arc height may not be greater than rectangles height!
+        this.setVertices(this.getRoundRectVerts(x, y, z, width, height, arcWidth, arcHeight, segments, true));
+
+        this.setBoundsBehaviour(AbstractShape.BOUNDS_ONLY_CHECK);
+    }
+
+    @Override
+    protected IBoundingShape computeDefaultBounds() {
+        return new BoundsZPlaneRectangle(this);
+    }
+
+    /**
+     * Gets the round rect verts.
+     *
+     * @param x         the x
+     * @param y         the y
+     * @param z         the z
+     * @param width     the width
+     * @param height    the height
+     * @param arcWidth  the arc width
+     * @param arcHeight the arc height
+     * @param segments  the segments
+     * @return the round rect verts
+     */
+    private Vertex[] getRoundRectVerts(float x, float y, float z, float width, float height, float arcWidth, float arcHeight, int segments, boolean createTexCoords) {
+        MTColor currentFillColor = getFillColor();
+
+        //Draw first lines
+        Vertex upperLineP1 = new Vertex(x + arcWidth, y, 0);
+        Vertex upperLineP2 = new Vertex(x + width - arcWidth, y, 0);
 //		Vertex upperLineP2 	= new Vertex(x + arcWidth + width - 2*arcWidth , y, 0);
-		
-		Vertex rLinep1 = new Vertex(x + width, y + arcHeight			, 0);
-		Vertex rLinep2 = new Vertex(x + width, y + height	- arcHeight, 0);
-		
-		//Draw the first arc
-		List<Vertex> upperRightCorner = ToolsGeometry.arcTo(upperLineP2.x,upperLineP2.y, arcWidth, arcHeight, 0, false,true, rLinep1.x,rLinep1.y, arcSegments);
-		Vertex lowerLinep1 = new Vertex(x + width - arcWidth	, y + height, 0);
-		Vertex lowerLinep2 = new Vertex(x	+ arcWidth				, y + height, 0);
-			
-		
-		List<Vertex> lowerRightCorner = ToolsGeometry.arcTo(rLinep2.x,rLinep2.y, arcWidth, arcHeight, 0, false,true, lowerLinep1.x,lowerLinep1.y, arcSegments);
-		Vertex lLinep1 = new Vertex(x , y + height - arcHeight, 0);
-		Vertex lLinep2 = new Vertex(x , y + arcHeight, 0);
-			
-		List<Vertex> lowerLeftCorner = ToolsGeometry.arcTo(lowerLinep2.x,lowerLinep2.y, arcWidth, arcHeight, 0, false,true, lLinep1.x,lLinep1.y, arcSegments);
-		
-		List<Vertex> upperLeftCorner = ToolsGeometry.arcTo(lLinep2.x,lLinep2.y, arcWidth, arcHeight, 0, false,true, upperLineP1.x,upperLineP1.y, arcSegments);
-		
-		ArrayList<Vertex> verts = new ArrayList<Vertex>(); 
-		verts.add(upperLineP1); 
+
+        Vertex rLinep1 = new Vertex(x + width, y + arcHeight, 0);
+        Vertex rLinep2 = new Vertex(x + width, y + height - arcHeight, 0);
+
+        //Draw the first arc
+        List<Vertex> upperRightCorner = ToolsGeometry.arcTo(upperLineP2.x, upperLineP2.y, arcWidth, arcHeight, 0, false, true, rLinep1.x, rLinep1.y, arcSegments);
+        Vertex lowerLinep1 = new Vertex(x + width - arcWidth, y + height, 0);
+        Vertex lowerLinep2 = new Vertex(x + arcWidth, y + height, 0);
+
+
+        List<Vertex> lowerRightCorner = ToolsGeometry.arcTo(rLinep2.x, rLinep2.y, arcWidth, arcHeight, 0, false, true, lowerLinep1.x, lowerLinep1.y, arcSegments);
+        Vertex lLinep1 = new Vertex(x, y + height - arcHeight, 0);
+        Vertex lLinep2 = new Vertex(x, y + arcHeight, 0);
+
+        List<Vertex> lowerLeftCorner = ToolsGeometry.arcTo(lowerLinep2.x, lowerLinep2.y, arcWidth, arcHeight, 0, false, true, lLinep1.x, lLinep1.y, arcSegments);
+
+        List<Vertex> upperLeftCorner = ToolsGeometry.arcTo(lLinep2.x, lLinep2.y, arcWidth, arcHeight, 0, false, true, upperLineP1.x, upperLineP1.y, arcSegments);
+
+        ArrayList<Vertex> verts = new ArrayList<Vertex>();
+        verts.add(upperLineP1);
 //		verts.add(upperLineP2);
-		verts.addAll(upperRightCorner);
-		verts.add(rLinep1); 
+        verts.addAll(upperRightCorner);
+        verts.add(rLinep1);
 //		verts.add(rLinep2);
-		verts.addAll(lowerRightCorner);
-		verts.add(lowerLinep1); 
+        verts.addAll(lowerRightCorner);
+        verts.add(lowerLinep1);
 //		verts.add(lowerLinep2);
-		verts.addAll(lowerLeftCorner);
-		verts.add(lLinep1); 
+        verts.addAll(lowerLeftCorner);
+        verts.add(lLinep1);
 //		verts.add(lLinep2);
-		verts.addAll(upperLeftCorner);
-		Vertex[] newVertices = verts.toArray(new Vertex[verts.size()]);
-		
-		//Set texture coordinates
-		for (Vertex vertex : newVertices) {
-			if (createTexCoords){
-				vertex.setTexCoordU((vertex.x - x) / width);
-				vertex.setTexCoordV((vertex.y - y) / height);
-				//System.out.println("TexU:" + vertex.getTexCoordU() + " TexV:" + vertex.getTexCoordV());
-			}
-			vertex.setRGBA(currentFillColor.getR(), currentFillColor.getG(), currentFillColor.getB(), currentFillColor.getAlpha());
-		}
-		return newVertices;
-	}
-	
-	
-	
-	public void setSizeLocal(float width, float height){
-		if (width > 0 && height > 0){
-			this.setVertices(this.getRoundRectVerts(x, y, z, width, height, arcWidth, arcHeight, arcSegments, true));
-		}
-	}
-	
+        verts.addAll(upperLeftCorner);
+        Vertex[] newVertices = verts.toArray(new Vertex[verts.size()]);
+
+        //Set texture coordinates
+        for (Vertex vertex : newVertices) {
+            if (createTexCoords) {
+                vertex.setTexCoordU((vertex.x - x) / width);
+                vertex.setTexCoordV((vertex.y - y) / height);
+                //System.out.println("TexU:" + vertex.getTexCoordU() + " TexV:" + vertex.getTexCoordV());
+            }
+            vertex.setRGBA(currentFillColor.getR(), currentFillColor.getG(), currentFillColor.getB(), currentFillColor.getAlpha());
+        }
+        return newVertices;
+    }
+
+
+    public void setSizeLocal(float width, float height) {
+        if (width > 0 && height > 0) {
+            this.setVertices(this.getRoundRectVerts(x, y, z, width, height, arcWidth, arcHeight, arcSegments, true));
+        }
+    }
+
 //	/**
 //	 * Sets the size of the rectangle.
 //	 * Changes the vertices themself, not the transform, to allow for hassle-free non-uniform scaling.
@@ -258,7 +258,7 @@ public class MTRoundRectangle extends MTPolygon {
 ////		}else
 ////			return false;
 //	}
-	
+
 //	/* (non-Javadoc)
 //	 * @see com.jMT.components.visibleComponents.shapes.MTPolygon#setHeightXYRelativeToParent(float)
 //	 */
@@ -277,7 +277,7 @@ public class MTRoundRectangle extends MTPolygon {
 //		}else
 //			return false;
 //	}
-	
+
 //	/**
 //	 * Scales the shape to the given width.
 //	 * Uses the bounding rectangle for calculation!

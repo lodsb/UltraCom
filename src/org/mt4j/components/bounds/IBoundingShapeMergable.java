@@ -6,15 +6,15 @@ import org.mt4j.util.math.Matrix;
 
 public interface IBoundingShapeMergable extends IBoundingShape {
 
-//	/*
-	public IBoundingShapeMergable merge(IBoundingShape shape);
-	
-	public IBoundingShape transform(Matrix transformMatrix);
-	
-	public MTComponent getPeerComponent();
-	
-	public void setPeerComponent(MTComponent peerComponent);
-	
-	public IBoundingShapeMergable getBoundsTransformed(TransformSpace transformSpace);
+    //	/*
+    public IBoundingShapeMergable merge(IBoundingShape shape);
+
+    public IBoundingShape transform(Matrix transformMatrix);
+
+    public MTComponent getPeerComponent();
+
+    public void setPeerComponent(MTComponent peerComponent);
+
+    public IBoundingShapeMergable getBoundsTransformed(TransformSpace transformSpace);
 //	*/
 }

@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009, C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -20,20 +20,21 @@ package org.mt4j.sceneManagement;
 
 /**
  * The Interface IPreDrawAction.
+ *
  * @author Christopher Ruff
  */
 public interface IPreDrawAction {
-	
-	/**
-	 * Process action.
-	 */
-	public void processAction();
-		
-	/**
-	 * Checks if is loop.
-	 * 
-	 * @return true, if is loop
-	 */
-	public boolean isLoop();
+
+    /**
+     * Process action.
+     */
+    public void processAction();
+
+    /**
+     * Checks if is loop.
+     *
+     * @return true, if is loop
+     */
+    public boolean isLoop();
 
 }

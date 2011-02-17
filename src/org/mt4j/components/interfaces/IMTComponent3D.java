@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009, C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -25,39 +25,39 @@ import org.mt4j.util.math.Vector3D;
 
 /**
  * The Interface IMTComponent3D.
+ *
  * @author Christopher Ruff
  */
-public interface IMTComponent3D extends IMTComponent  {
-	
-	
-	/**
-	 * Checks if the specified ray intersects this component <b>or one if its childcomponents</b>.
-	 * The ray is assumed to be defined in global coordinates.
-	 * 
-	 * @param ray global ray used for intersecting. 
-	 * 
-	 * @return the intersection point in global coordinates
-	 * 
-	 * the intersection point or null when no intersection occured
-	 */
-	public Vector3D getIntersectionGlobal(Ray ray);
+public interface IMTComponent3D extends IMTComponent {
 
-	/**
-	 * Rotates the component around its y-axis and the rotation point (in global coordiantes).
-	 * 
-	 * @param rotationPoint the rotation point
-	 * @param degree the degree
-	 */
-	public void rotateYGlobal(Vector3D rotationPoint, float degree);
-	
-	/**
-	 * Rotates the component around its x-axis and the rotation point (in global coordiantes).
-	 * 
-	 * @param rotationPoint the rotation point
-	 * @param degree the degree
-	 */
-	public void rotateXGlobal(Vector3D rotationPoint, float degree);
-	
+
+    /**
+     * Checks if the specified ray intersects this component <b>or one if its childcomponents</b>.
+     * The ray is assumed to be defined in global coordinates.
+     *
+     * @param ray global ray used for intersecting.
+     * @return the intersection point in global coordinates
+     *         <p/>
+     *         the intersection point or null when no intersection occured
+     */
+    public Vector3D getIntersectionGlobal(Ray ray);
+
+    /**
+     * Rotates the component around its y-axis and the rotation point (in global coordiantes).
+     *
+     * @param rotationPoint the rotation point
+     * @param degree        the degree
+     */
+    public void rotateYGlobal(Vector3D rotationPoint, float degree);
+
+    /**
+     * Rotates the component around its x-axis and the rotation point (in global coordiantes).
+     *
+     * @param rotationPoint the rotation point
+     * @param degree        the degree
+     */
+    public void rotateXGlobal(Vector3D rotationPoint, float degree);
+
 //	/**
 //	 * Gets the custom viewport setting.
 //	 * 
@@ -78,29 +78,29 @@ public interface IMTComponent3D extends IMTComponent  {
 //	 * @return true, if successful
 //	 */
 //	public boolean hasCustomViewPort();
-	
-	/**
-	 * Checks if is pickable.
-	 * 
-	 * @return true, if is pickable
-	 */
-	public boolean isPickable();
 
-	/**
-	 * If set to true, this component will be testable for intersections.
-	 * 
-	 * @param pickable the pickable
-	 */
-	public void setPickable(boolean pickable);
+    /**
+     * Checks if is pickable.
+     *
+     * @return true, if is pickable
+     */
+    public boolean isPickable();
 
-	/**
-	 * Gets the camera through which this component is being viewed. This is the
-	 * attached camera of this, or one of its parant's attached cameras.
-	 * 
-	 * @return the responsible camera
-	 */
-	public Icamera getViewingCamera();
-	
+    /**
+     * If set to true, this component will be testable for intersections.
+     *
+     * @param pickable the pickable
+     */
+    public void setPickable(boolean pickable);
+
+    /**
+     * Gets the camera through which this component is being viewed. This is the
+     * attached camera of this, or one of its parant's attached cameras.
+     *
+     * @return the responsible camera
+     */
+    public Icamera getViewingCamera();
+
 //	/**
 //	 * Checks if is collidable.
 //	 * 
@@ -114,5 +114,5 @@ public interface IMTComponent3D extends IMTComponent  {
 //	 * @param collidable the new collidable value
 //	 */
 //	public void setCollidable(boolean collidable);
-	
+
 }

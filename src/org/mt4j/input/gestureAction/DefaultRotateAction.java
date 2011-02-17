@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009, C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -27,99 +27,106 @@ import org.mt4j.input.inputProcessors.componentProcessors.rotateProcessor.Rotate
 
 /**
  * The Class DefaultRotateAction.
- * 
+ *
  * @author Christopher Ruff
  */
-public class DefaultRotateAction implements IGestureEventListener,ICollisionAction {
-	
-	/** The target. */
-	private IMTComponent3D target;
-	
-	/** The use custom target. */
-	private boolean useCustomTarget;
-	
-	/** The last event. */
-	private MTGestureEvent lastEvent;
-	
-	/** The gesture aborted. */
-	private boolean gestureAborted = false;
-	
-	/**
-	 * Instantiates a new default rotate action.
-	 */
-	public DefaultRotateAction(){
-		this.useCustomTarget = false;
-	}
-	
-	/**
-	 * Instantiates a new default rotate action.
-	 * 
-	 * @param customTarget the custom target
-	 */
-	public DefaultRotateAction(IMTComponent3D customTarget){
-		this.target = customTarget;
-		this.useCustomTarget = true;
-	}
+public class DefaultRotateAction implements IGestureEventListener, ICollisionAction {
 
-	/* (non-Javadoc)
-	 * @see org.mt4j.input.inputProcessors.IGestureEventListener#processGestureEvent(org.mt4j.input.inputProcessors.MTGestureEvent)
-	 */
-	public boolean processGestureEvent(MTGestureEvent g) {
-		if (g instanceof RotateEvent){
-			RotateEvent rotateEvent = (RotateEvent)g;
-			lastEvent = rotateEvent;
-			
-			if (!useCustomTarget)
-				target = rotateEvent.getTarget(); 
-			
-			switch (rotateEvent.getId()) {
-			case MTGestureEvent.GESTURE_DETECTED:
-				if (target instanceof MTComponent){
-					((MTComponent)target).sendToFront();
-					/*
-					Animation[] animations = AnimationManager.getInstance().getAnimationsForTarget(target);
-					for (int i = 0; i < animations.length; i++) {
-						Animation animation = animations[i];
-						animation.stop();
-					}
-					*/
-				}
-				break;
-			case MTGestureEvent.GESTURE_UPDATED:
-				if(!gestureAborted())
-				{
-					target.rotateZGlobal(rotateEvent.getRotationPoint(), rotateEvent.getRotationDegrees());
-					if (target.isGestureAllowed(DragProcessor.class))
-						target.translateGlobal(rotateEvent.getTranslationVector());
-				}
-				break;
-			case MTGestureEvent.GESTURE_ENDED:
-				break;
-			default:
-				break;
-			}
-		}
-		return false;
-	}
+    /**
+     * The target.
+     */
+    private IMTComponent3D target;
 
-	/* (non-Javadoc)
-	 * @see org.mt4j.input.inputProcessors.ICollisionAction#gestureAborted()
-	 */
-	public boolean gestureAborted() {
-		return this.gestureAborted;
-	}
+    /**
+     * The use custom target.
+     */
+    private boolean useCustomTarget;
 
-	/* (non-Javadoc)
-	 * @see org.mt4j.input.inputProcessors.ICollisionAction#getLastEvent()
-	 */
-	public MTGestureEvent getLastEvent() {
-		return this.lastEvent;
-	}
+    /**
+     * The last event.
+     */
+    private MTGestureEvent lastEvent;
 
-	/* (non-Javadoc)
-	 * @see org.mt4j.input.inputProcessors.ICollisionAction#setGestureAborted(boolean)
-	 */
-	public void setGestureAborted(boolean aborted) {
-		this.gestureAborted = aborted;
-	}
+    /**
+     * The gesture aborted.
+     */
+    private boolean gestureAborted = false;
+
+    /**
+     * Instantiates a new default rotate action.
+     */
+    public DefaultRotateAction() {
+        this.useCustomTarget = false;
+    }
+
+    /**
+     * Instantiates a new default rotate action.
+     *
+     * @param customTarget the custom target
+     */
+    public DefaultRotateAction(IMTComponent3D customTarget) {
+        this.target = customTarget;
+        this.useCustomTarget = true;
+    }
+
+    /* (non-Javadoc)
+      * @see org.mt4j.input.inputProcessors.IGestureEventListener#processGestureEvent(org.mt4j.input.inputProcessors.MTGestureEvent)
+      */
+    public boolean processGestureEvent(MTGestureEvent g) {
+        if (g instanceof RotateEvent) {
+            RotateEvent rotateEvent = (RotateEvent) g;
+            lastEvent = rotateEvent;
+
+            if (!useCustomTarget)
+                target = rotateEvent.getTarget();
+
+            switch (rotateEvent.getId()) {
+                case MTGestureEvent.GESTURE_DETECTED:
+                    if (target instanceof MTComponent) {
+                        ((MTComponent) target).sendToFront();
+                        /*
+                          Animation[] animations = AnimationManager.getInstance().getAnimationsForTarget(target);
+                          for (int i = 0; i < animations.length; i++) {
+                              Animation animation = animations[i];
+                              animation.stop();
+                          }
+                          */
+                    }
+                    break;
+                case MTGestureEvent.GESTURE_UPDATED:
+                    if (!gestureAborted()) {
+                        target.rotateZGlobal(rotateEvent.getRotationPoint(), rotateEvent.getRotationDegrees());
+                        if (target.isGestureAllowed(DragProcessor.class))
+                            target.translateGlobal(rotateEvent.getTranslationVector());
+                    }
+                    break;
+                case MTGestureEvent.GESTURE_ENDED:
+                    break;
+                default:
+                    break;
+            }
+        }
+        return false;
+    }
+
+    /* (non-Javadoc)
+      * @see org.mt4j.input.inputProcessors.ICollisionAction#gestureAborted()
+      */
+    public boolean gestureAborted() {
+        return this.gestureAborted;
+    }
+
+    /* (non-Javadoc)
+      * @see org.mt4j.input.inputProcessors.ICollisionAction#getLastEvent()
+      */
+    public MTGestureEvent getLastEvent() {
+        return this.lastEvent;
+    }
+
+    /* (non-Javadoc)
+      * @see org.mt4j.input.inputProcessors.ICollisionAction#setGestureAborted(boolean)
+      */
+    public void setGestureAborted(boolean aborted) {
+        this.gestureAborted = aborted;
+    }
 }

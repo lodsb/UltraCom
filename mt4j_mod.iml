@@ -63,35 +63,45 @@
   <component name="FacetManager">
     <facet type="scala" name="Scala">
       <configuration>
-        <option name="compilerLibraryLevel" value="Global" />
-        <option name="compilerLibraryName" value="scala" />
+        <option name="compilerLibraryLevel" value="Project" />
+        <option name="compilerLibraryName" value="scala2" />
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/bin" />
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/examples" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/extensions" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/examples/basic/helloWorld" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/mt4jLibs/osc/NetUtil/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/examples" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/bin" />
       <excludeFolder url="file://$MODULE_DIR$/doc" />
       <excludeFolder url="file://$MODULE_DIR$/examples/advanced" />
-      <excludeFolder url="file://$MODULE_DIR$/examples/basic/css" />
       <excludeFolder url="file://$MODULE_DIR$/examples/basic/fiducials" />
       <excludeFolder url="file://$MODULE_DIR$/examples/basic/javaGUI" />
       <excludeFolder url="file://$MODULE_DIR$/examples/basic/mtGestures" />
       <excludeFolder url="file://$MODULE_DIR$/examples/basic/scenes" />
       <excludeFolder url="file://$MODULE_DIR$/examples/basic/svgExample" />
-      <excludeFolder url="file://$MODULE_DIR$/extensions/examples" />
+      <excludeFolder url="file://$MODULE_DIR$/mt4jLibs" />
       <excludeFolder url="file://$MODULE_DIR$/tests" />
     </content>
+    <orderEntry type="jdk" jdkName="1.6 (1)" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="library" name="Unnamed" level="project" />
+    <orderEntry type="library" name="scala2" level="project" />
     <orderEntry type="module-library">
-      <library name="ani.jar">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/mt4jLibs/ant.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/mt4jLibs/ani.jar!/" />
         </CLASSES>
@@ -100,25 +110,25 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="core.jar">
+      <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/core.jar!/" />
+          <root url="jar://$MODULE_DIR$/mt4jLibs/ant-launcher.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="GlulogicMT.jar">
+      <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/GlulogicMT.jar!/" />
+          <root url="jar://$MODULE_DIR$/mt4jLibs/jna.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="junit-4.8.2.jar">
+      <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/mt4jLibs/junit-4.8.2.jar!/" />
         </CLASSES>
@@ -127,7 +137,7 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="mri.jar">
+      <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/mt4jLibs/mri.jar!/" />
         </CLASSES>
@@ -136,7 +146,7 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="muito_blobtracking.jar">
+      <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/mt4jLibs/muito_blobtracking.jar!/" />
         </CLASSES>
@@ -145,295 +155,52 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="batik-anim.jar">
+      <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-anim.jar!/" />
+          <root url="jar://$MODULE_DIR$/mt4jLibs/antlr.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="batik-awt-util.jar">
+      <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-awt-util.jar!/" />
+          <root url="jar://$MODULE_DIR$/mt4jLibs/core.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="batik-bridge.jar">
+      <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-bridge.jar!/" />
+          <root url="jar://$MODULE_DIR$/mt4jLibs/ecj.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="batik-css.jar">
+      <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-css.jar!/" />
+          <root url="jar://$MODULE_DIR$/mt4jLibs/GlulogicMT.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="batik-dom.jar">
+      <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-dom.jar!/" />
+          <root url="jar://$MODULE_DIR$/mt4jLibs/pde.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="batik-ext.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-ext.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="batik-extension.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-extension.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="batik-gvt.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-gvt.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="batik-parser.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-parser.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="batik-script.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-script.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="batik-svg-dom.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-svg-dom.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="batik-svggen.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-svggen.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="batik-transcoder.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-transcoder.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="batik-util.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-util.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="batik-xml.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-xml.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="js.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/js.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="gluegen-rt-natives-linux-amd64.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/jogl/gluegen-rt-natives-linux-amd64.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="gluegen-rt-natives-linux-i586.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/jogl/gluegen-rt-natives-linux-i586.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="gluegen-rt-natives-macosx-ppc.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/jogl/gluegen-rt-natives-macosx-ppc.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="gluegen-rt-natives-macosx-universal.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/jogl/gluegen-rt-natives-macosx-universal.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="gluegen-rt-natives-windows-amd64.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/jogl/gluegen-rt-natives-windows-amd64.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="gluegen-rt-natives-windows-i586.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/jogl/gluegen-rt-natives-windows-i586.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="gluegen-rt.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/jogl/gluegen-rt.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="jogl-natives-linux-amd64.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/jogl/jogl-natives-linux-amd64.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="jogl-natives-linux-i586.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/jogl/jogl-natives-linux-i586.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="jogl-natives-macosx-ppc.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/jogl/jogl-natives-macosx-ppc.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="jogl-natives-macosx-universal.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/jogl/jogl-natives-macosx-universal.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="jogl-natives-windows-amd64.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/jogl/jogl-natives-windows-amd64.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="jogl-natives-windows-i586.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/jogl/jogl-natives-windows-i586.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="jogl.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/jogl/jogl.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="opengl.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/jogl/opengl.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="NetUtil.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/osc/NetUtil/build/NetUtil.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="libTUIO.jar">
+      <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/mt4jLibs/tuio/libTUIO.jar!/" />
         </CLASSES>
@@ -442,97 +209,205 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="commons-collections-3.1.jar">
+      <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/whirlylib/commons-collections-3.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/mt4jLibs/osc/NetUtil/build/NetUtil.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="commons-logging.jar">
+      <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/whirlylib/commons-logging.jar!/" />
+          <root url="jar://$MODULE_DIR$/mt4jLibs/jogl/opengl.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="concurrent-1.3.4.jar">
+      <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/whirlylib/concurrent-1.3.4.jar!/" />
+          <root url="jar://$MODULE_DIR$/mt4jLibs/jogl/gluegen-rt-natives-linux-amd64.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="log4j-1.2.8.jar">
+      <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/whirlylib/log4j-1.2.8.jar!/" />
+          <root url="jar://$MODULE_DIR$/mt4jLibs/jogl/gluegen-rt.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="whirlycache-1.0.1.jar">
+      <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/whirlylib/whirlycache-1.0.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/mt4jLibs/jogl/jogl-natives-linux-amd64.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="jbullet.jar">
+      <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/extensions/lib/jbullet/jbullet.jar!/" />
+          <root url="jar://$MODULE_DIR$/mt4jLibs/jogl/jogl.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="stack-alloc.jar">
+      <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/extensions/lib/jbullet/stack-alloc.jar!/" />
+          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-dom.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="vecmath.jar">
+      <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/extensions/lib/jbullet/vecmath.jar!/" />
+          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-css.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="pdf-transcoder.jar">
+      <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/pdf-transcoder.jar!/" />
+          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-extension.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="xml-apis-ext.jar">
+      <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/xml-apis-ext.jar!/" />
+          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-ext.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="xml-apis.jar">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-anim.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-bridge.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-awt-util.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-util.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-transcoder.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-svggen.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/js.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-xml.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-parser.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-gvt.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-svg-dom.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/batik-script.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/mt4jLibs/batik/xml-apis.jar!/" />
         </CLASSES>
@@ -543,7 +418,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar:///usr/share/java/scala-library.jar!/" />
+          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/pdf-transcoder.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -552,7 +427,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar:///usr/share/java/scala-dbc.jar!/" />
+          <root url="jar://$MODULE_DIR$/mt4jLibs/batik/xml-apis-ext.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -561,13 +436,75 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar:///usr/share/java/scala-compiler.jar!/" />
+          <root url="jar://$MODULE_DIR$/mt4jLibs/whirlylib/commons-logging.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="scala" level="application" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/mt4jLibs/whirlylib/commons-collections-3.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/mt4jLibs/whirlylib/concurrent-1.3.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/mt4jLibs/whirlylib/log4j-1.2.8.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/mt4jLibs/whirlylib/whirlycache-1.0.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/extensions/lib/jbullet/vecmath.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/extensions/lib/jbullet/stack-alloc.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/extensions/lib/jbullet/jbullet.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
 

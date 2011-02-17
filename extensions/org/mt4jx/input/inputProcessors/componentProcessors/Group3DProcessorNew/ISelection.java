@@ -6,7 +6,7 @@ import org.mt4j.components.MTComponent;
 import org.mt4j.input.inputProcessors.componentProcessors.lassoProcessor.IdragClusterable;
 
 public interface ISelection {
-	
-	public ArrayList<MTComponent> getSelectedComponents();
+
+    public ArrayList<MTComponent> getSelectedComponents();
 
 }

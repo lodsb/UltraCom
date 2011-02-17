@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009, C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -21,34 +21,36 @@ import org.mt4j.input.MTEvent;
 
 /**
  * The Class StateChangeEvent.
+ *
  * @author Christopher Ruff
  */
 public class StateChangeEvent extends MTEvent {
 
-	/** The state. */
-	private StateChange state;
-	
-	/**
-	 * Instantiates a new state change event.
-	 * 
-	 * @param source the source
-	 * @param state the state
-	 */
-	public StateChangeEvent(Object source, StateChange state) {
-		super(source);
-		
-		this.state = state;
-	}
+    /**
+     * The state.
+     */
+    private StateChange state;
 
-	/**
-	 * Gets the state.
-	 * 
-	 * @return the state
-	 */
-	public StateChange getState() {
-		return state;
-	}
+    /**
+     * Instantiates a new state change event.
+     *
+     * @param source the source
+     * @param state  the state
+     */
+    public StateChangeEvent(Object source, StateChange state) {
+        super(source);
 
-	
-	
+        this.state = state;
+    }
+
+    /**
+     * Gets the state.
+     *
+     * @return the state
+     */
+    public StateChange getState() {
+        return state;
+    }
+
+
 }

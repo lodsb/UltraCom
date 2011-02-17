@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009, C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -21,12 +21,12 @@ package org.mt4j.components.interfaces;
  * The Interface IMTController.
  */
 public interface IMTController {
-	
-	/**
-	 * Update the controller.
-	 * 
-	 * @param timeDelta the time delta
-	 */
-	public void update(long timeDelta);
+
+    /**
+     * Update the controller.
+     *
+     * @param timeDelta the time delta
+     */
+    public void update(long timeDelta);
 
 }

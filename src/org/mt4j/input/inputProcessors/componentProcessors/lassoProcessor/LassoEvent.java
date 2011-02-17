@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009, C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -24,70 +24,75 @@ import org.mt4j.input.inputProcessors.IInputProcessor;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
 
 
-
 /**
  * The Class ClusteringEvent.
+ *
  * @author Christopher Ruff
  */
 public class LassoEvent extends MTGestureEvent {
-	
-	/** The selection poly. */
-	private MTPolygon selectionPoly;
-	
-	/** The motion. */
-	private InputCursor motion;
-	
-	/** The selected comps. */
-	private IdragClusterable[] selectedComps;
-	
 
-	/**
-	 * Instantiates a new clustering event.
-	 * 
-	 * @param source the source
-	 * @param id the id
-	 * @param targetComponent the target component
-	 * @param motion the motion
-	 * @param selectionPoly the selection poly
-	 * @param selectedComponents the selected components
-	 */
-	public LassoEvent(IInputProcessor source, int id, IMTComponent3D targetComponent, InputCursor motion, MTPolygon selectionPoly, IdragClusterable[] selectedComponents) {
-		super(source, id, targetComponent);
-		this.motion = motion;
-		this.selectionPoly = selectionPoly;
-		this.selectedComps = selectedComponents;
-	}
+    /**
+     * The selection poly.
+     */
+    private MTPolygon selectionPoly;
+
+    /**
+     * The motion.
+     */
+    private InputCursor motion;
+
+    /**
+     * The selected comps.
+     */
+    private IdragClusterable[] selectedComps;
 
 
-	/**
-	 * Gets the motion.
-	 * 
-	 * @return the motion
-	 */
-	public InputCursor getCursor() {
-		return motion;
-	}
+    /**
+     * Instantiates a new clustering event.
+     *
+     * @param source             the source
+     * @param id                 the id
+     * @param targetComponent    the target component
+     * @param motion             the motion
+     * @param selectionPoly      the selection poly
+     * @param selectedComponents the selected components
+     */
+    public LassoEvent(IInputProcessor source, int id, IMTComponent3D targetComponent, InputCursor motion, MTPolygon selectionPoly, IdragClusterable[] selectedComponents) {
+        super(source, id, targetComponent);
+        this.motion = motion;
+        this.selectionPoly = selectionPoly;
+        this.selectedComps = selectedComponents;
+    }
 
 
-	/**
-	 * Gets the clustered components.
-	 * 
-	 * @return the clustered components
-	 */
-	public IdragClusterable[] getClusteredComponents() { 
-		return selectedComps;
-	}
+    /**
+     * Gets the motion.
+     *
+     * @return the motion
+     */
+    public InputCursor getCursor() {
+        return motion;
+    }
 
 
-	/**
-	 * Gets the selection poly.
-	 * 
-	 * @return the selection poly
-	 */
-	public MTPolygon getSelectionPoly() {
-		return selectionPoly;
-	}
-	
-	
+    /**
+     * Gets the clustered components.
+     *
+     * @return the clustered components
+     */
+    public IdragClusterable[] getClusteredComponents() {
+        return selectedComps;
+    }
+
+
+    /**
+     * Gets the selection poly.
+     *
+     * @return the selection poly
+     */
+    public MTPolygon getSelectionPoly() {
+        return selectionPoly;
+    }
+
 
 }

@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009, C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -18,7 +18,6 @@
 package org.mt4j.input;
 
 
-
 /**
  * The listener interface for receiving IMTEvent events.
  * The class that is interested in processing a IMTEvent
@@ -27,16 +26,16 @@ package org.mt4j.input;
  * component's <code>addIMTEventListener<code> method. When
  * the IMTEvent event occurs, that object's appropriate
  * method is invoked.
- * 
+ *
  * @see org.mt4j.input.MTEvent
  */
-public interface IMTEventListener { 
-	
-	/**
-	 * Process mt event.
-	 * 
-	 * @param mtEvent the mt event
-	 */
-	public void processMTEvent(MTEvent mtEvent);
+public interface IMTEventListener {
+
+    /**
+     * Process mt event.
+     *
+     * @param mtEvent the mt event
+     */
+    public void processMTEvent(MTEvent mtEvent);
 
 }

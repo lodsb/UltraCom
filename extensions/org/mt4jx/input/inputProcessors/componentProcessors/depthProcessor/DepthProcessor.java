@@ -27,366 +27,370 @@ import processing.core.PApplet;
 
 public class DepthProcessor extends AbstractCursorProcessor {
 
-	private PApplet applet;
+    private PApplet applet;
 
-	/** The dc. */
-	private DepthContext dpc;
+    /**
+     * The dc.
+     */
+    private DepthContext dpc;
 
-	private List<InputCursor> depthCursors = new ArrayList<InputCursor>();
-	/** The un used cursorss. */
-	private List<InputCursor> unUsedCursors = new ArrayList<InputCursor>();
+    private List<InputCursor> depthCursors = new ArrayList<InputCursor>();
+    /**
+     * The un used cursorss.
+     */
+    private List<InputCursor> unUsedCursors = new ArrayList<InputCursor>();
 
-	/** The locked cursorss. */
-	private List<InputCursor> lockedCursors = new ArrayList<InputCursor>();
+    /**
+     * The locked cursorss.
+     */
+    private List<InputCursor> lockedCursors = new ArrayList<InputCursor>();
 
-	private MTCanvas canvas;
+    private MTCanvas canvas;
 
-	private Icamera cam;
-	
-	private MTRectangle visualHelper;
+    private Icamera cam;
 
-	private IMTComponent3D targetComponent;
-	
-	/** if gesture is paused by collision detection*/
-	private boolean gesturePaused = false;
-	
-	/** if gesture has been resumed after collision*/
-	private boolean resumed = false;
-		
-	public DepthProcessor(PApplet graphicsContext, MTCanvas canvas, Icamera cam,IMTComponent3D targetComponent) {
-		this.setLockPriority(1);
-		this.applet = graphicsContext;
-		this.setDebug(false);
-		this.canvas = canvas;
-		this.setTargetComponent(targetComponent);
-		this.cam = cam;
-	}
+    private MTRectangle visualHelper;
 
-	@Override
-	public void cursorEnded(InputCursor inputCursor,
-			MTFingerInputEvt positionEvent) {
+    private IMTComponent3D targetComponent;
 
-		IMTComponent3D comp = positionEvent.getTargetComponent();
-				
-		logger.debug(this.getName() + " INPUT_ENDED RECIEVED - MOTION: "
-				+ inputCursor.getId());
-		
-		if (lockedCursors.contains(inputCursor)) { // cursors was a actual
-													// gesture cursors
-					
-			if(dpc!=null) //TODO correct handling of dpc creation 
-			{
-				dpc.updateDepthPosition();
-			}
-			//targetComponent = null; //set back target Component
-			lockedCursors.remove(inputCursor);
-			if (unUsedCursors.size() > 0) { // check if there are other cursorss
-											// on the component, we could use
-											// for depth drag
-				InputCursor otherMotion = unUsedCursors.get(0); // TODO cycle
-																// through all
-																// available
-																// unUsedCursors
-																// and try to
-																// claim one,
-																// maybe the
-																// first one is
-																// claimed but
-																// another isnt!
-				if (this.canLock(otherMotion)) { // Check if we have the
-													// priority to use this
-													// cursors
-					dpc = new DepthContext(otherMotion, comp);
-					if (!dpc.isGestureAborted()) {
-						this.getLock(otherMotion);
-						unUsedCursors.remove(otherMotion);
-						lockedCursors.add(otherMotion);
-						// TODO fire started? maybe not.. do we have to?
-					} else {
-						this.fireGestureEvent(new DepthGestureEvent(this,
-								MTGestureEvent.GESTURE_ENDED, getTargetComponent(), inputCursor,
-								dpc.getTranslationVect()));
-					}
-				} else {
-					this.fireGestureEvent(new DepthGestureEvent(this,
-							MTGestureEvent.GESTURE_ENDED, getTargetComponent(), inputCursor,
-							dpc.getTranslationVect()));
-				}
-			} else {
-				this.fireGestureEvent(new DepthGestureEvent(this,
-						MTGestureEvent.GESTURE_ENDED, getTargetComponent(), inputCursor,
-						dpc.getTranslationVect()));
-				
-			}
-			this.unLock(inputCursor); // FIXME TEST
-		} else { // cursors was not used for dragging
-			if (unUsedCursors.contains(inputCursor)) {
-				unUsedCursors.remove(inputCursor);
-			}
-		}
+    /**
+     * if gesture is paused by collision detection
+     */
+    private boolean gesturePaused = false;
 
-	}
+    /**
+     * if gesture has been resumed after collision
+     */
+    private boolean resumed = false;
 
-	@Override
-	public void cursorLocked(InputCursor cursor,
-			IInputProcessor lockingprocessor) {
-		if (lockingprocessor instanceof AbstractComponentProcessor) {
-			logger.debug(this.getName() + " Recieved MOTION LOCKED by ("
-					+ ((AbstractComponentProcessor) lockingprocessor).getName()
-					+ ") - cursors ID: " + cursor.getId());
-		} else {
-			logger
-					.debug(this.getName()
-							+ " Recieved MOTION LOCKED by higher priority signal - cursors ID: "
-							+ cursor.getId());
-		}
+    public DepthProcessor(PApplet graphicsContext, MTCanvas canvas, Icamera cam, IMTComponent3D targetComponent) {
+        this.setLockPriority(1);
+        this.applet = graphicsContext;
+        this.setDebug(false);
+        this.canvas = canvas;
+        this.setTargetComponent(targetComponent);
+        this.cam = cam;
+    }
 
-		if (lockedCursors.contains(cursor)) { // cursors was a actual gesture
-												// cursors
-			lockedCursors.remove(cursor);
-			// TODO fire ended evt?
-			unUsedCursors.add(cursor);
-			logger.debug(this.getName() + " cursors:" + cursor.getId()
-					+ " MOTION LOCKED. Was an active cursors in this gesture!");
-		} else { // TODO remove "else", it is pretty useless
-			if (unUsedCursors.contains(cursor)) {
-				logger
-						.debug(this.getName()
-								+ " MOTION LOCKED. But it was NOT an active cursors in this gesture!");
-			}
-		}
-	}
+    @Override
+    public void cursorEnded(InputCursor inputCursor,
+                            MTFingerInputEvt positionEvent) {
 
-	@Override
-	public void cursorStarted(InputCursor inputCursor,
-			MTFingerInputEvt positionEvent) {
-		IMTComponent3D comp = positionEvent.getTargetComponent();
-		
-		if (lockedCursors.size() == 0) { 
-			dpc = new DepthContext(inputCursor, comp);
-		
-			if (this.canLock(inputCursor)) {
-					if (!dpc.isGestureAborted()) {
-						this.getLock(inputCursor);
-						lockedCursors.add(inputCursor);
-						InputCursor otherCursor = lockedCursors.get(0);
-						//dpc = new DepthContext(inputCursor,comp);
-						this.fireGestureEvent(new DepthGestureEvent(this,
-								MTGestureEvent.GESTURE_DETECTED, getTargetComponent(), inputCursor,
-								dpc.getTranslationVect()));
-					}
-					depthCursors.add(inputCursor);
-			}			
-		} else if (lockedCursors.size() > 0) {
-			unUsedCursors.add(inputCursor);
-		}
-	}
+        IMTComponent3D comp = positionEvent.getTargetComponent();
 
-	public void cursorUnlocked(InputCursor cursor) {
-		logger
-				.debug(this.getName()
-						+ " Recieved UNLOCKED signal for cursors ID: "
-						+ cursor.getId());
-		if (lockedCursors.size() >= 1) { // we dont need the unlocked cursors,
-											// gesture still in progress
-			return;
-		}
+        logger.debug(this.getName() + " INPUT_ENDED RECIEVED - MOTION: "
+                + inputCursor.getId());
 
-		if (unUsedCursors.contains(cursor)) {
-			if (this.canLock(cursor)) {
-				dpc = new DepthContext(cursor, getTargetComponent());
-				if (!dpc.isGestureAborted()) {
-					this.getLock(cursor);
-					unUsedCursors.remove(cursor);
-					lockedCursors.add(cursor);
-					// TODO fire started? maybe not.. do we have to?
-					logger.debug(this.getName()
-							+ " can resume its gesture with cursors: "
-							+ cursor.getId());
-				} else {
-					dpc = null;
-					logger
-							.debug(this.getName()
-									+ " we could NOT start gesture - cursors not on component: "
-									+ cursor.getId());
-				}
-			} else {
-				logger
-						.debug(this.getName()
-								+ " still in progress - we dont need the unlocked cursors");
-			}
-		}
+        if (lockedCursors.contains(inputCursor)) { // cursors was a actual
+            // gesture cursors
 
-	}
+            if (dpc != null) //TODO correct handling of dpc creation
+            {
+                dpc.updateDepthPosition();
+            }
+            //targetComponent = null; //set back target Component
+            lockedCursors.remove(inputCursor);
+            if (unUsedCursors.size() > 0) { // check if there are other cursorss
+                // on the component, we could use
+                // for depth drag
+                InputCursor otherMotion = unUsedCursors.get(0); // TODO cycle
+                // through all
+                // available
+                // unUsedCursors
+                // and try to
+                // claim one,
+                // maybe the
+                // first one is
+                // claimed but
+                // another isnt!
+                if (this.canLock(otherMotion)) { // Check if we have the
+                    // priority to use this
+                    // cursors
+                    dpc = new DepthContext(otherMotion, comp);
+                    if (!dpc.isGestureAborted()) {
+                        this.getLock(otherMotion);
+                        unUsedCursors.remove(otherMotion);
+                        lockedCursors.add(otherMotion);
+                        // TODO fire started? maybe not.. do we have to?
+                    } else {
+                        this.fireGestureEvent(new DepthGestureEvent(this,
+                                MTGestureEvent.GESTURE_ENDED, getTargetComponent(), inputCursor,
+                                dpc.getTranslationVect()));
+                    }
+                } else {
+                    this.fireGestureEvent(new DepthGestureEvent(this,
+                            MTGestureEvent.GESTURE_ENDED, getTargetComponent(), inputCursor,
+                            dpc.getTranslationVect()));
+                }
+            } else {
+                this.fireGestureEvent(new DepthGestureEvent(this,
+                        MTGestureEvent.GESTURE_ENDED, getTargetComponent(), inputCursor,
+                        dpc.getTranslationVect()));
 
-	public void cursorUpdated(InputCursor inputCursor,
-			MTFingerInputEvt positionEvent) {
-		IMTComponent3D comp = positionEvent.getTargetComponent();
-		
-		
-		Vector3D vec = positionEvent.getTargetComponent().getIntersectionGlobal(
-				Tools3D.getCameraPickRay(applet, comp, inputCursor.getCurrentEvent().getPosX(), inputCursor.getCurrentEvent().getPosY()));
-		
-		if(vec!=null)
-		{
-			if(lockedCursors.size()==0)
-			{
-				return;
-			}
-					
-			if (lockedCursors.size() == 1) {
-				if(lockedCursors.get(0) == inputCursor) {			
-				
-					dpc.updateDepthPosition();						
-					this.fireGestureEvent(new DepthGestureEvent(this,
-							MTGestureEvent.GESTURE_UPDATED, getTargetComponent(), inputCursor,
-							dpc.getTranslationVect()));
-				}
-			} 
-			
-		}else
-		{			
-			this.fireGestureEvent(new DepthGestureEvent(this,
-					MTGestureEvent.GESTURE_ENDED, getTargetComponent(), inputCursor,
-					dpc.getTranslationVect()));
-		}
-		
+            }
+            this.unLock(inputCursor); // FIXME TEST
+        } else { // cursors was not used for dragging
+            if (unUsedCursors.contains(inputCursor)) {
+                unUsedCursors.remove(inputCursor);
+            }
+        }
 
-	}
+    }
 
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public void cursorLocked(InputCursor cursor,
+                             IInputProcessor lockingprocessor) {
+        if (lockingprocessor instanceof AbstractComponentProcessor) {
+            logger.debug(this.getName() + " Recieved MOTION LOCKED by ("
+                    + ((AbstractComponentProcessor) lockingprocessor).getName()
+                    + ") - cursors ID: " + cursor.getId());
+        } else {
+            logger
+                    .debug(this.getName()
+                            + " Recieved MOTION LOCKED by higher priority signal - cursors ID: "
+                            + cursor.getId());
+        }
 
-	public void deleteDepthHelper(IMTComponent3D comp) {
+        if (lockedCursors.contains(cursor)) { // cursors was a actual gesture
+            // cursors
+            lockedCursors.remove(cursor);
+            // TODO fire ended evt?
+            unUsedCursors.add(cursor);
+            logger.debug(this.getName() + " cursors:" + cursor.getId()
+                    + " MOTION LOCKED. Was an active cursors in this gesture!");
+        } else { // TODO remove "else", it is pretty useless
+            if (unUsedCursors.contains(cursor)) {
+                logger
+                        .debug(this.getName()
+                                + " MOTION LOCKED. But it was NOT an active cursors in this gesture!");
+            }
+        }
+    }
 
-	}
+    @Override
+    public void cursorStarted(InputCursor inputCursor,
+                              MTFingerInputEvt positionEvent) {
+        IMTComponent3D comp = positionEvent.getTargetComponent();
 
-	private class DepthContext {
+        if (lockedCursors.size() == 0) {
+            dpc = new DepthContext(inputCursor, comp);
 
-		private Vector3D startPosition;
+            if (this.canLock(inputCursor)) {
+                if (!dpc.isGestureAborted()) {
+                    this.getLock(inputCursor);
+                    lockedCursors.add(inputCursor);
+                    InputCursor otherCursor = lockedCursors.get(0);
+                    //dpc = new DepthContext(inputCursor,comp);
+                    this.fireGestureEvent(new DepthGestureEvent(this,
+                            MTGestureEvent.GESTURE_DETECTED, getTargetComponent(), inputCursor,
+                            dpc.getTranslationVect()));
+                }
+                depthCursors.add(inputCursor);
+            }
+        } else if (lockedCursors.size() > 0) {
+            unUsedCursors.add(inputCursor);
+        }
+    }
 
-		private Vector3D lastPosition;
+    public void cursorUnlocked(InputCursor cursor) {
+        logger
+                .debug(this.getName()
+                        + " Recieved UNLOCKED signal for cursors ID: "
+                        + cursor.getId());
+        if (lockedCursors.size() >= 1) { // we dont need the unlocked cursors,
+            // gesture still in progress
+            return;
+        }
 
-		private Vector3D newPosition;
-		
-		private float lastVal;
-		
-		private float newVal;
+        if (unUsedCursors.contains(cursor)) {
+            if (this.canLock(cursor)) {
+                dpc = new DepthContext(cursor, getTargetComponent());
+                if (!dpc.isGestureAborted()) {
+                    this.getLock(cursor);
+                    unUsedCursors.remove(cursor);
+                    lockedCursors.add(cursor);
+                    // TODO fire started? maybe not.. do we have to?
+                    logger.debug(this.getName()
+                            + " can resume its gesture with cursors: "
+                            + cursor.getId());
+                } else {
+                    dpc = null;
+                    logger
+                            .debug(this.getName()
+                                    + " we could NOT start gesture - cursors not on component: "
+                                    + cursor.getId());
+                }
+            } else {
+                logger
+                        .debug(this.getName()
+                                + " still in progress - we dont need the unlocked cursors");
+            }
+        }
 
-		private IMTComponent3D dragDepthObject;
+    }
 
-		private InputCursor depthCursor;
+    public void cursorUpdated(InputCursor inputCursor,
+                              MTFingerInputEvt positionEvent) {
+        IMTComponent3D comp = positionEvent.getTargetComponent();
 
-		private boolean gestureAborted;
 
-		private MTCanvas mtCanvas;
+        Vector3D vec = positionEvent.getTargetComponent().getIntersectionGlobal(
+                Tools3D.getCameraPickRay(applet, comp, inputCursor.getCurrentEvent().getPosX(), inputCursor.getCurrentEvent().getPosY()));
 
-		private MTComponent mtComp;
+        if (vec != null) {
+            if (lockedCursors.size() == 0) {
+                return;
+            }
 
-		private Vector3D translationVect;
+            if (lockedCursors.size() == 1) {
+                if (lockedCursors.get(0) == inputCursor) {
 
-		private VelocityMotionMapper velocityMotionMapper;
-		
-		public DepthContext(InputCursor cursor, IMTComponent3D dragObject) {
-			this.dragDepthObject = dragObject;
-			this.depthCursor = cursor;
-			gestureAborted = false;
-			
-			startPosition = new Vector3D(cursor.getCurrentEvtPosX(),cursor.getCurrentEvtPosY());
+                    dpc.updateDepthPosition();
+                    this.fireGestureEvent(new DepthGestureEvent(this,
+                            MTGestureEvent.GESTURE_UPDATED, getTargetComponent(), inputCursor,
+                            dpc.getTranslationVect()));
+                }
+            }
 
-			this.newPosition = startPosition.getCopy();
-			
-			this.velocityMotionMapper = new VelocityMotionMapper(10);
+        } else {
+            this.fireGestureEvent(new DepthGestureEvent(this,
+                    MTGestureEvent.GESTURE_ENDED, getTargetComponent(), inputCursor,
+                    dpc.getTranslationVect()));
+        }
 
-			// Set the Drags lastPostition (the last one before the new one)
-			this.lastPosition = startPosition.getCopy();
-			this.lastVal = 0.0f;
-			
-			this.updateDepthPosition();
 
-		}
+    }
 
-		/**
-		 * Update drag position.
-		 */
-		public void updateDepthPosition() {
+    @Override
+    public String getName() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-			
-			if(!resumed)
-			{
-				Vector3D newPos = new Vector3D(depthCursor.getCurrentEvtPosX(),depthCursor.getCurrentEvent().getPosY(),0.0f);	
-				
-				Vector3D vec = newPos;
-				
-				int sign = -1;
-				
-				if(newPos.y<lastPosition.y)
-				{
-					sign = 1;
-				}
-				velocityMotionMapper.updateCurrentLength(sign*vec.getSubtracted(lastPosition).length());
-			
-				float currentVal = velocityMotionMapper.calcCurrentValue();
-				
-				newVal = currentVal; 
-				lastVal = currentVal;
-				
-				translationVect = new Vector3D(0.0f, 0.0f, -newVal);
-				
-				lastPosition = newPosition;
-				newPosition = newPos;
-			}else
-			{				
-				translationVect = new Vector3D(0.0f,0.0f,0.0f);
-				newPosition = lastPosition;
-				resumed = false;
-			}
-			
-		}
+    public void deleteDepthHelper(IMTComponent3D comp) {
 
-		/**
-		 * Gets the last position.
-		 * 
-		 * @return the last position
-		 */
-		public Vector3D getLastPosition() {
-			return lastPosition;
-		}
+    }
 
-		/**
-		 * Gets the new position.
-		 * 
-		 * @return the new position
-		 */
-		public Vector3D getNewPosition() {
-			return newPosition;
-		}
+    private class DepthContext {
 
-		/**
-		 * Checks if is gesture aborted.
-		 * 
-		 * @return true, if is gesture aborted
-		 */
-		public boolean isGestureAborted() {
-			return gestureAborted;
-		}
+        private Vector3D startPosition;
 
-		public Vector3D getTranslationVect() {
-			return translationVect;
-		}
+        private Vector3D lastPosition;
 
-	}
+        private Vector3D newPosition;
 
-	public void setTargetComponent(IMTComponent3D targetComponent) {
-		this.targetComponent = targetComponent;
-	}
+        private float lastVal;
 
-	public IMTComponent3D getTargetComponent() {
-		return targetComponent;
-	}
+        private float newVal;
 
-	
+        private IMTComponent3D dragDepthObject;
+
+        private InputCursor depthCursor;
+
+        private boolean gestureAborted;
+
+        private MTCanvas mtCanvas;
+
+        private MTComponent mtComp;
+
+        private Vector3D translationVect;
+
+        private VelocityMotionMapper velocityMotionMapper;
+
+        public DepthContext(InputCursor cursor, IMTComponent3D dragObject) {
+            this.dragDepthObject = dragObject;
+            this.depthCursor = cursor;
+            gestureAborted = false;
+
+            startPosition = new Vector3D(cursor.getCurrentEvtPosX(), cursor.getCurrentEvtPosY());
+
+            this.newPosition = startPosition.getCopy();
+
+            this.velocityMotionMapper = new VelocityMotionMapper(10);
+
+            // Set the Drags lastPostition (the last one before the new one)
+            this.lastPosition = startPosition.getCopy();
+            this.lastVal = 0.0f;
+
+            this.updateDepthPosition();
+
+        }
+
+        /**
+         * Update drag position.
+         */
+        public void updateDepthPosition() {
+
+
+            if (!resumed) {
+                Vector3D newPos = new Vector3D(depthCursor.getCurrentEvtPosX(), depthCursor.getCurrentEvent().getPosY(), 0.0f);
+
+                Vector3D vec = newPos;
+
+                int sign = -1;
+
+                if (newPos.y < lastPosition.y) {
+                    sign = 1;
+                }
+                velocityMotionMapper.updateCurrentLength(sign * vec.getSubtracted(lastPosition).length());
+
+                float currentVal = velocityMotionMapper.calcCurrentValue();
+
+                newVal = currentVal;
+                lastVal = currentVal;
+
+                translationVect = new Vector3D(0.0f, 0.0f, -newVal);
+
+                lastPosition = newPosition;
+                newPosition = newPos;
+            } else {
+                translationVect = new Vector3D(0.0f, 0.0f, 0.0f);
+                newPosition = lastPosition;
+                resumed = false;
+            }
+
+        }
+
+        /**
+         * Gets the last position.
+         *
+         * @return the last position
+         */
+        public Vector3D getLastPosition() {
+            return lastPosition;
+        }
+
+        /**
+         * Gets the new position.
+         *
+         * @return the new position
+         */
+        public Vector3D getNewPosition() {
+            return newPosition;
+        }
+
+        /**
+         * Checks if is gesture aborted.
+         *
+         * @return true, if is gesture aborted
+         */
+        public boolean isGestureAborted() {
+            return gestureAborted;
+        }
+
+        public Vector3D getTranslationVect() {
+            return translationVect;
+        }
+
+    }
+
+    public void setTargetComponent(IMTComponent3D targetComponent) {
+        this.targetComponent = targetComponent;
+    }
+
+    public IMTComponent3D getTargetComponent() {
+        return targetComponent;
+    }
+
+
 }

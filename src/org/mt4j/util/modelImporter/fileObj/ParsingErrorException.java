@@ -50,16 +50,16 @@ package org.mt4j.util.modelImporter.fileObj;
 public class ParsingErrorException extends RuntimeException {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	public ParsingErrorException() {
-	super();
+    public ParsingErrorException() {
+        super();
     }
 
     public ParsingErrorException(String s) {
-	super(s);
+        super(s);
     }
 }
 

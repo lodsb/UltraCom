@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009, C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -35,87 +35,90 @@ import org.mt4j.util.MT4jSettings;
 
 /**
  * The Class MuitoInputSource.
+ *
  * @author Christopher Ruff
  */
 public class MuitoInputSource extends AbstractInputSource implements MotionProviderListener {
 
-	/** The muito id to input motion id. */
-	private HashMap<Long, Long> muitoIDToInputMotionID;
+    /**
+     * The muito id to input motion id.
+     */
+    private HashMap<Long, Long> muitoIDToInputMotionID;
 
-	/**
-	 * Instantiates a new muito input source.
-	 * 
-	 * @param pa the pa
-	 * @param server the server
-	 * @param port the port
-	 */
-	public MuitoInputSource(MTApplication pa, String server, int port){
-		super(pa);
-	    Settings.getInstance().setScreensizeX(MT4jSettings.getInstance().getWindowWidth());
-	    Settings.getInstance().setScreensizeY(MT4jSettings.getInstance().getWindowHeight());
-		MuitoMotionTrackerPorvider muitoProvider = new MuitoMotionTrackerPorvider(server, port);
-	    muitoProvider.addListener(this);
+    /**
+     * Instantiates a new muito input source.
+     *
+     * @param pa     the pa
+     * @param server the server
+     * @param port   the port
+     */
+    public MuitoInputSource(MTApplication pa, String server, int port) {
+        super(pa);
+        Settings.getInstance().setScreensizeX(MT4jSettings.getInstance().getWindowWidth());
+        Settings.getInstance().setScreensizeY(MT4jSettings.getInstance().getWindowHeight());
+        MuitoMotionTrackerPorvider muitoProvider = new MuitoMotionTrackerPorvider(server, port);
+        muitoProvider.addListener(this);
 //	    muitoProvider.addMotionFilter(new CalibrationFilter());
-	    muitoIDToInputMotionID = new HashMap<Long, Long>();
-	}
-	
-	
-	/* (non-Javadoc)
-	 * @see muito.motion.MotionProviderListener#newMotionProvided(muito.motion.Motion)
-	 */
-	public void newMotionProvided(Motion motion) {
-		MotionEvent me = motion.getLastEvent();
-		
-		InputCursor m = new InputCursor();
-		MTFingerInputEvt touchEvt = new MTFingerInputEvt(this, me.getXAbs(), me.getYAbs(), MTFingerInputEvt.INPUT_DETECTED, m);
+        muitoIDToInputMotionID = new HashMap<Long, Long>();
+    }
+
+
+    /* (non-Javadoc)
+      * @see muito.motion.MotionProviderListener#newMotionProvided(muito.motion.Motion)
+      */
+    public void newMotionProvided(Motion motion) {
+        MotionEvent me = motion.getLastEvent();
+
+        InputCursor m = new InputCursor();
+        MTFingerInputEvt touchEvt = new MTFingerInputEvt(this, me.getXAbs(), me.getYAbs(), MTFingerInputEvt.INPUT_DETECTED, m);
 //		m.addEvent(touchEvt);
-		
-		long motionID = motion.getId();
-		ActiveCursorPool.getInstance().putActiveCursor(motionID, m);
-		muitoIDToInputMotionID.put(motionID, motionID);
-		
-		//FIRE
-		this.enqueueInputEvent(touchEvt);
-	}
-	
 
-	/* (non-Javadoc)
-	 * @see muito.motion.MotionProviderListener#providedMotionUpdated(muito.motion.Motion, muito.motion.MotionEvent)
-	 */
-	public void providedMotionUpdated(Motion m, MotionEvent me) {
-		InputCursor mo = ActiveCursorPool.getInstance().getActiveCursorByID(muitoIDToInputMotionID.get(m.getId()));
-		
-		MTFingerInputEvt te = new MTFingerInputEvt(this, me.getXAbs(), me.getYAbs(), MTFingerInputEvt.INPUT_UPDATED, mo);
+        long motionID = motion.getId();
+        ActiveCursorPool.getInstance().putActiveCursor(motionID, m);
+        muitoIDToInputMotionID.put(motionID, motionID);
+
+        //FIRE
+        this.enqueueInputEvent(touchEvt);
+    }
+
+
+    /* (non-Javadoc)
+      * @see muito.motion.MotionProviderListener#providedMotionUpdated(muito.motion.Motion, muito.motion.MotionEvent)
+      */
+    public void providedMotionUpdated(Motion m, MotionEvent me) {
+        InputCursor mo = ActiveCursorPool.getInstance().getActiveCursorByID(muitoIDToInputMotionID.get(m.getId()));
+
+        MTFingerInputEvt te = new MTFingerInputEvt(this, me.getXAbs(), me.getYAbs(), MTFingerInputEvt.INPUT_UPDATED, mo);
 //		m.addEvent(new MTFingerInputEvt2(this, e.getX(), e.getY(), MTFingerInputEvt.FINGER_UPDATE, m));
-		
-		//FIRE
-		this.enqueueInputEvent(te);
-	}
-	
-	
-	/* (non-Javadoc)
-	 * @see muito.motion.MotionProviderListener#providedMotionCompleted(muito.motion.Motion)
-	 */
-	public void providedMotionCompleted(Motion m) {
-		long motionID = muitoIDToInputMotionID.get(m.getId());
-		InputCursor mo = ActiveCursorPool.getInstance().getActiveCursorByID(motionID);
 
-		MTFingerInputEvt te;
-		if (mo.getCurrentEvent() != null)
-			te = new MTFingerInputEvt(this, mo.getCurrentEvent().getPosX(), mo.getCurrentEvent().getPosY(), MTFingerInputEvt.INPUT_ENDED, mo);
-		else
-			te = new MTFingerInputEvt(this, 0,0, MTFingerInputEvt.INPUT_ENDED, mo);
-		
+        //FIRE
+        this.enqueueInputEvent(te);
+    }
+
+
+    /* (non-Javadoc)
+      * @see muito.motion.MotionProviderListener#providedMotionCompleted(muito.motion.Motion)
+      */
+    public void providedMotionCompleted(Motion m) {
+        long motionID = muitoIDToInputMotionID.get(m.getId());
+        InputCursor mo = ActiveCursorPool.getInstance().getActiveCursorByID(motionID);
+
+        MTFingerInputEvt te;
+        if (mo.getCurrentEvent() != null)
+            te = new MTFingerInputEvt(this, mo.getCurrentEvent().getPosX(), mo.getCurrentEvent().getPosY(), MTFingerInputEvt.INPUT_ENDED, mo);
+        else
+            te = new MTFingerInputEvt(this, 0, 0, MTFingerInputEvt.INPUT_ENDED, mo);
+
 //		m.addEvent(te);
-		
-		this.enqueueInputEvent(te);
-		
-		ActiveCursorPool.getInstance().removeCursor(motionID);
-		
-		muitoIDToInputMotionID.remove(m.getId());		
-	}
 
-	
+        this.enqueueInputEvent(te);
+
+        ActiveCursorPool.getInstance().removeCursor(motionID);
+
+        muitoIDToInputMotionID.remove(m.getId());
+    }
+
+
 //	@Override
 //	public boolean firesEventType(Class<? extends MTInputEvent> evtClass){
 //		return (evtClass == MTFingerInputEvt.class);

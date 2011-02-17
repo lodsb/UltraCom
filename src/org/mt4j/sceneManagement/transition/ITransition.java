@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2010 Christopher Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -21,30 +21,30 @@ import org.mt4j.sceneManagement.Iscene;
 
 /**
  * The Interface ITransition. Interface for scene transition effects
- * 
+ *
  * @author Christopher Ruff
  */
 public interface ITransition extends Iscene {
 
-	/**
-	 * Checks if is finished.
-	 * 
-	 * @return true, if is finished
-	 */
-	public boolean isFinished();
+    /**
+     * Checks if is finished.
+     *
+     * @return true, if is finished
+     */
+    public boolean isFinished();
 
-	//	public void init(Iscene oldScene, Iscene newScene);
+    //	public void init(Iscene oldScene, Iscene newScene);
 
-	//	public void init();
-	//	
-	//	public void shutDown();
+    //	public void init();
+    //
+    //	public void shutDown();
 
-	/**
-	 * Setup.
-	 * 
-	 * @param lastScene the last scene
-	 * @param nextScene the next scene
-	 */
-	public void setup(Iscene lastScene, Iscene nextScene);
+    /**
+     * Setup.
+     *
+     * @param lastScene the last scene
+     * @param nextScene the next scene
+     */
+    public void setup(Iscene lastScene, Iscene nextScene);
 
 }

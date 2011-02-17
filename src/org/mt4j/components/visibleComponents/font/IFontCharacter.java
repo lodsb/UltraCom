@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009, C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -23,45 +23,46 @@ import processing.core.PGraphics;
 
 /**
  * The Interface IFontCharacter.
+ *
  * @author Christopher Ruff
  */
 public interface IFontCharacter {
-	
-	/**
-	 * Draw component.
-	 * 
-	 * @param g the graphics
-	 */
-	public void drawComponent(PGraphics g);
 
-	/**
-	 * Draw component.
-	 * 
-	 * @param gl the gl
-	 */
-	public void drawComponent(GL gl);
-	
-	/**
-	 * Gets the unicode.
-	 * 
-	 * @return the unicode
-	 */
-	public String getUnicode();
-	
-	
-	/**
-	 * The horizontal advancement distance specifies, how many units
-	 * to the right we have to move before drawing the NEXT character.
-	 * 
-	 * @return the horizontal dist
-	 * 
-	 * the distance advancement
-	 */
-	public int getHorizontalDist();
-	
-	
-	/**
-	 * Destroys the character and its used resources.
-	 */
-	public void destroy();
+    /**
+     * Draw component.
+     *
+     * @param g the graphics
+     */
+    public void drawComponent(PGraphics g);
+
+    /**
+     * Draw component.
+     *
+     * @param gl the gl
+     */
+    public void drawComponent(GL gl);
+
+    /**
+     * Gets the unicode.
+     *
+     * @return the unicode
+     */
+    public String getUnicode();
+
+
+    /**
+     * The horizontal advancement distance specifies, how many units
+     * to the right we have to move before drawing the NEXT character.
+     *
+     * @return the horizontal dist
+     *         <p/>
+     *         the distance advancement
+     */
+    public int getHorizontalDist();
+
+
+    /**
+     * Destroys the character and its used resources.
+     */
+    public void destroy();
 }

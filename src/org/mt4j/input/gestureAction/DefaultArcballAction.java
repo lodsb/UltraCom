@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009 Christopher Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -25,55 +25,59 @@ import org.mt4j.input.inputProcessors.componentProcessors.arcballProcessor.ArcBa
 
 /**
  * The Class DefaultArcballAction.
- * 
+ *
  * @author Christopher Ruff
  */
 public class DefaultArcballAction implements IGestureEventListener {
-	
-	/** The target. */
-	private IMTComponent3D target;
-	
-	/** The use custom target. */
-	private boolean useCustomTarget;
-	
-	/**
-	 * Instantiates a new default arcball action.
-	 */
-	public DefaultArcballAction(){
-		this.useCustomTarget = false;
-	}
-	
-	/**
-	 * Instantiates a new default arcball action.
-	 * 
-	 * @param customTarget the target
-	 */
-	public DefaultArcballAction(IMTComponent3D customTarget){
-		this.target = customTarget;
-		this.useCustomTarget = true;
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.mt4j.input.inputProcessors.IGestureEventListener#processGestureEvent(org.mt4j.input.inputProcessors.MTGestureEvent)
-	 */
-	//@Override
-	public boolean processGestureEvent(MTGestureEvent g) {
-		ArcBallGestureEvent aEvt =  (ArcBallGestureEvent)g;
-		
-		if (!useCustomTarget)
-			target = aEvt.getTarget(); 
-		
-		if (target instanceof MTComponent){
-			((MTComponent)target).sendToFront();
-		}
-		
-		if (aEvt.getId() == ArcBallGestureEvent.GESTURE_UPDATED){
-			if (target instanceof MTComponent){
-				MTComponent comp = (MTComponent)target;
-				comp.transform(aEvt.getTransformationMatrix());
-			}
-		}
-		return false;
-	}
+
+    /**
+     * The target.
+     */
+    private IMTComponent3D target;
+
+    /**
+     * The use custom target.
+     */
+    private boolean useCustomTarget;
+
+    /**
+     * Instantiates a new default arcball action.
+     */
+    public DefaultArcballAction() {
+        this.useCustomTarget = false;
+    }
+
+    /**
+     * Instantiates a new default arcball action.
+     *
+     * @param customTarget the target
+     */
+    public DefaultArcballAction(IMTComponent3D customTarget) {
+        this.target = customTarget;
+        this.useCustomTarget = true;
+    }
+
+    /* (non-Javadoc)
+      * @see org.mt4j.input.inputProcessors.IGestureEventListener#processGestureEvent(org.mt4j.input.inputProcessors.MTGestureEvent)
+      */
+    //@Override
+    public boolean processGestureEvent(MTGestureEvent g) {
+        ArcBallGestureEvent aEvt = (ArcBallGestureEvent) g;
+
+        if (!useCustomTarget)
+            target = aEvt.getTarget();
+
+        if (target instanceof MTComponent) {
+            ((MTComponent) target).sendToFront();
+        }
+
+        if (aEvt.getId() == ArcBallGestureEvent.GESTURE_UPDATED) {
+            if (target instanceof MTComponent) {
+                MTComponent comp = (MTComponent) target;
+                comp.transform(aEvt.getTransformationMatrix());
+            }
+        }
+        return false;
+    }
 
 }

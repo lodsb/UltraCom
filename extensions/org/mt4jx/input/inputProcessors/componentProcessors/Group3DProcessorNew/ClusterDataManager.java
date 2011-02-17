@@ -22,183 +22,160 @@ import processing.core.PApplet;
 
 public class ClusterDataManager implements ISelectionListener {
 
-	ArrayList<IClusterEventListener> listeners;
-		
-	CollisionManager collisionManager;
-	
-	/** The cluster objects. */
-	private ArrayList<Cluster> clusters;
-	
-	private PApplet pApplet;
-	
-	private MTCanvas canvas;
-	
-	public ClusterDataManager(PApplet pApplet,MTCanvas canvas,CollisionManager collisionManager){
-		this.pApplet = pApplet;
-		this.canvas = canvas;
-		this.listeners = new ArrayList<IClusterEventListener>();
-		this.collisionManager = collisionManager;
-		setClusters(new ArrayList<Cluster>());
-	}
-	
-	public void addClusterEventListener(IClusterEventListener listener)
-	{
-		if(!(listeners.contains(listener)))
-		{
-			listeners.add(listener);
-		}
-	}
-	
-	public void removeClusterEventListener(IClusterEventListener listener)
-	{
-		if(listeners.contains(listener))
-		{
-			listeners.remove(listener);
-		}
-	}
-	
-	public Cluster createCluster(ArrayList<MTComponent> elementsToCluster,boolean fireEvent)
-	{
-		
-		for(MTComponent comp : elementsToCluster)
-		{
-			comp.attachCamera(canvas.getAttachedCamera());
-			canvas.removeChild(comp);			
-		}	
-		
-		Cluster cl = new Cluster(pApplet,elementsToCluster);
-		cl.registerInputProcessor(new DragProcessor(pApplet));
-		cl.addGestureListener(DragProcessor.class, new DefaultDragAction());
-		
-		cl.registerInputProcessor(new RotateProcessor(pApplet));
-		cl.addGestureListener(RotateProcessor.class, new DefaultRotateAction());
-		
-		cl.registerInputProcessor(new Rotate3DProcessor(pApplet,cl));
-		cl.addGestureListener(Rotate3DProcessor.class,new Rotate3DAction(pApplet,cl));
-		
-		cl.registerInputProcessor(new ScaleProcessor(pApplet));
-		cl.addGestureListener(ScaleProcessor.class,  new DefaultScaleAction());
-		
-		//cl.registerInputProcessor(new TapProcessor(pApplet,999999.0f));
-		cl.addGestureListener(DragProcessor.class,new CreateDragHelperAction((MTApplication)pApplet,this.canvas,this.canvas.getAttachedCamera(),cl));
-				
-		cl.attachCamera(canvas.getAttachedCamera());
-		cl.setComposite(true);
-		
-		cl.setName("cluster");
-		
-		canvas.addChild(cl);
-				
-		if(fireEvent)
-		{
-			fireClusterEvent(new MTClusterEvent(this,MTClusterEvent.CLUSTER_CREATED,cl));
-		}
-		this.clusters.add(cl);
-	
-		return cl;		
-	}
-	
-	public void deleteCluster(Cluster cluster)
-	{
-		if(this.containsCluster(cluster))
-		{
-			this.clusters.remove(cluster);
-			fireClusterEvent(new MTClusterEvent(this,MTClusterEvent.CLUSTER_DELETED,cluster));
-		}
-	}
-	
-	public void processMTEvent(MTEvent mtEvent) {
-		if(mtEvent instanceof MTSelectionEvent)
-		{
-			MTSelectionEvent selEvent = (MTSelectionEvent)mtEvent;
-			switch(selEvent.getId())
-			{
-				case MTSelectionEvent.SELECTION_ENDED:
-				{
-					/*ArrayList<MTComponent> components = new ArrayList<MTComponent>();
-					for(IdragClusterable elem : selEvent.getSelectedComps())
-					{
-						if(elem instanceof MTComponent)
-						{
-							MTComponent comp = (MTComponent)elem;
-							components.add(comp);
-						}
-					}*/
-					//createCluster(components,true);
-					break;
-				}
-				case MTSelectionEvent.SELECTION_UPDATED:
-				{
-					break;
-				}
-			}
-		}
-		
-	}
-	
-	public void removeComponentFromCluster(MTComponent component,Cluster cluster)
-	{
-		if(cluster.containsChild(component))
-		{
-			cluster.removeChild(component);
-			if(cluster.getChildren().length>1)
-			{
-				fireClusterEvent(new MTClusterEvent(this,MTClusterEvent.CLUSTER_UPDATED,cluster));
-			}else
-			{
-				this.deleteCluster(cluster);					
-			}				
-		}
-		
-	}
-	
-	public void addComponentToCluster(MTComponent component,Cluster cluster)
-	{
-		if(!(cluster.containsChild(component)))
-		{
-			canvas.removeChild(component);
-			cluster.addChild(component);	
-			fireClusterEvent(new MTClusterEvent(this,MTClusterEvent.CLUSTER_UPDATED,cluster));
-		}
-	}
-	
-	public Cluster getClusterForComponent(MTComponent component)
-	{
-		for(Cluster cluster : clusters)
-		{
-			if(cluster.containsChild(component))
-			{
-				return cluster;
-			}	
-		}
-		return null;		
-	}
-	
-	/**
-	 * Contains cluster.
-	 * 
-	 * @param selection the selection
-	 * 
-	 * @return true, if successful
-	 */
-	public boolean containsCluster(Cluster selection){
-		return (clusters.contains(selection));
-	}
-	
-	public void fireClusterEvent(MTClusterEvent mtClusterEvent)
-	{
-		for(int i=0;i<listeners.size();i++)
-		{
-			listeners.get(i).processMTEvent(mtClusterEvent);
-		}
-	}
+    ArrayList<IClusterEventListener> listeners;
 
-	public void setClusters(ArrayList<Cluster> clusters) {
-		this.clusters = clusters;
-	}
+    CollisionManager collisionManager;
 
-	public ArrayList<Cluster> getClusters() {
-		return clusters;
-	}
-	
+    /**
+     * The cluster objects.
+     */
+    private ArrayList<Cluster> clusters;
+
+    private PApplet pApplet;
+
+    private MTCanvas canvas;
+
+    public ClusterDataManager(PApplet pApplet, MTCanvas canvas, CollisionManager collisionManager) {
+        this.pApplet = pApplet;
+        this.canvas = canvas;
+        this.listeners = new ArrayList<IClusterEventListener>();
+        this.collisionManager = collisionManager;
+        setClusters(new ArrayList<Cluster>());
+    }
+
+    public void addClusterEventListener(IClusterEventListener listener) {
+        if (!(listeners.contains(listener))) {
+            listeners.add(listener);
+        }
+    }
+
+    public void removeClusterEventListener(IClusterEventListener listener) {
+        if (listeners.contains(listener)) {
+            listeners.remove(listener);
+        }
+    }
+
+    public Cluster createCluster(ArrayList<MTComponent> elementsToCluster, boolean fireEvent) {
+
+        for (MTComponent comp : elementsToCluster) {
+            comp.attachCamera(canvas.getAttachedCamera());
+            canvas.removeChild(comp);
+        }
+
+        Cluster cl = new Cluster(pApplet, elementsToCluster);
+        cl.registerInputProcessor(new DragProcessor(pApplet));
+        cl.addGestureListener(DragProcessor.class, new DefaultDragAction());
+
+        cl.registerInputProcessor(new RotateProcessor(pApplet));
+        cl.addGestureListener(RotateProcessor.class, new DefaultRotateAction());
+
+        cl.registerInputProcessor(new Rotate3DProcessor(pApplet, cl));
+        cl.addGestureListener(Rotate3DProcessor.class, new Rotate3DAction(pApplet, cl));
+
+        cl.registerInputProcessor(new ScaleProcessor(pApplet));
+        cl.addGestureListener(ScaleProcessor.class, new DefaultScaleAction());
+
+        //cl.registerInputProcessor(new TapProcessor(pApplet,999999.0f));
+        cl.addGestureListener(DragProcessor.class, new CreateDragHelperAction((MTApplication) pApplet, this.canvas, this.canvas.getAttachedCamera(), cl));
+
+        cl.attachCamera(canvas.getAttachedCamera());
+        cl.setComposite(true);
+
+        cl.setName("cluster");
+
+        canvas.addChild(cl);
+
+        if (fireEvent) {
+            fireClusterEvent(new MTClusterEvent(this, MTClusterEvent.CLUSTER_CREATED, cl));
+        }
+        this.clusters.add(cl);
+
+        return cl;
+    }
+
+    public void deleteCluster(Cluster cluster) {
+        if (this.containsCluster(cluster)) {
+            this.clusters.remove(cluster);
+            fireClusterEvent(new MTClusterEvent(this, MTClusterEvent.CLUSTER_DELETED, cluster));
+        }
+    }
+
+    public void processMTEvent(MTEvent mtEvent) {
+        if (mtEvent instanceof MTSelectionEvent) {
+            MTSelectionEvent selEvent = (MTSelectionEvent) mtEvent;
+            switch (selEvent.getId()) {
+                case MTSelectionEvent.SELECTION_ENDED: {
+                    /*ArrayList<MTComponent> components = new ArrayList<MTComponent>();
+                         for(IdragClusterable elem : selEvent.getSelectedComps())
+                         {
+                             if(elem instanceof MTComponent)
+                             {
+                                 MTComponent comp = (MTComponent)elem;
+                                 components.add(comp);
+                             }
+                         }*/
+                    //createCluster(components,true);
+                    break;
+                }
+                case MTSelectionEvent.SELECTION_UPDATED: {
+                    break;
+                }
+            }
+        }
+
+    }
+
+    public void removeComponentFromCluster(MTComponent component, Cluster cluster) {
+        if (cluster.containsChild(component)) {
+            cluster.removeChild(component);
+            if (cluster.getChildren().length > 1) {
+                fireClusterEvent(new MTClusterEvent(this, MTClusterEvent.CLUSTER_UPDATED, cluster));
+            } else {
+                this.deleteCluster(cluster);
+            }
+        }
+
+    }
+
+    public void addComponentToCluster(MTComponent component, Cluster cluster) {
+        if (!(cluster.containsChild(component))) {
+            canvas.removeChild(component);
+            cluster.addChild(component);
+            fireClusterEvent(new MTClusterEvent(this, MTClusterEvent.CLUSTER_UPDATED, cluster));
+        }
+    }
+
+    public Cluster getClusterForComponent(MTComponent component) {
+        for (Cluster cluster : clusters) {
+            if (cluster.containsChild(component)) {
+                return cluster;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Contains cluster.
+     *
+     * @param selection the selection
+     * @return true, if successful
+     */
+    public boolean containsCluster(Cluster selection) {
+        return (clusters.contains(selection));
+    }
+
+    public void fireClusterEvent(MTClusterEvent mtClusterEvent) {
+        for (int i = 0; i < listeners.size(); i++) {
+            listeners.get(i).processMTEvent(mtClusterEvent);
+        }
+    }
+
+    public void setClusters(ArrayList<Cluster> clusters) {
+        this.clusters = clusters;
+    }
+
+    public ArrayList<Cluster> getClusters() {
+        return clusters;
+    }
+
 }

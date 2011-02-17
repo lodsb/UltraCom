@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009 C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -25,18 +25,17 @@ package org.mt4j.util.animation;
  * component's <code>addAnimationListener</code> method. When
  * the Animation event occurs, that object's appropriate
  * method is invoked.
- * 
- * @see AnimationEvent
- * 
+ *
  * @author Christopher Ruff
+ * @see AnimationEvent
  */
 public interface IAnimationListener {
-	
-	/**
-	 * Process animation event.
-	 * 
-	 * @param ae the ae
-	 */
-	public void processAnimationEvent(AnimationEvent ae);
+
+    /**
+     * Process animation event.
+     *
+     * @param ae the ae
+     */
+    public void processAnimationEvent(AnimationEvent ae);
 
 }

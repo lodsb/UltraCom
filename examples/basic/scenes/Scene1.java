@@ -24,75 +24,75 @@ import org.mt4j.util.opengl.GLFBO;
 import processing.core.PImage;
 
 public class Scene1 extends AbstractScene {
-	private MTApplication mtApp;
-	private Iscene scene2;
-	
-//	private String imagePath = System.getProperty("user.dir") + File.separator + "examples"+  File.separator +"basic"+  File.separator + "scenes" + File.separator + "data" + File.separator;
-	private String imagePath =  "basic"+  MTApplication.separator + "scenes" + MTApplication.separator + "data" + MTApplication.separator;
-	
-	public Scene1(MTApplication mtApplication, String name) {
-		super(mtApplication, name);
-		this.mtApp = mtApplication;
-		
-		//Set the background color
-		this.setClearColor(new MTColor(146, 150, 188, 255));
-		
-		this.registerGlobalInputProcessor(new CursorTracer(mtApp, this));
-		
-		//Create a textfield
-		MTTextArea textField = new MTTextArea(mtApplication, FontManager.getInstance().createFont(mtApp, "arial.ttf", 
-				50, new MTColor(255, 255, 255, 255), new MTColor(255, 255, 255, 255))); 
-		textField.setNoFill(true);
-		textField.setNoStroke(true);
-		textField.setText("Scene 1");
-		this.getCanvas().addChild(textField);
-		textField.setPositionGlobal(new Vector3D(mtApp.width/2f, mtApp.height/2f));
-		
-		//Button to get to the next scene
-		PImage arrow = mtApplication.loadImage(imagePath +	"arrowRight.png");
-		MTImageButton nextSceneButton = new MTImageButton(mtApplication, arrow);
-		nextSceneButton.setNoStroke(true);
-		if (MT4jSettings.getInstance().isOpenGlMode())
-			nextSceneButton.setUseDirectGL(true);
-		nextSceneButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				switch (ae.getID()) {
-				case TapEvent.BUTTON_CLICKED:
-					//Save the current scene on the scene stack before changing
-					mtApp.pushScene();
-					if (scene2 == null){
-						scene2 = new Scene2(mtApp, "Scene 2");
-						//Add the scene to the mt application
-						mtApp.addScene(scene2);
-					}
-					//Do the scene change
-					mtApp.changeScene(scene2);
-					break;
-				default:
-					break;
-				}
-			}
-		});
-		getCanvas().addChild(nextSceneButton);
-		nextSceneButton.setPositionGlobal(new Vector3D(mtApp.width - nextSceneButton.getWidthXY(TransformSpace.GLOBAL) - 5, mtApp.height - nextSceneButton.getHeightXY(TransformSpace.GLOBAL) - 5, 0));
-		
-		//Set a scene transition - Flip transition only available using opengl supporting the FBO extenstion
-		if (MT4jSettings.getInstance().isOpenGlMode() && GLFBO.isSupported(mtApp))
-			this.setTransition(new BlendTransition(mtApp, 700));
-		else{
-			this.setTransition(new FadeTransition(mtApplication, 1700));
-		}
-	}
-	
+    private MTApplication mtApp;
+    private Iscene scene2;
 
-	@Override
-	public void init() {
-		System.out.println("Entered scene: " +  this.getName());
-	}
+    //	private String imagePath = System.getProperty("user.dir") + File.separator + "examples"+  File.separator +"basic"+  File.separator + "scenes" + File.separator + "data" + File.separator;
+    private String imagePath = "basic" + MTApplication.separator + "scenes" + MTApplication.separator + "data" + MTApplication.separator;
 
-	@Override
-	public void shutDown() {
-		System.out.println("Left scene: " +  this.getName());
-	}
+    public Scene1(MTApplication mtApplication, String name) {
+        super(mtApplication, name);
+        this.mtApp = mtApplication;
+
+        //Set the background color
+        this.setClearColor(new MTColor(146, 150, 188, 255));
+
+        this.registerGlobalInputProcessor(new CursorTracer(mtApp, this));
+
+        //Create a textfield
+        MTTextArea textField = new MTTextArea(mtApplication, FontManager.getInstance().createFont(mtApp, "arial.ttf",
+                50, new MTColor(255, 255, 255, 255), new MTColor(255, 255, 255, 255)));
+        textField.setNoFill(true);
+        textField.setNoStroke(true);
+        textField.setText("Scene 1");
+        this.getCanvas().addChild(textField);
+        textField.setPositionGlobal(new Vector3D(mtApp.width / 2f, mtApp.height / 2f));
+
+        //Button to get to the next scene
+        PImage arrow = mtApplication.loadImage(imagePath + "arrowRight.png");
+        MTImageButton nextSceneButton = new MTImageButton(mtApplication, arrow);
+        nextSceneButton.setNoStroke(true);
+        if (MT4jSettings.getInstance().isOpenGlMode())
+            nextSceneButton.setUseDirectGL(true);
+        nextSceneButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                switch (ae.getID()) {
+                    case TapEvent.BUTTON_CLICKED:
+                        //Save the current scene on the scene stack before changing
+                        mtApp.pushScene();
+                        if (scene2 == null) {
+                            scene2 = new Scene2(mtApp, "Scene 2");
+                            //Add the scene to the mt application
+                            mtApp.addScene(scene2);
+                        }
+                        //Do the scene change
+                        mtApp.changeScene(scene2);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+        getCanvas().addChild(nextSceneButton);
+        nextSceneButton.setPositionGlobal(new Vector3D(mtApp.width - nextSceneButton.getWidthXY(TransformSpace.GLOBAL) - 5, mtApp.height - nextSceneButton.getHeightXY(TransformSpace.GLOBAL) - 5, 0));
+
+        //Set a scene transition - Flip transition only available using opengl supporting the FBO extenstion
+        if (MT4jSettings.getInstance().isOpenGlMode() && GLFBO.isSupported(mtApp))
+            this.setTransition(new BlendTransition(mtApp, 700));
+        else {
+            this.setTransition(new FadeTransition(mtApplication, 1700));
+        }
+    }
+
+
+    @Override
+    public void init() {
+        System.out.println("Entered scene: " + this.getName());
+    }
+
+    @Override
+    public void shutDown() {
+        System.out.println("Left scene: " + this.getName());
+    }
 
 }

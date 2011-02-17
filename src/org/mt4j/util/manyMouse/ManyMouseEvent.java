@@ -1,5 +1,3 @@
-
-
 package org.mt4j.util.manyMouse;
 
 /*
@@ -13,44 +11,67 @@ package org.mt4j.util.manyMouse;
 /**
  * The Class ManyMouseEvent.
  */
-public class ManyMouseEvent
-{
+public class ManyMouseEvent {
     // Event types...
     // !!! can be real enums in Java 5.0.
-    /** The Constant ABSMOTION. */
+    /**
+     * The Constant ABSMOTION.
+     */
     public static final int ABSMOTION = 0;
-    
-    /** The Constant RELMOTION. */
+
+    /**
+     * The Constant RELMOTION.
+     */
     public static final int RELMOTION = 1;
-    
-    /** The Constant BUTTON. */
+
+    /**
+     * The Constant BUTTON.
+     */
     public static final int BUTTON = 2;
-    
-    /** The Constant SCROLL. */
+
+    /**
+     * The Constant SCROLL.
+     */
     public static final int SCROLL = 3;
-    
-    /** The Constant DISCONNECT. */
+
+    /**
+     * The Constant DISCONNECT.
+     */
     public static final int DISCONNECT = 4;
-    
-    /** The Constant MAX. */
+
+    /**
+     * The Constant MAX.
+     */
     public static final int MAX = 5;  // Only for reference: should not be set.
 
-    /** The type. */
+    /**
+     * The type.
+     */
     public int type;
-    
-    /** The device. */
+
+    /**
+     * The device.
+     */
     public int device;
-    
-    /** The item. */
+
+    /**
+     * The item.
+     */
     public int item;
-    
-    /** The value. */
+
+    /**
+     * The value.
+     */
     public int value;
-    
-    /** The minval. */
+
+    /**
+     * The minval.
+     */
     public int minval;
-    
-    /** The maxval. */
+
+    /**
+     * The maxval.
+     */
     public int maxval;
 } // ManyMouseEvent
 

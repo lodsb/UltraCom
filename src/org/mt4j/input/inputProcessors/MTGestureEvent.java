@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009, C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -21,74 +21,78 @@ import org.mt4j.components.interfaces.IMTComponent3D;
 import org.mt4j.input.inputData.MTComponent3DInputEvent;
 
 
-
 /**
  * The Class GestureEvent.
+ *
  * @author Christopher Ruff
  */
 public abstract class MTGestureEvent extends MTComponent3DInputEvent {
-	
-	/** The id. */
-	private int id;
-	
-	/** The target component. */
+
+    /**
+     * The id.
+     */
+    private int id;
+
+    /** The target component. */
 //	private IMTComponent3D targetComponent;
 //	private InputMotion[] motions;
-	
-	/** The Constant GESTURE_DETECTED. */
-	public static final int GESTURE_DETECTED 	= 0;
-	
-	/** The Constant GESTURE_UPDATED. */
-	public static final int GESTURE_UPDATED 	= 1;
-	
-	/** The Constant GESTURE_ENDED. */
-	public static final int GESTURE_ENDED		= 2;
-	
-	
-	public static final int GESTURE_CANCELED	= 3;
-	
-	
-	public static final int GESTURE_RESUMED		= 4;
-	
-	/**
-	 * Instantiates a new gesture event.
-	 * 
-	 * @param source the source
-	 * @param id the id
-	 * @param targetComponent the target component
-	 */
-	public MTGestureEvent(IInputProcessor source, int id, IMTComponent3D targetComponent) {
-		super(source, targetComponent, false);
-		this.id = id;
-		this.setCurrentTarget(targetComponent); //FIXME ..
+
+    /**
+     * The Constant GESTURE_DETECTED.
+     */
+    public static final int GESTURE_DETECTED = 0;
+
+    /**
+     * The Constant GESTURE_UPDATED.
+     */
+    public static final int GESTURE_UPDATED = 1;
+
+    /**
+     * The Constant GESTURE_ENDED.
+     */
+    public static final int GESTURE_ENDED = 2;
+
+
+    public static final int GESTURE_CANCELED = 3;
+
+
+    public static final int GESTURE_RESUMED = 4;
+
+    /**
+     * Instantiates a new gesture event.
+     *
+     * @param source          the source
+     * @param id              the id
+     * @param targetComponent the target component
+     */
+    public MTGestureEvent(IInputProcessor source, int id, IMTComponent3D targetComponent) {
+        super(source, targetComponent, false);
+        this.id = id;
+        this.setCurrentTarget(targetComponent); //FIXME ..
 //		this.targetComponent = targetComponent;
-	}
-	
-	
-	
-
-	@Override
-	public IInputProcessor getSource() {
-		return (IInputProcessor)super.getSource();
-	}
+    }
 
 
+    @Override
+    public IInputProcessor getSource() {
+        return (IInputProcessor) super.getSource();
+    }
 
 
-	/**
-	 * Gets the id.
-	 * <br>Can be a value of:
-	 * <ul>
-	 * <li>GESTURE_DETECTED
-	 * <li>GESTURE_UPDATED
-	 * <li>GESTURE_ENDED
-	 * </ul>
-	 * 
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
+    /**
+     * Gets the id.
+     * <br>Can be a value of:
+     * <ul>
+     * <li>GESTURE_DETECTED
+     * <li>GESTURE_UPDATED
+     * <li>GESTURE_ENDED
+     * </ul>
+     *
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
 
 //	/**
 //	 * Gets the target component.
@@ -108,19 +112,16 @@ public abstract class MTGestureEvent extends MTComponent3DInputEvent {
 //		this.targetComponent = targetComponent;
 //	}
 
-	/**
-	 * Sets the id.
-	 * 
-	 * @param id the new id
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
+    /**
+     * Sets the id.
+     *
+     * @param id the new id
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
 
 
-	
-	
-	
 //	public InputMotion[] getMotions() {
 //		return this.motions;
 //	}

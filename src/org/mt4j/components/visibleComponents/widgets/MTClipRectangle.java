@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009 C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -29,67 +29,67 @@ import processing.opengl.PGraphicsOpenGL;
 /**
  * The Class MTClipRectangle. A rectangle whos children are clipped at the borders
  * of this rectangle so they are only visible inside of it.
- * 
+ *
  * @author Christopher Ruff
  */
 public class MTClipRectangle extends MTRectangle {
 
-	/**
-	 * Instantiates a new mT clip rectangle.
-	 * @param applet the applet
-	 * @param x the x
-	 * @param y the y
-	 * @param z the z
-	 * @param width the width
-	 * @param height the height
-	 */
-	public MTClipRectangle(PApplet applet, float x, float y, float z, float width, float height) {
-		super(applet, x, y, z, width, height);
+    /**
+     * Instantiates a new mT clip rectangle.
+     *
+     * @param applet the applet
+     * @param x      the x
+     * @param y      the y
+     * @param z      the z
+     * @param width  the width
+     * @param height the height
+     */
+    public MTClipRectangle(PApplet applet, float x, float y, float z, float width, float height) {
+        super(applet, x, y, z, width, height);
 
-		this.setStrokeWeight(1);
+        this.setStrokeWeight(1);
 
-		if (MT4jSettings.getInstance().isOpenGlMode()){
+        if (MT4jSettings.getInstance().isOpenGlMode()) {
 //			MTRectangle clipRect = new MTRectangle(x+0.25f, y+0.25f, z, width - 0.5f, height - 0.5f, applet);
-			MTRectangle clipRect = new MTRectangle(applet, x, y, z, width, height);
-			clipRect.setNoStroke(true);
-			clipRect.setBoundsBehaviour(MTRectangle.BOUNDS_ONLY_CHECK);
+            MTRectangle clipRect = new MTRectangle(applet, x, y, z, width, height);
+            clipRect.setNoStroke(true);
+            clipRect.setBoundsBehaviour(MTRectangle.BOUNDS_ONLY_CHECK);
 
-			GL gl = ((PGraphicsOpenGL)applet.g).gl;
-			Clip clipMask = new Clip(gl, clipRect);
-			this.setChildClip(clipMask);
-		}
-	}
-	
-	@Override
-	public void setSizeLocal(float width, float height) {
-		super.setSizeLocal(width, height);
-		if (MT4jSettings.getInstance().isOpenGlMode() && this.getClip() != null && this.getClip().getClipShape() instanceof MTRectangle){ 
-			MTRectangle clipRect = (MTRectangle)this.getClip().getClipShape();
-			//clipRect.setVertices(Vertex.getDeepVertexArrayCopy(this.getVerticesLocal()));
-			clipRect.setVertices(this.getVerticesLocal());
-		}
-	}
-	
-	@Override
-	public void setWidthLocal(float width) {
-		super.setWidthLocal(width);
-		if (MT4jSettings.getInstance().isOpenGlMode() && this.getClip() != null && this.getClip().getClipShape() instanceof MTRectangle){ 
-			MTRectangle clipRect = (MTRectangle)this.getClip().getClipShape();
-			//clipRect.setVertices(Vertex.getDeepVertexArrayCopy(this.getVerticesLocal()));
-			clipRect.setVertices(this.getVerticesLocal());
-		}
-	}
-	
-	@Override
-	public void setHeightLocal(float height) {
-		super.setHeightLocal(height);
-		if (MT4jSettings.getInstance().isOpenGlMode() && this.getClip() != null && this.getClip().getClipShape() instanceof MTRectangle){ 
-			MTRectangle clipRect = (MTRectangle)this.getClip().getClipShape();
-			//clipRect.setVertices(Vertex.getDeepVertexArrayCopy(this.getVerticesLocal()));
-			clipRect.setVertices(this.getVerticesLocal());
-		}
-	}
-	
-	
+            GL gl = ((PGraphicsOpenGL) applet.g).gl;
+            Clip clipMask = new Clip(gl, clipRect);
+            this.setChildClip(clipMask);
+        }
+    }
+
+    @Override
+    public void setSizeLocal(float width, float height) {
+        super.setSizeLocal(width, height);
+        if (MT4jSettings.getInstance().isOpenGlMode() && this.getClip() != null && this.getClip().getClipShape() instanceof MTRectangle) {
+            MTRectangle clipRect = (MTRectangle) this.getClip().getClipShape();
+            //clipRect.setVertices(Vertex.getDeepVertexArrayCopy(this.getVerticesLocal()));
+            clipRect.setVertices(this.getVerticesLocal());
+        }
+    }
+
+    @Override
+    public void setWidthLocal(float width) {
+        super.setWidthLocal(width);
+        if (MT4jSettings.getInstance().isOpenGlMode() && this.getClip() != null && this.getClip().getClipShape() instanceof MTRectangle) {
+            MTRectangle clipRect = (MTRectangle) this.getClip().getClipShape();
+            //clipRect.setVertices(Vertex.getDeepVertexArrayCopy(this.getVerticesLocal()));
+            clipRect.setVertices(this.getVerticesLocal());
+        }
+    }
+
+    @Override
+    public void setHeightLocal(float height) {
+        super.setHeightLocal(height);
+        if (MT4jSettings.getInstance().isOpenGlMode() && this.getClip() != null && this.getClip().getClipShape() instanceof MTRectangle) {
+            MTRectangle clipRect = (MTRectangle) this.getClip().getClipShape();
+            //clipRect.setVertices(Vertex.getDeepVertexArrayCopy(this.getVerticesLocal()));
+            clipRect.setVertices(this.getVerticesLocal());
+        }
+    }
+
 
 }

@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009, C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -20,6 +20,7 @@ package org.mt4j.input.inputSources;
 import org.mt4j.components.IMTTargetable;
 import org.mt4j.input.inputData.MTComponent3DInputEvent;
 import org.mt4j.input.inputData.MTInputEvent;
+
 /**
  * The listener interface for receiving iinputSource events.
  * The class that is interested in processing a iinputSource
@@ -28,38 +29,36 @@ import org.mt4j.input.inputData.MTInputEvent;
  * component's <code>addIinputSourceListener</code> method. When
  * the iinputSource event occurs, that object's appropriate
  * method is invoked.
- * 
- * @see MTComponent3DInputEvent
- * 
+ *
  * @author Christopher Ruff
+ * @see MTComponent3DInputEvent
  */
 public interface IInputSourceListener<T extends MTInputEvent> {
-	
-	
-	/**
-	 * Process input event.
-	 * 
-	 * @param inputEvent the input event
-	 * 
-	 * @return true, if successful
-	 */
-	public boolean processInputEvent(T inputEvent);
-	
-	
+
+
+    /**
+     * Process input event.
+     *
+     * @param inputEvent the input event
+     * @return true, if successful
+     */
+    public boolean processInputEvent(T inputEvent);
+
+
 //	/**
 //	 * Process the input event.
 //	 * 
 //	 * @param inputEvent the input event
 //	 */
 //	public void processInputEvent(MTInputEvent inputEvent);
-	
-	public boolean isDisabled();
-	
+
+    public boolean isDisabled();
+
 //	/**
 //	 * Gets the listen event type.
 //	 * 
 //	 * @return the listen event type
 //	 */
 //	abstract public Class<? extends MTInputEvent> getListenEventType();
-	
+
 }

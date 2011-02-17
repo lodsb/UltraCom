@@ -49,7 +49,7 @@ import processing.core.PApplet;
 /**
  * <code>Sphere</code> represents a 3D object with all points equidistance
  * from a center point.
- * 
+ *
  * @author Joshua Slack, Christopher Ruff
  * @version $Revision$, $Date$
  */
@@ -63,14 +63,19 @@ public class MTSphere extends MTTriangleMesh {
     // Spherical projection mode, donated by Ogli from the jME forums.
     @Deprecated
     public static final int TEX_PROJECTED = 1;
-        
+
     public enum TextureMode {
-        /** Wrap texture radially and along z-axis */
+        /**
+         * Wrap texture radially and along z-axis
+         */
         Original,
-        /** Wrap texure radially, but spherically project along z-axis */
+        /**
+         * Wrap texure radially, but spherically project along z-axis
+         */
         Projected,
-        /** Apply texture to each pole.  Eliminates polar distortion,
-         * but mirrors the texture across the equator 
+        /**
+         * Apply texture to each pole.  Eliminates polar distortion,
+         * but mirrors the texture across the equator
          */
         Polar
     }
@@ -81,9 +86,13 @@ public class MTSphere extends MTTriangleMesh {
 
     protected boolean useEvenSlices;
 
-    /** the distance from the center point each point falls on */
+    /**
+     * the distance from the center point each point falls on
+     */
     public float radius;
-    /** the center of the sphere */
+    /**
+     * the center of the sphere
+     */
     public Vector3D center;
 
     private static Vector3D tempVa = new Vector3D();
@@ -97,33 +106,25 @@ public class MTSphere extends MTTriangleMesh {
     /**
      * Constructs a sphere with center at the origin. For details, see the other
      * constructor.
-     * 
-     * @param name
-     *            Name of sphere.
-     * @param zSamples
-     *            The samples along the Z.
-     * @param radialSamples
-     *            The samples along the radial.
-     * @param radius
-     *            Radius of the sphere.
+     *
+     * @param name          Name of sphere.
+     * @param zSamples      The samples along the Z.
+     * @param radialSamples The samples along the radial.
+     * @param radius        Radius of the sphere.
      */
-    public MTSphere(PApplet pa, String name, int zSamples, int radialSamples, float radius,  TextureMode texMode) {
+    public MTSphere(PApplet pa, String name, int zSamples, int radialSamples, float radius, TextureMode texMode) {
         this(pa, name, new Vector3D(0, 0, 0), zSamples, radialSamples, radius);
     }
-    
+
 
     /**
      * Constructs a sphere with center at the origin. For details, see the other
      * constructor.
-     * 
-     * @param name
-     *            Name of sphere.
-     * @param zSamples
-     *            The samples along the Z.
-     * @param radialSamples
-     *            The samples along the radial.
-     * @param radius
-     *            Radius of the sphere.
+     *
+     * @param name          Name of sphere.
+     * @param zSamples      The samples along the Z.
+     * @param radialSamples The samples along the radial.
+     * @param radius        Radius of the sphere.
      */
     public MTSphere(PApplet pa, String name, int zSamples, int radialSamples, float radius) {
         this(pa, name, new Vector3D(0, 0, 0), zSamples, radialSamples, radius);
@@ -133,60 +134,48 @@ public class MTSphere extends MTTriangleMesh {
      * Constructs a sphere. All geometry data buffers are updated automatically.
      * Both zSamples and radialSamples increase the quality of the generated
      * sphere.
-     * 
-     * @param name
-     *            Name of the sphere.
-     * @param center
-     *            Center of the sphere.
-     * @param zSamples
-     *            The number of samples along the Z.
-     * @param radialSamples
-     *            The number of samples along the radial.
-     * @param radius
-     *            The radius of the sphere.
+     *
+     * @param name          Name of the sphere.
+     * @param center        Center of the sphere.
+     * @param zSamples      The number of samples along the Z.
+     * @param radialSamples The number of samples along the radial.
+     * @param radius        The radius of the sphere.
      */
     public MTSphere(PApplet pa, String name, Vector3D center, int zSamples,
-            int radialSamples, float radius) {
+                    int radialSamples, float radius) {
         this(pa, name, center, zSamples, radialSamples, radius, false, TextureMode.Original);
     }
 
     /**
      * Constructs a sphere. Additional arg to evenly space latitudinal slices
-     * 
-     * @param name
-     *            Name of the sphere.
-     * @param center
-     *            Center of the sphere.
-     * @param zSamples
-     *            The number of samples along the Z.
-     * @param radialSamples
-     *            The number of samples along the radial.
-     * @param radius
-     *            The radius of the sphere.
-     * @param useEvenSlices
-     *            Slice sphere evenly along the Z axis
+     *
+     * @param name          Name of the sphere.
+     * @param center        Center of the sphere.
+     * @param zSamples      The number of samples along the Z.
+     * @param radialSamples The number of samples along the radial.
+     * @param radius        The radius of the sphere.
+     * @param useEvenSlices Slice sphere evenly along the Z axis
      */
     public MTSphere(PApplet pa, String name, Vector3D center, int zSamples,
-            int radialSamples, float radius, boolean useEvenSlices, TextureMode texMode) {
+                    int radialSamples, float radius, boolean useEvenSlices, TextureMode texMode) {
         super(pa, new GeometryInfo(pa, new Vertex[]{}));
         this.textureMode = texMode;
         this.updateGeometry(pa, center, zSamples, radialSamples, radius, useEvenSlices);
-        
+
         this.setBoundsBehaviour(AbstractShape.BOUNDS_ONLY_CHECK);
-        
+
         this.setName(name);
     }
 
-    
-    
-    @Override
-	protected IBoundingShape computeDefaultBounds() {
-    	return new BoundingSphere(this);
-	}
 
-	/**
+    @Override
+    protected IBoundingShape computeDefaultBounds() {
+        return new BoundingSphere(this);
+    }
+
+    /**
      * Returns the center of this sphere.
-     * 
+     *
      * @return The sphere's center.
      */
     public Vector3D getCenter() {
@@ -213,7 +202,6 @@ public class MTSphere extends MTTriangleMesh {
     }
 
 
-    
 //    /**
 //     * builds the vertices based on the radius, center and radial and zSamples.
 //     */
@@ -453,7 +441,7 @@ public class MTSphere extends MTTriangleMesh {
 //        this.setGeometryInfo(geomInfo);
 //    }
 
-    
+
     /**
      * builds the vertices based on the radius, center and radial and zSamples.
      */
@@ -462,10 +450,10 @@ public class MTSphere extends MTTriangleMesh {
 //        setVertexCount((zSamples - 2) * (radialSamples + 1) + 2);
 //        setVertexBuffer(ToolsBuffers.createVector3Buffer(vertBuff,
 //                getVertexCount()));
-        
+
         int vertexCount = (zSamples - 2) * (radialSamples + 1) + 2;
         FloatBuffer vertexBuff = ToolsBuffers.createFloatBuffer(3 * vertexCount);
-        
+
         // allocate normals if requested
 //        setNormalBuffer(ToolsBuffers.createVector3Buffer(normBuff,
 //                getVertexCount()));
@@ -519,7 +507,7 @@ public class MTSphere extends MTTriangleMesh {
                 tempVc.setXYZ(afCos[iR], afSin[iR], 0);
                 Vector3D kRadial = tempVc;
                 tempVa = kRadial.getScaled(fSliceRadius);
-                
+
                 vertexBuff.put(kSliceCenter.x + tempVa.x).put(
                         kSliceCenter.y + tempVa.y).put(
                         kSliceCenter.z + tempVa.z);
@@ -541,7 +529,7 @@ public class MTSphere extends MTTriangleMesh {
                     texBuff.put(fRadialFraction).put(
                             ToolsMath.INV_PI
                                     * (ToolsMath.HALF_PI + ToolsMath
-                                            .asin(fZFraction)));
+                                    .asin(fZFraction)));
                 else if (textureMode == TextureMode.Polar) {
                     float r = (ToolsMath.HALF_PI - ToolsMath.abs(fAFraction)) / ToolsMath.PI;
                     float u = r * afCos[iR] + 0.5f;
@@ -563,10 +551,10 @@ public class MTSphere extends MTTriangleMesh {
                         .put(
                                 ToolsMath.INV_PI
                                         * (ToolsMath.HALF_PI + ToolsMath
-                                                .asin(fZFraction)));
+                                        .asin(fZFraction)));
             else if (textureMode == TextureMode.Polar) {
                 float r = (ToolsMath.HALF_PI - ToolsMath.abs(fAFraction)) / ToolsMath.PI;
-                texBuff.put(r+0.5f).put(0.5f);
+                texBuff.put(r + 0.5f).put(0.5f);
             }
 
             i++;
@@ -579,8 +567,8 @@ public class MTSphere extends MTTriangleMesh {
         normBuff.position(i * 3);
         if (true)
             normBuff.put(0).put(0).put(-1); // allow for inner
-                                                        // texture orientation
-                                                        // later.
+            // texture orientation
+            // later.
         else
             normBuff.put(0).put(0).put(1);
 
@@ -588,8 +576,7 @@ public class MTSphere extends MTTriangleMesh {
 
         if (textureMode == TextureMode.Polar) {
             texBuff.put(0.5f).put(0.5f);
-        }
-        else {
+        } else {
             texBuff.put(0.5f).put(0.0f);
         }
 
@@ -605,54 +592,51 @@ public class MTSphere extends MTTriangleMesh {
 
         if (textureMode == TextureMode.Polar) {
             texBuff.put(0.5f).put(0.5f);
-        }
-        else {
+        } else {
             texBuff.put(0.5f).put(1.0f);
         }
-        
-        
+
+
         Vertex[] verts = ToolsBuffers.getVertexArray(vertexBuff);
         Vector3D[] norms = ToolsBuffers.getVector3DArray(normBuff);
-        
+
         //Set texcoords to vertices
         float[] tex = ToolsBuffers.getFloatArray(texBuff);
-        for (int j = 0; j < tex.length/2; j++) {
-			float u = tex[j*2];
-			float v = tex[j*2+1];
-			verts[j].setTexCoordU(u);
-			verts[j].setTexCoordV(v);
-		}
-       
+        for (int j = 0; j < tex.length / 2; j++) {
+            float u = tex[j * 2];
+            float v = tex[j * 2 + 1];
+            verts[j].setTexCoordU(u);
+            verts[j].setTexCoordV(v);
+        }
+
         //get indices
         int[] indices = this.getIndexData();
 
-	    GeometryInfo geomInfo = new GeometryInfo(pa, verts, norms, indices);
-	    this.setGeometryInfo(geomInfo);
+        GeometryInfo geomInfo = new GeometryInfo(pa, verts, norms, indices);
+        this.setGeometryInfo(geomInfo);
     }
-    
-    
-    
+
+
     /**
-     * 
      * @param buf
      * @param fromPos
      * @param toPos
      */
     public static void copyInternalVector3(FloatBuffer buf, int fromPos, int toPos) {
-        ToolsBuffers.copyInternal(buf, fromPos*3, toPos*3, 3);
+        ToolsBuffers.copyInternal(buf, fromPos * 3, toPos * 3, 3);
     }
 
-    
-    
+
     /**
      * Gets the indices data for rendering the sphere.
+     *
      * @return the index data
      */
     private int[] getIndexData() {
-    	int triCount = (2 * (zSamples - 2) * radialSamples);
-    	
-    	IntBuffer indexBuff = ToolsBuffers.createIntBuffer(3 * triCount);
-    	
+        int triCount = (2 * (zSamples - 2) * radialSamples);
+
+        IntBuffer indexBuff = ToolsBuffers.createIntBuffer(3 * triCount);
+
         // allocate connectivity
 //        setTriangleQuantity(2 * (zSamples - 2) * radialSamples);
 //        setIndexBuffer(BufferUtils.createIntBuffer(3 * getTriangleCount()));
@@ -684,8 +668,8 @@ public class MTSphere extends MTTriangleMesh {
                 }
             }
         }
-        
-        int vertexCount = (zSamples - 2) * (radialSamples + 1) + 2; 
+
+        int vertexCount = (zSamples - 2) * (radialSamples + 1) + 2;
 
         // south pole triangles
         for (int i = 0; i < radialSamples; i++, index += 3) {
@@ -713,12 +697,11 @@ public class MTSphere extends MTTriangleMesh {
                 indexBuff.put(i + 1 + iOffset);
             }
         }
-        
+
         return ToolsBuffers.getIntArray(indexBuff);
     }
 
-    
-    
+
 //    /**
 //     * sets the indices for rendering the sphere.
 //     * @return 
@@ -815,8 +798,7 @@ public class MTSphere extends MTTriangleMesh {
 //    }
 
     /**
-     * @param textureMode
-     *            The textureMode to set.
+     * @param textureMode The textureMode to set.
      * @deprecated Use enum version of setTextureMode
      */
     @Deprecated
@@ -829,8 +811,7 @@ public class MTSphere extends MTTriangleMesh {
     }
 
     /**
-     * @param textureMode
-     *            The textureMode to set.
+     * @param textureMode The textureMode to set.
      */
     public void setTextureMode(TextureMode textureMode) {
         this.textureMode = textureMode;
@@ -839,13 +820,13 @@ public class MTSphere extends MTTriangleMesh {
 
     /**
      * Changes the information of the sphere into the given values.
-     * 
-     * @param center the center of the sphere.
-     * @param zSamples the number of zSamples of the sphere.
+     *
+     * @param center        the center of the sphere.
+     * @param zSamples      the number of zSamples of the sphere.
      * @param radialSamples the number of radial samples of the sphere.
-     * @param radius the radius of the sphere.
+     * @param radius        the radius of the sphere.
      */
-    public void updateGeometry(PApplet pa,Vector3D center, int zSamples, int radialSamples, float radius) {
+    public void updateGeometry(PApplet pa, Vector3D center, int zSamples, int radialSamples, float radius) {
         updateGeometry(pa, center, zSamples, radialSamples, radius, false);
     }
 
@@ -855,7 +836,7 @@ public class MTSphere extends MTTriangleMesh {
         this.radialSamples = radialSamples;
         this.radius = radius;
         this.useEvenSlices = useEvenSlices;
-       
+
         this.setGeometryData(pa);
 //        getIndexData();
     }

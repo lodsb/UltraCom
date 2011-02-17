@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009 Christopher Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -27,33 +27,36 @@ import processing.core.PGraphics;
 
 
 /**
- * The Class FillPaint. If added to a component, the specified fillpaint will be 
+ * The Class FillPaint. If added to a component, the specified fillpaint will be
  * drawn where the original component would have been drawn.
  * <br><strong>NOTE:</strong> A fillpaint can only be used for a single component.
  * <br><strong>NOTE:</strong> This is only supported by the OpenGL renderer!
+ *
  * @author Christopher Ruff
  */
-public class FillPaint { 
-	/** The gradient shape. */
-	protected MTComponent fillPaint;
-	
-	private GL gl;
+public class FillPaint {
+    /**
+     * The gradient shape.
+     */
+    protected MTComponent fillPaint;
 
-	private AbstractVisibleComponent clipShape;
-	
-	/**
-	 * Instantiates a new fill paint. The specified fillpaint will be 
-	 * drawn where the corresponding component would have been drawn.
-	 * 
-	 * @param gl the gl
-	 * @param fillPaint the fill paint
-	 */
-	public FillPaint(GL gl, AbstractVisibleComponent fillPaint) {
-		//super(gl);
-		this.gl = gl;
-		this.fillPaint = fillPaint;
+    private GL gl;
+
+    private AbstractVisibleComponent clipShape;
+
+    /**
+     * Instantiates a new fill paint. The specified fillpaint will be
+     * drawn where the corresponding component would have been drawn.
+     *
+     * @param gl        the gl
+     * @param fillPaint the fill paint
+     */
+    public FillPaint(GL gl, AbstractVisibleComponent fillPaint) {
+        //super(gl);
+        this.gl = gl;
+        this.fillPaint = fillPaint;
 //		this.clipShape = shape;
-	}
+    }
 
 //	public FillPaint(GL gl, AbstractVisibleComponent shape, MTComponent fillPaint) {
 //		//super(gl);
@@ -61,57 +64,57 @@ public class FillPaint {
 //		this.fillPaint = fillPaint;
 //		this.clipShape = shape;
 //	}
-	
 
-	/**
-	 * Pre.
-	 * 
-	 * @param g the g
-	 */
-	public void pre(PGraphics g) {
-		GLStencilUtil.getInstance().beginDrawClipShape(gl);
-	}
 
-	
-	/**
-	 * Post.
-	 * 
-	 * @param g the g
-	 */
-	public void post(PGraphics g) {
-		GLStencilUtil.getInstance().beginDrawClipped(gl);
-		drawFillPaint(g);
-		GLStencilUtil.getInstance().endClipping(gl, clipShape);
-	}
-	
-	/**
-	 * Draws the fill paint.
-	 * 
-	 * @param g the g
-	 */
-	protected void drawFillPaint(PGraphics g){
-		//Draw the fill paint clipped to the area of the original shape
-		fillPaint.drawComponent(g); 
-	}
-	
-	/**
-	 * Sets the shape to be fill painted. Usually this is called automatically
-	 * when the paint is added to a shape. So this method should not be invoked directly.
-	 * 
-	 * @param shape the new shape
-	 */
-	public void setShape(AbstractVisibleComponent shape){
-		this.clipShape = shape;
-	}
-	
-	/**
-	 * Gets the fill painted shape.
-	 * 
-	 * @return the shape
-	 */
-	public AbstractVisibleComponent getShape(){
-		return this.clipShape;
-	}
-	
-	
+    /**
+     * Pre.
+     *
+     * @param g the g
+     */
+    public void pre(PGraphics g) {
+        GLStencilUtil.getInstance().beginDrawClipShape(gl);
+    }
+
+
+    /**
+     * Post.
+     *
+     * @param g the g
+     */
+    public void post(PGraphics g) {
+        GLStencilUtil.getInstance().beginDrawClipped(gl);
+        drawFillPaint(g);
+        GLStencilUtil.getInstance().endClipping(gl, clipShape);
+    }
+
+    /**
+     * Draws the fill paint.
+     *
+     * @param g the g
+     */
+    protected void drawFillPaint(PGraphics g) {
+        //Draw the fill paint clipped to the area of the original shape
+        fillPaint.drawComponent(g);
+    }
+
+    /**
+     * Sets the shape to be fill painted. Usually this is called automatically
+     * when the paint is added to a shape. So this method should not be invoked directly.
+     *
+     * @param shape the new shape
+     */
+    public void setShape(AbstractVisibleComponent shape) {
+        this.clipShape = shape;
+    }
+
+    /**
+     * Gets the fill painted shape.
+     *
+     * @return the shape
+     */
+    public AbstractVisibleComponent getShape() {
+        return this.clipShape;
+    }
+
+
 }

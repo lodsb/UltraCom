@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009 C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -21,43 +21,45 @@ import org.mt4j.input.MTEvent;
 
 /**
  * The Class AnimationUpdateEvent.
+ *
  * @author Christopher Ruff
  */
 public class AnimationUpdateEvent extends MTEvent {
-	
-	/** The delta time. */
-	private long deltaTime;
-	
-	/**
-	 * Instantiates a new animation update event.
-	 * 
-	 * @param source the source
-	 * @param deltaTime the delta time
-	 */
-	public AnimationUpdateEvent(Object source, long deltaTime) {
-		super(source);
-		
-		this.deltaTime = deltaTime;
-	}
 
-	/**
-	 * Gets the delta time.
-	 * 
-	 * @return the delta time
-	 */
-	public long getDeltaTime() {
-		return deltaTime;
-	}
+    /**
+     * The delta time.
+     */
+    private long deltaTime;
 
-	/**
-	 * Sets the delta time.
-	 * 
-	 * @param deltaTime the new delta time
-	 */
-	public void setDeltaTime(long deltaTime) {
-		this.deltaTime = deltaTime;
-	}
-	
-	
+    /**
+     * Instantiates a new animation update event.
+     *
+     * @param source    the source
+     * @param deltaTime the delta time
+     */
+    public AnimationUpdateEvent(Object source, long deltaTime) {
+        super(source);
+
+        this.deltaTime = deltaTime;
+    }
+
+    /**
+     * Gets the delta time.
+     *
+     * @return the delta time
+     */
+    public long getDeltaTime() {
+        return deltaTime;
+    }
+
+    /**
+     * Sets the delta time.
+     *
+     * @param deltaTime the new delta time
+     */
+    public void setDeltaTime(long deltaTime) {
+        this.deltaTime = deltaTime;
+    }
+
 
 }

@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009, C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -25,18 +25,17 @@ package org.mt4j.components;
  * component's <code>addStateChangeListener<code> method. When
  * the stateChange event occurs, that object's appropriate
  * method is invoked.
- * 
- * @see StateChangeEvent
- * 
+ *
  * @author Christopher Ruff
+ * @see StateChangeEvent
  */
 public interface StateChangeListener {
-	
-	/**
-	 * State changed.
-	 * 
-	 * @param evt the evt
-	 */
-	public void stateChanged(StateChangeEvent evt);
+
+    /**
+     * State changed.
+     *
+     * @param evt the evt
+     */
+    public void stateChanged(StateChangeEvent evt);
 
 }

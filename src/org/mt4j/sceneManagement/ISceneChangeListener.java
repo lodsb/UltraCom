@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009, C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -25,18 +25,17 @@ package org.mt4j.sceneManagement;
  * component's <code>addSceneChangeListener</code> method. When
  * the SceneChange event occurs, that object's appropriate
  * method is invoked.
- * 
- * @see org.mt4j.sceneManagement.SceneChangeEvent
- * 
+ *
  * @author Christopher Ruff
+ * @see org.mt4j.sceneManagement.SceneChangeEvent
  */
 public interface ISceneChangeListener {
-	
-	/**
-	 * Process scene change event.
-	 * 
-	 * @param sc the sc
-	 */
-	public void processSceneChangeEvent(SceneChangeEvent sc);
+
+    /**
+     * Process scene change event.
+     *
+     * @param sc the sc
+     */
+    public void processSceneChangeEvent(SceneChangeEvent sc);
 
 }

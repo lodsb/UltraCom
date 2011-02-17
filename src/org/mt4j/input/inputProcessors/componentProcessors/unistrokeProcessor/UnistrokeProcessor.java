@@ -14,138 +14,149 @@ import org.mt4j.util.math.Vector3D;
 import processing.core.PApplet;
 
 // TODO: Auto-generated Javadoc
+
 /**
  * The Class UnistrokeProcessor. A component input processor to recognize pre-recorded gestures.
  */
 public class UnistrokeProcessor extends AbstractCursorProcessor {
-	
-	/** The pa. */
-	private PApplet pa;
-	/** The plane normal. */
-	private Vector3D planeNormal;
-	/** The point in plane. */
-	private Vector3D pointInPlane;
-	
-	
-	/** The context. */
-	private UnistrokeContext context;
-	
-	/** The recognizer. */
-	private Recognizer recognizer;
-	
-	/** The du. */
-	private UnistrokeUtils du;
+
+    /**
+     * The pa.
+     */
+    private PApplet pa;
+    /**
+     * The plane normal.
+     */
+    private Vector3D planeNormal;
+    /**
+     * The point in plane.
+     */
+    private Vector3D pointInPlane;
 
 
-	/**
-	 * Instantiates a new unistroke processor.
-	 *
-	 * @param pa the pa
-	 */
-	public UnistrokeProcessor(PApplet pa) { 
-		super();
-		this.pa = pa;
-		planeNormal = new Vector3D(0, 0, 1);
-		pointInPlane = new Vector3D(0, 0, 0);
-		
-		this.setLockPriority(1);
-		
-		du = new UnistrokeUtils();
-		recognizer = du.getRecognizer();
-	}
-	
-	/**
-	 * Adds the template.
-	 *
-	 * @param gesture the gesture
-	 * @param direction the direction
-	 */
-	public void addTemplate(UnistrokeGesture gesture, Direction direction){
-		recognizer.addTemplate(gesture, direction);
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.mt4j.input.inputProcessors.componentProcessors.AbstractCursorProcessor#cursorStarted(org.mt4j.input.inputData.InputCursor, org.mt4j.input.inputData.MTFingerInputEvt)
-	 */
-	@Override
-	public void cursorStarted(InputCursor inputCursor, MTFingerInputEvt currentEvent) {
-		if (this.canLock(inputCursor)) {
-			context = new UnistrokeContext(pa, planeNormal, pointInPlane, inputCursor, recognizer, du, inputCursor.getTarget());
-			if (!context.gestureAborted) {
-				this.getLock(inputCursor);
-				context.update(inputCursor);
-				
-				//FIXME ?? 3 times? REMOVE?
-				context.update(inputCursor);
-				context.update(inputCursor);
-				context.update(inputCursor);
-				
-				this.fireGestureEvent(new UnistrokeEvent(this, MTGestureEvent.GESTURE_DETECTED, inputCursor.getCurrentTarget(), context.getVisualizer(), UnistrokeGesture.NOGESTURE));
-			}
-		}
+    /**
+     * The context.
+     */
+    private UnistrokeContext context;
 
-	}
+    /**
+     * The recognizer.
+     */
+    private Recognizer recognizer;
 
-	
-	
-	/* (non-Javadoc)
-	 * @see org.mt4j.input.inputProcessors.componentProcessors.AbstractCursorProcessor#cursorUpdated(org.mt4j.input.inputData.InputCursor, org.mt4j.input.inputData.MTFingerInputEvt)
-	 */
-	@Override
-	public void cursorUpdated(InputCursor inputCursor, MTFingerInputEvt currentEvent) {
-		if (getLockedCursors().contains(inputCursor) && context != null) {
-			if (!context.gestureAborted) {
-				context.update(inputCursor);
-				this.fireGestureEvent(new UnistrokeEvent(this, MTGestureEvent.GESTURE_UPDATED, inputCursor.getCurrentTarget(), context.getVisualizer(), UnistrokeGesture.NOGESTURE));
-			}
-		}
+    /**
+     * The du.
+     */
+    private UnistrokeUtils du;
 
-	}
 
-	
-	/* (non-Javadoc)
-	 * @see org.mt4j.input.inputProcessors.componentProcessors.AbstractCursorProcessor#cursorEnded(org.mt4j.input.inputData.InputCursor, org.mt4j.input.inputData.MTFingerInputEvt)
-	 */
-	@Override
-	public void cursorEnded(InputCursor inputCursor, MTFingerInputEvt currentEvent) {
-		if (getLockedCursors().contains(inputCursor) && context != null) {
-			this.fireGestureEvent(new UnistrokeEvent(this, MTGestureEvent.GESTURE_ENDED, inputCursor.getCurrentTarget(), context.getVisualizer(), context.recognizeGesture()));
-			
-			context.getVisualizer().destroy();
-			this.unLock(inputCursor);
-			context = null;
-		}
-	}
+    /**
+     * Instantiates a new unistroke processor.
+     *
+     * @param pa the pa
+     */
+    public UnistrokeProcessor(PApplet pa) {
+        super();
+        this.pa = pa;
+        planeNormal = new Vector3D(0, 0, 1);
+        pointInPlane = new Vector3D(0, 0, 0);
 
-	
-	
-	/* (non-Javadoc)
-	 * @see org.mt4j.input.inputProcessors.componentProcessors.AbstractCursorProcessor#cursorLocked(org.mt4j.input.inputData.InputCursor, org.mt4j.input.inputProcessors.IInputProcessor)
-	 */
-	@Override
-	public void cursorLocked(InputCursor cursor, IInputProcessor lockingprocessor) {
-		if (getLockedCursors().contains(cursor) && context != null) {
-			this.fireGestureEvent(new UnistrokeEvent(this, MTGestureEvent.GESTURE_ENDED, cursor.getCurrentTarget(), context.getVisualizer(), UnistrokeGesture.NOGESTURE));
-		}
+        this.setLockPriority(1);
 
-	}
+        du = new UnistrokeUtils();
+        recognizer = du.getRecognizer();
+    }
 
-	/* (non-Javadoc)
-	 * @see org.mt4j.input.inputProcessors.componentProcessors.AbstractCursorProcessor#cursorUnlocked(org.mt4j.input.inputData.InputCursor)
-	 */
-	@Override
-	public void cursorUnlocked(InputCursor cursor) {
+    /**
+     * Adds the template.
+     *
+     * @param gesture   the gesture
+     * @param direction the direction
+     */
+    public void addTemplate(UnistrokeGesture gesture, Direction direction) {
+        recognizer.addTemplate(gesture, direction);
+    }
 
-	}
+    /* (non-Javadoc)
+      * @see org.mt4j.input.inputProcessors.componentProcessors.AbstractCursorProcessor#cursorStarted(org.mt4j.input.inputData.InputCursor, org.mt4j.input.inputData.MTFingerInputEvt)
+      */
+    @Override
+    public void cursorStarted(InputCursor inputCursor, MTFingerInputEvt currentEvent) {
+        if (this.canLock(inputCursor)) {
+            context = new UnistrokeContext(pa, planeNormal, pointInPlane, inputCursor, recognizer, du, inputCursor.getTarget());
+            if (!context.gestureAborted) {
+                this.getLock(inputCursor);
+                context.update(inputCursor);
 
-	
-	/* (non-Javadoc)
-	 * @see org.mt4j.input.inputProcessors.componentProcessors.AbstractComponentProcessor#getName()
-	 */
-	@Override
-	public String getName() {
-		return "MTDollarGesture Processor";
-	}
+                //FIXME ?? 3 times? REMOVE?
+                context.update(inputCursor);
+                context.update(inputCursor);
+                context.update(inputCursor);
 
-	
+                this.fireGestureEvent(new UnistrokeEvent(this, MTGestureEvent.GESTURE_DETECTED, inputCursor.getCurrentTarget(), context.getVisualizer(), UnistrokeGesture.NOGESTURE));
+            }
+        }
+
+    }
+
+
+    /* (non-Javadoc)
+      * @see org.mt4j.input.inputProcessors.componentProcessors.AbstractCursorProcessor#cursorUpdated(org.mt4j.input.inputData.InputCursor, org.mt4j.input.inputData.MTFingerInputEvt)
+      */
+    @Override
+    public void cursorUpdated(InputCursor inputCursor, MTFingerInputEvt currentEvent) {
+        if (getLockedCursors().contains(inputCursor) && context != null) {
+            if (!context.gestureAborted) {
+                context.update(inputCursor);
+                this.fireGestureEvent(new UnistrokeEvent(this, MTGestureEvent.GESTURE_UPDATED, inputCursor.getCurrentTarget(), context.getVisualizer(), UnistrokeGesture.NOGESTURE));
+            }
+        }
+
+    }
+
+
+    /* (non-Javadoc)
+      * @see org.mt4j.input.inputProcessors.componentProcessors.AbstractCursorProcessor#cursorEnded(org.mt4j.input.inputData.InputCursor, org.mt4j.input.inputData.MTFingerInputEvt)
+      */
+    @Override
+    public void cursorEnded(InputCursor inputCursor, MTFingerInputEvt currentEvent) {
+        if (getLockedCursors().contains(inputCursor) && context != null) {
+            this.fireGestureEvent(new UnistrokeEvent(this, MTGestureEvent.GESTURE_ENDED, inputCursor.getCurrentTarget(), context.getVisualizer(), context.recognizeGesture()));
+
+            context.getVisualizer().destroy();
+            this.unLock(inputCursor);
+            context = null;
+        }
+    }
+
+
+    /* (non-Javadoc)
+      * @see org.mt4j.input.inputProcessors.componentProcessors.AbstractCursorProcessor#cursorLocked(org.mt4j.input.inputData.InputCursor, org.mt4j.input.inputProcessors.IInputProcessor)
+      */
+    @Override
+    public void cursorLocked(InputCursor cursor, IInputProcessor lockingprocessor) {
+        if (getLockedCursors().contains(cursor) && context != null) {
+            this.fireGestureEvent(new UnistrokeEvent(this, MTGestureEvent.GESTURE_ENDED, cursor.getCurrentTarget(), context.getVisualizer(), UnistrokeGesture.NOGESTURE));
+        }
+
+    }
+
+    /* (non-Javadoc)
+      * @see org.mt4j.input.inputProcessors.componentProcessors.AbstractCursorProcessor#cursorUnlocked(org.mt4j.input.inputData.InputCursor)
+      */
+    @Override
+    public void cursorUnlocked(InputCursor cursor) {
+
+    }
+
+
+    /* (non-Javadoc)
+      * @see org.mt4j.input.inputProcessors.componentProcessors.AbstractComponentProcessor#getName()
+      */
+    @Override
+    public String getName() {
+        return "MTDollarGesture Processor";
+    }
+
+
 }

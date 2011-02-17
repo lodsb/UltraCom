@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009, C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -27,63 +27,69 @@ import org.mt4j.util.math.Vector3D;
 
 /**
  * The Class PanEvent.
+ *
  * @author Christopher Ruff
  */
 public class PanEvent extends MTGestureEvent {
 
-	/** The first motion. */
-	private InputCursor firstMotion;
-	
-	/** The translation vector. */
-	private Vector3D translationVector;
-	
-	/** The camera. */
-	private Icamera camera;
+    /**
+     * The first motion.
+     */
+    private InputCursor firstMotion;
 
-	/**
-	 * Instantiates a new pan event.
-	 * 
-	 * @param source the source
-	 * @param id the id
-	 * @param targetComponent the target component
-	 * @param firstFinger the first finger
-	 * @param translationVector the translation vector
-	 * @param camera the camera
-	 */
-	public PanEvent(IInputProcessor source, int id, IMTComponent3D targetComponent, InputCursor firstFinger, Vector3D translationVector, Icamera camera) {
-		super(source, id, targetComponent);
-		this.firstMotion = firstFinger;
-		this.translationVector = translationVector;
-		this.camera = camera;
-	}
+    /**
+     * The translation vector.
+     */
+    private Vector3D translationVector;
 
-	/**
-	 * Gets the first motion.
-	 * 
-	 * @return the first motion
-	 */
-	public InputCursor getFirstCursor() {
-		return firstMotion;
-	}
+    /**
+     * The camera.
+     */
+    private Icamera camera;
 
-	/**
-	 * Gets the translation vector.
-	 * 
-	 * @return the translation vector
-	 */
-	public Vector3D getTranslationVector() {
-		return translationVector;
-	}
+    /**
+     * Instantiates a new pan event.
+     *
+     * @param source            the source
+     * @param id                the id
+     * @param targetComponent   the target component
+     * @param firstFinger       the first finger
+     * @param translationVector the translation vector
+     * @param camera            the camera
+     */
+    public PanEvent(IInputProcessor source, int id, IMTComponent3D targetComponent, InputCursor firstFinger, Vector3D translationVector, Icamera camera) {
+        super(source, id, targetComponent);
+        this.firstMotion = firstFinger;
+        this.translationVector = translationVector;
+        this.camera = camera;
+    }
 
-	/**
-	 * Gets the camera.
-	 * 
-	 * @return the camera
-	 */
-	public Icamera getCamera() {
-		return camera;
-	}
+    /**
+     * Gets the first motion.
+     *
+     * @return the first motion
+     */
+    public InputCursor getFirstCursor() {
+        return firstMotion;
+    }
 
-	
-	
+    /**
+     * Gets the translation vector.
+     *
+     * @return the translation vector
+     */
+    public Vector3D getTranslationVector() {
+        return translationVector;
+    }
+
+    /**
+     * Gets the camera.
+     *
+     * @return the camera
+     */
+    public Icamera getCamera() {
+        return camera;
+    }
+
+
 }

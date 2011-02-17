@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009 Christopher Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -29,24 +29,22 @@ import org.mt4j.input.inputData.MTInputEvent;
  * component's <code>addIMTInputEventListener<code> method. When
  * the IMTInputEvent event occurs, that object's appropriate
  * method is invoked.
- * 
- * @see MTComponent3DInputEvent
- * 
+ *
  * @author Christopher Ruff
+ * @see MTComponent3DInputEvent
  */
 
 @SuppressWarnings("rawtypes")
 public interface IMTInputEventListener<T extends MTInputEvent> {
-	
-	/**
-	 * Process input event.
-	 * 
-	 * @param inEvt the in evt
-	 * 
-	 * @return true, if successful
-	 */
-	public boolean processInputEvent(T inEvt);
-	
+
+    /**
+     * Process input event.
+     *
+     * @param inEvt the in evt
+     * @return true, if successful
+     */
+    public boolean processInputEvent(T inEvt);
+
 
 //	/**
 //	 * Process input event.

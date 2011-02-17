@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009 Christopher Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -37,117 +37,120 @@ import processing.core.PGraphics;
  * This can be used to restrict drawing of a component, or a components's children
  * to only the area of the specified clipping shape/area.
  * <br><strong>NOTE:</strong> Only supported by the OpenGL renderer!
- * 
+ *
  * @author Christopher Ruff
- * @since 0.81
  * @see org.mt4j.components.MTComponent#setClip
+ * @since 0.81
  */
 public class Clip {
-	
-	/** The clip shape. */
-	private AbstractVisibleComponent clipShape;
-	
-	/** The gl. */
-	private GL gl;
-	
-	/**
-	 * Instantiates a new clip.
-	 * The specified clipping values are assumed to be in the coordinate system
-	 * as the clipped component.
-	 * <br>NOTE: CLIPPING IS ONLY AVAILABLE USING THE OPENGL RENDERER!
-	 * 
-	 * @param pApplet the applet
-	 * @param x the x
-	 * @param y the y
-	 * @param width the width
-	 * @param height the height
-	 */
-	public Clip(PApplet pApplet, float x, float y, float width, float height) {
-		MTRectangle clipRect = new MTRectangle(pApplet, x, y, width, height);
-		clipRect.setNoStroke(true);
-		if (clipRect.getBounds() == null ){
-			clipRect.setBounds(new BoundsZPlaneRectangle(clipRect));
-		}else{
-			if (!(clipRect.getBounds() instanceof BoundsZPlaneRectangle)){
-				clipRect.setBounds(new BoundsZPlaneRectangle(clipRect));
-			}
-		}
-		clipRect.setBoundsBehaviour(AbstractShape.BOUNDS_ONLY_CHECK);	
-		this.clipShape = clipRect;
-		
-		if (MT4jSettings.getInstance().isOpenGlMode()){
-			this.gl = Tools3D.getGL(pApplet);	
-		}
-	}
-	
-	/**
-	 * Instantiates a new clip.
-	 * The specified clipping shape is assumed to be in the same 
-	 * coordinate system as the clipped component.
-	 * <br>NOTE: CLIPPING IS ONLY AVAILABLE USING THE OPENGL RENDERER!
-	 * 
-	 * @param clipShape the clip shape
-	 */
-	public Clip(AbstractVisibleComponent clipShape) {
-		this(Tools3D.getGL(clipShape.getRenderer()), clipShape);
-	}
-	
-	
-	/**
-	 * Instantiates a new clip.
-	 * The specified clipping shape is assumed to be in the same 
-	 * coordinate system as the clipped component.
-	 * <br>NOTE: CLIPPING IS ONLY AVAILABLE USING THE OPENGL RENDERER!
-	 * 
-	 * @param gl the gl
-	 * @param clipShape the clip shape
-	 */
-	public Clip(GL gl, AbstractVisibleComponent clipShape) {
-		if (MT4jSettings.getInstance().isOpenGlMode()){
-			this.gl = Tools3D.getGL(clipShape.getRenderer());	
-		}
-		this.clipShape = clipShape;
-	}
-	
-	/**
-	 * Enable clipping with the clipping shape.
-	 * 
-	 * @param g the g
-	 */
-	public void enableClip(PGraphics g){
-		GLStencilUtil.getInstance().beginDrawClipShape(gl);
-		this.clipShape.drawComponent(g);
-		GLStencilUtil.getInstance().beginDrawClipped(gl);
-	}
-	
-	/**
-	 * Disable clipping with the clipping shape.
-	 * 
-	 * @param g the g
-	 */
-	public void disableClip(PGraphics g){
-		GLStencilUtil.getInstance().endClipping(gl, clipShape);
-	}
-	
-	/**
-	 * Gets the clip shape.
-	 * 
-	 * @return the clip shape
-	 */
-	public AbstractVisibleComponent getClipShape() {
-		return this.clipShape;
-	}
-	
-	/**
-	 * Gets the clip shape intersection local.
-	 * 
-	 * @param ray the ray
-	 * 
-	 * @return the clip shape intersection local
-	 */
-	public Vector3D getClipShapeIntersectionLocal(Ray ray){
-		return clipShape.getIntersectionLocal(ray);
-	}
 
-	
+    /**
+     * The clip shape.
+     */
+    private AbstractVisibleComponent clipShape;
+
+    /**
+     * The gl.
+     */
+    private GL gl;
+
+    /**
+     * Instantiates a new clip.
+     * The specified clipping values are assumed to be in the coordinate system
+     * as the clipped component.
+     * <br>NOTE: CLIPPING IS ONLY AVAILABLE USING THE OPENGL RENDERER!
+     *
+     * @param pApplet the applet
+     * @param x       the x
+     * @param y       the y
+     * @param width   the width
+     * @param height  the height
+     */
+    public Clip(PApplet pApplet, float x, float y, float width, float height) {
+        MTRectangle clipRect = new MTRectangle(pApplet, x, y, width, height);
+        clipRect.setNoStroke(true);
+        if (clipRect.getBounds() == null) {
+            clipRect.setBounds(new BoundsZPlaneRectangle(clipRect));
+        } else {
+            if (!(clipRect.getBounds() instanceof BoundsZPlaneRectangle)) {
+                clipRect.setBounds(new BoundsZPlaneRectangle(clipRect));
+            }
+        }
+        clipRect.setBoundsBehaviour(AbstractShape.BOUNDS_ONLY_CHECK);
+        this.clipShape = clipRect;
+
+        if (MT4jSettings.getInstance().isOpenGlMode()) {
+            this.gl = Tools3D.getGL(pApplet);
+        }
+    }
+
+    /**
+     * Instantiates a new clip.
+     * The specified clipping shape is assumed to be in the same
+     * coordinate system as the clipped component.
+     * <br>NOTE: CLIPPING IS ONLY AVAILABLE USING THE OPENGL RENDERER!
+     *
+     * @param clipShape the clip shape
+     */
+    public Clip(AbstractVisibleComponent clipShape) {
+        this(Tools3D.getGL(clipShape.getRenderer()), clipShape);
+    }
+
+
+    /**
+     * Instantiates a new clip.
+     * The specified clipping shape is assumed to be in the same
+     * coordinate system as the clipped component.
+     * <br>NOTE: CLIPPING IS ONLY AVAILABLE USING THE OPENGL RENDERER!
+     *
+     * @param gl        the gl
+     * @param clipShape the clip shape
+     */
+    public Clip(GL gl, AbstractVisibleComponent clipShape) {
+        if (MT4jSettings.getInstance().isOpenGlMode()) {
+            this.gl = Tools3D.getGL(clipShape.getRenderer());
+        }
+        this.clipShape = clipShape;
+    }
+
+    /**
+     * Enable clipping with the clipping shape.
+     *
+     * @param g the g
+     */
+    public void enableClip(PGraphics g) {
+        GLStencilUtil.getInstance().beginDrawClipShape(gl);
+        this.clipShape.drawComponent(g);
+        GLStencilUtil.getInstance().beginDrawClipped(gl);
+    }
+
+    /**
+     * Disable clipping with the clipping shape.
+     *
+     * @param g the g
+     */
+    public void disableClip(PGraphics g) {
+        GLStencilUtil.getInstance().endClipping(gl, clipShape);
+    }
+
+    /**
+     * Gets the clip shape.
+     *
+     * @return the clip shape
+     */
+    public AbstractVisibleComponent getClipShape() {
+        return this.clipShape;
+    }
+
+    /**
+     * Gets the clip shape intersection local.
+     *
+     * @param ray the ray
+     * @return the clip shape intersection local
+     */
+    public Vector3D getClipShapeIntersectionLocal(Ray ray) {
+        return clipShape.getIntersectionLocal(ray);
+    }
+
+
 }

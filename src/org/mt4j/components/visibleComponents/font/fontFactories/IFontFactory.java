@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009, C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -24,46 +24,46 @@ import processing.core.PApplet;
 
 /**
  * A factory for creating IFont objects.
+ *
  * @author Christopher Ruff
  */
 public interface IFontFactory {
-	
-	/**
-	 * Creates a new IFont object.
-	 * 
-	 * @param pa the pa
-	 * @param svgFontFileName the svg font file name
-	 * @param fontSize the font size
-	 * @param fillColor the fill color
-	 * @param strokeColor the stroke color
-	 * 
-	 * @return the iFont
-	 */
-	public IFont createFont(
-			PApplet pa, 
-			String svgFontFileName, 
-			int fontSize, 
-			MTColor fillColor, 
-			MTColor strokeColor);
-	
-	
-	/**
-	 * Creates a new IFont object.
-	 *
-	 * @param pa the pa
-	 * @param svgFontFileName the svg font file name
-	 * @param fontSize the font size
-	 * @param fillColor the fill color
-	 * @param strokeColor the stroke color
-	 * @param antiAliased the anti aliased
-	 * @return the iFont
-	 */
-	public IFont createFont(
-			PApplet pa, 
-			String svgFontFileName, 
-			int fontSize, 
-			MTColor fillColor, 
-			MTColor strokeColor,
-			boolean antiAliased
-			);
+
+    /**
+     * Creates a new IFont object.
+     *
+     * @param pa              the pa
+     * @param svgFontFileName the svg font file name
+     * @param fontSize        the font size
+     * @param fillColor       the fill color
+     * @param strokeColor     the stroke color
+     * @return the iFont
+     */
+    public IFont createFont(
+            PApplet pa,
+            String svgFontFileName,
+            int fontSize,
+            MTColor fillColor,
+            MTColor strokeColor);
+
+
+    /**
+     * Creates a new IFont object.
+     *
+     * @param pa              the pa
+     * @param svgFontFileName the svg font file name
+     * @param fontSize        the font size
+     * @param fillColor       the fill color
+     * @param strokeColor     the stroke color
+     * @param antiAliased     the anti aliased
+     * @return the iFont
+     */
+    public IFont createFont(
+            PApplet pa,
+            String svgFontFileName,
+            int fontSize,
+            MTColor fillColor,
+            MTColor strokeColor,
+            boolean antiAliased
+    );
 }

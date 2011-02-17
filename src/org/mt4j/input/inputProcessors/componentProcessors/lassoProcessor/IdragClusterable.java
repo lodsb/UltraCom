@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009, C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -23,31 +23,31 @@ import org.mt4j.util.math.Vector3D;
 
 /**
  * The Interface IdragClusterable.
+ *
  * @author Christopher Ruff
  */
-public interface IdragClusterable extends IMTComponent3D{
-	
-	/**
-	 * Gets the center point global.
-	 * 
-	 * @return the center point global
-	 */
-	public Vector3D getCenterPointGlobal();
-	
-	/**
-	 * Sets the selected.
-	 * 
-	 * @param selected the new selected
-	 */
-	public void setSelected(boolean selected);
-	
-	/**
-	 * Checks if is selected.
-	 * 
-	 * @return true, if is selected
-	 */
-	public boolean isSelected();
-	
-	
+public interface IdragClusterable extends IMTComponent3D {
+
+    /**
+     * Gets the center point global.
+     *
+     * @return the center point global
+     */
+    public Vector3D getCenterPointGlobal();
+
+    /**
+     * Sets the selected.
+     *
+     * @param selected the new selected
+     */
+    public void setSelected(boolean selected);
+
+    /**
+     * Checks if is selected.
+     *
+     * @return true, if is selected
+     */
+    public boolean isSelected();
+
 
 }

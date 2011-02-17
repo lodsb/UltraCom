@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009, C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -23,27 +23,27 @@ import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
  * The Interface IclickableButton.
  */
 public interface IclickableButton {
-	
-	/**
-	 * Fire action performed.
-	 * 
-	 * @param ce the ce
-	 */
-	public void fireActionPerformed(TapEvent ce);
-	
-	
-	/**
-	 * Sets the selected.
-	 * 
-	 * @param selected the new selected
-	 */
-	public void setSelected(boolean selected);
-	
-	/**
-	 * Checks if is selected.
-	 * 
-	 * @return true, if is selected
-	 */
-	public boolean isSelected();
+
+    /**
+     * Fire action performed.
+     *
+     * @param ce the ce
+     */
+    public void fireActionPerformed(TapEvent ce);
+
+
+    /**
+     * Sets the selected.
+     *
+     * @param selected the new selected
+     */
+    public void setSelected(boolean selected);
+
+    /**
+     * Checks if is selected.
+     *
+     * @return true, if is selected
+     */
+    public boolean isSelected();
 
 }

@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009 C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -24,47 +24,47 @@ import org.mt4j.input.inputData.MTInputEvent;
 
 /**
  * The Interface IInputProcessor.
- * 
+ *
  * @author Christopher Ruff
  */
 public interface IInputProcessor<T extends MTInputEvent> {
-	
+
 //	/**
 //	 * Gets the motion locking priority.
 //	 * 
 //	 * @return the locking priority
 //	 */
 //	public int getLockPriority();
-	
-	
+
+
 //	/**
 //	 * Process input evt implementation.
 //	 * 
 //	 * @param inputEvent the input event
 //	 */
 //	abstract public void processInputEvtImpl(MTInputEvent inputEvent);
-	
-	/**
-	 * Process input evt.
-	 * 
-	 * @param inputEvent the input event
-	 */
-	abstract public boolean processInputEvent(T inputEvent);
-	
-	
-	/**
-	 * Checks if is disabled.
-	 * 
-	 * @return true, if is disabled
-	 */
-	public boolean isDisabled();
 
-	/**
-	 * Sets the disabled.
-	 * 
-	 * @param disabled the new disabled
-	 */
-	public void setDisabled(boolean disabled);
+    /**
+     * Process input evt.
+     *
+     * @param inputEvent the input event
+     */
+    abstract public boolean processInputEvent(T inputEvent);
+
+
+    /**
+     * Checks if is disabled.
+     *
+     * @return true, if is disabled
+     */
+    public boolean isDisabled();
+
+    /**
+     * Sets the disabled.
+     *
+     * @param disabled the new disabled
+     */
+    public void setDisabled(boolean disabled);
 
 
 }

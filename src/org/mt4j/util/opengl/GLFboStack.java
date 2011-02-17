@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2010 Christopher Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -30,111 +30,125 @@ import org.apache.log4j.SimpleLayout;
  * The FBO stack manages the current opengl drawing target. It allows to switch drawing to/from different
  * frame buffer objects.
  * Usage:<br>
- * <br>GLFboStack.getInstance(gl).pushFBO(); //saves the current render target/frame buffer 
+ * <br>GLFboStack.getInstance(gl).pushFBO(); //saves the current render target/frame buffer
  * <br>GLFboStack.getInstance(gl).useFBO(glFBO); //changes to another frame buffer
  * <br>GLFboStack.getInstance(gl).popFBO() //switches back to the previously saved frame buffer
+ *
  * @author Christopher Ruff
  */
-public class GLFboStack{
-	/** The Constant logger. */
-	private static final Logger logger = Logger.getLogger(GLFboStack.class.getName());
-	static{
+public class GLFboStack {
+    /**
+     * The Constant logger.
+     */
+    private static final Logger logger = Logger.getLogger(GLFboStack.class.getName());
+
+    static {
 //		logger.setLevel(Level.ERROR);
-		SimpleLayout l = new SimpleLayout();
-		ConsoleAppender ca = new ConsoleAppender(l);
-		logger.addAppender(ca);
-	}
-	
-	/** The gl. */
-	public GL gl;
-	
-	/** The current fbo. */
-	protected int currentFBO;
-	
-	/** The fbo name stack. */
-	protected Stack<Integer> fboNameStack;
-	
-	/** The instance. */
-	private static GLFboStack instance = null;
+        SimpleLayout l = new SimpleLayout();
+        ConsoleAppender ca = new ConsoleAppender(l);
+        logger.addAppender(ca);
+    }
 
-	/**
-	 * Instantiates a new gL fbo stack.
-	 * @param gl the gl
-	 */
-	private GLFboStack(GL gl){
-		this.gl = gl;
-		fboNameStack = new Stack<Integer>();
-		currentFBO = 0;
-	}
-	
-	/**
-	 * Gets the single instance of GLFboStack.
-	 *
-	 * @return single instance of GLFboStack
-	 */
-	public static GLFboStack getInstance(){
-		if (instance == null){
-			instance = new GLFboStack(GLU.getCurrentGL());
-			return instance;
-		}else{
-			return instance;
-		}
-	}
+    /**
+     * The gl.
+     */
+    public GL gl;
 
-	/**
-	 * Pushes the currently used render target ID on the stack.
-	 */
-	public void pushFBO(){
-		fboNameStack.push(currentFBO);
-	}
+    /**
+     * The current fbo.
+     */
+    protected int currentFBO;
 
-	/**
-	 * Binds the specified render target ID and sets it as current.
-	 * 
-	 * @param fbo the fbo
-	 */
-	public void useFBO(int fbo){
-		currentFBO = fbo;
-		gl.glBindFramebufferEXT(GL.GL_FRAMEBUFFER_EXT, currentFBO);
-	}
+    /**
+     * The fbo name stack.
+     */
+    protected Stack<Integer> fboNameStack;
 
-	/**
-	 * Binds the specified frame buffer object and sets it as current.
-	 * 
-	 * @param fbo the fbo
-	 */
-	public void useFBO(GLFBO fbo){
-		currentFBO = fbo.getName();
-		fbo.bind();
-	}
-	
-	/**
-	 * Peek fbo.
-	 *
-	 * @return the int
-	 */
-	public int peekFBO(){
-		if (fboNameStack.isEmpty()){
-			return 0;
-		}else{
+    /**
+     * The instance.
+     */
+    private static GLFboStack instance = null;
+
+    /**
+     * Instantiates a new gL fbo stack.
+     *
+     * @param gl the gl
+     */
+    private GLFboStack(GL gl) {
+        this.gl = gl;
+        fboNameStack = new Stack<Integer>();
+        currentFBO = 0;
+    }
+
+    /**
+     * Gets the single instance of GLFboStack.
+     *
+     * @return single instance of GLFboStack
+     */
+    public static GLFboStack getInstance() {
+        if (instance == null) {
+            instance = new GLFboStack(GLU.getCurrentGL());
+            return instance;
+        } else {
+            return instance;
+        }
+    }
+
+    /**
+     * Pushes the currently used render target ID on the stack.
+     */
+    public void pushFBO() {
+        fboNameStack.push(currentFBO);
+    }
+
+    /**
+     * Binds the specified render target ID and sets it as current.
+     *
+     * @param fbo the fbo
+     */
+    public void useFBO(int fbo) {
+        currentFBO = fbo;
+        gl.glBindFramebufferEXT(GL.GL_FRAMEBUFFER_EXT, currentFBO);
+    }
+
+    /**
+     * Binds the specified frame buffer object and sets it as current.
+     *
+     * @param fbo the fbo
+     */
+    public void useFBO(GLFBO fbo) {
+        currentFBO = fbo.getName();
+        fbo.bind();
+    }
+
+    /**
+     * Peek fbo.
+     *
+     * @return the int
+     */
+    public int peekFBO() {
+        if (fboNameStack.isEmpty()) {
+            return 0;
+        } else {
 //			return fboNameStack.peek();
-			return currentFBO;
-		}
-	}
+            return currentFBO;
+        }
+    }
 
-	//NOTE THIS UNBINDS A CURRENT FBO IF SET! -> no need for calling unbind()!
-	/**
-	 * Pops the fbo.
-	 * This switches back (binds) to the formely pushed fbo. 
-	 * <br>NOTE: THIS UNBINDS A CURRENT FBO IF SET! -> no need for calling unbind()!
-	 */
-	public void popFBO(){
-		if (fboNameStack.isEmpty()){
-			logger.error("Trying to pop() from an empty framebuffer stack!"); //TODO -> just bind 0 !?
-		}else{
-			currentFBO = fboNameStack.pop();
-			gl.glBindFramebufferEXT(GL.GL_FRAMEBUFFER_EXT, currentFBO);
-		}
-	}
-	
+    //NOTE THIS UNBINDS A CURRENT FBO IF SET! -> no need for calling unbind()!
+
+    /**
+     * Pops the fbo.
+     * This switches back (binds) to the formely pushed fbo.
+     * <br>NOTE: THIS UNBINDS A CURRENT FBO IF SET! -> no need for calling unbind()!
+     */
+    public void popFBO() {
+        if (fboNameStack.isEmpty()) {
+            logger.error("Trying to pop() from an empty framebuffer stack!"); //TODO -> just bind 0 !?
+        } else {
+            currentFBO = fboNameStack.pop();
+            gl.glBindFramebufferEXT(GL.GL_FRAMEBUFFER_EXT, currentFBO);
+        }
+    }
+
 }

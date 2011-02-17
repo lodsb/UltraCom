@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009, C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -23,62 +23,68 @@ import org.mt4j.util.math.Ray;
 /**
  * The Class PickInfo. Used for picking a component in a canvas.
  * Contains the picking ray and the screen coordiantes of the picking location.
+ *
  * @author Christopher Ruff
  */
-public class PickInfo {  
-	
-	/** The screen x coordinate. */
-	private float screenXCoordinate;
-	
-	/** The screen y coordinate. */
-	private float screenYCoordinate;
-	
-	/** The original pick ray. */
-	private Ray originalPickRay;
+public class PickInfo {
 
-	/**
-	 * Instantiates a new pick info. Used for the pick() method of
-	 * the MTComponent class.
-	 * This class is used to check what
-	 * 
-	 * @param screenXCoordinate the screen x coordinate
-	 * @param screenYCoordinate the screen y coordinate
-	 * @param originalPickRay the original pick ray
-	 */
-	public PickInfo(float screenXCoordinate, float screenYCoordinate, Ray originalPickRay) {
-		super();
-		this.screenXCoordinate = screenXCoordinate;
-		this.screenYCoordinate = screenYCoordinate;
-		this.originalPickRay = originalPickRay;
-	}
+    /**
+     * The screen x coordinate.
+     */
+    private float screenXCoordinate;
 
-	/**
-	 * Gets the pick ray.
-	 * 
-	 * @return the pick ray
-	 */
-	public Ray getPickRay() {
-		return originalPickRay;
-	}
+    /**
+     * The screen y coordinate.
+     */
+    private float screenYCoordinate;
 
-	/**
-	 * Gets the screen x coordinate.
-	 * 
-	 * @return the screen x coordinate
-	 */
-	public float getScreenXCoordinate() {
-		return screenXCoordinate;
-	}
+    /**
+     * The original pick ray.
+     */
+    private Ray originalPickRay;
 
-	/**
-	 * Gets the screen y coordinate.
-	 * 
-	 * @return the screen y coordinate
-	 */
-	public float getScreenYCoordinate() {
-		return screenYCoordinate;
-	}
-	
-	
+    /**
+     * Instantiates a new pick info. Used for the pick() method of
+     * the MTComponent class.
+     * This class is used to check what
+     *
+     * @param screenXCoordinate the screen x coordinate
+     * @param screenYCoordinate the screen y coordinate
+     * @param originalPickRay   the original pick ray
+     */
+    public PickInfo(float screenXCoordinate, float screenYCoordinate, Ray originalPickRay) {
+        super();
+        this.screenXCoordinate = screenXCoordinate;
+        this.screenYCoordinate = screenYCoordinate;
+        this.originalPickRay = originalPickRay;
+    }
+
+    /**
+     * Gets the pick ray.
+     *
+     * @return the pick ray
+     */
+    public Ray getPickRay() {
+        return originalPickRay;
+    }
+
+    /**
+     * Gets the screen x coordinate.
+     *
+     * @return the screen x coordinate
+     */
+    public float getScreenXCoordinate() {
+        return screenXCoordinate;
+    }
+
+    /**
+     * Gets the screen y coordinate.
+     *
+     * @return the screen y coordinate
+     */
+    public float getScreenYCoordinate() {
+        return screenYCoordinate;
+    }
+
 
 }

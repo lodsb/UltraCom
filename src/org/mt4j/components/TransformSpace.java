@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009, C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -20,18 +20,25 @@ package org.mt4j.components;
 
 /**
  * The Enum TransformSpace.
+ *
  * @author Christopher Ruff
  */
 public enum TransformSpace {
-	
-	/** The RELATIVe_ to_ self. */
-	LOCAL,
-	
-	/** The RELATIVE  to  parent. */
-	RELATIVE_TO_PARENT, 
-	
-	/** The RELATIVe_ to_ world. */
-	GLOBAL
+
+    /**
+     * The RELATIVe_ to_ self.
+     */
+    LOCAL,
+
+    /**
+     * The RELATIVE  to  parent.
+     */
+    RELATIVE_TO_PARENT,
+
+    /**
+     * The RELATIVe_ to_ world.
+     */
+    GLOBAL
 
 
 }

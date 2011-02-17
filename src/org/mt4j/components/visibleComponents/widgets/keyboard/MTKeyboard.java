@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009, C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -58,128 +58,142 @@ import processing.core.PApplet;
 
 /**
  * A multitouch keyboard using vector graphics.
- * 
+ *
  * @author Christopher Ruff
  */
 public class MTKeyboard extends MTRoundRectangle {
-	
-	/** The pa. */
-	private PApplet pa;
-	
-	/** The key font. */
-	private IFont keyFont;
-	
-	/** The key list. */
-	private ArrayList<MTKey> keyList;
-	
-	/** The shift changers. */
-	private ArrayList<MTKey> shiftChangers;
-	
-	/** The shift pressed. */
-	private boolean shiftPressed;
-	
-	/** The key click action. */
-	private KeyClickAction keyClickAction;
+
+    /**
+     * The pa.
+     */
+    private PApplet pa;
+
+    /**
+     * The key font.
+     */
+    private IFont keyFont;
+
+    /**
+     * The key list.
+     */
+    private ArrayList<MTKey> keyList;
+
+    /**
+     * The shift changers.
+     */
+    private ArrayList<MTKey> shiftChangers;
+
+    /**
+     * The shift pressed.
+     */
+    private boolean shiftPressed;
+
+    /**
+     * The key click action.
+     */
+    private KeyClickAction keyClickAction;
 
 //	private CloseClickAction closeClickButtonAction;
-	
-	/** The text input acceptors. */
-	private List<ITextInputListener> textInputAcceptors;
-	
-	private boolean hardwareInput;
-	
 
-	/**
-	 * Creates a new keyboard without an text input acceptor.
-	 * 
-	 * @param pApplet the applet
-	 */
-	public MTKeyboard(PApplet pApplet) {
-		super(pApplet,0,0, 0, 700, 245,30, 30);
-		this.pa = pApplet;
-		//Set drawing mode
-		this.setDrawSmooth(true);
-		
-		//FIXME TEST
-		this.setHardwareInputEnabled(true);
-		
-		this.setName("unnamed mt-keyboard");
-		this.textInputAcceptors = new ArrayList<ITextInputListener>();
-		
-		if (MT4jSettings.getInstance().isOpenGlMode())
-			this.setUseDirectGL(true);
-		
-		//TODO textareas an keyboard andocken lassen zum schreiben, oder doppelklick auf textarea?
-		//TODO buttons textarea clear machen
-		//TODO keyboard durch button heranimated
-		
-		// INIT FIELDS
-		//Load the Key font
-		keyFont = FontManager.getInstance().createFont(pa, 
-				"keys.svg", 30, 
-				new MTColor(0,0,0,255), 
-				new MTColor(0,0,0,255)); 
+    /**
+     * The text input acceptors.
+     */
+    private List<ITextInputListener> textInputAcceptors;
+
+    private boolean hardwareInput;
+
+
+    /**
+     * Creates a new keyboard without an text input acceptor.
+     *
+     * @param pApplet the applet
+     */
+    public MTKeyboard(PApplet pApplet) {
+        super(pApplet, 0, 0, 0, 700, 245, 30, 30);
+        this.pa = pApplet;
+        //Set drawing mode
+        this.setDrawSmooth(true);
+
+        //FIXME TEST
+        this.setHardwareInputEnabled(true);
+
+        this.setName("unnamed mt-keyboard");
+        this.textInputAcceptors = new ArrayList<ITextInputListener>();
+
+        if (MT4jSettings.getInstance().isOpenGlMode())
+            this.setUseDirectGL(true);
+
+        //TODO textareas an keyboard andocken lassen zum schreiben, oder doppelklick auf textarea?
+        //TODO buttons textarea clear machen
+        //TODO keyboard durch button heranimated
+
+        // INIT FIELDS
+        //Load the Key font
+        keyFont = FontManager.getInstance().createFont(pa,
+                "keys.svg", 30,
+                new MTColor(0, 0, 0, 255),
+                new MTColor(0, 0, 0, 255));
 //				new MTColor(250,250,250,255), 
 //				new MTColor(250,250,250,255));
-		
-		keyList 		= new ArrayList<MTKey>();
-		shiftChangers 	= new ArrayList<MTKey>();
-		shiftPressed 	= false;
-		keyClickAction 	= new KeyClickAction();
-		
+
+        keyList = new ArrayList<MTKey>();
+        shiftChangers = new ArrayList<MTKey>();
+        shiftPressed = false;
+        keyClickAction = new KeyClickAction();
+
 //		/*
-		//TODO load button only once!
-		MTSvgButton keybCloseSvg = new MTSvgButton(pa, MT4jSettings.getInstance().getDefaultSVGPath()
-						+ "keybClose.svg");
-		//Transform
-		keybCloseSvg.scale(0.8f, 0.8f, 1, new Vector3D(0,0,0));
-		keybCloseSvg.translate(new Vector3D(640,5,0));
-		keybCloseSvg.setBoundsPickingBehaviour(AbstractShape.BOUNDS_ONLY_CHECK);
-		keybCloseSvg.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (arg0.getID() == TapEvent.BUTTON_CLICKED)
-					closeButtonClicked();
-			}
-		});
-		this.addChild(keybCloseSvg);
+        //TODO load button only once!
+        MTSvgButton keybCloseSvg = new MTSvgButton(pa, MT4jSettings.getInstance().getDefaultSVGPath()
+                + "keybClose.svg");
+        //Transform
+        keybCloseSvg.scale(0.8f, 0.8f, 1, new Vector3D(0, 0, 0));
+        keybCloseSvg.translate(new Vector3D(640, 5, 0));
+        keybCloseSvg.setBoundsPickingBehaviour(AbstractShape.BOUNDS_ONLY_CHECK);
+        keybCloseSvg.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                if (arg0.getID() == TapEvent.BUTTON_CLICKED)
+                    closeButtonClicked();
+            }
+        });
+        this.addChild(keybCloseSvg);
 //		*/
-		
-		//INITIALIZE SPACE-Button "by hand"
-		VectorFontCharacter SpaceF = (VectorFontCharacter) keyFont.getFontCharacterByUnicode("k");
+
+        //INITIALIZE SPACE-Button "by hand"
+        VectorFontCharacter SpaceF = (VectorFontCharacter) keyFont.getFontCharacterByUnicode("k");
 //		MTKey space = new MTKey(SpaceF.getGeometryInfo().getVertices(), /*spaceOutlines,*/pa, " ", " ");
-		MTKey space = new MTKey(/*spaceOutlines,*/pa, SpaceF.getGeometryInfo(), " ", " ");
-		space.setName(SpaceF.getName());
-		//Set the contours to draw the outline - do this after settings the geominfo
-		//so the outline displaylist will be overridden with the new contours list
-		space.setOutlineContours(SpaceF.getContours()); //FIXME do we have to in opengl mode? -> we will use displayLists anyway..
-		if (MT4jSettings.getInstance().isOpenGlMode()){
-			space.setUseDirectGL(true);
+        MTKey space = new MTKey(/*spaceOutlines,*/pa, SpaceF.getGeometryInfo(), " ", " ");
+        space.setName(SpaceF.getName());
+        //Set the contours to draw the outline - do this after settings the geominfo
+        //so the outline displaylist will be overridden with the new contours list
+        space.setOutlineContours(SpaceF.getContours()); //FIXME do we have to in opengl mode? -> we will use displayLists anyway..
+        if (MT4jSettings.getInstance().isOpenGlMode()) {
+            space.setUseDirectGL(true);
 //			System.out.println(SpaceF.getDisplayListIDs()[0] + "  - " + SpaceF.getDisplayListIDs()[1]);
 //			space.setDisplayListIDs(SpaceF.getDisplayListIDs()); //Wenn nicht displaylisten, m�ssen wir geometry auch �bernehmen!
-			space.getGeometryInfo().setDisplayListIDs(SpaceF.getGeometryInfo().getDisplayListIDs()); //Wenn nicht displaylisten, m�ssen wir geometry auch �bernehmen!
-			space.setUseDisplayList(true);
-		}
-		space.setNoStroke(false);
-		space.setDrawSmooth(true);
-		space.setPickable(true);
-		space.setGestureAllowance(DragProcessor.class, false);
-		space.setGestureAllowance(RotateProcessor.class, false);
-		space.setGestureAllowance(ScaleProcessor.class, false);
-		space.unregisterAllInputProcessors();
+            space.getGeometryInfo().setDisplayListIDs(SpaceF.getGeometryInfo().getDisplayListIDs()); //Wenn nicht displaylisten, m�ssen wir geometry auch �bernehmen!
+            space.setUseDisplayList(true);
+        }
+        space.setNoStroke(false);
+        space.setDrawSmooth(true);
+        space.setPickable(true);
+        space.setGestureAllowance(DragProcessor.class, false);
+        space.setGestureAllowance(RotateProcessor.class, false);
+        space.setGestureAllowance(ScaleProcessor.class, false);
+        space.unregisterAllInputProcessors();
 //		space.translate(new Vector3D(100, space.getOriginalHeight(), 0)); //Translate to 0,0
 //		space.translate(new Vector3D(225, 190,0));
-		scaleKey(space, 40);
-		space.setPositionRelativeToParent(new Vector3D(350,210,0));
-		space.setGestureAllowance(TapProcessor.class, true);
-		space.registerInputProcessor(new TapProcessor(pa));
-		space.addGestureListener(TapProcessor.class, keyClickAction);
-		SpaceF = null;
-		keyList.add(space);
-		this.addChild(space);
+        scaleKey(space, 40);
+        space.setPositionRelativeToParent(new Vector3D(350, 210, 0));
+        space.setGestureAllowance(TapProcessor.class, true);
+        space.registerInputProcessor(new TapProcessor(pa));
+        space.addGestureListener(TapProcessor.class, keyClickAction);
+        SpaceF = null;
+        keyList.add(space);
+        this.addChild(space);
 
-		KeyInfo[] keyInfos = this.getKeysLayout();
-		
-		//CREATE THE KEYS \\
+        KeyInfo[] keyInfos = this.getKeysLayout();
+
+        //CREATE THE KEYS \\
 //		for (int i = 0; i < keyInfos.size(); i++) {
 //			KeyInfo keyInfo = keyInfos.get(i);
         for (KeyInfo keyInfo : keyInfos) {
@@ -256,494 +270,509 @@ public class MTKeyboard extends MTRoundRectangle {
             fontChar = null;
             this.addChild(key);
         }
-		
-		//Draw this component and its children above 
-		//everything previously drawn and avoid z-fighting
-		this.setDepthBufferDisabled(true);
-	}
-	
-	
-	private KeyInfo[] getKeysLayout(){
-		Locale l = Locale.getDefault();
-		/*
-	      System.out.println("   Language, Country, Variant, Name");
-	      System.out.println("");
-	      System.out.println("Default locale: ");
-	      System.out.println("   "+l.getLanguage()+", "+l.getCountry()+", "
-	         +", "+l.getVariant()+", "+l.getDisplayName());
-	    */
-	    if (l.getLanguage().equalsIgnoreCase(Locale.GERMANY.getLanguage())){
-	    	return getGermanLayout();
-	    }else{
-	    	return getUSLayout();
-	    }
-	}
-	
-	
-	private KeyInfo[] getGermanLayout(){
-		ArrayList<KeyInfo> keyInfos = new ArrayList<KeyInfo>();
-		
-		float lineY = 35;
+
+        //Draw this component and its children above
+        //everything previously drawn and avoid z-fighting
+        this.setDepthBufferDisabled(true);
+    }
+
+
+    private KeyInfo[] getKeysLayout() {
+        Locale l = Locale.getDefault();
+        /*
+            System.out.println("   Language, Country, Variant, Name");
+            System.out.println("");
+            System.out.println("Default locale: ");
+            System.out.println("   "+l.getLanguage()+", "+l.getCountry()+", "
+               +", "+l.getVariant()+", "+l.getDisplayName());
+          */
+        if (l.getLanguage().equalsIgnoreCase(Locale.GERMANY.getLanguage())) {
+            return getGermanLayout();
+        } else {
+            return getUSLayout();
+        }
+    }
+
+
+    private KeyInfo[] getGermanLayout() {
+        ArrayList<KeyInfo> keyInfos = new ArrayList<KeyInfo>();
+
+        float lineY = 35;
 //		float advanceMent = keyFont.getFontCharacterByUnicode("A").getHorizontalDist()-10;
-		float advanceMent = 42;
-		float startX = 60;
+        float advanceMent = 42;
+        float startX = 60;
 //		keyInfos.add(new KeyInfo("^", "^", "^", new Vector3D(startX,lineY), 			  KeyInfo.NORMAL_KEY)); //ESC key
-		
-		keyInfos.add(new KeyInfo("1", "1", "1", new Vector3D(startX+1*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo("!", "!", "!", new Vector3D(startX+1*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		keyInfos.add(new KeyInfo("2", "2", "2", new Vector3D(startX+2*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo("\"", "\"", "\"", new Vector3D(startX+2*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		keyInfos.add(new KeyInfo("3", "3", "3", new Vector3D(startX+3*advanceMent,lineY), KeyInfo.NORMAL_KEY));
-		
-		keyInfos.add(new KeyInfo("4", "4", "4", new Vector3D(startX+4*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo("$", "$", "$", new Vector3D(startX+4*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		keyInfos.add(new KeyInfo("5", "5", "5", new Vector3D(startX+5*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo("%", "%", "%", new Vector3D(startX+5*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		keyInfos.add(new KeyInfo("6", "6", "6", new Vector3D(startX+6*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo("&", "&", "&", new Vector3D(startX+6*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		keyInfos.add(new KeyInfo("7", "7", "7", new Vector3D(startX+7*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo("/", "/", "/", new Vector3D(startX+7*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		keyInfos.add(new KeyInfo("8", "8", "8", new Vector3D(startX+8*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo("(", "(", "(", new Vector3D(startX+8*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		keyInfos.add(new KeyInfo("9", "9", "9", new Vector3D(startX+9*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo(")", ")", ")", new Vector3D(startX+9*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		keyInfos.add(new KeyInfo("0", "0", "0", new Vector3D(startX+10*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo("=", "=", "=", new Vector3D(startX+10*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		keyInfos.add(new KeyInfo("\\", "\\", "\\", new Vector3D(startX+11*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo("?", "?", "?", new Vector3D(startX+11*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		//////////////////
-		lineY = 77;
-		startX = 80; // | + 27
-		
-		keyInfos.add(new KeyInfo("Q", "q", "Q", new Vector3D(startX+1*advanceMent,lineY),  KeyInfo.NORMAL_KEY)); 
-		keyInfos.add(new KeyInfo("W", "w", "W", new Vector3D(startX+2*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("E", "e", "E", new Vector3D(startX+3*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("R", "r", "R", new Vector3D(startX+4*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("T", "t", "T", new Vector3D(startX+5*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("Z", "z", "Z", new Vector3D(startX+6*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("U", "u", "U", new Vector3D(startX+7*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("I", "i", "I", new Vector3D(startX+8*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("O", "o", "O", new Vector3D(startX+9*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("P", "p", "P", new Vector3D(startX+10*advanceMent,lineY), KeyInfo.NORMAL_KEY));
-		//Ü
-		keyInfos.add(new KeyInfo("111", "ü", "Ü", new Vector3D(startX+11*advanceMent,lineY), KeyInfo.NORMAL_KEY));
-		
-		keyInfos.add(new KeyInfo("+", "+", "+", new Vector3D(startX+12*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo("*", "*", "*", new Vector3D(startX+12*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		lineY = 119;
-		startX = 136;  //+58
-		keyInfos.add(new KeyInfo("A", "a", "A", new Vector3D(startX,lineY), 			   KeyInfo.NORMAL_KEY)); //
-		keyInfos.add(new KeyInfo("S", "s", "S", new Vector3D(startX+1*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("D", "d", "D", new Vector3D(startX+2*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("F", "f", "F", new Vector3D(startX+3*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("G", "g", "G", new Vector3D(startX+4*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("H", "h", "H", new Vector3D(startX+5*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("J", "j", "J", new Vector3D(startX+6*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("K", "k", "K", new Vector3D(startX+7*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("L", "l", "L", new Vector3D(startX+8*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		//Ö
-		keyInfos.add(new KeyInfo("1111", "ö", "Ö", new Vector3D(startX+9*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		//Ä
-        keyInfos.add(new KeyInfo("11", "ä", "Ä", new Vector3D(startX+10*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		
-		////////////////////
-		lineY = 161;
-		startX = 70; // -60
-		keyInfos.add(new KeyInfo("<", "<", "<", new Vector3D(startX+1*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo(">", ">", ">", new Vector3D(startX+1*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		keyInfos.add(new KeyInfo("Y", "y", "Y", new Vector3D(startX+2*advanceMent,lineY), KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("X", "x", "X", new Vector3D(startX+3*advanceMent,lineY), KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("C", "c", "C", new Vector3D(startX+4*advanceMent,lineY), KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("V", "v", "V", new Vector3D(startX+5*advanceMent,lineY), KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("B", "b", "B", new Vector3D(startX+6*advanceMent,lineY), KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("N", "n", "N", new Vector3D(startX+7*advanceMent,lineY), KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("M", "m", "M", new Vector3D(startX+8*advanceMent,lineY), KeyInfo.NORMAL_KEY));
-		
-		keyInfos.add(new KeyInfo(",", ",", ",", new Vector3D(startX+9*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo(";", ";", ";", new Vector3D(startX+9*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		keyInfos.add(new KeyInfo(".", ".", ".", new Vector3D(startX+10*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo(":", ":", ":", new Vector3D(startX+10*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		keyInfos.add(new KeyInfo("-", "-", "-", new Vector3D(startX+11*advanceMent,lineY), KeyInfo.NORMAL_KEY));
-		
-		keyInfos.add(new KeyInfo("#", "#", "#", new Vector3D(startX+12*advanceMent,lineY),  KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo("'", "'", "'", new Vector3D(startX+12*advanceMent,lineY),  KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		///////////
-		//Special keys
-		keyInfos.add(new KeyInfo("z", "back", "back", 	new Vector3D(580,35),  KeyInfo.NORMAL_KEY));//Backspace
-		keyInfos.add(new KeyInfo("v", "\t", "\t", 	new Vector3D(62,77),  KeyInfo.NORMAL_KEY)); //Tab
-		keyInfos.add(new KeyInfo("j", "shift", "shift", new Vector3D(78,120), KeyInfo.NORMAL_KEY)); //Shift
-		keyInfos.add(new KeyInfo("f", "\n", "\n", 		new Vector3D(615, 105),KeyInfo.NORMAL_KEY)); //Enter
-		
-		return keyInfos.toArray(new KeyInfo[keyInfos.size()]);
-	}
-	
-	
-	
-	//FIXME no "@" available in key font?
-	
-	private KeyInfo[] getUSLayout(){
-		ArrayList<KeyInfo> keyInfos = new ArrayList<KeyInfo>();
-		
-		float lineY = 35;
+
+        keyInfos.add(new KeyInfo("1", "1", "1", new Vector3D(startX + 1 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo("!", "!", "!", new Vector3D(startX + 1 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        keyInfos.add(new KeyInfo("2", "2", "2", new Vector3D(startX + 2 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo("\"", "\"", "\"", new Vector3D(startX + 2 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        keyInfos.add(new KeyInfo("3", "3", "3", new Vector3D(startX + 3 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+
+        keyInfos.add(new KeyInfo("4", "4", "4", new Vector3D(startX + 4 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo("$", "$", "$", new Vector3D(startX + 4 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        keyInfos.add(new KeyInfo("5", "5", "5", new Vector3D(startX + 5 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo("%", "%", "%", new Vector3D(startX + 5 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        keyInfos.add(new KeyInfo("6", "6", "6", new Vector3D(startX + 6 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo("&", "&", "&", new Vector3D(startX + 6 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        keyInfos.add(new KeyInfo("7", "7", "7", new Vector3D(startX + 7 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo("/", "/", "/", new Vector3D(startX + 7 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        keyInfos.add(new KeyInfo("8", "8", "8", new Vector3D(startX + 8 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo("(", "(", "(", new Vector3D(startX + 8 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        keyInfos.add(new KeyInfo("9", "9", "9", new Vector3D(startX + 9 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo(")", ")", ")", new Vector3D(startX + 9 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        keyInfos.add(new KeyInfo("0", "0", "0", new Vector3D(startX + 10 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo("=", "=", "=", new Vector3D(startX + 10 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        keyInfos.add(new KeyInfo("\\", "\\", "\\", new Vector3D(startX + 11 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo("?", "?", "?", new Vector3D(startX + 11 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        //////////////////
+        lineY = 77;
+        startX = 80; // | + 27
+
+        keyInfos.add(new KeyInfo("Q", "q", "Q", new Vector3D(startX + 1 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("W", "w", "W", new Vector3D(startX + 2 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("E", "e", "E", new Vector3D(startX + 3 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("R", "r", "R", new Vector3D(startX + 4 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("T", "t", "T", new Vector3D(startX + 5 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("Z", "z", "Z", new Vector3D(startX + 6 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("U", "u", "U", new Vector3D(startX + 7 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("I", "i", "I", new Vector3D(startX + 8 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("O", "o", "O", new Vector3D(startX + 9 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("P", "p", "P", new Vector3D(startX + 10 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        //Ü
+        keyInfos.add(new KeyInfo("111", "ü", "Ü", new Vector3D(startX + 11 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+
+        keyInfos.add(new KeyInfo("+", "+", "+", new Vector3D(startX + 12 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo("*", "*", "*", new Vector3D(startX + 12 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        lineY = 119;
+        startX = 136;  //+58
+        keyInfos.add(new KeyInfo("A", "a", "A", new Vector3D(startX, lineY), KeyInfo.NORMAL_KEY)); //
+        keyInfos.add(new KeyInfo("S", "s", "S", new Vector3D(startX + 1 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("D", "d", "D", new Vector3D(startX + 2 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("F", "f", "F", new Vector3D(startX + 3 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("G", "g", "G", new Vector3D(startX + 4 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("H", "h", "H", new Vector3D(startX + 5 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("J", "j", "J", new Vector3D(startX + 6 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("K", "k", "K", new Vector3D(startX + 7 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("L", "l", "L", new Vector3D(startX + 8 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        //Ö
+        keyInfos.add(new KeyInfo("1111", "ö", "Ö", new Vector3D(startX + 9 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        //Ä
+        keyInfos.add(new KeyInfo("11", "ä", "Ä", new Vector3D(startX + 10 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+
+        ////////////////////
+        lineY = 161;
+        startX = 70; // -60
+        keyInfos.add(new KeyInfo("<", "<", "<", new Vector3D(startX + 1 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo(">", ">", ">", new Vector3D(startX + 1 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        keyInfos.add(new KeyInfo("Y", "y", "Y", new Vector3D(startX + 2 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("X", "x", "X", new Vector3D(startX + 3 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("C", "c", "C", new Vector3D(startX + 4 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("V", "v", "V", new Vector3D(startX + 5 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("B", "b", "B", new Vector3D(startX + 6 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("N", "n", "N", new Vector3D(startX + 7 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("M", "m", "M", new Vector3D(startX + 8 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+
+        keyInfos.add(new KeyInfo(",", ",", ",", new Vector3D(startX + 9 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo(";", ";", ";", new Vector3D(startX + 9 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        keyInfos.add(new KeyInfo(".", ".", ".", new Vector3D(startX + 10 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo(":", ":", ":", new Vector3D(startX + 10 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        keyInfos.add(new KeyInfo("-", "-", "-", new Vector3D(startX + 11 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+
+        keyInfos.add(new KeyInfo("#", "#", "#", new Vector3D(startX + 12 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo("'", "'", "'", new Vector3D(startX + 12 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        ///////////
+        //Special keys
+        keyInfos.add(new KeyInfo("z", "back", "back", new Vector3D(580, 35), KeyInfo.NORMAL_KEY));//Backspace
+        keyInfos.add(new KeyInfo("v", "\t", "\t", new Vector3D(62, 77), KeyInfo.NORMAL_KEY)); //Tab
+        keyInfos.add(new KeyInfo("j", "shift", "shift", new Vector3D(78, 120), KeyInfo.NORMAL_KEY)); //Shift
+        keyInfos.add(new KeyInfo("f", "\n", "\n", new Vector3D(615, 105), KeyInfo.NORMAL_KEY)); //Enter
+
+        return keyInfos.toArray(new KeyInfo[keyInfos.size()]);
+    }
+
+
+    //FIXME no "@" available in key font?
+
+    private KeyInfo[] getUSLayout() {
+        ArrayList<KeyInfo> keyInfos = new ArrayList<KeyInfo>();
+
+        float lineY = 35;
 //		float advanceMent = keyFont.getFontCharacterByUnicode("A").getHorizontalDist()-10;
-		float advanceMent = 42;
-		float startX = 60;
+        float advanceMent = 42;
+        float startX = 60;
 //		keyInfos.add(new KeyInfo("^", "^", "^", new Vector3D(startX,lineY), 			  KeyInfo.NORMAL_KEY)); //ESC key
-		
-		keyInfos.add(new KeyInfo("1", "1", "1", new Vector3D(startX+1*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo("!", "!", "!", new Vector3D(startX+1*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		keyInfos.add(new KeyInfo("2", "2", "2", new Vector3D(startX+2*advanceMent,lineY), KeyInfo.NORMAL_KEY));
-		//FIXME should be "@" here
-		
-		
-		keyInfos.add(new KeyInfo("3", "3", "3", new Vector3D(startX+3*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo("#", "#", "#", new Vector3D(startX+3*advanceMent,lineY),  KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		keyInfos.add(new KeyInfo("4", "4", "4", new Vector3D(startX+4*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo("$", "$", "$", new Vector3D(startX+4*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		keyInfos.add(new KeyInfo("5", "5", "5", new Vector3D(startX+5*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo("%", "%", "%", new Vector3D(startX+5*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		keyInfos.add(new KeyInfo("6", "6", "6", new Vector3D(startX+6*advanceMent,lineY), KeyInfo.NORMAL_KEY));
-		//FIXME "^" missing
-		
-		keyInfos.add(new KeyInfo("7", "7", "7", new Vector3D(startX+7*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo("&", "&", "&", new Vector3D(startX+7*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		keyInfos.add(new KeyInfo("8", "8", "8", new Vector3D(startX+8*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo("*", "*", "*", new Vector3D(startX+8*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		keyInfos.add(new KeyInfo("9", "9", "9", new Vector3D(startX+9*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo("(", "(", "(", new Vector3D(startX+9*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		keyInfos.add(new KeyInfo("0", "0", "0", new Vector3D(startX+10*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo(")", ")", ")", new Vector3D(startX+10*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		keyInfos.add(new KeyInfo("=", "=", "=", new Vector3D(startX+11*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo("+", "+", "+", new Vector3D(startX+11*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		
-		//////////////////
-		lineY = 77;
-		startX = 80; // | + 27
-		
-		keyInfos.add(new KeyInfo("Q", "q", "Q", new Vector3D(startX+1*advanceMent,lineY),  KeyInfo.NORMAL_KEY)); 
-		keyInfos.add(new KeyInfo("W", "w", "W", new Vector3D(startX+2*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("E", "e", "E", new Vector3D(startX+3*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("R", "r", "R", new Vector3D(startX+4*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("T", "t", "T", new Vector3D(startX+5*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("Y", "y", "Y", new Vector3D(startX+6*advanceMent,lineY), KeyInfo.NORMAL_KEY));
-		
-		keyInfos.add(new KeyInfo("U", "u", "U", new Vector3D(startX+7*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("I", "i", "I", new Vector3D(startX+8*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("O", "o", "O", new Vector3D(startX+9*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("P", "p", "P", new Vector3D(startX+10*advanceMent,lineY), KeyInfo.NORMAL_KEY));
-		//�
+
+        keyInfos.add(new KeyInfo("1", "1", "1", new Vector3D(startX + 1 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo("!", "!", "!", new Vector3D(startX + 1 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        keyInfos.add(new KeyInfo("2", "2", "2", new Vector3D(startX + 2 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        //FIXME should be "@" here
+
+
+        keyInfos.add(new KeyInfo("3", "3", "3", new Vector3D(startX + 3 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo("#", "#", "#", new Vector3D(startX + 3 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        keyInfos.add(new KeyInfo("4", "4", "4", new Vector3D(startX + 4 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo("$", "$", "$", new Vector3D(startX + 4 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        keyInfos.add(new KeyInfo("5", "5", "5", new Vector3D(startX + 5 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo("%", "%", "%", new Vector3D(startX + 5 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        keyInfos.add(new KeyInfo("6", "6", "6", new Vector3D(startX + 6 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        //FIXME "^" missing
+
+        keyInfos.add(new KeyInfo("7", "7", "7", new Vector3D(startX + 7 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo("&", "&", "&", new Vector3D(startX + 7 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        keyInfos.add(new KeyInfo("8", "8", "8", new Vector3D(startX + 8 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo("*", "*", "*", new Vector3D(startX + 8 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        keyInfos.add(new KeyInfo("9", "9", "9", new Vector3D(startX + 9 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo("(", "(", "(", new Vector3D(startX + 9 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        keyInfos.add(new KeyInfo("0", "0", "0", new Vector3D(startX + 10 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo(")", ")", ")", new Vector3D(startX + 10 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        keyInfos.add(new KeyInfo("=", "=", "=", new Vector3D(startX + 11 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo("+", "+", "+", new Vector3D(startX + 11 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+
+        //////////////////
+        lineY = 77;
+        startX = 80; // | + 27
+
+        keyInfos.add(new KeyInfo("Q", "q", "Q", new Vector3D(startX + 1 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("W", "w", "W", new Vector3D(startX + 2 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("E", "e", "E", new Vector3D(startX + 3 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("R", "r", "R", new Vector3D(startX + 4 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("T", "t", "T", new Vector3D(startX + 5 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("Y", "y", "Y", new Vector3D(startX + 6 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+
+        keyInfos.add(new KeyInfo("U", "u", "U", new Vector3D(startX + 7 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("I", "i", "I", new Vector3D(startX + 8 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("O", "o", "O", new Vector3D(startX + 9 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("P", "p", "P", new Vector3D(startX + 10 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        //�
 //		keyInfos.add(new KeyInfo("111", "�", "�", new Vector3D(startX+11*advanceMent,lineY), KeyInfo.NORMAL_KEY));
-		
-		//FIXME woanders hin
-		keyInfos.add(new KeyInfo("\\", "\\", "\\", new Vector3D(startX+11*advanceMent,lineY), KeyInfo.NORMAL_KEY));
-		
-		keyInfos.add(new KeyInfo("-", "-", "-", new Vector3D(startX+12*advanceMent,lineY), KeyInfo.NORMAL_KEY));
-		
-		
-		lineY = 119;
-		startX = 136;  //+58
-		keyInfos.add(new KeyInfo("A", "a", "A", new Vector3D(startX,lineY), 			   KeyInfo.NORMAL_KEY)); //
-		keyInfos.add(new KeyInfo("S", "s", "S", new Vector3D(startX+1*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("D", "d", "D", new Vector3D(startX+2*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("F", "f", "F", new Vector3D(startX+3*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("G", "g", "G", new Vector3D(startX+4*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("H", "h", "H", new Vector3D(startX+5*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("J", "j", "J", new Vector3D(startX+6*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("K", "k", "K", new Vector3D(startX+7*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("L", "l", "L", new Vector3D(startX+8*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		//�
+
+        //FIXME woanders hin
+        keyInfos.add(new KeyInfo("\\", "\\", "\\", new Vector3D(startX + 11 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+
+        keyInfos.add(new KeyInfo("-", "-", "-", new Vector3D(startX + 12 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+
+
+        lineY = 119;
+        startX = 136;  //+58
+        keyInfos.add(new KeyInfo("A", "a", "A", new Vector3D(startX, lineY), KeyInfo.NORMAL_KEY)); //
+        keyInfos.add(new KeyInfo("S", "s", "S", new Vector3D(startX + 1 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("D", "d", "D", new Vector3D(startX + 2 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("F", "f", "F", new Vector3D(startX + 3 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("G", "g", "G", new Vector3D(startX + 4 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("H", "h", "H", new Vector3D(startX + 5 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("J", "j", "J", new Vector3D(startX + 6 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("K", "k", "K", new Vector3D(startX + 7 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("L", "l", "L", new Vector3D(startX + 8 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        //�
 //		keyInfos.add(new KeyInfo("1111", "�", "�", new Vector3D(startX+9*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		//�
+        //�
 //		keyInfos.add(new KeyInfo("11", "�", "�", new Vector3D(startX+10*advanceMent,lineY),  KeyInfo.NORMAL_KEY));
-		
-		keyInfos.add(new KeyInfo(";", ";", ";", new Vector3D(startX+9*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo(":", ":", ":", new Vector3D(startX+9*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		keyInfos.add(new KeyInfo("'", "'", "'", new Vector3D(startX+10*advanceMent,lineY),  KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo("\"", "\"", "\"", new Vector3D(startX+10*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		////////////////////
-		lineY = 161;
-		startX = 70; // -60
-		
-		
-		keyInfos.add(new KeyInfo("Z", "z", "Z", new Vector3D(startX+2*advanceMent,lineY), KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("X", "x", "X", new Vector3D(startX+3*advanceMent,lineY), KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("C", "c", "C", new Vector3D(startX+4*advanceMent,lineY), KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("V", "v", "V", new Vector3D(startX+5*advanceMent,lineY), KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("B", "b", "B", new Vector3D(startX+6*advanceMent,lineY), KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("N", "n", "N", new Vector3D(startX+7*advanceMent,lineY), KeyInfo.NORMAL_KEY));
-		keyInfos.add(new KeyInfo("M", "m", "M", new Vector3D(startX+8*advanceMent,lineY), KeyInfo.NORMAL_KEY));
-		
-		keyInfos.add(new KeyInfo(",", ",", ",", new Vector3D(startX+9*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo("<", "<", "<", new Vector3D(startX+9*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		keyInfos.add(new KeyInfo(".", ".", ".", new Vector3D(startX+10*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo(">", ">", ">", new Vector3D(startX+10*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-				
-		//FIXME wohin
-		keyInfos.add(new KeyInfo("/", "/", "/", new Vector3D(startX+11*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
-		keyInfos.add(new KeyInfo("?", "?", "?", new Vector3D(startX+11*advanceMent,lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
-		
-		///////////
-		//Special keys
-		keyInfos.add(new KeyInfo("z", "back", "back", 	new Vector3D(580,35),  KeyInfo.NORMAL_KEY));//Backspace
-		keyInfos.add(new KeyInfo("v", "\t", "\t", 	new Vector3D(62,77),  KeyInfo.NORMAL_KEY)); //Tab
-		keyInfos.add(new KeyInfo("j", "shift", "shift", new Vector3D(78,120), KeyInfo.NORMAL_KEY)); //Shift
-		keyInfos.add(new KeyInfo("f", "\n", "\n", 		new Vector3D(615, 105),KeyInfo.NORMAL_KEY)); //Enter
-		
-		return keyInfos.toArray(new KeyInfo[keyInfos.size()]);
-	}
-	
-	
-	private void scaleKey(MTKey key, float scale){
+
+        keyInfos.add(new KeyInfo(";", ";", ";", new Vector3D(startX + 9 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo(":", ":", ":", new Vector3D(startX + 9 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        keyInfos.add(new KeyInfo("'", "'", "'", new Vector3D(startX + 10 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo("\"", "\"", "\"", new Vector3D(startX + 10 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+        ////////////////////
+        lineY = 161;
+        startX = 70; // -60
+
+
+        keyInfos.add(new KeyInfo("Z", "z", "Z", new Vector3D(startX + 2 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("X", "x", "X", new Vector3D(startX + 3 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("C", "c", "C", new Vector3D(startX + 4 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("V", "v", "V", new Vector3D(startX + 5 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("B", "b", "B", new Vector3D(startX + 6 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("N", "n", "N", new Vector3D(startX + 7 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+        keyInfos.add(new KeyInfo("M", "m", "M", new Vector3D(startX + 8 * advanceMent, lineY), KeyInfo.NORMAL_KEY));
+
+        keyInfos.add(new KeyInfo(",", ",", ",", new Vector3D(startX + 9 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo("<", "<", "<", new Vector3D(startX + 9 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        keyInfos.add(new KeyInfo(".", ".", ".", new Vector3D(startX + 10 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo(">", ">", ">", new Vector3D(startX + 10 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        //FIXME wohin
+        keyInfos.add(new KeyInfo("/", "/", "/", new Vector3D(startX + 11 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED));
+        keyInfos.add(new KeyInfo("?", "?", "?", new Vector3D(startX + 11 * advanceMent, lineY), KeyInfo.KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED));
+
+        ///////////
+        //Special keys
+        keyInfos.add(new KeyInfo("z", "back", "back", new Vector3D(580, 35), KeyInfo.NORMAL_KEY));//Backspace
+        keyInfos.add(new KeyInfo("v", "\t", "\t", new Vector3D(62, 77), KeyInfo.NORMAL_KEY)); //Tab
+        keyInfos.add(new KeyInfo("j", "shift", "shift", new Vector3D(78, 120), KeyInfo.NORMAL_KEY)); //Shift
+        keyInfos.add(new KeyInfo("f", "\n", "\n", new Vector3D(615, 105), KeyInfo.NORMAL_KEY)); //Enter
+
+        return keyInfos.toArray(new KeyInfo[keyInfos.size()]);
+    }
+
+
+    private void scaleKey(MTKey key, float scale) {
 //		Vector3D scalingPoint = new Vector3D(0,0,0);
-		Vector3D scalingPoint = key.getCenterPointLocal();
-		key.scale(1/key.getHeightXY(TransformSpace.RELATIVE_TO_PARENT), 1/key.getHeightXY(TransformSpace.RELATIVE_TO_PARENT), 1, scalingPoint);
-		key.scale(scale, scale, 1, scalingPoint);
-	}
-	
-	
-	private boolean setWidthRelativeToParent(float width){
-		if (width > 0){
-			Vector3D centerPoint;
-			if (this.hasBounds()){
-				centerPoint = this.getBounds().getCenterPointLocal();
-				centerPoint.transform(this.getLocalMatrix());
-			}else{
-				centerPoint = this.getCenterPointGlobal();
-				centerPoint.transform(this.getGlobalInverseMatrix());
-			}
-			this.scale(1/this.getWidthXY(TransformSpace.RELATIVE_TO_PARENT), 1/this.getWidthXY(TransformSpace.RELATIVE_TO_PARENT), 1, centerPoint);
-			this.scale(width, width, 1, centerPoint);
+        Vector3D scalingPoint = key.getCenterPointLocal();
+        key.scale(1 / key.getHeightXY(TransformSpace.RELATIVE_TO_PARENT), 1 / key.getHeightXY(TransformSpace.RELATIVE_TO_PARENT), 1, scalingPoint);
+        key.scale(scale, scale, 1, scalingPoint);
+    }
+
+
+    private boolean setWidthRelativeToParent(float width) {
+        if (width > 0) {
+            Vector3D centerPoint;
+            if (this.hasBounds()) {
+                centerPoint = this.getBounds().getCenterPointLocal();
+                centerPoint.transform(this.getLocalMatrix());
+            } else {
+                centerPoint = this.getCenterPointGlobal();
+                centerPoint.transform(this.getGlobalInverseMatrix());
+            }
+            this.scale(1 / this.getWidthXY(TransformSpace.RELATIVE_TO_PARENT), 1 / this.getWidthXY(TransformSpace.RELATIVE_TO_PARENT), 1, centerPoint);
+            this.scale(width, width, 1, centerPoint);
 //			this.scale(1/this.getWidthLocal(), 1/this.getWidthLocal(), 1, centerPoint, TransformSpace.RELATIVE_TO_SELF);
 //			this.scale(width, width, 1, centerPoint, TransformSpace.RELATIVE_TO_SELF);
-			return true;
-		}else
-			return false;
-	}
-	
-	
-	@Override
-	protected void setDefaultGestureActions() {
+            return true;
+        } else
+            return false;
+    }
+
+
+    @Override
+    protected void setDefaultGestureActions() {
 //		super.setDefaultGestureActions();
-		
-		this.addGestureListener(DragProcessor.class, new InertiaDragAction());
-		
-		DragProcessor dp = new DragProcessor(getRenderer());
+
+        this.addGestureListener(DragProcessor.class, new InertiaDragAction());
+
+        DragProcessor dp = new DragProcessor(getRenderer());
 //		dp.setLockPriority(0.5f);
-		registerInputProcessor(dp);
-		addGestureListener(DragProcessor.class, new DefaultDragAction());
-		dp.setBubbledEventsEnabled(true); //FIXME TEST
-		
-		RotateProcessor rp = new RotateProcessor(getRenderer());
+        registerInputProcessor(dp);
+        addGestureListener(DragProcessor.class, new DefaultDragAction());
+        dp.setBubbledEventsEnabled(true); //FIXME TEST
+
+        RotateProcessor rp = new RotateProcessor(getRenderer());
 //		rp.setLockPriority(0.8f);
-		registerInputProcessor(rp);
-		addGestureListener(RotateProcessor.class, new DefaultRotateAction());
-		rp.setBubbledEventsEnabled(true);  //FIXME TEST
-		
-		ScaleProcessor sp = new ScaleProcessor(getRenderer());
+        registerInputProcessor(rp);
+        addGestureListener(RotateProcessor.class, new DefaultRotateAction());
+        rp.setBubbledEventsEnabled(true);  //FIXME TEST
+
+        ScaleProcessor sp = new ScaleProcessor(getRenderer());
 //		sp.setLockPriority(0.8f);
-		registerInputProcessor(sp);
-		addGestureListener(ScaleProcessor.class, new DefaultScaleAction());
-		sp.setBubbledEventsEnabled(true);  //FIXME TEST
-		
-	}
-	
-	
-	/**
-	 * The Class KeyInfo.
-	 * 
-	 * @author C.Ruff
-	 */
-	private class KeyInfo{
-		
-		/** The keyfont unicode. */
-		String keyfontUnicode;
-		
-		/** The char unicode to write. */
-		String charUnicodeToWrite;
-		
-		/** The char unicode to write shifted. */
-		String charUnicodeToWriteShifted;
-		
-		/** The position. */
-		Vector3D position;
-		
-		/** The visibility info. */
-		int visibilityInfo;
-		
-		/** The Constant NORMAL_KEY. */
-		public static final int NORMAL_KEY 								= 0;
-		
-		/** The Constant KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED. */
-		public static final int KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED 	= 1;
-		
-		/** The Constant KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED. */
-		public static final int KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED 	= 2;
-		
-		/**
-		 * Instantiates a new key info.
-		 * 
-		 * @param keyfontUnicode the keyfont unicode
-		 * @param charUnicodeToWrite the char unicode to write
-		 * @param charUnicodeToWriteShifted the char unicode to write shifted
-		 * @param position the position
-		 * @param visibilityInfo the visibility info
-		 */
-		public KeyInfo(String keyfontUnicode, String charUnicodeToWrite, String charUnicodeToWriteShifted, Vector3D position, int visibilityInfo) {
-			super();
-			this.keyfontUnicode = keyfontUnicode;
-			this.charUnicodeToWrite = charUnicodeToWrite;
-			this.charUnicodeToWriteShifted = charUnicodeToWriteShifted;
-			this.position = position;
-			this.visibilityInfo = visibilityInfo;
-		}
-		
-	}
-	
-	
-	
-	/**
-	 * The Class KeyClickAction.
-	 * 
-	 * @author C.Ruff
-	 */
-	private class KeyClickAction implements IGestureEventListener {
+        registerInputProcessor(sp);
+        addGestureListener(ScaleProcessor.class, new DefaultScaleAction());
+        sp.setBubbledEventsEnabled(true);  //FIXME TEST
+
+    }
+
+
+    /**
+     * The Class KeyInfo.
+     *
+     * @author C.Ruff
+     */
+    private class KeyInfo {
+
+        /**
+         * The keyfont unicode.
+         */
+        String keyfontUnicode;
+
+        /**
+         * The char unicode to write.
+         */
+        String charUnicodeToWrite;
+
+        /**
+         * The char unicode to write shifted.
+         */
+        String charUnicodeToWriteShifted;
+
+        /**
+         * The position.
+         */
+        Vector3D position;
+
+        /**
+         * The visibility info.
+         */
+        int visibilityInfo;
+
+        /**
+         * The Constant NORMAL_KEY.
+         */
+        public static final int NORMAL_KEY = 0;
+
+        /**
+         * The Constant KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED.
+         */
+        public static final int KEY_ONLY_VISIBLE_WHEN_SHIFT_NOTPRESSED = 1;
+
+        /**
+         * The Constant KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED.
+         */
+        public static final int KEY_ONLY_VISIBLE_WHEN_SHIFT_PRESSED = 2;
+
+        /**
+         * Instantiates a new key info.
+         *
+         * @param keyfontUnicode            the keyfont unicode
+         * @param charUnicodeToWrite        the char unicode to write
+         * @param charUnicodeToWriteShifted the char unicode to write shifted
+         * @param position                  the position
+         * @param visibilityInfo            the visibility info
+         */
+        public KeyInfo(String keyfontUnicode, String charUnicodeToWrite, String charUnicodeToWriteShifted, Vector3D position, int visibilityInfo) {
+            super();
+            this.keyfontUnicode = keyfontUnicode;
+            this.charUnicodeToWrite = charUnicodeToWrite;
+            this.charUnicodeToWriteShifted = charUnicodeToWriteShifted;
+            this.position = position;
+            this.visibilityInfo = visibilityInfo;
+        }
+
+    }
+
+
+    /**
+     * The Class KeyClickAction.
+     *
+     * @author C.Ruff
+     */
+    private class KeyClickAction implements IGestureEventListener {
 //		private HashMap<MTKey, MTKey> keysNotToScaleBack;
-		
-		/** The key press indent. */
-		private int keyPressIndent;
-		
-		/**
-		 * Instantiates a new key click action.
-		 */
-		public KeyClickAction(){
+
+        /**
+         * The key press indent.
+         */
+        private int keyPressIndent;
+
+        /**
+         * Instantiates a new key click action.
+         */
+        public KeyClickAction() {
 //			keysNotToScaleBack = new HashMap<MTKey, MTKey>();
-			keyPressIndent = 3;
-		}
-		
-		public boolean processGestureEvent(MTGestureEvent g) {
-			if (g instanceof TapEvent){
-				TapEvent clickEvent = (TapEvent)g;
-				IMTComponent3D clicked = clickEvent.getTarget();
-				
-				if (clicked != null && clicked instanceof MTKey){
-					MTKey clickedKey = (MTKey)clicked;
-					
-					switch (clickEvent.getTapID()) {
-					case TapEvent.BUTTON_DOWN:
-						clickedKey.setPressed(true);
-						float keyHeight = clickedKey.getHeightXY(TransformSpace.RELATIVE_TO_PARENT);
-						float keyWidth 	= clickedKey.getWidthXY(TransformSpace.RELATIVE_TO_PARENT);
-						
+            keyPressIndent = 3;
+        }
+
+        public boolean processGestureEvent(MTGestureEvent g) {
+            if (g instanceof TapEvent) {
+                TapEvent clickEvent = (TapEvent) g;
+                IMTComponent3D clicked = clickEvent.getTarget();
+
+                if (clicked != null && clicked instanceof MTKey) {
+                    MTKey clickedKey = (MTKey) clicked;
+
+                    switch (clickEvent.getTapID()) {
+                        case TapEvent.BUTTON_DOWN:
+                            clickedKey.setPressed(true);
+                            float keyHeight = clickedKey.getHeightXY(TransformSpace.RELATIVE_TO_PARENT);
+                            float keyWidth = clickedKey.getWidthXY(TransformSpace.RELATIVE_TO_PARENT);
+
 //						clickedKey.setSizeXYRelativeToParent(keyWidth-keyPressIndent, keyHeight-keyPressIndent);
-						setSizeXYRelativeToParent(clickedKey, keyWidth-keyPressIndent, keyHeight-keyPressIndent);
-						
-						if (clickedKey.getCharacterToWrite().equals("shift")){
-							shiftPressed = true;
-							// Make certain keys visible / not visible when shift pressed!
-							for (MTKey key: shiftChangers){
-								key.setVisible(!key.isVisible());
-							}
-						}
-						
-						keyboardButtonDown(clickedKey, shiftPressed);
-							
-						break;
-					case TapEvent.BUTTON_UP:
-					case TapEvent.BUTTON_CLICKED:
-						clickedKey.setPressed(false);
-						float kHeight = clickedKey.getHeightXY(TransformSpace.RELATIVE_TO_PARENT);
-						float kWidth = clickedKey.getWidthXY(TransformSpace.RELATIVE_TO_PARENT);
-						
+                            setSizeXYRelativeToParent(clickedKey, keyWidth - keyPressIndent, keyHeight - keyPressIndent);
+
+                            if (clickedKey.getCharacterToWrite().equals("shift")) {
+                                shiftPressed = true;
+                                // Make certain keys visible / not visible when shift pressed!
+                                for (MTKey key : shiftChangers) {
+                                    key.setVisible(!key.isVisible());
+                                }
+                            }
+
+                            keyboardButtonDown(clickedKey, shiftPressed);
+
+                            break;
+                        case TapEvent.BUTTON_UP:
+                        case TapEvent.BUTTON_CLICKED:
+                            clickedKey.setPressed(false);
+                            float kHeight = clickedKey.getHeightXY(TransformSpace.RELATIVE_TO_PARENT);
+                            float kWidth = clickedKey.getWidthXY(TransformSpace.RELATIVE_TO_PARENT);
+
 //						if (keysNotToScaleBack.get(clickedKey) == null){
 //							clickedKey.setSizeLocal(kWidth+keyPressIndent, kHeight+keyPressIndent);
 //						}else{
 //							keysNotToScaleBack.remove(clickedKey);
 //						}
-						
-//						clickedKey.setSizeXYRelativeToParent(kWidth+keyPressIndent, kHeight+keyPressIndent);
-						setSizeXYRelativeToParent(clickedKey, kWidth+keyPressIndent, kHeight+keyPressIndent);
-						
-						
-						//System.out.println("Button CLICKED: " + clickedKey.getCharacterToWrite());
-						if (clickedKey.getCharacterToWrite().equals("shift")){
-							shiftPressed = false;
-							//Set shift visible keys visible/not visible
-							for (MTKey key: shiftChangers){
-								key.setVisible(!key.isVisible());
-							}
-						}
-						
-						keyboardButtonClicked(clickedKey, shiftPressed);
-						break;
-					default:
-						break;
-					}//switch
-				}//instance of key
-			}//instanceof clickevent
-			return false;
-		}//method
-	}//class
 
-	/**
-	 * Sets the size xy relative to parent.
-	 * 
-	 * @param shape the shape
-	 * @param width the width
-	 * @param height the height
-	 * 
-	 * @return true, if successful
-	 */
-	private boolean setSizeXYRelativeToParent(AbstractShape shape, float width, float height){
-		if (width > 0 && height > 0){
-			Vector3D centerPoint;
-			if (shape.hasBounds()){
-				centerPoint = shape.getBounds().getCenterPointLocal();
-				centerPoint.transform(shape.getLocalMatrix()); //TODO n�tig?
-			}else{
-				centerPoint = shape.getCenterPointGlobal();
-				centerPoint.transform(shape.getGlobalInverseMatrix());
-			}
-			shape.scale(1/shape.getWidthXY(TransformSpace.RELATIVE_TO_PARENT), 1/shape.getHeightXY(TransformSpace.RELATIVE_TO_PARENT), 1, centerPoint);
-			shape.scale(width, height, 1, centerPoint);
-			return true;
-		}else
-			return false;
-	}
-	
-	/**
-	 * Called after keyboard button pressed.
-	 * 
-	 * @param clickedKey the clicked key
-	 * @param shiftPressed the shift pressed
-	 */
-	protected void keyboardButtonDown(MTKey clickedKey, boolean shiftPressed){
-		ITextInputListener[] listeners = this.getTextInputListeners();
+//						clickedKey.setSizeXYRelativeToParent(kWidth+keyPressIndent, kHeight+keyPressIndent);
+                            setSizeXYRelativeToParent(clickedKey, kWidth + keyPressIndent, kHeight + keyPressIndent);
+
+
+                            //System.out.println("Button CLICKED: " + clickedKey.getCharacterToWrite());
+                            if (clickedKey.getCharacterToWrite().equals("shift")) {
+                                shiftPressed = false;
+                                //Set shift visible keys visible/not visible
+                                for (MTKey key : shiftChangers) {
+                                    key.setVisible(!key.isVisible());
+                                }
+                            }
+
+                            keyboardButtonClicked(clickedKey, shiftPressed);
+                            break;
+                        default:
+                            break;
+                    }//switch
+                }//instance of key
+            }//instanceof clickevent
+            return false;
+        }//method
+    }//class
+
+    /**
+     * Sets the size xy relative to parent.
+     *
+     * @param shape  the shape
+     * @param width  the width
+     * @param height the height
+     * @return true, if successful
+     */
+    private boolean setSizeXYRelativeToParent(AbstractShape shape, float width, float height) {
+        if (width > 0 && height > 0) {
+            Vector3D centerPoint;
+            if (shape.hasBounds()) {
+                centerPoint = shape.getBounds().getCenterPointLocal();
+                centerPoint.transform(shape.getLocalMatrix()); //TODO n�tig?
+            } else {
+                centerPoint = shape.getCenterPointGlobal();
+                centerPoint.transform(shape.getGlobalInverseMatrix());
+            }
+            shape.scale(1 / shape.getWidthXY(TransformSpace.RELATIVE_TO_PARENT), 1 / shape.getHeightXY(TransformSpace.RELATIVE_TO_PARENT), 1, centerPoint);
+            shape.scale(width, height, 1, centerPoint);
+            return true;
+        } else
+            return false;
+    }
+
+    /**
+     * Called after keyboard button pressed.
+     *
+     * @param clickedKey   the clicked key
+     * @param shiftPressed the shift pressed
+     */
+    protected void keyboardButtonDown(MTKey clickedKey, boolean shiftPressed) {
+        ITextInputListener[] listeners = this.getTextInputListeners();
         for (ITextInputListener textInputListener : listeners) {
             if (clickedKey.getCharacterToWrite().equals("back")) {
                 textInputListener.removeLastCharacter();
@@ -754,108 +783,107 @@ public class MTKeyboard extends MTRoundRectangle {
                 textInputListener.appendCharByUnicode(charToAdd);
             }
         }
-	}
-	
-	/**
-	 * Keyboard button up.
-	 * 
-	 * @param clickedKey the clicked key
-	 * @param shiftPressed the shift pressed
-	 */
-	protected void keyboardButtonUp(MTKey clickedKey, boolean shiftPressed){
+    }
+
+    /**
+     * Keyboard button up.
+     *
+     * @param clickedKey   the clicked key
+     * @param shiftPressed the shift pressed
+     */
+    protected void keyboardButtonUp(MTKey clickedKey, boolean shiftPressed) {
 //		keyboardButtonClicked(clickedKey, shiftPressed);
-	}
-	
-	/**
-	 * Keyboard button clicked.
-	 * 
-	 * @param clickedKey the clicked key
-	 * @param shiftPressed the shift pressed
-	 */
-	protected void keyboardButtonClicked(MTKey clickedKey, boolean shiftPressed){
-		
-	}
-	
-	
-	public synchronized void addTextInputListener(ITextInputListener textListener){
-		if (!this.textInputAcceptors.contains(textListener)){
-			this.textInputAcceptors.add(textListener);
-		}
-	}
-	
-	public synchronized ITextInputListener[] getTextInputListeners(){
-		return this.textInputAcceptors.toArray(new ITextInputListener[this.textInputAcceptors.size()]);
-	}
-	
-	public synchronized void removeTextInputListener(ITextInputListener textListener){
-		if (this.textInputAcceptors.contains(textListener)){
-			this.textInputAcceptors.remove(textListener);
-		}
-	}
-	
-	
+    }
 
-	public void close(){
-		this.closeKeyboard();
-	}
-	
-	protected void closeKeyboard(){
-		float width = this.getWidthXY(TransformSpace.RELATIVE_TO_PARENT);
-		IAnimation keybCloseAnim = new Animation("Keyboard Fade", new MultiPurposeInterpolator(width, 1, 300, 0.2f, 0.5f, 1), this);
-		keybCloseAnim.addAnimationListener(new IAnimationListener(){
-			public void processAnimationEvent(AnimationEvent ae) {
+    /**
+     * Keyboard button clicked.
+     *
+     * @param clickedKey   the clicked key
+     * @param shiftPressed the shift pressed
+     */
+    protected void keyboardButtonClicked(MTKey clickedKey, boolean shiftPressed) {
+
+    }
+
+
+    public synchronized void addTextInputListener(ITextInputListener textListener) {
+        if (!this.textInputAcceptors.contains(textListener)) {
+            this.textInputAcceptors.add(textListener);
+        }
+    }
+
+    public synchronized ITextInputListener[] getTextInputListeners() {
+        return this.textInputAcceptors.toArray(new ITextInputListener[this.textInputAcceptors.size()]);
+    }
+
+    public synchronized void removeTextInputListener(ITextInputListener textListener) {
+        if (this.textInputAcceptors.contains(textListener)) {
+            this.textInputAcceptors.remove(textListener);
+        }
+    }
+
+
+    public void close() {
+        this.closeKeyboard();
+    }
+
+    protected void closeKeyboard() {
+        float width = this.getWidthXY(TransformSpace.RELATIVE_TO_PARENT);
+        IAnimation keybCloseAnim = new Animation("Keyboard Fade", new MultiPurposeInterpolator(width, 1, 300, 0.2f, 0.5f, 1), this);
+        keybCloseAnim.addAnimationListener(new IAnimationListener() {
+            public void processAnimationEvent(AnimationEvent ae) {
 //				float delta = ae.getAnimation().getInterpolator().getCurrentStepDelta();
-				switch (ae.getId()) {
-				case AnimationEvent.ANIMATION_STARTED:
-				case AnimationEvent.ANIMATION_UPDATED:
-					float currentVal = ae.getAnimation().getValue();
+                switch (ae.getId()) {
+                    case AnimationEvent.ANIMATION_STARTED:
+                    case AnimationEvent.ANIMATION_UPDATED:
+                        float currentVal = ae.getAnimation().getValue();
 //					keyboard.setWidthXYRelativeToParent(currentVal);
-					setWidthRelativeToParent(currentVal);
-					break;
-				case AnimationEvent.ANIMATION_ENDED:
-					setVisible(false);
-					destroy();
-					break;	
-				default:
-					break;
-				}//switch
-			}//processanimation
-		});
-		keybCloseAnim.start();
-	}
-
-	
-	protected void closeButtonClicked(){
-		this.close();
-	}
-	
-	
-	public void setHardwareInputEnabled(boolean hardwareInput){
-		try {
-			PApplet app = getRenderer();
-			if (hardwareInput) {
-				app.registerKeyEvent(this);
-			}else{
-				app.unregisterKeyEvent(this);
-			}
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-		}
-		this.hardwareInput = hardwareInput;
-	}
-	
-	public boolean isHardwareInputEnabled(){
-		return this.hardwareInput;
-	}
+                        setWidthRelativeToParent(currentVal);
+                        break;
+                    case AnimationEvent.ANIMATION_ENDED:
+                        setVisible(false);
+                        destroy();
+                        break;
+                    default:
+                        break;
+                }//switch
+            }//processanimation
+        });
+        keybCloseAnim.start();
+    }
 
 
-	public void keyEvent(KeyEvent e){
-		if (this.isEnabled()){
-			if (e.getID()!= KeyEvent.KEY_PRESSED) return;
+    protected void closeButtonClicked() {
+        this.close();
+    }
 
-			String keyCode = String.valueOf(e.getKeyChar());
-			//System.out.println("Key input: " + keyCode);
-			ITextInputListener[] listeners = this.getTextInputListeners();
+
+    public void setHardwareInputEnabled(boolean hardwareInput) {
+        try {
+            PApplet app = getRenderer();
+            if (hardwareInput) {
+                app.registerKeyEvent(this);
+            } else {
+                app.unregisterKeyEvent(this);
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        this.hardwareInput = hardwareInput;
+    }
+
+    public boolean isHardwareInputEnabled() {
+        return this.hardwareInput;
+    }
+
+
+    public void keyEvent(KeyEvent e) {
+        if (this.isEnabled()) {
+            if (e.getID() != KeyEvent.KEY_PRESSED) return;
+
+            String keyCode = String.valueOf(e.getKeyChar());
+            //System.out.println("Key input: " + keyCode);
+            ITextInputListener[] listeners = this.getTextInputListeners();
             for (ITextInputListener textInputListener : listeners) {
                 if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
                     textInputListener.removeLastCharacter();
@@ -869,26 +897,26 @@ public class MTKeyboard extends MTRoundRectangle {
                     textInputListener.appendCharByUnicode(keyCode);
                 }
             }
-		}
-	} 
+        }
+    }
 
-	
-	@Override
-	protected void destroyComponent() {
-		super.destroyComponent();
-		
-		keyFont = null;
-		keyList.clear();
-		shiftChangers.clear();
-		textInputAcceptors.clear();
-		
-		if (this.isHardwareInputEnabled()){
-			try {
-				getRenderer().unregisterKeyEvent(this);
-			} catch (Exception e) {
-				System.err.println(e.getMessage());
-			}
-		}
-	}
+
+    @Override
+    protected void destroyComponent() {
+        super.destroyComponent();
+
+        keyFont = null;
+        keyList.clear();
+        shiftChangers.clear();
+        textInputAcceptors.clear();
+
+        if (this.isHardwareInputEnabled()) {
+            try {
+                getRenderer().unregisterKeyEvent(this);
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
+        }
+    }
 
 }

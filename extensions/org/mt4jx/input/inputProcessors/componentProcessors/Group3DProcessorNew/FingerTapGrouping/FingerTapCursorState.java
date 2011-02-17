@@ -7,87 +7,74 @@ import org.mt4j.input.inputProcessors.componentProcessors.AbstractComponentProce
 
 public enum FingerTapCursorState implements FingerTapCursorMethods {
 
-	OBJECTWITHNOTAP
-	{
+    OBJECTWITHNOTAP {
+        public void tapPress(FingerTapSelectionManager selManager, MTComponent comp, InputCursor c) {
 
-		public void tapPress(FingerTapSelectionManager selManager,MTComponent comp,InputCursor c) {
-			
-			selManager.setLockedCursorForComponent(comp, c);
-			selManager.setCursorStateForComponent(comp, OBJECTWITHLOCKEDCURSOR);
-		}
+            selManager.setLockedCursorForComponent(comp, c);
+            selManager.setCursorStateForComponent(comp, OBJECTWITHLOCKEDCURSOR);
+        }
 
-		public void tapRelease(FingerTapSelectionManager selManager,MTComponent comp,InputCursor c) {
-			//cannot be			
-		}
+        public void tapRelease(FingerTapSelectionManager selManager, MTComponent comp, InputCursor c) {
+            //cannot be
+        }
 
-	
-	},
-	
-	OBJECTWITHLOCKEDCURSOR
-	{
 
-		public void tapPress(FingerTapSelectionManager selManager,MTComponent comp,InputCursor c) {
-			selManager.addUnUsedCursorsForComponent(comp, c);
-			selManager.setCursorStateForComponent(comp, OBJECTWITHONEUNUSEDCURSOR);
-		}
+    },
 
-		public void tapRelease(FingerTapSelectionManager selManager,MTComponent comp,InputCursor c) {
-			if(selManager.getLockedCursorForComponent(comp)==c)
-			{
-				selManager.setLockedCursorForComponent(comp, null);
-				selManager.setCursorStateForComponent(comp, OBJECTWITHNOTAP);
-			}else
-			{
-				//should not happen
-			}
-		}		
-	},
-	
-	OBJECTWITHONEUNUSEDCURSOR
-	{
+    OBJECTWITHLOCKEDCURSOR {
+        public void tapPress(FingerTapSelectionManager selManager, MTComponent comp, InputCursor c) {
+            selManager.addUnUsedCursorsForComponent(comp, c);
+            selManager.setCursorStateForComponent(comp, OBJECTWITHONEUNUSEDCURSOR);
+        }
 
-		public void tapPress(FingerTapSelectionManager selManager,
-				MTComponent comp, InputCursor c) {
-			selManager.addUnUsedCursorsForComponent(comp, c);
-			selManager.setCursorStateForComponent(comp, OBJECTWITHMANYUNUSEDCURSORS);
-			
-		}
+        public void tapRelease(FingerTapSelectionManager selManager, MTComponent comp, InputCursor c) {
+            if (selManager.getLockedCursorForComponent(comp) == c) {
+                selManager.setLockedCursorForComponent(comp, null);
+                selManager.setCursorStateForComponent(comp, OBJECTWITHNOTAP);
+            } else {
+                //should not happen
+            }
+        }
+    },
 
-		public void tapRelease(FingerTapSelectionManager selManager,
-				MTComponent comp, InputCursor c) {
-			if(selManager.getLockedCursorForComponent(comp)==c)
-			{
-				selManager.setLockedCursorForComponent(comp, selManager.getUnUsedCursorsForComponent(comp).get(0));
-				selManager.removeUnUsedCursorsForComponent(comp, selManager.getUnUsedCursorsForComponent(comp).get(0));
-				selManager.setCursorStateForComponent(comp, OBJECTWITHLOCKEDCURSOR);
-			}else
-			{
-				selManager.removeUnUsedCursorsForComponent(comp, c);
-				selManager.setCursorStateForComponent(comp, OBJECTWITHLOCKEDCURSOR);				
-			}
-			
-		}
-		
-	},
-	
-	OBJECTWITHMANYUNUSEDCURSORS
-	{
+    OBJECTWITHONEUNUSEDCURSOR {
+        public void tapPress(FingerTapSelectionManager selManager,
+                             MTComponent comp, InputCursor c) {
+            selManager.addUnUsedCursorsForComponent(comp, c);
+            selManager.setCursorStateForComponent(comp, OBJECTWITHMANYUNUSEDCURSORS);
 
-		public void tapPress(FingerTapSelectionManager selManager,
-				MTComponent comp, InputCursor c) {
-			selManager.addUnUsedCursorsForComponent(comp, c);			
-		}
+        }
 
-		public void tapRelease(FingerTapSelectionManager selManager,
-				MTComponent comp, InputCursor c) {
-			selManager.removeUnUsedCursorsForComponent(comp, c);
-			if(selManager.getUnUsedCursorsForComponent(comp).size()==1)
-			{
-				selManager.setCursorStateForComponent(comp, OBJECTWITHONEUNUSEDCURSOR);		
-			}			
-		}
-		
-	}
-	
-	
+        public void tapRelease(FingerTapSelectionManager selManager,
+                               MTComponent comp, InputCursor c) {
+            if (selManager.getLockedCursorForComponent(comp) == c) {
+                selManager.setLockedCursorForComponent(comp, selManager.getUnUsedCursorsForComponent(comp).get(0));
+                selManager.removeUnUsedCursorsForComponent(comp, selManager.getUnUsedCursorsForComponent(comp).get(0));
+                selManager.setCursorStateForComponent(comp, OBJECTWITHLOCKEDCURSOR);
+            } else {
+                selManager.removeUnUsedCursorsForComponent(comp, c);
+                selManager.setCursorStateForComponent(comp, OBJECTWITHLOCKEDCURSOR);
+            }
+
+        }
+
+    },
+
+    OBJECTWITHMANYUNUSEDCURSORS {
+        public void tapPress(FingerTapSelectionManager selManager,
+                             MTComponent comp, InputCursor c) {
+            selManager.addUnUsedCursorsForComponent(comp, c);
+        }
+
+        public void tapRelease(FingerTapSelectionManager selManager,
+                               MTComponent comp, InputCursor c) {
+            selManager.removeUnUsedCursorsForComponent(comp, c);
+            if (selManager.getUnUsedCursorsForComponent(comp).size() == 1) {
+                selManager.setCursorStateForComponent(comp, OBJECTWITHONEUNUSEDCURSOR);
+            }
+        }
+
+    }
+
+
 }

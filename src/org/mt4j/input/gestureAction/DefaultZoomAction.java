@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009, C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -22,23 +22,23 @@ import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.zoomProcessor.ZoomEvent;
 
 
-
 /**
  * The Class DefaultZoomAction.
+ *
  * @author Christopher Ruff
  */
-public class DefaultZoomAction implements IGestureEventListener{
-	
-	/* (non-Javadoc)
-	 * @see com.jMT.input.gestureAction.IGestureAction#processGesture(com.jMT.input.inputAnalyzers.GestureEvent)
-	 */
-	public boolean processGestureEvent(MTGestureEvent g) {
-		if (g instanceof ZoomEvent){
-			ZoomEvent ze = (ZoomEvent)g;
-			ze.getCamera().zoomAmount(ze.getCamZoomAmount());
-			ze.getCamera().update();
-		}
-		return false;
-	}
+public class DefaultZoomAction implements IGestureEventListener {
+
+    /* (non-Javadoc)
+      * @see com.jMT.input.gestureAction.IGestureAction#processGesture(com.jMT.input.inputAnalyzers.GestureEvent)
+      */
+    public boolean processGestureEvent(MTGestureEvent g) {
+        if (g instanceof ZoomEvent) {
+            ZoomEvent ze = (ZoomEvent) g;
+            ze.getCamera().zoomAmount(ze.getCamZoomAmount());
+            ze.getCamera().update();
+        }
+        return false;
+    }
 
 }

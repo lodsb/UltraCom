@@ -9,32 +9,31 @@ import org.mt4jx.input.inputProcessors.componentProcessors.Group3DProcessorNew.I
 
 public class ActivateVisualizationAction implements IGestureEventListener {
 
-	private Cluster cluster;
-	
-	private IVisualizeMethodProvider methodProvider;
-	
-	public ActivateVisualizationAction(Cluster cluster,IVisualizeMethodProvider methodProvider)
-	{		
-		this.cluster = cluster;
-		this.methodProvider = methodProvider;
-		this.cluster.setVisualizeProvider(null);
-	}
-	public boolean processGestureEvent(MTGestureEvent ge) {
-		if(ge instanceof DragEvent)
-		{
-			DragEvent tapEv = (DragEvent)ge;
-			switch(tapEv.getId())
-			{
-			case DragEvent.GESTURE_DETECTED:
-				cluster.setVisualizeProvider(methodProvider);
-				break;
-			case DragEvent.GESTURE_ENDED:				
-				cluster.setVisualizeProvider(null);
-				break;
-			default: break;
-			}
-		}
-		return false;
-	}
+    private Cluster cluster;
+
+    private IVisualizeMethodProvider methodProvider;
+
+    public ActivateVisualizationAction(Cluster cluster, IVisualizeMethodProvider methodProvider) {
+        this.cluster = cluster;
+        this.methodProvider = methodProvider;
+        this.cluster.setVisualizeProvider(null);
+    }
+
+    public boolean processGestureEvent(MTGestureEvent ge) {
+        if (ge instanceof DragEvent) {
+            DragEvent tapEv = (DragEvent) ge;
+            switch (tapEv.getId()) {
+                case DragEvent.GESTURE_DETECTED:
+                    cluster.setVisualizeProvider(methodProvider);
+                    break;
+                case DragEvent.GESTURE_ENDED:
+                    cluster.setVisualizeProvider(null);
+                    break;
+                default:
+                    break;
+            }
+        }
+        return false;
+    }
 
 }

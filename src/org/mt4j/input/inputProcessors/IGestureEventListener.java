@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009 C.Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -18,7 +18,6 @@
 package org.mt4j.input.inputProcessors;
 
 
-
 /**
  * The listener interface for receiving IGestureEvent events.
  * The class that is interested in processing a IGestureEvent
@@ -27,21 +26,18 @@ package org.mt4j.input.inputProcessors;
  * component's <code>addIGestureEventListener<code> method. When
  * the IGestureEvent event occurs, that object's appropriate
  * method is invoked.
- * 
- * @see MTGestureEvent
- * 
+ *
  * @author Christopher Ruff
+ * @see MTGestureEvent
  */
 public interface IGestureEventListener {
-	
-	/**
-	 * Process gesture event.
-	 * 
-	 * @param ge the ge
-	 * @return TODO
-	 * 
-	 * @return true, if successful
-	 */
-	public boolean processGestureEvent(MTGestureEvent ge);
+
+    /**
+     * Process gesture event.
+     *
+     * @param ge the ge
+     * @return true, if successful
+     */
+    public boolean processGestureEvent(MTGestureEvent ge);
 
 }

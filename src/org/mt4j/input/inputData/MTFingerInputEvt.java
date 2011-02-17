@@ -1,6 +1,6 @@
 /***********************************************************************
  * mt4j Copyright (c) 2008 - 2009 Christopher Ruff, Fraunhofer-Gesellschaft All rights reserved.
- *  
+ *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -22,61 +22,61 @@ import org.mt4j.input.inputSources.AbstractInputSource;
 
 /**
  * The Class MTFingerInputEvt.
- * 
+ *
  * @author Christopher Ruff
  */
-public class MTFingerInputEvt extends AbstractCursorInputEvt{
+public class MTFingerInputEvt extends AbstractCursorInputEvt {
 
-	
-	/**
-	 * Instantiates a new mT finger input evt.
-	 * 
-	 * @param source the source
-	 * @param positionX the position x
-	 * @param positionY the position y
-	 * @param id the id
-	 * @param m the m
-	 */
-	public MTFingerInputEvt(
-			AbstractInputSource source, 
-			float positionX,
-			float positionY, 
-			int id,
-			InputCursor m
-	) {
-		super(source, positionX, positionY, id, m);
-	}
-	
-	/**
-	 * Instantiates a new mT finger input evt.
-	 * 
-	 * @param source the source
-	 * @param target the target
-	 * @param positionX the position x
-	 * @param positionY the position y
-	 * @param id the id
-	 * @param m the m
-	 */
-	public MTFingerInputEvt(
-			AbstractInputSource source, 
-			IMTComponent3D target,
-			float positionX,
-			float positionY, 
-			int id,
-			InputCursor m
-	) {
-		super(source, target, positionX, positionY, id, m);
-	}
 
-	/* (non-Javadoc)
-	 * @see org.mt4j.input.inputData.AbstractCursorInputEvt#clone()
-	 */
-	@Override
-	public Object clone() throws CloneNotSupportedException {
-		return new MTFingerInputEvt((AbstractInputSource) this.getSource(), this.getPosX(), this.getPosY(), this.getId(), this.getCursor());
-	}
+    /**
+     * Instantiates a new mT finger input evt.
+     *
+     * @param source    the source
+     * @param positionX the position x
+     * @param positionY the position y
+     * @param id        the id
+     * @param m         the m
+     */
+    public MTFingerInputEvt(
+            AbstractInputSource source,
+            float positionX,
+            float positionY,
+            int id,
+            InputCursor m
+    ) {
+        super(source, positionX, positionY, id, m);
+    }
 
-	
+    /**
+     * Instantiates a new mT finger input evt.
+     *
+     * @param source    the source
+     * @param target    the target
+     * @param positionX the position x
+     * @param positionY the position y
+     * @param id        the id
+     * @param m         the m
+     */
+    public MTFingerInputEvt(
+            AbstractInputSource source,
+            IMTComponent3D target,
+            float positionX,
+            float positionY,
+            int id,
+            InputCursor m
+    ) {
+        super(source, target, positionX, positionY, id, m);
+    }
+
+    /* (non-Javadoc)
+      * @see org.mt4j.input.inputData.AbstractCursorInputEvt#clone()
+      */
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return new MTFingerInputEvt((AbstractInputSource) this.getSource(), this.getPosX(), this.getPosY(), this.getId(), this.getCursor());
+    }
+
+
 //	/** The Constant FINGER_DOWN. */
 //	public static final int FINGER_DOWN = 0;
 //	
@@ -85,7 +85,7 @@ public class MTFingerInputEvt extends AbstractCursorInputEvt{
 //	
 //	/** The Constant FINGER_UP. */
 //	public static final int FINGER_UP = 2;
-	
+
 //	
 //	
 //	/** The has been fired. */

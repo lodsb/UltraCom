@@ -7,14 +7,14 @@ import de.sciss.net.OSCMessage;
 
 public class MTOSCControllerInputEvt extends AbstractControllerInputEvt<OSCMessage> {
 
-	public MTOSCControllerInputEvt(Object source, IMTTargetable target,
-			OSCMessage controllerMessage) {
-		super(source, target, controllerMessage);
-	}
-	
-	public MTOSCControllerInputEvt(Object source,
-			OSCMessage controllerMessage) {
-		super(source, controllerMessage);
-	}
+    public MTOSCControllerInputEvt(Object source, IMTTargetable target,
+                                   OSCMessage controllerMessage) {
+        super(source, target, controllerMessage);
+    }
+
+    public MTOSCControllerInputEvt(Object source,
+                                   OSCMessage controllerMessage) {
+        super(source, controllerMessage);
+    }
 
 }
