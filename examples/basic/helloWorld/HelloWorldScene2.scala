@@ -25,6 +25,7 @@ class HelloWorldScene2(mtApplication: MTApplication, name: String)
   this.setClearColor(new MTColor(146, 150, 188, 255));
   //Show touches
   var tracer = new CursorTracer(this, mtApplication);
+
   var proc = new GlobalOSCInputProcessor(this,"/test");
 
   //this.registerGlobalInputProcessor(proc);
