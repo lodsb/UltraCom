@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.media.opengl.GL;
 
@@ -55,6 +56,8 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PGraphics3D;
 import processing.opengl.PGraphicsOpenGL;
+import scala.react.Deferable;
+import scala.react.VarDeferor;
 
 /**
  * This is the base class for all MT4j scene graph nodes. It provides basic methods
@@ -67,11 +70,15 @@ import processing.opengl.PGraphicsOpenGL;
  *
  * @author Christopher Ruff                                                                                   z
  */
-public class MTComponent implements IMTComponent3D, IGestureEventListener {
+public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDeferor {
     /**
      * The Constant logger.
      */
     private static final Logger logger = Logger.getLogger(MTComponent.class.getName());
+
+	// Used by scala.react and VarDefering to pass the set events for properties across the
+	// event and anim threads
+	static ConcurrentLinkedQueue<Deferable<Object>> deferQueue = new ConcurrentLinkedQueue<Deferable<Object>>();
 
     static {
 //		logger.setLevel(Level.ERROR);
@@ -1706,7 +1713,6 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener {
      }
      */
 
-
     /**
      * This method is called just before the components drawComponent method is invoked.
      * It sets up the components matrix, clipping and other stuff.
@@ -1714,6 +1720,12 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener {
      * @param g the graphics context
      */
     public void preDraw(PGraphics g) {
+		// push events
+		while(!this.deferQueue.isEmpty()) {
+			Deferable<Object> def = this.deferQueue.poll();
+			def.varDefer().updateCallback(def.value());
+		}
+
         if (this.isDepthBufferDisabled()) {
             Tools3D.disableDepthBuffer(g);
         }
@@ -1783,6 +1795,7 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener {
         }
 
         renderer.popMatrix();
+
 
         //FIXME TRIAL
         MTLight aLight = this.getLight();
@@ -3246,4 +3259,8 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener {
         return "\"" + this.getName() + "\"" + " [" + super.toString() + "]";
     }
 
+	@Override
+	public <T> void defer(Deferable<T> def) {
+		  this.deferQueue.add((Deferable<java.lang.Object>) def);
+	}
 }

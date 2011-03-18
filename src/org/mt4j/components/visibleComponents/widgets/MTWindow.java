@@ -217,7 +217,7 @@ public class MTWindow extends MTRoundRectangle {
     @Override
     public void setStrokeColor(MTColor strokeColor) {
         super.setStrokeColor(strokeColor);
-        this.clip.getClipShape().setStrokeColor(strokeColor); //FIXME wtf? not needed!?
+//        this.clip.getClipShape().setStrokeColor(strokeColor); //FIXME wtf? not needed!?
     }
 
 

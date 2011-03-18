@@ -87,9 +87,8 @@
       <excludeFolder url="file://$MODULE_DIR$/mt4jLibs" />
       <excludeFolder url="file://$MODULE_DIR$/tests" />
     </content>
-    <orderEntry type="jdk" jdkName="1.6 (1)" jdkType="JavaSDK" />
+    <orderEntry type="jdk" jdkName="1.6" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Unnamed" level="project" />
     <orderEntry type="library" name="scala2" level="project" />
     <orderEntry type="module-library">
       <library>
@@ -500,6 +499,78 @@
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/extensions/lib/jbullet/jbullet.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/mt4jLibs/ScalaOSC/scalaosc_2.8.1-0.21.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/mt4jLibs/ScalaOSC/scalaosc_2.8.1-0.21-src.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/mt4jLibs/ScalaOSC/scalaosc_2.8.1-0.21-docs.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/mt4jLibs/ScalaOSC" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/mt4jLibs/GLGraphics.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../repos/ScalaCollider/target/scala_2.8.1/scalacollider_2.8.1-0.23-src.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../repos/ScalaCollider/target/scala_2.8.1/scalacollider_2.8.1-0.23-docs.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../repos/ScalaCollider/target/scala_2.8.1/scalacollider_2.8.1-0.23.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

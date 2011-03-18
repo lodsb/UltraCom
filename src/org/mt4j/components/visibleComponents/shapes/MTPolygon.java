@@ -27,6 +27,8 @@ import org.mt4j.components.bounds.IBoundingShape;
 import org.mt4j.components.bounds.OrientedBoundingBox;
 import org.mt4j.components.css.style.CSSStyle;
 import org.mt4j.components.visibleComponents.GeometryInfo;
+import org.mt4j.components.visibleComponents.StyleInfo;
+import scala.react.propertySystem.Attribute;
 import org.mt4j.util.MT4jSettings;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.BezierVertex;
@@ -50,6 +52,9 @@ import processing.core.PGraphics;
  * @author Christopher Ruff
  */
 public class MTPolygon extends MTCSSStylableShape {
+
+	public Attribute<Double> polygonArea2D = new Attribute<Double>("polygonArea2D", 0.0);
+	public Attribute<Vector3D> centerOfMass2D = new Attribute<Vector3D>("centerOfMass2D", new Vector3D());
 
     /**
      * The normal.
@@ -81,6 +86,8 @@ public class MTPolygon extends MTCSSStylableShape {
     public MTPolygon(PApplet pApplet, Vertex[] vertices) { //Added for consitency
         super(pApplet, vertices);
 
+		this.setStyleInfo(new StyleInfo());
+
         this.normalDirty = true;
 //		this.hasVertexColor = false;//Dont set here, gets set to false after being true in super constructor
 
@@ -97,6 +104,9 @@ public class MTPolygon extends MTCSSStylableShape {
 
         this.setBoundsBehaviour(AbstractShape.BOUNDS_DONT_USE);
 //		this.setBoundsBehaviour(AbstractShape.BOUNDS_ONLY_CHECK);
+
+		this.polygonArea2D.update(this.get2DPolygonArea());
+		this.centerOfMass2D.update(this.getCenterOfMass2DLocal());
     }
 
 
@@ -170,6 +180,9 @@ public class MTPolygon extends MTCSSStylableShape {
     public void setVertices(Vertex[] vertices) {
         super.setVertices(vertices);
         this.normalDirty = true;
+
+		this.polygonArea2D.update(this.get2DPolygonArea());
+		this.centerOfMass2D.update(this.getCenterOfMass2DLocal());
     }
 
 
@@ -179,7 +192,6 @@ public class MTPolygon extends MTCSSStylableShape {
     @Override
     public void drawComponent(PGraphics g) {
 //		super.drawComponent(g);
-
         PApplet renderer = this.getRenderer();
 
         //Draw the shape
@@ -204,6 +216,7 @@ public class MTPolygon extends MTCSSStylableShape {
         } else { //Draw with pure proccessing commands...
             MTColor fillColor = this.getFillColor();
             MTColor strokeColor = this.getStrokeColor();
+
             g.fill(fillColor.getR(), fillColor.getG(), fillColor.getB(), fillColor.getAlpha());
             g.stroke(strokeColor.getR(), strokeColor.getG(), strokeColor.getB(), strokeColor.getAlpha());
             g.strokeWeight(this.getStrokeWeight());

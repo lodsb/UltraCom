@@ -17,6 +17,7 @@
  ***********************************************************************/
 package org.mt4j.components.visibleComponents.widgets;
 
+import org.mt4j.components.visibleComponents.ScalaPropertyBindings;
 import org.mt4j.components.visibleComponents.shapes.MTRectangle;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
@@ -29,6 +30,8 @@ import org.mt4j.util.math.Vector3D;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
+import scala.react.propertySystem.Attribute;
+import scala.react.propertySystem.Property;
 
 /**
  * The Class MTColorPicker.
@@ -38,6 +41,14 @@ import processing.core.PImage;
  * @author Christopher Ruff
  */
 public class MTColorPicker extends MTRectangle {
+
+
+	/*
+		SCALA Properties
+	 */
+
+	final public Attribute<MTColor> colorPicked = new Attribute("colorPicked",MTColor.WHITE);
+
 
     /**
      * The h.
@@ -114,6 +125,10 @@ public class MTColorPicker extends MTRectangle {
         this.init();
     }
 
+	public void setSelectedColor(MTColor color) {
+		System.err.println("MTColorPicker.setColor(...) NOT YET IMPLEMENTED!");
+	}
+
 
     /**
      * Inits the.
@@ -147,6 +162,8 @@ public class MTColorPicker extends MTRectangle {
                     currentColor.setB(b);
                     //System.out.println("New Color: " + currentColor);
                     selectionRect.setPositionRelativeToParent(new Vector3D(hitPointLocal));
+
+					colorPicked.update(currentColor);
                 }
                 return false;
             }

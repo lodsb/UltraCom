@@ -22,6 +22,8 @@ import org.mt4j.components.TransformSpace;
 import org.mt4j.components.bounds.BoundsZPlaneRectangle;
 import org.mt4j.components.bounds.IBoundingShape;
 import org.mt4j.components.css.style.CSSStyle;
+import org.mt4j.components.visibleComponents.ScalaPropertyBindings;
+import scala.react.propertySystem.Property;
 import org.mt4j.util.MT4jSettings;
 import org.mt4j.util.math.Vector3D;
 import org.mt4j.util.math.Vertex;
@@ -35,6 +37,22 @@ import processing.core.PImage;
  * @author Christopher Ruff
  */
 public class MTRectangle extends MTPolygon {
+
+	/*
+		SCALA Properties
+		================
+	 */
+
+	public final Property<Float> width = new Property<Float>(this,"width",
+													0f,
+													ScalaPropertyBindings.setWidth(this),
+													ScalaPropertyBindings.getWidth(this)
+												);
+	public final Property<Float> height = new Property<Float>(this, "height",
+													0f,
+													ScalaPropertyBindings.setHeight(this),
+													ScalaPropertyBindings.getHeight(this)
+												);
 
     /**
      * The current anchor.
@@ -69,6 +87,9 @@ public class MTRectangle extends MTPolygon {
         CENTER
     }
 
+
+	private float _width = 0.0f;
+	private float _height = 0.0f;
 
     /**
      * Instantiates a new mT rectangle.
@@ -129,7 +150,7 @@ public class MTRectangle extends MTPolygon {
     /**
      * Instantiates a new mT rectangle.
      *
-     * @param width   the width
+     * @param width   the _width
      * @param height  the height
      * @param pApplet the applet
      * @deprecated constructor will be deleted! Please , use the constructor with the PApplet instance as the first parameter.
@@ -142,7 +163,7 @@ public class MTRectangle extends MTPolygon {
      * Instantiates a new mT rectangle with the upper left corner at 0,0,0
      *
      * @param pApplet the applet
-     * @param width   the width
+     * @param width   the _width
      * @param height  the height
      */
     public MTRectangle(PApplet pApplet, float width, float height) {
@@ -155,7 +176,7 @@ public class MTRectangle extends MTPolygon {
      *
      * @param x       the x
      * @param y       the y
-     * @param width   the width
+     * @param width   the _width
      * @param height  the height
      * @param pApplet the applet
      * @deprecated constructor will be deleted! Please , use the constructor with the PApplet instance as the first parameter.
@@ -170,7 +191,7 @@ public class MTRectangle extends MTPolygon {
      * @param pApplet the applet
      * @param x       the x
      * @param y       the y
-     * @param width   the width
+     * @param width   the _width
      * @param height  the height
      */
     public MTRectangle(PApplet pApplet, float x, float y, float width, float height) {
@@ -184,7 +205,7 @@ public class MTRectangle extends MTPolygon {
      * @param x       the x
      * @param y       the y
      * @param z       the z
-     * @param width   the width
+     * @param width   the _width
      * @param height  the height
      * @param pApplet the applet
      * @deprecated constructor will be deleted! Please , use the constructor with the PApplet instance as the first parameter.
@@ -200,7 +221,7 @@ public class MTRectangle extends MTPolygon {
      * @param x       the x
      * @param y       the y
      * @param z       the z
-     * @param width   the width
+     * @param width   the _width
      * @param height  the height
      */
     public MTRectangle(PApplet pApplet, float x, float y, float z, float width, float height) {
@@ -212,7 +233,7 @@ public class MTRectangle extends MTPolygon {
      * Instantiates a new mT rectangle.
      *
      * @param upperLeft the upper left
-     * @param width     the width
+     * @param width     the _width
      * @param height    the height
      * @param pApplet   the applet
      * @deprecated constructor will be deleted! Please , use the constructor with the PApplet instance as the first parameter.
@@ -227,7 +248,7 @@ public class MTRectangle extends MTPolygon {
      *
      * @param pApplet   the applet
      * @param upperLeft the upper left
-     * @param width     the width
+     * @param width     the _width
      * @param height    the height
      */
     public MTRectangle(PApplet pApplet, Vertex upperLeft, float width, float height) {
@@ -244,6 +265,9 @@ public class MTRectangle extends MTPolygon {
         this.setBoundsBehaviour(AbstractShape.BOUNDS_ONLY_CHECK);
 
         currentAnchor = PositionAnchor.CENTER;
+
+		this._width = width;
+		this._height = height;
     }
 
 
@@ -451,7 +475,7 @@ public class MTRectangle extends MTPolygon {
      * of the rectangle themselves. This is useful if we dont want the rectangles children to be scaled as well, for example.
      * <br>Note: The scaling is done from the rectangles upper left corner - not the center!
      *
-     * @param width  the width
+     * @param width  the _width
      * @param height the height
      */
     public void setSizeLocal(float width, float height) {
@@ -487,12 +511,17 @@ public class MTRectangle extends MTPolygon {
     }
 
 
+	public float getHeightLocal() {
+		return _height;
+	}
+
+
     /**
-     * Sets the width locally, meaning that not the transformation of the rectangle is changed, (as setSize/setWidth, scale etc. would do) but the vertices
+     * Sets the _width locally, meaning that not the transformation of the rectangle is changed, (as setSize/setWidth, scale etc. would do) but the vertices
      * of the rectangle themselves. This is useful if we dont want the rectangles children to be scaled as well, for example.
      * <br>Note: The scaling is done from the rectangles upper left corner - not the center!
      *
-     * @param width the new width local
+     * @param width the new _width local
      */
     public void setWidthLocal(float width) {
         if (width > 0) {
@@ -506,6 +535,10 @@ public class MTRectangle extends MTPolygon {
             });
         }
     }
+
+	public float getWidthLocal() {
+		return _width;
+	}
 
 
     @Override

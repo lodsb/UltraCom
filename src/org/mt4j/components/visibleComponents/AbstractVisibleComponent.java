@@ -20,6 +20,7 @@ package org.mt4j.components.visibleComponents;
 import org.mt4j.components.MTComponent;
 import org.mt4j.components.clipping.Clip;
 import org.mt4j.components.clipping.FillPaint;
+import scala.react.propertySystem.Property;
 import org.mt4j.util.MT4jSettings;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.camera.Icamera;
@@ -37,6 +38,7 @@ import processing.core.PGraphics;
  */
 public abstract class AbstractVisibleComponent extends MTComponent {
 
+
     /**
      * The style info.
      */
@@ -46,6 +48,19 @@ public abstract class AbstractVisibleComponent extends MTComponent {
      * The fill paint.
      */
     private FillPaint fillPaint;
+
+
+	/*
+		SCALA Properties
+	    ================
+	*/
+
+	public final Property<Float> strokeWeight ;
+
+	public final Property<MTColor> strokeColor ;
+
+	public final Property<MTColor> fillColor;
+
 
     /**
      * Instantiates a new abstract visible component.
@@ -76,8 +91,24 @@ public abstract class AbstractVisibleComponent extends MTComponent {
      */
     public AbstractVisibleComponent(PApplet pApplet, String name, /*Icamera globalCamera,*/ Icamera objectCamera) {
         super(pApplet, name, /*globalCamera,*/ objectCamera);
-        //DEFAULTS
-        styleInfo = new StyleInfo();
+		this.setStyleInfo(new StyleInfo());
+		strokeWeight = new Property<Float>(this, "strokeWeight",
+															styleInfo.getStrokeWeight(),
+															ScalaPropertyBindings.setStrokeWeight(this),
+															ScalaPropertyBindings.getStrokeWeight(this)
+														);
+
+		strokeColor = new Property<MTColor>(this, "strokeColor",
+															styleInfo.getStrokeColor(),
+															ScalaPropertyBindings.setStrokeColor(this),
+															ScalaPropertyBindings.getStrokeColor(this)
+														);
+
+		fillColor = new Property<MTColor>(this, "fillColor",
+															styleInfo.getFillColor(),
+															ScalaPropertyBindings.setFillColor(this),
+															ScalaPropertyBindings.getFillColor(this)
+														);
     }
 
 

@@ -84,6 +84,7 @@ public class MTEllipse extends MTPolygon {
      */
     public MTEllipse(PApplet pApplet, Vector3D centerPoint, float radiusX, float radiusY, int segments) {
         super(pApplet, new Vertex[0]);
+
         this.radiusX = radiusX;
         this.radiusY = radiusY;
         this.centerPoint = centerPoint;
@@ -183,7 +184,11 @@ public class MTEllipse extends MTPolygon {
 
     @Override
     public Vector3D getCenterPointLocal() {
-        return new Vector3D(this.centerPoint);
+		if(this.centerPoint != null) {
+        	return new Vector3D(this.centerPoint);
+		} else {
+			return new Vector3D(0f,0f,0f);
+		}
     }
 
 
@@ -221,6 +226,4 @@ public class MTEllipse extends MTPolygon {
     public float getRadiusY() {
         return radiusY;
     }
-
-
 }

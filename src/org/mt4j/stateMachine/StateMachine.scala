@@ -14,17 +14,25 @@
     >>     |    ,---.,---|,---.|---.
     >>     |    |   ||   |`---.|   |
     >>     `---'`---'`---'`---'`---'
-    >>                    // Niklas Klügel
+    >>                    // Niklas Kl?gel
     >>
   +4>>
     >>  Made in Bavaria by fat little elves - since 1983.
  */
 
+package org.mt4j.stateMachine
+
+import collection.mutable.ListBuffer
+import org.mt4j.commandSystem.{CommandScope, Command}
+import org.mt4j.eventSystem.{foo, bar}
+import org.mt4j.input.inputProcessors.globalProcessors.AbstractGlobalInputProcessor
+import org.mt4j.input.MTEvent
+import scala.actors.Actor._
+import actors.{SchedulerAdapter, Actor}
+
+trait StateMachine {
 import scala.actors.Actor
 import scala.actors.Actor._
-
-class StateMachine {
-	private var smHash = this.hashCode
 	protected var Start: StateSymbol = null;
 	var sm = {}
 	var isSmSet = true;
@@ -38,19 +46,18 @@ class StateMachine {
 		})
 	}
 
+	def sendMsg[T](msg: T) : Boolean = {
+		if(this.isSmSet) {
+			this.stateMachine ! msg
+			true
+		} else {
+			false
+		}
+	}
+
 	val funMap = new scala.collection.mutable.HashMap[String, StateSymbol]
 
-	var stateMachine:Actor = null;/*
-		if(Start != null) {
-			actor {
- 				Start.transitionToThis
-			}
-		} else {
-			throw new Exception("No Start-Symbol defined!")
-		}
-
-	})                            */
-
+	var stateMachine:Actor = null;
 
 	class StateSymbol(var original: Symbol) {
 		abstract class StateBody {
@@ -81,44 +88,73 @@ class StateMachine {
 	}
 
 	def ?(sym: StateSymbol) = transition(sym);
+	def ->(sym: StateSymbol) = transition(sym);
 
-	def statemachine(body: => Unit) : Unit = {
-			println("init!")
+	'End is {}
+
+	var sameThreadContext = true;
+
+	def statemachine(body: => Unit) : Unit = fsm(this.sameThreadContext)(body);
+
+	def fsm(sameThreadContext: Boolean = true)(body: => Unit) : Unit = {
+
 			body
 			sm = body;
 			this.isSmSet = true;
 
 		if(Start != null) {
+			funMap.put("Start", Start)
 
-			stateMachine = actor {
- 				Start.transitionToThis
+			if(!sameThreadContext) {
+				stateMachine = actor {
+ 					Start.transitionToThis
+				}
+			} else {
+				stateMachine = new InternalActor;
+				stateMachine.start
 			}
+
 		} else {
 			throw new Exception("No Start-Symbol defined!")
 		}
 		}
 
+	class InternalActor extends Actor {
+		override def scheduler = new SchedulerAdapter {
+			def execute(block: => Unit) = {
+				block;
+			}
+		}
+
+		def act() {
+			Start.transitionToThis
+		}
+	}
+
 }
 
-
 class TestFSM extends StateMachine {
-	statemachine {
-		//Start = 'A;
+	fsm(false) {
+
 		S('A)
 
 		'A is {
 			println("-----State A");
 			react {
-					case x:String => println("sdklfsdklfj!!!!!"+x);	this transition 'B;
-					case x:Int =>  println(x); 						transition('B);
+					case Command('Test,_) => println("test"); ?('A)
+					case x:Int 		=> println(x); 						transition('B);
+					case x:foo 		=> println("FOO"); 					?('A);
+					case x:bar 		=> println("BAR"); 					?('B);
+					case "death"    => ?('End)
+					case x:String 	=> println("sdklfsdklfj!!!!!"+x);	this transition 'B;
 			}
 		}
 
 		'B is {
 			println("---------State B");
 			react {
-					case x:Int => println("NUMBERWHUMBA");			?('A);
-					case _ => println("FUCKYOURMOM");     			?('B);
+					case x:Int 		=> println("NUMBERWHUMBA");			?('A);
+					case _ 			=> println("FUCKYOURMOM");  		?('B);
 			}
 		}
 	}
@@ -126,10 +162,22 @@ class TestFSM extends StateMachine {
 
 object Hello {
 	def main(args: Array[String]): Unit = {
-		val fsm = new TestFSM
-		fsm.stateMachine ! 23;
-		fsm.stateMachine ! 2222222;
+		var fsm = new TestFSM
+
+		fsm.stateMachine ! Command('Test,null);
+		fsm.stateMachine ! new foo;
+		fsm.stateMachine ! new bar;
 		fsm.stateMachine ! "sdfsdfsdf"
 		fsm.stateMachine ! "test"
+		fsm.stateMachine ! 2;
+		fsm.stateMachine ! "death"
+
+		fsm = new TestFSM
+
+		fsm.sendMsg(new foo);
+		fsm.sendMsg(new bar);
+		fsm.sendMsg("test");
+		fsm.sendMsg(2);
+		fsm.sendMsg("death")
 	}
 }

@@ -41,7 +41,7 @@ public class OSCInputSource extends AbstractInputSource<MTOSCControllerInputEvt>
 
     public OSCInputSource(MTApplication app, int port) {
         super(app);
-        try {
+        /*try {
             server = OSCServer.newUsing(OSCServer.UDP, port);
             server.start();
             server.addOSCListener(this);
@@ -51,7 +51,7 @@ public class OSCInputSource extends AbstractInputSource<MTOSCControllerInputEvt>
         } catch (IOException e) {
             e.printStackTrace();
             logger.error("Failed to initialize OSCServer @ port " + port);
-        }
+        } */
     }
 
     @Override

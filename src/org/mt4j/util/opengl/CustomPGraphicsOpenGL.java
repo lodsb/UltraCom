@@ -20,6 +20,7 @@ package org.mt4j.util.opengl;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLDrawableFactory;
 
+import codeanticode.glgraphics.GLGraphics;
 import org.mt4j.util.MT4jSettings;
 
 import processing.opengl.PGraphicsOpenGL;
@@ -29,13 +30,14 @@ import processing.opengl.PGraphicsOpenGL;
  *
  * @author Christopher Ruff
  */
-public class CustomPGraphicsOpenGL extends PGraphicsOpenGL {
+public class CustomPGraphicsOpenGL extends GLGraphics {
     //Overridden to allow stencil buffer use and custom multisampling
     /* (non-Javadoc)
       * @see processing.opengl.PGraphicsOpenGL#allocate()
       */
     @Override
     protected void allocate() {
+		super.allocate();
         if (context == null) {
 //	      System.out.println("PGraphicsOpenGL.allocate() for " + width + " " + height);
 //	      new Exception().printStackTrace(System.out);

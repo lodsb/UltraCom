@@ -134,8 +134,8 @@ class EventHandler {
 
 }
 
-class foo extends MTEvent {}
-class bar extends MTEvent {}
+class foo extends MTInputEvent[Int] {}
+class bar extends MTInputEvent[String]{}
 
 class listener1 extends TrEventListener[foo] {
   override def processEvent(event: foo) = {println("listener1 "+event.getClass); true}

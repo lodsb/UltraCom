@@ -23,11 +23,14 @@ import java.util.List;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
+import codeanticode.glgraphics.GLShader;
+import codeanticode.glgraphics.GLSLShader;
 import org.mt4j.MTApplication;
 import org.mt4j.components.TransformSpace;
 import org.mt4j.components.clipping.Clip;
 import org.mt4j.components.css.style.CSSFont;
 import org.mt4j.components.css.style.CSSStyle;
+import org.mt4j.components.visibleComponents.ScalaPropertyBindings;
 import org.mt4j.components.visibleComponents.font.BitmapFont;
 import org.mt4j.components.visibleComponents.font.BitmapFontCharacter;
 import org.mt4j.components.visibleComponents.font.FontManager;
@@ -46,6 +49,8 @@ import org.mt4j.util.math.Vertex;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
+import scala.Tuple2;
+import scala.react.propertySystem.Property;
 
 /**
  * The Class MTTextArea. This widget allows to display text with a specified font.
@@ -76,6 +81,10 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
          */
         DOWN
     }
+
+
+	public final Property<String> text;
+	public final Property<Float> padding;
 
     /**
      * The pa.
@@ -193,6 +202,9 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
 
         //Disable font being overwritten by CSS
         this.ignoreCSSFont = true;
+
+		this.text = new Property<String>(this,"text", "", ScalaPropertyBindings.setText(this), ScalaPropertyBindings.getText(this));
+		this.padding = new Property<Float>(this,"padding", 5f , ScalaPropertyBindings.setPadding(this), ScalaPropertyBindings.getPadding(this));
     }
 
 
@@ -268,6 +280,9 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
 
         //Disable font being overwritten by CSS
         this.ignoreCSSFont = true;
+
+		this.text = new Property<String>(this, "text", "", ScalaPropertyBindings.setText(this), ScalaPropertyBindings.getText(this));
+		this.padding = new Property<Float>(this, "padding", 5f , ScalaPropertyBindings.setPadding(this), ScalaPropertyBindings.getPadding(this));
     }
 
 
@@ -290,6 +305,9 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
     public MTTextArea(MTApplication app) {
         this(app, app.getCssStyleManager().getDefaultFont(app));
     }
+
+
+	private GLShader shader;
 
     private void init(PApplet pApplet, IFont font, int mode) {
         this.pa = pApplet;
@@ -342,6 +360,10 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
         }
 
         this.isBitmapFont = (font instanceof BitmapFont);
+
+		//shader = new GLSLShader(this.getRenderer(), "/home/lodsb/Downloads/GLGraphics/examples/shaders/GLSLshader/data/toonvert.glsl",
+		//		"/home/lodsb/Downloads/GLGraphics/examples/shaders/GLSLshader/data/toonfrag.glsl");
+
     }
 
 
@@ -477,6 +499,8 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
     @Override
     public void drawComponent(PGraphics g) {
         super.drawComponent(g);
+
+	//	shader.start();
 
         //FIXME snapping wont be useful if textarea is created at non-integer value!? and if Camera isnt default camera
         //if global matrix set dirty and comp not scaled -> calculate new diff vector -> apply
@@ -626,6 +650,10 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
         if (isBitmapFont && textPositionRounding && applySnap) {
             g.popMatrix();
         }
+
+
+	//	shader.stop();
+
     }
 
 
@@ -1150,6 +1178,10 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
     public void setInnerPadding(int innerPadding) {
         this.setInnerPaddingTop(innerPadding);
         this.setInnerPaddingLeft(innerPadding);
+    }
+
+	public void setInnerPadding(float innerPadding) {
+        this.setInnerPadding(innerPadding);
     }
 
     public float getInnerPaddingTop() {

@@ -37,6 +37,10 @@ import java.util.Properties;
 import javax.media.opengl.GL;
 import javax.swing.ImageIcon;
 
+import codeanticode.glgraphics.GLConstants;
+import codeanticode.glgraphics.GLGraphics;
+import codeanticode.glgraphics.GLShader;
+import codeanticode.glgraphics.GLSLShader;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -74,7 +78,7 @@ import processing.core.PApplet;
  * <p/>
  * <p>Internally, the main method of processings PApplet class is called with the class name
  * of the extended PApplet class as an argument. The PApplet class then instantiates the given
- * class and calls its setup() and then repeatedly its run() method.
+ * class and calls its setup and then repeatedly its run() method.
  *
  * @author Christopher Ruff
  */
@@ -283,6 +287,7 @@ public abstract class MTApplication extends PApplet {
 
         sceneChangeLocked = false;
         cssStyleManager = new CSSStyleManager(this);
+
     }
 
 
@@ -588,6 +593,9 @@ public abstract class MTApplication extends PApplet {
             this.size(MT4jSettings.getInstance().getWindowWidth(), MT4jSettings.getInstance().getWindowHeight(), MTApplication.CUSTOM_OPENGL_GRAPHICS);
         else if (MT4jSettings.getInstance().getRendererMode() == MT4jSettings.P3D_MODE)
             this.size(MT4jSettings.getInstance().getWindowWidth(), MT4jSettings.getInstance().getWindowHeight(), PApplet.P3D);
+		else if (MT4jSettings.getInstance().getRendererMode() == MT4jSettings.GLGRAPHICS_MODE) {
+			this.size(MT4jSettings.getInstance().getWindowWidth(), MT4jSettings.getInstance().getWindowHeight(), GLConstants.GLGRAPHICS);
+		}
 
         //Switch to different resolution in fullscreen exclusive mode if neccessary
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -669,6 +677,11 @@ public abstract class MTApplication extends PApplet {
 
         //Call startup at the end of setup(). Should be overridden in extending classes
         this.startUp();
+
+
+		shader = new GLSLShader(this)   ;
+		shader.loadFragmentShader("/home/lodsb/Downloads/GLGraphics/examples/textures/MovieFilters/data/Posterize.glsl");				//"/home/lodsb/Downloads/GLGraphics/examples/textures/MovieFilters/data/Posterize.glsl");
+
     }
 
     /**
@@ -727,9 +740,17 @@ public abstract class MTApplication extends PApplet {
      * Processings draw() gets called repeatedly by processings PApplet Class - unless noloop() is called
      * ********************************************************************************************.
      */
+
+	private GLShader shader;
     @Override
     public void draw() {
+		GLGraphics renderer = (GLGraphics) g;
+		//renderer.beginGL();
+		shader.start();
         this.runApplication();
+		shader.stop();
+
+		//renderer.endGL();
     }
 
 
@@ -748,6 +769,7 @@ public abstract class MTApplication extends PApplet {
      * <li>Updates and draws the current scene transitions.
      */
     private void runApplication() {
+
 //		/*
         //Use nanoTime
         if (!alreadyRun) {

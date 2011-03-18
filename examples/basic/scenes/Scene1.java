@@ -13,6 +13,7 @@ import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent;
 import org.mt4j.input.inputProcessors.globalProcessors.CursorTracer;
 import org.mt4j.sceneManagement.AbstractScene;
 import org.mt4j.sceneManagement.Iscene;
+import org.mt4j.sceneManagement.SimpleAbstractScene;
 import org.mt4j.sceneManagement.transition.BlendTransition;
 import org.mt4j.sceneManagement.transition.FadeTransition;
 import org.mt4j.sceneManagement.transition.SlideTransition;
@@ -23,7 +24,7 @@ import org.mt4j.util.opengl.GLFBO;
 
 import processing.core.PImage;
 
-public class Scene1 extends AbstractScene {
+public class Scene1 extends SimpleAbstractScene {
     private MTApplication mtApp;
     private Iscene scene2;
 

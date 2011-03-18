@@ -17,8 +17,6 @@
  ***********************************************************************/
 package org.mt4j.components.visibleComponents.shapes;
 
-import java.util.ArrayList;
-
 import javax.media.opengl.GL;
 
 import org.apache.log4j.ConsoleAppender;
@@ -31,13 +29,16 @@ import org.mt4j.components.bounds.IBoundingShape;
 import org.mt4j.components.bounds.OrientedBoundingBox;
 import org.mt4j.components.visibleComponents.AbstractVisibleComponent;
 import org.mt4j.components.visibleComponents.GeometryInfo;
+import org.mt4j.components.visibleComponents.ScalaPropertyBindings;
+import org.mt4j.components.visibleComponents._genSetterGetterHelper;
 import org.mt4j.input.gestureAction.DefaultDragAction;
 import org.mt4j.input.gestureAction.DefaultRotateAction;
 import org.mt4j.input.gestureAction.DefaultScaleAction;
-import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor;
 import org.mt4j.input.inputProcessors.componentProcessors.rotateProcessor.RotateProcessor;
 import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleProcessor;
+import scala.react.propertySystem.Attribute;
+import scala.react.propertySystem.Property;
 import org.mt4j.util.MT4jSettings;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.animation.Animation;
@@ -47,7 +48,6 @@ import org.mt4j.util.animation.IAnimation;
 import org.mt4j.util.animation.IAnimationListener;
 import org.mt4j.util.animation.MultiPurposeInterpolator;
 import org.mt4j.util.animation.ani.AniAnimation;
-import org.mt4j.util.math.ConvexQuickHull2D;
 import org.mt4j.util.math.Matrix;
 import org.mt4j.util.math.Ray;
 import org.mt4j.util.math.Tools3D;
@@ -79,6 +79,38 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
         logger.addAppender(ca);
     }
 
+	/*
+		SCALA Properties
+		================_
+	 */
+
+	private _genSetterGetterHelper _glblPosHlpr    =
+						new _genSetterGetterHelper(ScalaPropertyBindings.setPositionGlobal(this));
+
+	public final Property<Vector3D> globalPosition = new Property<Vector3D>(this, "globalPosition",
+																			new Vector3D(0f,0f,0f),
+		                                                                    _glblPosHlpr.setter(),
+																			_glblPosHlpr.getter()
+																			);
+
+	private _genSetterGetterHelper _relPosParHlpr    =
+						new _genSetterGetterHelper(ScalaPropertyBindings.setPositionGlobal(this));
+
+
+	public final Property<Vector3D> relativePositionToParent ;
+
+	public final Property<Vertex[]> vertices;
+
+	public final Property<PImage> texture ;
+
+	public final Attribute<Vector3D> globalCenterPoint ;
+
+
+	public final Attribute<Vector3D> relativeCenterPointToParent ;
+
+	//public void initProperties() {
+
+	//}
 //	/** Default gesture actions. */
 //	private static final IGestureEventListener defaultScaleAction 	= new DefaultScaleAction();
 //	
@@ -140,16 +172,6 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
     private Vector3D lastTextureDimension = new Vector3D();
 
 
-    /**
-     * Instantiates a new abstract shape.
-     *
-     * @param vertices the vertices
-     * @param pApplet  the applet
-     * @deprecated constructor will be deleted! Please , use the constructor with the PApplet instance as the first parameter.
-     */
-    public AbstractShape(Vertex[] vertices, PApplet pApplet) {
-        this(pApplet, vertices);
-    }
 
     /**
      * Creates a new shape with the vertices provided.
@@ -162,16 +184,6 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
     }
 
 
-    /**
-     * Instantiates a new abstract shape.
-     *
-     * @param geometryInfo the geometry info
-     * @param pApplet      the applet
-     * @deprecated constructor will be deleted! Please , use the constructor with the PApplet instance as the first parameter.
-     */
-    public AbstractShape(GeometryInfo geometryInfo, PApplet pApplet) {
-        this(pApplet, geometryInfo);
-    }
 
     /**
      * Creates a new geometry with the geometryInfo provided.
@@ -198,6 +210,29 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
         this.globalVerticesDirty = true;//
 
         this.setDefaultGestureActions();
+
+		relativePositionToParent = new Property<Vector3D>(this, "relativePositionToParent",
+																			new Vector3D(0f,0f,0f),
+		                                                                    _relPosParHlpr.setter(),
+																			_relPosParHlpr.getter()
+																			);
+
+		vertices = new Property<Vertex[]>(this, "vertices",
+																	 this.getVerticesLocal(),
+																	 ScalaPropertyBindings.setVertices(this),
+																	 ScalaPropertyBindings.getVertices(this)
+																	 );
+
+		texture = new Property<PImage>(this, "texture",
+																	 this.getTexture(),
+																	 ScalaPropertyBindings.setTexture(this),
+																	 ScalaPropertyBindings.getTexture(this)
+																	 );
+
+		globalCenterPoint =	new Attribute<Vector3D>("globalCenterPoint",this.getCenterPointGlobal());
+
+
+		relativeCenterPointToParent = new Attribute<Vector3D>("globalCenterPoint",this.getCenterPointRelativeToParent());
     }
 
     /*
@@ -400,6 +435,7 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
      * @param geometryInfo the geometry info
      */
     public void setGeometryInfo(GeometryInfo geometryInfo) {
+
         if (this.isUseDirectGL()) {
             if (geometryInfo.getVertBuff() == null || geometryInfo.getStrokeColBuff() == null) {
                 //new geometryinfo has no drawbuffers created yet -> create them!
@@ -488,6 +524,10 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
         //Sets the base matrix dirty, so that when inquiring info about
         //vertices, they get updated first
         this.globalVerticesDirty = true;
+
+		// update centerpoint signals
+		this.globalCenterPoint.update(this.getCenterPointGlobal());
+		this.relativeCenterPointToParent.update(this.getCenterPointRelativeToParent());
     }
 
     /**
@@ -705,7 +745,9 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
     @Override
     public void setFillColor(MTColor color) {
         super.setFillColor(color);
-        this.getGeometryInfo().setVerticesColorAll(color.getR(), color.getG(), color.getB(), color.getAlpha());
+
+		if(this.getGeometryInfo() != null && color != null) // TODO: FIXME!
+        	this.getGeometryInfo().setVerticesColorAll(color.getR(), color.getG(), color.getB(), color.getAlpha());
     }
 
 

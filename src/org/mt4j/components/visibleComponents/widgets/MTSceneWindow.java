@@ -207,6 +207,7 @@ public class MTSceneWindow
 
     }
 
+	//TODO: reactive events
     public void close() {
         float width = this.getWidthXY(TransformSpace.RELATIVE_TO_PARENT);
 //		IAnimation closeAnim = new Animation("Window Fade", new MultiPurposeInterpolator(width, 1, 350, 0.2f, 0.5f, 1), this);

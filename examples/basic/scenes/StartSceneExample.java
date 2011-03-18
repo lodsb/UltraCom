@@ -1,6 +1,7 @@
 package basic.scenes;
 
 import org.mt4j.MTApplication;
+import org.mt4j.sceneManagement.Iscene;
 
 public class StartSceneExample extends MTApplication {
     /**
@@ -17,7 +18,7 @@ public class StartSceneExample extends MTApplication {
 
     @Override
     public void startUp() {
-        addScene(new Scene1(this, "Scene 1"));
+        addScene((Iscene) new Scene1(this, "Scene 1"));
     }
 
 }
