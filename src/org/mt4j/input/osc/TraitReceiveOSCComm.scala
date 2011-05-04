@@ -48,15 +48,10 @@ import java.nio.channels.DatagramChannel
 import de.sciss.osc._
 import impl.{TCPTransmitter, UDPTransmitter, UDPReceiver, TCPReceiver}
 import java.net.{SocketAddress, InetSocketAddress}
-import react._
 import org.mt4j.input.TraitInputSource
 
-trait TraitReceiveOSCComm extends TraitInputSource[Tuple3[OSCMessage, SocketAddress, Long]]
+trait TraitReceiveOSCComm extends TraitInputSource[Tuple3[OSCMessage, SocketAddress, Long],Nothing]
 
-
-;
-;
-;
 
 
 

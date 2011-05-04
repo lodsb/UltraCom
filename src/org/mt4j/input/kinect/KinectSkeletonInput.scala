@@ -26,38 +26,38 @@ import org.mt4j.util.math.Vector3D
 import java.net.InetSocketAddress
 import org.mt4j.input.osc.OSCCommunication
 import de.sciss.osc.UDP
-import react.{Observing, Var}
+import org.lodsb.reakt.async.VarA
 
 class Skeleton {
 	private val initCoord = new Vector3D(1f,1f,1f)
 
-	val alive = new Var[Boolean](false);
-	val head = new Var[Vector3D](initCoord);
-	val neck = new Var[Vector3D](initCoord);
-	val rightCollar = new Var[Vector3D](initCoord);
-	val rightShoulder = new Var[Vector3D](initCoord);
-	val rightElbow = new Var[Vector3D](initCoord);
-	val rightWrist = new Var[Vector3D](initCoord);
-	val rightHand = new Var[Vector3D](initCoord);
-	val rightFinger = new Var[Vector3D](initCoord);
-	val leftCollar = new Var[Vector3D](initCoord);
-	val leftShoulder = new Var[Vector3D](initCoord);
-	val leftElbow = new Var[Vector3D](initCoord);
-	val leftWrist = new Var[Vector3D](initCoord);
-	val leftHand = new Var[Vector3D](initCoord);
-	val leftFinger = new Var[Vector3D](initCoord);
-	val torso = new Var[Vector3D](initCoord);
-	val rightHip = new Var[Vector3D](initCoord);
-	val rightKnee = new Var[Vector3D](initCoord);
-	val rightAnkle = new Var[Vector3D](initCoord);
-	val rightFoot = new Var[Vector3D](initCoord);
-	val leftHip = new Var[Vector3D](initCoord);
-	val leftKnee = new Var[Vector3D](initCoord);
-	val leftAnkle = new Var[Vector3D](initCoord);
-	val leftFoot = new Var[Vector3D](initCoord);
+	val alive = new VarA[Boolean](false);
+	val head = new VarA[Vector3D](initCoord);
+	val neck = new VarA[Vector3D](initCoord);
+	val rightCollar = new VarA[Vector3D](initCoord);
+	val rightShoulder = new VarA[Vector3D](initCoord);
+	val rightElbow = new VarA[Vector3D](initCoord);
+	val rightWrist = new VarA[Vector3D](initCoord);
+	val rightHand = new VarA[Vector3D](initCoord);
+	val rightFinger = new VarA[Vector3D](initCoord);
+	val leftCollar = new VarA[Vector3D](initCoord);
+	val leftShoulder = new VarA[Vector3D](initCoord);
+	val leftElbow = new VarA[Vector3D](initCoord);
+	val leftWrist = new VarA[Vector3D](initCoord);
+	val leftHand = new VarA[Vector3D](initCoord);
+	val leftFinger = new VarA[Vector3D](initCoord);
+	val torso = new VarA[Vector3D](initCoord);
+	val rightHip = new VarA[Vector3D](initCoord);
+	val rightKnee = new VarA[Vector3D](initCoord);
+	val rightAnkle = new VarA[Vector3D](initCoord);
+	val rightFoot = new VarA[Vector3D](initCoord);
+	val leftHip = new VarA[Vector3D](initCoord);
+	val leftKnee = new VarA[Vector3D](initCoord);
+	val leftAnkle = new VarA[Vector3D](initCoord);
+	val leftFoot = new VarA[Vector3D](initCoord);
 }
 
-class KinectSkeletonSource(osceletonAddress: InetSocketAddress) extends Observing {
+class KinectSkeletonSource(osceletonAddress: InetSocketAddress) {
 	private val oscReceiver = OSCCommunication.createOSCReceiver(UDP, osceletonAddress)
 
 
@@ -76,7 +76,7 @@ class KinectSkeletonSource(osceletonAddress: InetSocketAddress) extends Observin
 	)
 
 
-	observe(oscReceiver.receipt) {
+	oscReceiver.receipt.observe {
 		x => {
 			val message = x._1
 

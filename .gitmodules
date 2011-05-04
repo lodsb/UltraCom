@@ -1,0 +1,7 @@
+[submodule "libraries/reakt"]
+	path = libraries/reakt
+	url = gitosis@lodsb.org:reakt
+
+[submodule "libraries/lzrcore"]
+	path = libraries/lzrcore
+	url = gitosis@lodsb.org:lzrcore

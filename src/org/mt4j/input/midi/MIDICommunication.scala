@@ -27,13 +27,12 @@ import org.mt4j.input.{TraitOutputSink, TraitInputSource}
 case class MidiMsg(channel: Int)
 case class MidiCtrlMsg(chan: Int, num: Int, data: Float) extends MidiMsg(chan)
 
-trait TraitMidiInputSource extends TraitInputSource[MidiMsg]
+trait TraitMidiInputSource extends TraitInputSource[MidiMsg, Nothing]
 trait TraitMidiOutputSink extends TraitOutputSink[MidiMsg]
 
 import javax.sound.midi._
 
 object MidiCommunication {
-	//Make generic! devstring etc thats it; behringer sits on top of that
 
 	class MidiInput extends Receiver with TraitMidiInputSource {
 		def close {
@@ -57,7 +56,7 @@ object MidiCommunication {
 			message match {
 				case MidiCtrlMsg(cha, num, v) => {
 					val msg = new ShortMessage
-					val value = (v*127.0f).intValue
+					val value = (v*127.0f).toInt
 					msg.setMessage(ShortMessage.CONTROL_CHANGE, cha, num, value);
 					this.receiver.send(msg, -1)
 				}

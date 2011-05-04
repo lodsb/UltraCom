@@ -30,6 +30,18 @@ import org.mt4j.input.MTEvent
 import scala.actors.Actor._
 import actors.{SchedulerAdapter, Actor}
 
+object StateMachine {
+	def apply(body: => Unit) : StateMachine = {
+		val fsm = new FSM
+		fsm.statemachine(body)
+
+		fsm
+	}
+}
+
+
+class FSM extends StateMachine;
+
 trait StateMachine {
 import scala.actors.Actor
 import scala.actors.Actor._

@@ -23,7 +23,8 @@ import org.mt4j.components.bounds.BoundsZPlaneRectangle;
 import org.mt4j.components.bounds.IBoundingShape;
 import org.mt4j.components.css.style.CSSStyle;
 import org.mt4j.components.visibleComponents.ScalaPropertyBindings;
-import scala.react.propertySystem.Property;
+
+import org.lodsb.reakt.property.Property;
 import org.mt4j.util.MT4jSettings;
 import org.mt4j.util.math.Vector3D;
 import org.mt4j.util.math.Vertex;

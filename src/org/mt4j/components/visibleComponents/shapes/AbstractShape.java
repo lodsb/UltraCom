@@ -37,8 +37,10 @@ import org.mt4j.input.gestureAction.DefaultScaleAction;
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor;
 import org.mt4j.input.inputProcessors.componentProcessors.rotateProcessor.RotateProcessor;
 import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleProcessor;
-import scala.react.propertySystem.Attribute;
-import scala.react.propertySystem.Property;
+
+import org.lodsb.reakt.property.Attribute;
+import org.lodsb.reakt.property.Property;
+
 import org.mt4j.util.MT4jSettings;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.animation.Animation;
@@ -84,7 +86,7 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
 		================_
 	 */
 
-	private _genSetterGetterHelper _glblPosHlpr    =
+	private _genSetterGetterHelper<Vector3D> _glblPosHlpr    =
 						new _genSetterGetterHelper(ScalaPropertyBindings.setPositionGlobal(this));
 
 	public final Property<Vector3D> globalPosition = new Property<Vector3D>(this, "globalPosition",
@@ -93,8 +95,8 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
 																			_glblPosHlpr.getter()
 																			);
 
-	private _genSetterGetterHelper _relPosParHlpr    =
-						new _genSetterGetterHelper(ScalaPropertyBindings.setPositionGlobal(this));
+	private _genSetterGetterHelper<Vector3D> _relPosParHlpr    =
+						new _genSetterGetterHelper(ScalaPropertyBindings.setPositionRelParent(this));
 
 
 	public final Property<Vector3D> relativePositionToParent ;

@@ -20,7 +20,7 @@ package org.mt4j.components.visibleComponents;
 import org.mt4j.components.MTComponent;
 import org.mt4j.components.clipping.Clip;
 import org.mt4j.components.clipping.FillPaint;
-import scala.react.propertySystem.Property;
+import org.lodsb.reakt.property.Property;
 import org.mt4j.util.MT4jSettings;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.camera.Icamera;

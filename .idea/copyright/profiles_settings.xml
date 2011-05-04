@@ -1,5 +1,5 @@
 <component name="CopyrightManager">
-  <settings default="">
+  <settings default="lodsb">
     <module2copyright>
       <element module="All" copyright="lodsb" />
     </module2copyright>

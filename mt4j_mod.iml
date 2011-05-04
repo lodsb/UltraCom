@@ -76,6 +76,11 @@
       <sourceFolder url="file://$MODULE_DIR$/extensions" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/mt4jLibs/osc/NetUtil/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/examples" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/libraries/reakt/src/org" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/libraries/reakt/src/org/lodsb" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/libraries/reakt/src/org/lodsb/reakt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/libraries/reakt/src/org/lodsb/reakt/graph" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/libraries/reakt/src/org/lodsb/reakt/property" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/bin" />
       <excludeFolder url="file://$MODULE_DIR$/doc" />
       <excludeFolder url="file://$MODULE_DIR$/examples/advanced" />

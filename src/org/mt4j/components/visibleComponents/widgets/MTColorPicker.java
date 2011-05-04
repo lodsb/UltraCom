@@ -17,7 +17,6 @@
  ***********************************************************************/
 package org.mt4j.components.visibleComponents.widgets;
 
-import org.mt4j.components.visibleComponents.ScalaPropertyBindings;
 import org.mt4j.components.visibleComponents.shapes.MTRectangle;
 import org.mt4j.input.inputProcessors.IGestureEventListener;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
@@ -30,8 +29,8 @@ import org.mt4j.util.math.Vector3D;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
-import scala.react.propertySystem.Attribute;
-import scala.react.propertySystem.Property;
+import org.lodsb.reakt.property.Attribute;
+
 
 /**
  * The Class MTColorPicker.

@@ -48,7 +48,6 @@ import java.nio.channels.DatagramChannel
 import de.sciss.osc._
 import impl.{TCPTransmitter, UDPTransmitter, UDPReceiver, TCPReceiver}
 import java.net.{SocketAddress, InetSocketAddress}
-import react._
 import org.mt4j.input.TraitOutputSink
 
 
@@ -56,7 +55,7 @@ import org.mt4j.input.TraitOutputSink
 ;
 ;
 
-trait TraitTransmitOSCComm extends Observing with TraitOutputSink[OSCMessage]
+trait TraitTransmitOSCComm extends TraitOutputSink[OSCMessage]
 
 
 

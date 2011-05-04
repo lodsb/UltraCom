@@ -24,7 +24,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
 import codeanticode.glgraphics.GLShader;
-import codeanticode.glgraphics.GLSLShader;
 import org.mt4j.MTApplication;
 import org.mt4j.components.TransformSpace;
 import org.mt4j.components.clipping.Clip;
@@ -49,8 +48,7 @@ import org.mt4j.util.math.Vertex;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
-import scala.Tuple2;
-import scala.react.propertySystem.Property;
+import org.lodsb.reakt.property.Property;
 
 /**
  * The Class MTTextArea. This widget allows to display text with a specified font.

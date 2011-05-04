@@ -41,8 +41,8 @@ import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import scala.react.propertySystem.Attribute;
-import scala.react.propertySystem.Property;
+import org.lodsb.reakt.property.Attribute;
+import org.lodsb.reakt.property.Property;
 
 /**
  * A slider widget. Allows to select a value between the specified minnimum and maximum values.

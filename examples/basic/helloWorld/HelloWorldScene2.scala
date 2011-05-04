@@ -21,19 +21,21 @@ import org.mt4j.stateMachine.StateMachine
 import org.mt4j.components.interfaces.IMTComponent3D
 import org.mt4j.eventSystem.{foo, bar, TrEventListener}
 import org.mt4j.commandSystem.Command
-import react.Observing
+
+
 import org.mt4j.input.midi.{MidiMsg, MidiCommunication, MidiCtrlMsg}
 import org.mt4j.input.kinect.KinectSkeletonSource
 import org.mt4j.components.visibleComponents.widgets._
+
+import org.lodsb.reakt.ConstantSignal._
+import org.mt4j.types.Rotation
+import org.lodsb.reaktExt.animation._
 
 class HelloWorldScene2(mtApplication: MTApplication, name: String)
 	extends SimpleAbstractScene(mtApplication, name)
 
 	with TrEventListener[MTOSCControllerInputEvt]
-	with StateMachine
-	with Observing {
-
-	import react._
+	with StateMachine {
 
 	val clazz = this.getClass
 	var white = new MTColor(255, 255, 255);
@@ -79,34 +81,42 @@ class HelloWorldScene2(mtApplication: MTApplication, name: String)
 	this.getCanvas().addChild(textField);
 	this.getCanvas().addChild(sl);
 
-	Signal {
-		txt2.fillColor() = cp.colorPicked();
+
+	/*cp.colorPicked.observe {
+		x => txt2.fillColor() = x;
 		true;
-	}.setAlwaysActive
-	observe(sl.value) {
+	} */
+
+	cp.colorPicked ~> txt2.fillColor
+
+
+	sl.value.observe {
 		x => txt2.text() = x + "f"; true
 	}
 
-	Signal {
-		textField.text() = cp.colorPicked() + "sdf"
-	}.setAlwaysActive
+
+	cp.colorPicked.start
+	textField.text.start
+
+	System.err.println("sadefsdfsd "+cp.colorPicked);
+
+	textField.text <~ cp.colorPicked +""
 
 
-	Signal {
-		textField.height() = sl.value()
-	}.setAlwaysActive
+	val anim = new InterpolatingAnimation(0f,100f,100f,SineInOut)
+
+	textField.height <~ sl.value
 
 
-	var test = OSCCommunication.createOSCReceiver(UDP, new InetSocketAddress("127.0.0.1", 57000));
-	test.start;
 
-
-	var kinect = new KinectSkeletonSource(new InetSocketAddress("127.0.0.1", 7110));
+	//var test = OSCCommunication.createOSCReceiver(UDP, new InetSocketAddress("127.0.0.1", 57000));
+	//test.start;
 
 	var midiOut = MidiCommunication.createMidiOutput("BCR2000, USB MIDI, BCR2000")
 
 	var zz: Int = 0;
-	observe(test.receipt) {
+	/*
+	test.receipt.observe {
 		x => {
 			System.out.println("sdfsdfsdf sdf sdf" + x);
 			val col = new MTColor(x._1.args.head.toString.toFloat, 0, 0);
@@ -119,15 +129,24 @@ class HelloWorldScene2(mtApplication: MTApplication, name: String)
 			true
 		}
 	}
-	Signal {
-		textField.strokeColor() = cp.colorPicked()
-	}.setAlwaysActive
+      */
+
+	txt2.localRotation <~ (anim.map( x => Rotation(degreeZ = x)))
+
+	textField.localRotation <~ (anim.map( x => Rotation(degreeX = x)))
+	var ctrler = 0;
+/*	midiOut.get.send <~ anim.map(x => {val y = (x*100) % 100 ; println(y); ctrler = 70+ctrler+1; MidiCtrlMsg(0,ctrler%100, y/100)} )
+	midiOut.get.send <~ anim.map(x => {val y = (x*100) % 100 ; println(y); ctrler = 80+ctrler+1; MidiCtrlMsg(0,ctrler%100, 1.0f-(y/100))} )
+  */
+
+		anim.start
 
 	var midiIn = MidiCommunication.createMidiInput("BCR2000, USB MIDI, BCR2000")
 
+	var kinect = new KinectSkeletonSource(new InetSocketAddress("127.0.0.1", 7110));
 	midiIn match {
 		case Some(midictrl) =>
-			observe(midictrl.receipt) {
+			midictrl.receipt.observe {
 				m => m match {
 					case MidiCtrlMsg(chan, num, v) => {
 						val value: Float = (v.toFloat) * 255f
@@ -140,24 +159,27 @@ class HelloWorldScene2(mtApplication: MTApplication, name: String)
 		case _ => println("NO DEVICE FOUND!")
 	}
 
-	observe(sl.value) {
+/*	sl.value.observe {
 		x => midiOut.get.send() = { val y = x.floatValue/200;
 									MidiCtrlMsg(0,90,y)} ; true
 	}
-
+  */
 	var viewer = new KinectSkeletonViewer(mtApplication,100,100 , 300,300,300, kinect.skeletons(1));
-
-	this.getCanvas().addChild(viewer);
 
 	kinect.start
 
-	observe(kinect.skeletons(1).alive) {
+	this.getCanvas().addChild(viewer);
+	/*
+	kinect.start
+
+
+	kinect.skeletons(1).alive.observe {
 		x => if (x) {
 			txt2.text() = "ALIVE!!"
 		} else {
 			"DEAD!!!"
 		}; true;
-	}
+	}*/
 
 
 	/*observe(kinect.skeletons(1).head) {

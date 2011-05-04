@@ -288,6 +288,7 @@ public abstract class MTApplication extends PApplet {
         sceneChangeLocked = false;
         cssStyleManager = new CSSStyleManager(this);
 
+		MTApplication.instance = this;
     }
 
 
@@ -401,6 +402,7 @@ public abstract class MTApplication extends PApplet {
                         this);
             }
         }
+
     }
 
     private static void getSettingsFromFile() {
@@ -460,6 +462,11 @@ public abstract class MTApplication extends PApplet {
         settingsLoadedFromFile = true;
     }
 
+	private static MTApplication instance = null;
+
+	static public MTApplication getInstance() {
+		return MTApplication.instance;
+	}
 
     protected void switchResolution() {
         logger.debug("Switching resolution..");

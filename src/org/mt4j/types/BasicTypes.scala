@@ -4,7 +4,7 @@
     >>  to you, your data, animals, etc.
     >>
   +2>>
-    >>  Last modified:  2011 - 3 - 9 :: 10 : 38
+    >>  Last modified:  2011 - 3 - 25 :: 4 : 12
     >>  Origin: mt4j (project) / mt4j_mod (module)
     >>
   +3>>
@@ -20,22 +20,12 @@
     >>  Made in Bavaria by fat little elves - since 1983.
  */
 
-package org.mt4j.input
+package org.mt4j.types
 
-import org.lodsb.reakt.async.{EventSourceA, VarA}
+import org.mt4j.util.math.Vector3D
 
-trait TraitInputSource[A,B] {
-	val receipt: EventSourceA[A, B] = new EventSourceA(null.asInstanceOf[A],null.asInstanceOf[B])
-}
 
-trait TraitOutputSink[A] {
-	var send = new VarA[A](null.asInstanceOf[A])
-	private 	var defaultAction	: A => Boolean = {x => true}
-	var sendAction 		: A => Boolean = defaultAction
+class BasicTypes
 
-	send.observe { x =>
-		if(sendAction != defaultAction) {
-			sendAction(x)
-		} else {true}
-	}
-}
+case class Rotation(rotationPos: Vector3D = Vector3D.ZERO_VECTOR,
+					degreeX: Float = 0, degreeY: Float = 0, degreeZ: Float = 0)
