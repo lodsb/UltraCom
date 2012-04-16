@@ -169,22 +169,22 @@ class HelloWorldScene2(mtApplication: MTApplication, name: String)
 	kinect.start
 
 	this.getCanvas().addChild(viewer);
-	/*
+
 	kinect.start
 
 
-	kinect.skeletons(1).alive.observe {
+	/*kinect.skeletons(1).alive.observe {
 		x => if (x) {
 			txt2.text() = "ALIVE!!"
 		} else {
 			"DEAD!!!"
 		}; true;
-	}*/
+	}   */
 
 
 	/*observe(kinect.skeletons(1).head) {
 		x => textField.text() = x + ""; true;
-	} */
+	}*/
 
 	//proc.register({(e:MTOSCControllerInputEvt) => textField.setText(e.getControllerMessage().getArg(0).toString()); true});
 	//proc.register(this);

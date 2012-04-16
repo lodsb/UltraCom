@@ -79,7 +79,7 @@ object MidiCommunication {
 
 		var ret: Option[MidiInput] = None;
 
-		infos.foreach(x => println(x.getDescription))
+		infos.foreach(x => println("Found MIDI-Device: "+x.getDescription))
 
 		val inDevO = infos.filter(_.getDescription == deviceName).map(MidiSystem.getMidiDevice(_)).find(_.getMaxTransmitters() != 0)
 		try {
