@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="yxc">
+    <CLASSES>
+      <root url="file://$USER_HOME$/Downloads/scalacollider/ScalaCollider/target/scala-2.9.1" />
+      <root url="file://$USER_HOME$/Downloads/scalacollider/ScalaCollider/target/scala-2.9.1" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$USER_HOME$/Downloads/scalacollider/ScalaCollider/target/scala-2.9.1" recursive="false" />
+  </library>
+</component>

@@ -46,13 +46,10 @@ package org.mt4j.input.osc
 
 import java.nio.channels.DatagramChannel
 import de.sciss.osc._
-import impl.{TCPTransmitter, UDPTransmitter, UDPReceiver, TCPReceiver}
-import java.net.{SocketAddress, InetSocketAddress}
 
+// ducktaping class, since DirectedImpl for Receiver is private final in ScalaOsc
+class SignalingOSCReceiver(val receiver: Receiver) extends TraitReceiveOSCComm;
 
-trait SignalingOSCReceiver extends OSCReceiver with TraitReceiveOSCComm;
-;
-;
 
 
 

@@ -1,5 +1,8 @@
 package basic.helloWorld
 
+//import de.sciss.synth._
+//import ugen._
+
 import org.mt4j.util.math.Vector3D
 import org.mt4j.components.visibleComponents.font.FontManager
 import org.mt4j.components.visibleComponents.font.IFont
@@ -173,6 +176,23 @@ class HelloWorldScene2(mtApplication: MTApplication, name: String)
 	kinect.start
 
 
+
+	////////////////
+
+
+	//so.deviceName = Some( "MOTU 828mk2" )
+/*	val so = Server.Config();
+	so.programPath = "/Applications/SuperCollider3/common/build/scsynth"
+	Server.test(so) { s =>
+	   // your ScalaCollider code here...
+	   play {
+		  val f = LFSaw.kr(0.4).madd(24, LFSaw.kr(List(8, 7.23)).madd(3, 80)).midicps
+		  CombN.ar(SinOsc.ar(f)*0.04, 0.2, 0.2, 4)
+	   }
+	}
+	///////////////
+*/
+
 	/*kinect.skeletons(1).alive.observe {
 		x => if (x) {
 			txt2.text() = "ALIVE!!"
@@ -235,7 +255,7 @@ class HelloWorldScene2(mtApplication: MTApplication, name: String)
 			react {
 				case x: Int => println("NUMBERWHUMBA");
 				->('A);
-				case _ => println("FUCKYOURMOM");
+				case _ => println("ha");
 				->('B);
 			}
 		}

@@ -23,26 +23,28 @@ package org.mt4j.input.osc
  */
 
 import java.nio.channels.DatagramChannel
-import de.sciss.osc._
-import impl.{TCPTransmitter, UDPTransmitter, UDPReceiver, TCPReceiver}
 import java.net.{SocketAddress, InetSocketAddress}
-
-
-
-
+import de.sciss.osc.{	UDP,TCP, Message => OSCMessage,
+						Transport => OSCTransport,
+						Transmitter=>OSCTransmitter,
+						PacketCodec=>OSCPacketCodec}
 
 
 object OSCCommunication {
-	def createOSCReceiver(transport: OSCTransport, address: InetSocketAddress, codec: OSCPacketCodec = OSCPacketCodec.default):  SignalingOSCReceiver = {
+	def createOSCReceiver(transport: OSCTransport, address: InetSocketAddress):  SignalingOSCReceiver = {
 		val recv = transport match {
-			case UDP => new SignalingUDPOSCReceiver(address, codec)
-			case TCP => new SignalingTCPOSCReceiver(address, codec)
+			case UDP => {
+				new SignalingOSCReceiver(UDP.Receiver(address));
+			}
+			case TCP => {
+				new SignalingOSCReceiver(TCP.Receiver(address));
+			}
 		}
 
 
 		val actionFunction = (x:Tuple3[OSCMessage, SocketAddress, Long]) => recv.receipt.emit(x)
 
-		recv.action = {(msg,addr,time) => recv.receipt.emit((msg,addr,time))}
+		recv.receiver.action = {(msg,addr,time) => recv.receipt.emit((msg,addr,time))}
 
 		recv
 	}
@@ -50,8 +52,19 @@ object OSCCommunication {
 	def createOSCTransmitter(transport: OSCTransport, localAddress: InetSocketAddress,
 						  codec: OSCPacketCodec = OSCPacketCodec.default): OSCTransmitter = {
 		var trans = transport match {
-			case UDP => new RichUDPTransmitter(localAddress, codec)
-			case TCP => new RichTCPTransmitter(localAddress, codec)
+			case UDP => {
+				val cfg = UDP.Config();
+				cfg.codec = OSCPacketCodec().doublesAsFloats().booleansAsInts();
+
+				new Transmitter(UDP.Transmitter(localAddress, cfg));
+			}
+
+			case TCP => {
+				val cfg = TCP.Config();
+				cfg.codec = OSCPacketCodec().doublesAsFloats().booleansAsInts();
+
+				new Transmitter(TCP.Transmitter(localAddress, cfg));
+			}
 		}
 
 		trans.sendAction = { x=> trans ! x; println(x);true}

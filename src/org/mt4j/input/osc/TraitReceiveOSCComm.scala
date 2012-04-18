@@ -46,9 +46,13 @@ package org.mt4j.input.osc
 
 import java.nio.channels.DatagramChannel
 import de.sciss.osc._
-import impl.{TCPTransmitter, UDPTransmitter, UDPReceiver, TCPReceiver}
 import java.net.{SocketAddress, InetSocketAddress}
 import org.mt4j.input.TraitInputSource
+import de.sciss.osc.{	UDP,TCP, Message => OSCMessage,
+						Transport => OSCTransport,
+						Transmitter=>OSCTransmitter,
+						PacketCodec=>OSCPacketCodec,
+						Packet => OSCPacket}
 
 trait TraitReceiveOSCComm extends TraitInputSource[Tuple3[OSCMessage, SocketAddress, Long],Nothing]
 
