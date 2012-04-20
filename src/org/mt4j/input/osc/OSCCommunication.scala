@@ -24,50 +24,62 @@ package org.mt4j.input.osc
 
 import java.nio.channels.DatagramChannel
 import java.net.{SocketAddress, InetSocketAddress}
-import de.sciss.osc.{	UDP,TCP, Message => OSCMessage,
-						Transport => OSCTransport,
-						Transmitter=>OSCTransmitter,
-						PacketCodec=>OSCPacketCodec}
-
+import de.sciss.osc.{Channel, Packet, Message => OSCMessage, UDP => OSCviaUDP, TCP => OSCviaTCP, Transport => OSCTransport, Transmitter, PacketCodec => OSCPacketCodec}
+import de.sciss.osc.Channel.DirectedOutput
 
 object OSCCommunication {
-	def createOSCReceiver(transport: OSCTransport, address: InetSocketAddress):  SignalingOSCReceiver = {
+	class OSCTransportType;
+	case object UDP extends OSCTransportType;
+	case object TCP extends OSCTransportType;
+
+	// argh... i am stupid today.
+	def createOSCReceiver(transport: OSCTransportType, address: InetSocketAddress):  SignalingOSCReceiver = {
 		val recv = transport match {
 			case UDP => {
-				new SignalingOSCReceiver(UDP.Receiver(address));
+				val r = OSCviaUDP.Receiver(address);
+				val sr = new SignalingOSCReceiver(r);
+				r.asInstanceOf[Channel.DirectedInput].action = {x:Packet => sr.receipt.emit(x)};
+				r.connect()
+				sr
 			}
 			case TCP => {
-				new SignalingOSCReceiver(TCP.Receiver(address));
+				val r = OSCviaTCP.Receiver(address);
+				val sr = new SignalingOSCReceiver(r);
+				r.action = {x:Packet => sr.receipt.emit(x)};
+				r.connect()
+				sr
 			}
 		}
-
-
-		val actionFunction = (x:Tuple3[OSCMessage, SocketAddress, Long]) => recv.receipt.emit(x)
-
-		recv.receiver.action = {(msg,addr,time) => recv.receipt.emit((msg,addr,time))}
 
 		recv
 	}
 
-	def createOSCTransmitter(transport: OSCTransport, localAddress: InetSocketAddress,
+	def createOSCTransmitter(transport: OSCTransportType, localAddress: InetSocketAddress,
 						  codec: OSCPacketCodec = OSCPacketCodec.default): OSCTransmitter = {
 		var trans = transport match {
 			case UDP => {
-				val cfg = UDP.Config();
+				val cfg = OSCviaUDP.Config();
 				cfg.codec = OSCPacketCodec().doublesAsFloats().booleansAsInts();
+				val t = OSCviaUDP.Transmitter(localAddress, cfg)
+				val sendFunc = t.asInstanceOf[DirectedOutput].! _
 
-				new Transmitter(UDP.Transmitter(localAddress, cfg));
+				val st = new OSCTransmitter(t);
+				st.sendAction =  { x:Packet => sendFunc(x); println(x);true}
+				t.connect()
+				st
 			}
 
 			case TCP => {
-				val cfg = TCP.Config();
+				val cfg = OSCviaTCP.Config();
 				cfg.codec = OSCPacketCodec().doublesAsFloats().booleansAsInts();
+				val t = OSCviaTCP.Transmitter(localAddress, cfg)
+				val st = new OSCTransmitter(t);
 
-				new Transmitter(TCP.Transmitter(localAddress, cfg));
+				st.sendAction =  { x=> t.!(x); println(x);true}
+				t.connect()
+				st
 			}
 		}
-
-		trans.sendAction = { x=> trans ! x; println(x);true}
 
 		trans
 	}

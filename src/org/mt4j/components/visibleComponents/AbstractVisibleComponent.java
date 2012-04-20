@@ -92,7 +92,7 @@ public abstract class AbstractVisibleComponent extends MTComponent {
     public AbstractVisibleComponent(PApplet pApplet, String name, /*Icamera globalCamera,*/ Icamera objectCamera) {
         super(pApplet, name, /*globalCamera,*/ objectCamera);
 		this.setStyleInfo(new StyleInfo());
-		strokeWeight = new Property<Float>(this, "strokeWeight",
+		strokeWeight = new Property(this, "strokeWeight",
 															styleInfo.getStrokeWeight(),
 															ScalaPropertyBindings.setStrokeWeight(this),
 															ScalaPropertyBindings.getStrokeWeight(this)

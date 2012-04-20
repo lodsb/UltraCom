@@ -29,3 +29,4 @@ class BasicTypes
 
 case class Rotation(rotationPos: Vector3D = Vector3D.ZERO_VECTOR,
 					degreeX: Float = 0, degreeY: Float = 0, degreeZ: Float = 0)
+case object ZeroRotation extends Rotation(Vector3D.ZERO_VECTOR,0,0,0);

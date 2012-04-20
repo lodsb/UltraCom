@@ -202,7 +202,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
         this.ignoreCSSFont = true;
 
 		this.text = new Property<String>(this,"text", "", ScalaPropertyBindings.setText(this), ScalaPropertyBindings.getText(this));
-		this.padding = new Property<Float>(this,"padding", 5f , ScalaPropertyBindings.setPadding(this), ScalaPropertyBindings.getPadding(this));
+		this.padding = new Property(this,"padding", 5f , ScalaPropertyBindings.setPadding(this), ScalaPropertyBindings.getPadding(this));
     }
 
 
@@ -280,7 +280,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
         this.ignoreCSSFont = true;
 
 		this.text = new Property<String>(this, "text", "", ScalaPropertyBindings.setText(this), ScalaPropertyBindings.getText(this));
-		this.padding = new Property<Float>(this, "padding", 5f , ScalaPropertyBindings.setPadding(this), ScalaPropertyBindings.getPadding(this));
+		this.padding = new Property(this, "padding", 5f , ScalaPropertyBindings.setPadding(this), ScalaPropertyBindings.getPadding(this));
     }
 
 

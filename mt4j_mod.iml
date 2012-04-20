@@ -92,7 +92,7 @@
       <excludeFolder url="file://$MODULE_DIR$/mt4jLibs" />
       <excludeFolder url="file://$MODULE_DIR$/tests" />
     </content>
-    <orderEntry type="jdk" jdkName="1.6" jdkType="JavaSDK" />
+    <orderEntry type="jdk" jdkName="1.7" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="scala2" level="project" />
     <orderEntry type="module-library">
@@ -521,31 +521,12 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Downloads/scalacollider/ScalaCollider/target/scala-2.9.1/scalacollider_2.9.1-0.34-SNAPSHOT.jar!/" />
+          <root url="jar://$MODULE_DIR$/mt4jLibs/osc/NetUtil/build/NetUtil.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$USER_HOME$/Downloads/scalacollider/ScalaCollider/target/scala-2.9.1/scalacollider_2.9.1-0.34-SNAPSHOT-javadoc.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$USER_HOME$/Downloads/scalacollider/ScalaCollider/target/scala-2.9.1/scalacollider_2.9.1-0.34-SNAPSHOT-sources.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="library" name="yxc" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>

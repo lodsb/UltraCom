@@ -24,12 +24,12 @@ package org.mt4j.input.kinect
 
 import org.mt4j.util.math.Vector3D
 import java.net.InetSocketAddress
-import org.mt4j.input.osc.OSCCommunication
-import de.sciss.osc.UDP
 import org.lodsb.reakt.async.VarA
+import org.mt4j.input.osc.{SignalingOSCReceiver, OSCCommunication}
+import de.sciss.osc.{Message, UDP}
 
 class Skeleton {
-	private val initCoord = new Vector3D(1f,1f,1f)
+	private val initCoord = new Vector3D(1f, 1f, 1f)
 
 	val alive = new VarA[Boolean](false);
 	val head = new VarA[Vector3D](initCoord);
@@ -58,11 +58,11 @@ class Skeleton {
 }
 
 class KinectSkeletonSource(osceletonAddress: InetSocketAddress) {
-	private val oscReceiver = OSCCommunication.createOSCReceiver(UDP, osceletonAddress)
-
+	private val oscReceiver = OSCCommunication.createOSCReceiver(OSCCommunication.UDP, osceletonAddress);
+	var started = false;
 
 	def start(): Unit = {
-		oscReceiver.start
+		started = true;
 	}
 
 	// currently predefined
@@ -78,61 +78,50 @@ class KinectSkeletonSource(osceletonAddress: InetSocketAddress) {
 
 	oscReceiver.receipt.observe {
 		x => {
-			val message = x._1
+			// TODO: should be re-tested
+			if (started) x match {
+				case (m@Message("/joint", joint: String, id: Int, xCoord: Float, yCoord: Float, zCoord: Float)) => {
+					joint match {
+						case "head" => skeletons(id).head() = new Vector3D(xCoord, yCoord, zCoord)
+						case "neck" => skeletons(id).neck() = new Vector3D(xCoord, yCoord, zCoord)
 
-			if (message.name.equals("/joint")) {
-				val args = message.args
-				val id = args(1).asInstanceOf[Int]
+						case "r_collar" => skeletons(id).rightCollar() = new Vector3D(xCoord, yCoord, zCoord)
+						case "r_shoulder" => skeletons(id).rightShoulder() = new Vector3D(xCoord, yCoord, zCoord)
+						case "r_elbow" => skeletons(id).rightElbow() = new Vector3D(xCoord, yCoord, zCoord)
+						case "r_wrist" => skeletons(id).rightWrist() = new Vector3D(xCoord, yCoord, zCoord)
+						case "r_hand" => skeletons(id).rightHand() = new Vector3D(xCoord, yCoord, zCoord)
+						case "r_finger" => skeletons(id).rightFinger() = new Vector3D(xCoord, yCoord, zCoord)
 
-				val xCoord = args(2).asInstanceOf[Float]
-				val yCoord = args(3).asInstanceOf[Float]
-				val zCoord = args(4).asInstanceOf[Float]
+						case "l_collar" => skeletons(id).leftCollar() = new Vector3D(xCoord, yCoord, zCoord)
+						case "l_shoulder" => skeletons(id).leftShoulder() = new Vector3D(xCoord, yCoord, zCoord)
+						case "l_elbow" => skeletons(id).leftElbow() = new Vector3D(xCoord, yCoord, zCoord)
+						case "l_wrist" => skeletons(id).leftWrist() = new Vector3D(xCoord, yCoord, zCoord)
+						case "l_hand" => skeletons(id).leftHand() = new Vector3D(xCoord, yCoord, zCoord)
+						case "l_finger" => skeletons(id).leftFinger() = new Vector3D(xCoord, yCoord, zCoord)
 
-				args(0) match {
-					case "head" => skeletons(id).head() = new Vector3D(xCoord, yCoord, zCoord)
-					case "neck" => skeletons(id).neck() = new Vector3D(xCoord, yCoord, zCoord)
+						case "torso" => skeletons(id).torso() = new Vector3D(xCoord, yCoord, zCoord)
 
-					case "r_collar" => skeletons(id).rightCollar() = new Vector3D(xCoord, yCoord, zCoord)
-					case "r_shoulder" => skeletons(id).rightShoulder() = new Vector3D(xCoord, yCoord, zCoord)
-					case "r_elbow" => skeletons(id).rightElbow() = new Vector3D(xCoord, yCoord, zCoord)
-					case "r_wrist" => skeletons(id).rightWrist() = new Vector3D(xCoord, yCoord, zCoord)
-					case "r_hand" => skeletons(id).rightHand() = new Vector3D(xCoord, yCoord, zCoord)
-					case "r_finger" => skeletons(id).rightFinger() = new Vector3D(xCoord, yCoord, zCoord)
+						case "r_hip" => skeletons(id).rightHip() = new Vector3D(xCoord, yCoord, zCoord)
+						case "r_knee" => skeletons(id).rightKnee() = new Vector3D(xCoord, yCoord, zCoord)
+						case "r_ankle" => skeletons(id).rightAnkle() = new Vector3D(xCoord, yCoord, zCoord)
+						case "r_foot" => skeletons(id).rightFoot() = new Vector3D(xCoord, yCoord, zCoord)
 
-					case "l_collar" => skeletons(id).leftCollar() = new Vector3D(xCoord, yCoord, zCoord)
-					case "l_shoulder" => skeletons(id).leftShoulder() = new Vector3D(xCoord, yCoord, zCoord)
-					case "l_elbow" => skeletons(id).leftElbow() = new Vector3D(xCoord, yCoord, zCoord)
-					case "l_wrist" => skeletons(id).leftWrist() = new Vector3D(xCoord, yCoord, zCoord)
-					case "l_hand" => skeletons(id).leftHand() = new Vector3D(xCoord, yCoord, zCoord)
-					case "l_finger" => skeletons(id).leftFinger() = new Vector3D(xCoord, yCoord, zCoord)
-
-					case "torso" => skeletons(id).torso() = new Vector3D(xCoord, yCoord, zCoord)
-
-					case "r_hip" => skeletons(id).rightHip() = new Vector3D(xCoord, yCoord, zCoord)
-					case "r_knee" => skeletons(id).rightKnee() = new Vector3D(xCoord, yCoord, zCoord)
-					case "r_ankle" => skeletons(id).rightAnkle() = new Vector3D(xCoord, yCoord, zCoord)
-					case "r_foot" => skeletons(id).rightFoot() = new Vector3D(xCoord, yCoord, zCoord)
-
-					case "l_hip" => skeletons(id).leftHip() = new Vector3D(xCoord, yCoord, zCoord)
-					case "l_knee" => skeletons(id).leftKnee() = new Vector3D(xCoord, yCoord, zCoord)
-					case "l_ankle" => skeletons(id).leftAnkle() = new Vector3D(xCoord, yCoord, zCoord)
-					case "l_foot" => skeletons(id).leftFoot() = new Vector3D(xCoord, yCoord, zCoord)
+						case "l_hip" => skeletons(id).leftHip() = new Vector3D(xCoord, yCoord, zCoord)
+						case "l_knee" => skeletons(id).leftKnee() = new Vector3D(xCoord, yCoord, zCoord)
+						case "l_ankle" => skeletons(id).leftAnkle() = new Vector3D(xCoord, yCoord, zCoord)
+						case "l_foot" => skeletons(id).leftFoot() = new Vector3D(xCoord, yCoord, zCoord)
+					}
 				}
-			} else if (message.name.equals("/new_skel")) {
-				val args = message.args
-				val id = args(0).asInstanceOf[Int]
-
-				skeletons(id).alive() = true;
-			} else if (message.name.equals("/lost_user")) {
-				val args = message.args
-				val id = args(0).asInstanceOf[Int]
-
-				skeletons(id).alive() = false;
-			} else if (message.name.equals("/new_user")) {
-				val args = message.args
-				val id = args(0).asInstanceOf[Int]
-
-				println("Found user " + id + "! Please callibrate...");
+				case (m@Message("/new_skel", id: Int)) => {
+					skeletons(id).alive() = true;
+				}
+				case (m@Message("/lost_user", id: Int)) => {
+					skeletons(id).alive() = false;
+				}
+				case (m@Message("/new_user", id: Int)) => {
+					skeletons(id).alive() = false;
+					println("Found user " + id + "! Please callibrate...");
+				}
 			}
 
 			true;
