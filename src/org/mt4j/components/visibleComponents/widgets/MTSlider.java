@@ -288,7 +288,7 @@ public class MTSlider extends MTRectangle {
 		float currVal = (minValue + maxValue) / 2f;
 		this.setValue(currVal);
 
-		this.value = new Property(this,"value", currVal, ScalaPropertyBindings.setValue(this), ScalaPropertyBindings.getValue(this));
+		this.value = new Property(this,"value", new java.lang.Float(currVal), ScalaPropertyBindings.setValue(this), ScalaPropertyBindings.getValue(this));
 		this.valueRange = new Attribute<Float>("valueRange", this.getValueRangeVar());
 	}
 

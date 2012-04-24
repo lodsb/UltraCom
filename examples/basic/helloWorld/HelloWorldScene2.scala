@@ -5,34 +5,30 @@ package basic.helloWorld
 
 import org.mt4j.util.math.Vector3D
 import org.mt4j.components.visibleComponents.font.FontManager
-import org.mt4j.components.visibleComponents.font.IFont
-import org.mt4j.input.inputSources.osc.OSCInputSource
 import org.mt4j.util.MTColor
 
-import org.mt4j.input.osc.OSCCommunication
-import java.net.{SocketAddress, InetSocketAddress}
-import de.sciss.osc._
+import java.net.InetSocketAddress
 
-import java.net.InetAddress
 import org.mt4j.input.inputData.osc.MTOSCControllerInputEvt
 import org.mt4j.MTApplication
 import org.mt4j.sceneManagement.SimpleAbstractScene
-import org.mt4j.input.IMTInputEventListener
-import org.mt4j.input.inputProcessors.globalProcessors.{AbstractGlobalInputProcessor, GlobalOSCInputProcessor, CursorTracer}
-import org.mt4j.input.inputData.MTInputEvent
+import org.mt4j.input.inputProcessors.globalProcessors.CursorTracer
 import org.mt4j.stateMachine.StateMachine
-import org.mt4j.components.interfaces.IMTComponent3D
 import org.mt4j.eventSystem.{foo, bar, TrEventListener}
 import org.mt4j.commandSystem.Command
 
 
-import org.mt4j.input.midi.{MidiMsg, MidiCommunication, MidiCtrlMsg}
+import org.mt4j.input.midi.{MidiCommunication, MidiCtrlMsg}
 import org.mt4j.input.kinect.KinectSkeletonSource
 import org.mt4j.components.visibleComponents.widgets._
 
 import org.lodsb.reakt.ConstantSignal._
 import org.mt4j.types.Rotation
 import org.lodsb.reaktExt.animation._
+import org.mt4j.output.audio.AudioServer
+import de.sciss.synth.SynthDef
+import de.sciss.synth.ugen._
+import AudioServer._
 
 class HelloWorldScene2(mtApplication: MTApplication, name: String)
 	extends SimpleAbstractScene(mtApplication, name)
@@ -101,14 +97,16 @@ class HelloWorldScene2(mtApplication: MTApplication, name: String)
 	cp.colorPicked.start
 	textField.text.start
 
-	System.err.println("sadefsdfsd "+cp.colorPicked);
+	System.err.println("sadefsdfsd " + cp.colorPicked);
 
-	textField.text <~ cp.colorPicked +""
+	textField.text <~ cp.colorPicked + ""
 
 
-	val anim = new InterpolatingAnimation(0f,100f,100f,SineInOut)
+	val anim = new InterpolatingAnimation(0f, 100f, 100f, SineInOut)
 
-	textField.height <~ sl.value
+	textField.height <~ sl.value         //dsgfsdfsdfsdfsdfsdfsdfsfdsdfsfd
+
+
 
 
 
@@ -134,15 +132,15 @@ class HelloWorldScene2(mtApplication: MTApplication, name: String)
 	}
       */
 
-	txt2.localRotation <~ (anim.map( x => Rotation(degreeZ = x)))
+	//txt2.localRotation <~ (anim.map(x => Rotation(degreeZ = x)))
 
-	textField.localRotation <~ (anim.map( x => Rotation(degreeX = x)))
+	textField.text <~ anim + "ssdf"
 	var ctrler = 0;
-/*	midiOut.get.send <~ anim.map(x => {val y = (x*100) % 100 ; println(y); ctrler = 70+ctrler+1; MidiCtrlMsg(0,ctrler%100, y/100)} )
-	midiOut.get.send <~ anim.map(x => {val y = (x*100) % 100 ; println(y); ctrler = 80+ctrler+1; MidiCtrlMsg(0,ctrler%100, 1.0f-(y/100))} )
-  */
+	/*	midiOut.get.send <~ anim.map(x => {val y = (x*100) % 100 ; println(y); ctrler = 70+ctrler+1; MidiCtrlMsg(0,ctrler%100, y/100)} )
+  midiOut.get.send <~ anim.map(x => {val y = (x*100) % 100 ; println(y); ctrler = 80+ctrler+1; MidiCtrlMsg(0,ctrler%100, 1.0f-(y/100))} )
+*/
 
-		anim.start
+	anim.start
 
 	var midiIn = MidiCommunication.createMidiInput("BCR2000, USB MIDI, BCR2000")
 
@@ -162,12 +160,12 @@ class HelloWorldScene2(mtApplication: MTApplication, name: String)
 		case _ => println("NO DEVICE FOUND!")
 	}
 
-/*	sl.value.observe {
-		x => midiOut.get.send() = { val y = x.floatValue/200;
-									MidiCtrlMsg(0,90,y)} ; true
-	}
-  */
-	var viewer = new KinectSkeletonViewer(mtApplication,100,100 , 300,300,300, kinect.skeletons(1));
+	/*	sl.value.observe {
+	  x => midiOut.get.send() = { val y = x.floatValue/200;
+								  MidiCtrlMsg(0,90,y)} ; true
+  }
+*/
+	var viewer = new KinectSkeletonViewer(mtApplication, 100, 100, 300, 300, 300, kinect.skeletons(1));
 
 	kinect.start
 
@@ -175,13 +173,22 @@ class HelloWorldScene2(mtApplication: MTApplication, name: String)
 
 	kinect.start
 
+	AudioServer.start(() => {
+		val test = AudioServer.tt()
+		val synth = test.play
+		//txt2.localRotation <~ synth.amplitude.map(x => Rotation(degreeX = 100*x));     // (anim.map( x => Rotation(degreeZ = x)))
+		txt2.globalRotation <~ synth.amplitude.map(x => Rotation(degreeX=x))
+		synth.parameters <~ sl.value.map({x => println(x);("amp"->x.toFloat)})
+	})
+
+	//textField.text <~ synth.amplitude+""
 
 
 	////////////////
 
 
 	//so.deviceName = Some( "MOTU 828mk2" )
-/*	val so = Server.Config();
+	/*	val so = Server.Config();
 	so.programPath = "/Applications/SuperCollider3/common/build/scsynth"
 	Server.test(so) { s =>
 	   // your ScalaCollider code here...

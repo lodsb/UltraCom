@@ -44,12 +44,12 @@ public class MTRectangle extends MTPolygon {
 		================
 	 */
 
-	public final Property width = new Property(this,"width",
+	public final Property<scala.Float> width = new Property(this,"width",
 													0f,
 													ScalaPropertyBindings.setWidth(this),
 													ScalaPropertyBindings.getWidth(this)
 												);
-	public final Property height = new Property(this, "height",
+	public final Property<scala.Float> height = new Property(this, "height",
 													0f,
 													ScalaPropertyBindings.setHeight(this),
 													ScalaPropertyBindings.getHeight(this)
