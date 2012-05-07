@@ -34,7 +34,7 @@ object AudioServer {
 	implicit def synth2Synthesizer(s: Synth):Synthesizer = AudioServer.lookupOrCreateAndRegister(s)
 
 	private val timerBus = 511;
-	private val timerInterval = 10
+	private val timerInterval = 100
 	private val amplitudeTriggerID = 63
 	private val ctrlBusChannels = 512
 
@@ -113,8 +113,10 @@ object AudioServer {
 
 	def tt:SynthDef = {SynthDef("test") {
 						val amp = "amp".kr(0.0)
-						val f = LFSaw.kr(0.4).madd(24, LFSaw.kr(Seq(8, 7.23)).madd(3, 80)).midicps
-						val signal = amp * (CombN.ar(SinOsc.ar(f) * 0.04, 0.2, 0.2, 4))
+						val freq = "freq".kr(200)
+						val freq2 = "freq2".kr(200)
+						val f = LFSaw.kr(freq2).madd(24, LFSaw.kr(Seq(8, 7.23)).madd(3, 80)).midicps
+						val signal = amp * (CombN.ar(SinOsc.ar(f) * 0.04, 0.2, 0.2, 4)) * SinOsc.ar(freq);
 						Out.ar(0, signal)
 						SendTrig.kr(In.kr(timerBus), amplitudeTriggerID, 1000 * Amplitude.kr(signal))
 					}}

@@ -1,17 +1,17 @@
 #Wed Jan 30 04:24:13 CET 2008	
-Frametitle=MT Application
+Frametitle=UltraCom Test
 #Renderer: OpenGL: 1 P3D: 2
 Renderer=1
 #Fullscreen:'true' or 'false'
-Fullscreen=false
+Fullscreen=true
 #Switch for using fullscreen exclusive mode 
 #(if not exclusive, mt4j just uses an undecorated window, other windows can overlap it)
-FullscreenExclusive=false
+FullscreenExclusive=true
 #Resolution
-DisplayWidth=1024
-DisplayHeight=768
+DisplayWidth=1920
+DisplayHeight=1080
 #Which display to use for fullscreen
-Display=1
+Display=2
 #Framerate maximum
 MaximumFrameRate=60
 #Vertical_sync:'true' or 'false'
@@ -19,4 +19,4 @@ Vertical_sync=false
 #Enables multiple mice use (windows, some linux)
 MultiMiceEnabled=false
 #Anti aliasing multisampling - '0' disables it - 2,4,8 determines the quality of the a.a.
-OpenGLAntialiasing=0
+OpenGLAntialiasing=1

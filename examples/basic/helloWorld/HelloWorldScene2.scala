@@ -23,12 +23,13 @@ import org.mt4j.input.kinect.KinectSkeletonSource
 import org.mt4j.components.visibleComponents.widgets._
 
 import org.lodsb.reakt.ConstantSignal._
-import org.mt4j.types.Rotation
 import org.lodsb.reaktExt.animation._
 import org.mt4j.output.audio.AudioServer
 import de.sciss.synth.SynthDef
 import de.sciss.synth.ugen._
 import AudioServer._
+import org.mt4j.types.{Rotation}
+import org.mt4j.input.osc.OSCCommunication
 
 class HelloWorldScene2(mtApplication: MTApplication, name: String)
 	extends SimpleAbstractScene(mtApplication, name)
@@ -39,6 +40,7 @@ class HelloWorldScene2(mtApplication: MTApplication, name: String)
 	val clazz = this.getClass
 	var white = new MTColor(255, 255, 255);
 	this.setClearColor(MTColor.BLACK);
+
 	//Show touches
 	var tracer = new CursorTracer(this, mtApplication);
 
@@ -66,7 +68,7 @@ class HelloWorldScene2(mtApplication: MTApplication, name: String)
 	//val win = new MTWindow(mtApplication,30,30,20,600,400,20,30);
 	var txt2 = new MTTextArea(mtApplication);
 
-	textField.addChild(txt2)
+	this.getCanvas().addChild(txt2)
 	textField.setPadding(20)
 	//textField.rotateZ(new Vector3D(0.0f,0.3f,0.4f), 30.5f)
 
@@ -75,10 +77,19 @@ class HelloWorldScene2(mtApplication: MTApplication, name: String)
 
 	var sl = new MTSlider(mtApplication, 200, 10, 200, 50, 1, 200);
 
+	var sl2 = new MTSlider(mtApplication, 500, 10, 800, 50, 1, 2000);
+	var sl3 = new MTSlider(mtApplication, 500, 100, 800, 50, 1, 1000);
+
+	var scope = new Scope(mtApplication, 500, -100, 800, 200, 200);
+	scope.setPickable(false);
+
 	//Add the textfield to our canvas
 	//this.getCanvas().addChild(win);
 	this.getCanvas().addChild(textField);
-	this.getCanvas().addChild(sl);
+	textField.addChild(sl);
+	textField.addChild(sl2);
+	textField.addChild(sl3);
+	textField.addChild(scope);
 
 
 	/*cp.colorPicked.observe {
@@ -143,6 +154,8 @@ class HelloWorldScene2(mtApplication: MTApplication, name: String)
 	anim.start
 
 	var midiIn = MidiCommunication.createMidiInput("BCR2000, USB MIDI, BCR2000")
+	var oscIn = OSCCommunication.createOSCReceiver(OSCCommunication.UDP,new InetSocketAddress("127.0.0.1", 57000) )
+	oscIn.observe({x=>println(x);true})
 
 	var kinect = new KinectSkeletonSource(new InetSocketAddress("127.0.0.1", 7110));
 	midiIn match {
@@ -177,8 +190,11 @@ class HelloWorldScene2(mtApplication: MTApplication, name: String)
 		val test = AudioServer.tt()
 		val synth = test.play
 		//txt2.localRotation <~ synth.amplitude.map(x => Rotation(degreeX = 100*x));     // (anim.map( x => Rotation(degreeZ = x)))
-		txt2.globalRotation <~ synth.amplitude.map(x => Rotation(degreeX=x))
+		txt2.globalPosition <~ synth.amplitude.map(x => new Vector3D(x+100,200.0f))
+		scope.plot <~ synth.amplitude
 		synth.parameters <~ sl.value.map({x => println(x);("amp"->x.toFloat)})
+		synth.parameters <~ sl2.value.map({x => println(x);("freq"->x.toFloat)})
+		synth.parameters <~ sl3.value.map({x => println(x);("freq2"->x.toFloat)})
 	})
 
 	//textField.text <~ synth.amplitude+""

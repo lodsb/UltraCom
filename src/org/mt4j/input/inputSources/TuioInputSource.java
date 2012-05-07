@@ -94,7 +94,7 @@ public class TuioInputSource extends AbstractInputSource implements TuioListener
      * @param pa the pa
      */
     public TuioInputSource(MTApplication pa) {
-        this(pa, 3333);
+        this(pa, 3335);
     }
 
     /**
