@@ -2485,7 +2485,7 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
 //		if (this.componentContainsPointLocal(testPoint))
 //			return true;
 //		for (int i = childComponents.size()-1; i >= 0; i--) {
-//			MTComponent component = childComponents.get(i); 
+//			MTComponent component = childComponents.get(i);
 //			if (component.containsPointLocal(testPoint)) 
 //				return true;
 //		}
