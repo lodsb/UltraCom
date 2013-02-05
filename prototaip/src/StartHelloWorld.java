@@ -14,7 +14,7 @@
     >>     |    ,---.,---|,---.|---.
     >>     |    |   ||   |`---.|   |
     >>     `---'`---'`---'`---'`---'
-    >>                    // Niklas Kl�gel
+    >>                    // Niklas KlÃÅgel
     >>
   +4>>
     >>  Made in Bavaria by fat little elves - since 1983.

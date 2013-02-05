@@ -4,6 +4,7 @@
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/libraries/lzrcore" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/libraries/reakt" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/prototaip" vcs="Git" />
   </component>
 </project>
 

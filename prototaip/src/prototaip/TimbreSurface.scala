@@ -14,7 +14,7 @@
     >>     |    ,---.,---|,---.|---.
     >>     |    |   ||   |`---.|   |
     >>     `---'`---'`---'`---'`---'
-    >>                    // Niklas Klügel
+    >>                    // Niklas KlÃ¼gel
     >>
   +4>>
     >>  Made in Bavaria by fat little elves - since 1983.
@@ -32,16 +32,17 @@ import org.mt4j.components.visibleComponents.widgets.MTColorPicker
 import org.mt4j.components.visibleComponents.widgets
 import org.mt4j.components.MTComponent
 import org.lodsb.reakt.property.Attribute
+import TimbreDataSetLoader._
 
 
-class TimbreSurface(applet: PApplet, filename: String, x: Int, y: Int, w: Int, h: Int)
+class TimbreSurface(applet: PApplet, dataSet: TimbreDataSet, x: Int, y: Int, w: Int, h: Int)
 	extends MTRectangle(applet,x,y,w,h) 	{
 
 	val soundPicked:Attribute[Tuple2[Int, String]] = new Attribute[(Int, String)]("soundPicked", (-1, "none"));
 
-	val dataSet = loadTimbreSurfaceDataset(filename)
 	val latentSize = dataSet._2
 	val audioFileName = dataSet._1
+	val blockSize = dataSet._4;
 	val coordinates = dataSet._5;
 	val latentDim = scala.math.sqrt(latentSize).toInt;
 
@@ -66,9 +67,11 @@ class TimbreSurface(applet: PApplet, filename: String, x: Int, y: Int, w: Int, h
 
 					coordinates.get(latentIndex) match {
 						case Some(list) => {
-							list.foreach( x => {
+							/*list.foreach( x => {
 									soundPicked() = (x._1,audioFileName);
-							})
+							})*/
+
+							soundPicked() = (list(0)._1*blockSize,audioFileName); // ignore multiple offsets for now
 						}
 						case _ => ()
 					}
@@ -159,61 +162,5 @@ class TimbreSurface(applet: PApplet, filename: String, x: Int, y: Int, w: Int, h
 				}
 			}
 		}
-
-
-	import scala.io._;
-	import scala.collection.mutable.HashMap
-	private def loadTimbreSurfaceDataset(filename: String) = {
-		val set = Source.fromFile(filename).getLines();
-
-		var audioFilename: String = "";
-		var latentSize = 0;
-		var blockSize  = 0;
-		var blocks = 0;
-
-		val coordinateMap = new mutable.HashMap[Int, List[Tuple2[Int,Float]]]
-
-		// encoding of file
-		// "filename", latentsize, blocksize
-		// fileoffset, xcoord, value, xcoord, value, xcoord, value ...
-		// .
-		// .
-		// .
-
-		var firstLine = true;
-		set.foreach( s => {
-			var lineSplits = s.split(' ');
-			if(!firstLine) {
-				var currentFileOffset = -1;
-				var currentXCoord = -1;
-
-				lineSplits.foreach( ls => {
-					if (currentFileOffset != -1) {
-						if(currentXCoord != -1) {
-							val intensity = ls.toFloat
-							var coordList = coordinateMap.getOrElse(currentXCoord,List[Tuple2[Int,Float]]())
-							coordList ::= (currentFileOffset, intensity);
-							coordinateMap += ( currentXCoord -> coordList )
-
-							currentXCoord = -1
-						} else {
-							currentXCoord = ls.toInt
-						}
-					} else {
-						currentFileOffset = ls.toInt
-					}
-				})
-
-			} else {
-				audioFilename 	= lineSplits(0)
-				blocks 			= lineSplits(1).toInt
-				latentSize		= lineSplits(2).toInt
-				blockSize 		= lineSplits(3).toInt
-				firstLine 		= false;
-			}
-		})
-		(audioFilename, latentSize, blocks, blockSize, coordinateMap)
-	}
-
 }
 

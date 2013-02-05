@@ -8,6 +8,7 @@ import org.mt4j.components.visibleComponents.font.FontManager
 import org.mt4j.util.MTColor
 
 import java.net.InetSocketAddress
+import org.mt4j.components.ComponentImplicits._
 
 import org.mt4j.input.inputData.osc.MTOSCControllerInputEvt
 import org.mt4j.MTApplication
@@ -79,17 +80,18 @@ class HelloWorldScene2(mtApplication: MTApplication, name: String)
 
 	var sl2 = new MTSlider(mtApplication, 500, 10, 800, 50, 1, 2000);
 	var sl3 = new MTSlider(mtApplication, 500, 100, 800, 50, 1, 1000);
+	var sl4 = new MTSlider(mtApplication, 500, 230, 800, 50, 1, 2000);
 
 	var scope = new Scope(mtApplication, 500, -100, 800, 200, 200);
 	scope.setPickable(false);
 
 	//Add the textfield to our canvas
 	//this.getCanvas().addChild(win);
-	this.getCanvas().addChild(textField);
-	textField.addChild(sl);
-	textField.addChild(sl2);
-	textField.addChild(sl3);
-	textField.addChild(scope);
+	//this.getCanvas().addChild(textField);
+
+	canvas += textField 	// addchild examples
+	textField += sl;
+	textField += scope ++ sl2 ++ sl3 ++ sl4;
 
 
 	/*cp.colorPicked.observe {
@@ -153,25 +155,10 @@ class HelloWorldScene2(mtApplication: MTApplication, name: String)
 
 	anim.start
 
-	var midiIn = MidiCommunication.createMidiInput("BCR2000, USB MIDI, BCR2000")
 	var oscIn = OSCCommunication.createOSCReceiver(OSCCommunication.UDP,new InetSocketAddress("127.0.0.1", 57000) )
 	oscIn.observe({x=>println(x);true})
 
 	var kinect = new KinectSkeletonSource(new InetSocketAddress("127.0.0.1", 7110));
-	midiIn match {
-		case Some(midictrl) =>
-			midictrl.receipt.observe {
-				m => m match {
-					case MidiCtrlMsg(chan, num, v) => {
-						val value: Float = (v.toFloat) * 255f
-						txt2.fillColor() = new MTColor(value, value, value)
-					}
-				}
-				true
-			}
-
-		case _ => println("NO DEVICE FOUND!")
-	}
 
 	/*	sl.value.observe {
 	  x => midiOut.get.send() = { val y = x.floatValue/200;
@@ -187,7 +174,8 @@ class HelloWorldScene2(mtApplication: MTApplication, name: String)
 	kinect.start
 
 	AudioServer.start(() => {
-		val test = AudioServer.tt()
+		var midiIn = MidiCommunication.createMidiInput("BCR2000, USB MIDI, BCR2000")
+		val test = AudioServer.tt2()
 		val synth = test.play
 		//txt2.localRotation <~ synth.amplitude.map(x => Rotation(degreeX = 100*x));     // (anim.map( x => Rotation(degreeZ = x)))
 		txt2.globalPosition <~ synth.amplitude.map(x => new Vector3D(x+100,200.0f))
@@ -195,6 +183,46 @@ class HelloWorldScene2(mtApplication: MTApplication, name: String)
 		synth.parameters <~ sl.value.map({x => println(x);("amp"->x.toFloat)})
 		synth.parameters <~ sl2.value.map({x => println(x);("freq"->x.toFloat)})
 		synth.parameters <~ sl3.value.map({x => println(x);("freq2"->x.toFloat)})
+
+
+
+
+		midiIn match {
+			case Some(midictrl) =>
+				midictrl.receipt.observe {
+					m => m match {
+						case MidiCtrlMsg(chan, num, v) => {
+							println((num,v));
+							val value: Float = (v.toFloat)
+							//sl.value.map({x => println(x);("amp"->x.toFloat)2}
+							num match {
+								case 52 => synth.parameters() = ("fmod" -> value*1000);         // 1
+								case 53 => synth.parameters() = ("fcar" -> value*1000);         // 2
+								case 54 => synth.parameters() = ("idx" -> value*2000);          // 3
+								case 55 => synth.parameters() = ("attack" -> value*0.1);        // 4
+								case 57 => synth.parameters() = ("decay" -> value);             // 5
+								case 58 => synth.parameters() = ("operator" -> value);          // 6
+								case 59 => synth.parameters() = ("speed" -> value*10);          // 7
+									                                                            //
+								case 3 => synth.parameters() = ("fmod2" -> value*1000);        // 81
+								case 9 => synth.parameters() = ("fcar2" -> value*1000);        // 82
+								case 14 => synth.parameters() = ("idx2" -> value*2000);         // 83
+								case 15 => synth.parameters() = ("attack2" -> value*0.1);       // 84
+								case 16 => synth.parameters() = ("decay2" -> value);            // 85
+								case 17 => synth.parameters() = ("operator2" -> value);         // 86
+								case 18 => synth.parameters() = ("speed2" -> value*10);         // 87
+
+
+								case _ => Unit
+							}
+							txt2.fillColor() = new MTColor(value, value, value)
+						}
+					}
+					true
+				}
+
+			case _ => println("NO DEVICE FOUND!")
+		}
 	})
 
 	//textField.text <~ synth.amplitude+""
