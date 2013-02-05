@@ -1,0 +1,470 @@
+[0m[[0mdebug[0m] [0m[0m
+[0m[[0mdebug[0m] [0mInitial source changes: [0m
+[0m[[0mdebug[0m] [0m	removed:Set()[0m
+[0m[[0mdebug[0m] [0m	added: Set(/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/UnitTranslator.java, /home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/MT4jSettings.java, /home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/NodeRenderer.java, /home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java, /home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/HelperMethods.java, /home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/MTColor.java, /home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/SwingTextureRenderer.java, /home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java, /home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/SettingsMenu.java)[0m
+[0m[[0mdebug[0m] [0m	modified: Set()[0m
+[0m[[0mdebug[0m] [0mRemoved products: Set()[0m
+[0m[[0mdebug[0m] [0mModified external sources: Set()[0m
+[0m[[0mdebug[0m] [0mModified binary dependencies: Set()[0m
+[0m[[0mdebug[0m] [0mInitial directly invalidated sources: Set(/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/UnitTranslator.java, /home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/MT4jSettings.java, /home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/NodeRenderer.java, /home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java, /home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/HelperMethods.java, /home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/MTColor.java, /home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/SwingTextureRenderer.java, /home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java, /home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/SettingsMenu.java)[0m
+[0m[[0mdebug[0m] [0m[0m
+[0m[[0mdebug[0m] [0mSources indirectly invalidated by:[0m
+[0m[[0mdebug[0m] [0m	product: Set()[0m
+[0m[[0mdebug[0m] [0m	binary dep: Set()[0m
+[0m[[0mdebug[0m] [0m	external source: Set()[0m
+[0m[[0mdebug[0m] [0mInitially invalidated: Set(/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/UnitTranslator.java, /home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/MT4jSettings.java, /home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/NodeRenderer.java, /home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java, /home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/HelperMethods.java, /home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/MTColor.java, /home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/SwingTextureRenderer.java, /home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java, /home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/SettingsMenu.java)[0m
+[0m[[0minfo[0m] [0mCompiling 9 Java sources to /home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/target/scala-2.9.2/classes...[0m
+[0m[[0mdebug[0m] [0mCalling Javac with arguments:[0m
+[0m[[0mdebug[0m] [0m	-d[0m
+[0m[[0mdebug[0m] [0m	/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/target/scala-2.9.2/classes[0m
+[0m[[0mdebug[0m] [0m	-classpath[0m
+[0m[[0mdebug[0m] [0m	/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/target/scala-2.9.2/classes:/home/lodsb/.sbt/boot/scala-2.9.2/lib/scala-library.jar:/home/lodsb/.sbt/boot/scala-2.9.2/lib/scala-library.jar[0m
+[0m[[0mdebug[0m] [0m	/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/HelperMethods.java[0m
+[0m[[0mdebug[0m] [0m	/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/MT4jSettings.java[0m
+[0m[[0mdebug[0m] [0m	/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/MTColor.java[0m
+[0m[[0mdebug[0m] [0m	/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/NodeRenderer.java[0m
+[0m[[0mdebug[0m] [0m	/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/SettingsMenu.java[0m
+[0m[[0mdebug[0m] [0m	/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java[0m
+[0m[[0mdebug[0m] [0m	/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/SwingTextureRenderer.java[0m
+[0m[[0mdebug[0m] [0m	/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java[0m
+[0m[[0mdebug[0m] [0m	/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/UnitTranslator.java[0m
+[0m[[0mdebug[0m] [0mAttempting to call javac directly...[0m
+[0m[[0mdebug[0m] [0mcom.sun.tools.javac.Main not found with appropriate method signature; forking javac instead[0m
+[0m[[0mdebug[0m] [0mForking javac: javac @/tmp/sbt_800fc83f/argfile[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/HelperMethods.java:21: error: package javax.media.opengl does not exist[0m
+[0m[[31merror[0m] [0mimport javax.media.opengl.GL;[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/HelperMethods.java:23: error: package org.mt4j.util.math does not exist[0m
+[0m[[31merror[0m] [0mimport org.mt4j.util.math.Matrix;[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/HelperMethods.java:25: error: package processing.core does not exist[0m
+[0m[[31merror[0m] [0mimport processing.core.PApplet;[0m
+[0m[[31merror[0m] [0m                      ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/HelperMethods.java:26: error: package processing.core does not exist[0m
+[0m[[31merror[0m] [0mimport processing.core.PGraphics3D;[0m
+[0m[[31merror[0m] [0m                      ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/HelperMethods.java:27: error: package processing.opengl does not exist[0m
+[0m[[31merror[0m] [0mimport processing.opengl.PGraphicsOpenGL;[0m
+[0m[[31merror[0m] [0m                        ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/HelperMethods.java:170: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    private static GL gl;[0m
+[0m[[31merror[0m] [0m                   ^[0m
+[0m[[31merror[0m] [0m  symbol:   class GL[0m
+[0m[[31merror[0m] [0m  location: class HelperMethods[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/HelperMethods.java:185: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    public static GL beginGL(PApplet pa) {[0m
+[0m[[31merror[0m] [0m                             ^[0m
+[0m[[31merror[0m] [0m  symbol:   class PApplet[0m
+[0m[[31merror[0m] [0m  location: class HelperMethods[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/HelperMethods.java:185: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    public static GL beginGL(PApplet pa) {[0m
+[0m[[31merror[0m] [0m                  ^[0m
+[0m[[31merror[0m] [0m  symbol:   class GL[0m
+[0m[[31merror[0m] [0m  location: class HelperMethods[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/HelperMethods.java:242: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    public static void endGL(PApplet pa) {[0m
+[0m[[31merror[0m] [0m                             ^[0m
+[0m[[31merror[0m] [0m  symbol:   class PApplet[0m
+[0m[[31merror[0m] [0m  location: class HelperMethods[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/HelperMethods.java:264: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    public static GL getGL() {[0m
+[0m[[31merror[0m] [0m                  ^[0m
+[0m[[31merror[0m] [0m  symbol:   class GL[0m
+[0m[[31merror[0m] [0m  location: class HelperMethods[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/HelperMethods.java:277: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    public static void applyMatrix(PApplet renderer, PGraphics3D pgraphics3D, Matrix m) {[0m
+[0m[[31merror[0m] [0m                                   ^[0m
+[0m[[31merror[0m] [0m  symbol:   class PApplet[0m
+[0m[[31merror[0m] [0m  location: class HelperMethods[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/HelperMethods.java:277: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    public static void applyMatrix(PApplet renderer, PGraphics3D pgraphics3D, Matrix m) {[0m
+[0m[[31merror[0m] [0m                                                     ^[0m
+[0m[[31merror[0m] [0m  symbol:   class PGraphics3D[0m
+[0m[[31merror[0m] [0m  location: class HelperMethods[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/HelperMethods.java:277: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    public static void applyMatrix(PApplet renderer, PGraphics3D pgraphics3D, Matrix m) {[0m
+[0m[[31merror[0m] [0m                                                                              ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Matrix[0m
+[0m[[31merror[0m] [0m  location: class HelperMethods[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/MT4jSettings.java:20: error: cannot find symbol[0m
+[0m[[31merror[0m] [0mimport org.mt4j.MTApplication;[0m
+[0m[[31merror[0m] [0m               ^[0m
+[0m[[31merror[0m] [0m  symbol:   class MTApplication[0m
+[0m[[31merror[0m] [0m  location: package org.mt4j[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/MT4jSettings.java:21: error: package org.mt4j.util.math does not exist[0m
+[0m[[31merror[0m] [0mimport org.mt4j.util.math.Vector3D;[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/MT4jSettings.java:337: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    public Vector3D getWindowCenter() {[0m
+[0m[[31merror[0m] [0m           ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vector3D[0m
+[0m[[31merror[0m] [0m  location: class MT4jSettings[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/SettingsMenu.java:29: error: package processing.core does not exist[0m
+[0m[[31merror[0m] [0mimport processing.core.PApplet;[0m
+[0m[[31merror[0m] [0m                      ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:24: error: package org.mt4j.components does not exist[0m
+[0m[[31merror[0m] [0mimport org.mt4j.components.TransformSpace;[0m
+[0m[[31merror[0m] [0m                          ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:25: error: package org.mt4j.components.bounds does not exist[0m
+[0m[[31merror[0m] [0mimport org.mt4j.components.bounds.BoundsZPlaneRectangle;[0m
+[0m[[31merror[0m] [0m                                 ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:26: error: package org.mt4j.components.bounds does not exist[0m
+[0m[[31merror[0m] [0mimport org.mt4j.components.bounds.IBoundingShape;[0m
+[0m[[31merror[0m] [0m                                 ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:27: error: package org.mt4j.components.visibleComponents.shapes does not exist[0m
+[0m[[31merror[0m] [0mimport org.mt4j.components.visibleComponents.shapes.AbstractShape;[0m
+[0m[[31merror[0m] [0m                                                   ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:28: error: package org.mt4j.components.visibleComponents.shapes does not exist[0m
+[0m[[31merror[0m] [0mimport org.mt4j.components.visibleComponents.shapes.MTComplexPolygon;[0m
+[0m[[31merror[0m] [0m                                                   ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:29: error: package org.mt4j.components.visibleComponents.shapes does not exist[0m
+[0m[[31merror[0m] [0mimport org.mt4j.components.visibleComponents.shapes.MTPolygon;[0m
+[0m[[31merror[0m] [0m                                                   ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:30: error: package org.mt4j.util.math does not exist[0m
+[0m[[31merror[0m] [0mimport org.mt4j.util.math.ConvexityUtil;[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:31: error: package org.mt4j.util.math does not exist[0m
+[0m[[31merror[0m] [0mimport org.mt4j.util.math.ToolsGeometry;[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:32: error: package org.mt4j.util.math does not exist[0m
+[0m[[31merror[0m] [0mimport org.mt4j.util.math.Vertex;[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:33: error: package org.mt4j.util.xml.svg does not exist[0m
+[0m[[31merror[0m] [0mimport org.mt4j.util.xml.svg.CustomPathHandler;[0m
+[0m[[31merror[0m] [0m                            ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:35: error: package processing.core does not exist[0m
+[0m[[31merror[0m] [0mimport processing.core.PApplet;[0m
+[0m[[31merror[0m] [0m                      ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:38: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    private CustomPathHandler pathHandler;[0m
+[0m[[31merror[0m] [0m            ^[0m
+[0m[[31merror[0m] [0m  symbol:   class CustomPathHandler[0m
+[0m[[31merror[0m] [0m  location: class ShapeBuilder[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:39: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    private PApplet app;[0m
+[0m[[31merror[0m] [0m            ^[0m
+[0m[[31merror[0m] [0m  symbol:   class PApplet[0m
+[0m[[31merror[0m] [0m  location: class ShapeBuilder[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:41: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    public ShapeBuilder(PApplet app) {[0m
+[0m[[31merror[0m] [0m                        ^[0m
+[0m[[31merror[0m] [0m  symbol:   class PApplet[0m
+[0m[[31merror[0m] [0m  location: class ShapeBuilder[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:156: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    public AbstractShape getShape() {[0m
+[0m[[31merror[0m] [0m           ^[0m
+[0m[[31merror[0m] [0m  symbol:   class AbstractShape[0m
+[0m[[31merror[0m] [0m  location: class ShapeBuilder[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:201: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    private AbstractShape createPoly(Vertex[] verts) {[0m
+[0m[[31merror[0m] [0m                                     ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vertex[0m
+[0m[[31merror[0m] [0m  location: class ShapeBuilder[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:201: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    private AbstractShape createPoly(Vertex[] verts) {[0m
+[0m[[31merror[0m] [0m            ^[0m
+[0m[[31merror[0m] [0m  symbol:   class AbstractShape[0m
+[0m[[31merror[0m] [0m  location: class ShapeBuilder[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:228: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    private AbstractShape createComplexPoly(ArrayList<Vertex[]> contours, int windingRuleOdd) {[0m
+[0m[[31merror[0m] [0m                                                      ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vertex[0m
+[0m[[31merror[0m] [0m  location: class ShapeBuilder[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:228: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    private AbstractShape createComplexPoly(ArrayList<Vertex[]> contours, int windingRuleOdd) {[0m
+[0m[[31merror[0m] [0m            ^[0m
+[0m[[31merror[0m] [0m  symbol:   class AbstractShape[0m
+[0m[[31merror[0m] [0m  location: class ShapeBuilder[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:235: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    private class MTComplexPolygon2D extends MTComplexPolygon {[0m
+[0m[[31merror[0m] [0m                                             ^[0m
+[0m[[31merror[0m] [0m  symbol:   class MTComplexPolygon[0m
+[0m[[31merror[0m] [0m  location: class ShapeBuilder[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:236: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        public MTComplexPolygon2D(PApplet app, List<Vertex[]> contours) {[0m
+[0m[[31merror[0m] [0m                                  ^[0m
+[0m[[31merror[0m] [0m  symbol:   class PApplet[0m
+[0m[[31merror[0m] [0m  location: class ShapeBuilder.MTComplexPolygon2D[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:236: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        public MTComplexPolygon2D(PApplet app, List<Vertex[]> contours) {[0m
+[0m[[31merror[0m] [0m                                                    ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vertex[0m
+[0m[[31merror[0m] [0m  location: class ShapeBuilder.MTComplexPolygon2D[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:242: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        protected IBoundingShape computeDefaultBounds() {[0m
+[0m[[31merror[0m] [0m                  ^[0m
+[0m[[31merror[0m] [0m  symbol:   class IBoundingShape[0m
+[0m[[31merror[0m] [0m  location: class ShapeBuilder.MTComplexPolygon2D[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:248: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    private class MTPolygon2D extends MTPolygon {[0m
+[0m[[31merror[0m] [0m                                      ^[0m
+[0m[[31merror[0m] [0m  symbol:   class MTPolygon[0m
+[0m[[31merror[0m] [0m  location: class ShapeBuilder[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:249: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        public MTPolygon2D(Vertex[] vertices, PApplet applet) {[0m
+[0m[[31merror[0m] [0m                           ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vertex[0m
+[0m[[31merror[0m] [0m  location: class ShapeBuilder.MTPolygon2D[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:249: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        public MTPolygon2D(Vertex[] vertices, PApplet applet) {[0m
+[0m[[31merror[0m] [0m                                              ^[0m
+[0m[[31merror[0m] [0m  symbol:   class PApplet[0m
+[0m[[31merror[0m] [0m  location: class ShapeBuilder.MTPolygon2D[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/ShapeBuilder.java:253: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        protected IBoundingShape computeDefaultBounds() {[0m
+[0m[[31merror[0m] [0m                  ^[0m
+[0m[[31merror[0m] [0m  symbol:   class IBoundingShape[0m
+[0m[[31merror[0m] [0m  location: class ShapeBuilder.MTPolygon2D[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/SwingTextureRenderer.java:37: error: cannot find symbol[0m
+[0m[[31merror[0m] [0mimport org.mt4j.MTApplication;[0m
+[0m[[31merror[0m] [0m               ^[0m
+[0m[[31merror[0m] [0m  symbol:   class MTApplication[0m
+[0m[[31merror[0m] [0m  location: package org.mt4j[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/SwingTextureRenderer.java:38: error: package org.mt4j.util.opengl does not exist[0m
+[0m[[31merror[0m] [0mimport org.mt4j.util.opengl.GLTextureSettings;[0m
+[0m[[31merror[0m] [0m                           ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/SwingTextureRenderer.java:39: error: package org.mt4j.util.opengl does not exist[0m
+[0m[[31merror[0m] [0mimport org.mt4j.util.opengl.GLTexture;[0m
+[0m[[31merror[0m] [0m                           ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/SwingTextureRenderer.java:40: error: package org.mt4j.util.opengl.GLTexture does not exist[0m
+[0m[[31merror[0m] [0mimport org.mt4j.util.opengl.GLTexture.EXPANSION_FILTER;[0m
+[0m[[31merror[0m] [0m                                     ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/SwingTextureRenderer.java:41: error: package org.mt4j.util.opengl.GLTexture does not exist[0m
+[0m[[31merror[0m] [0mimport org.mt4j.util.opengl.GLTexture.SHRINKAGE_FILTER;[0m
+[0m[[31merror[0m] [0m                                     ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/SwingTextureRenderer.java:42: error: package org.mt4j.util.opengl.GLTexture does not exist[0m
+[0m[[31merror[0m] [0mimport org.mt4j.util.opengl.GLTexture.WRAP_MODE;[0m
+[0m[[31merror[0m] [0m                                     ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/SwingTextureRenderer.java:44: error: package processing.core does not exist[0m
+[0m[[31merror[0m] [0mimport processing.core.PImage;[0m
+[0m[[31merror[0m] [0m                      ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/SwingTextureRenderer.java:72: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    private MTApplication mtApp;[0m
+[0m[[31merror[0m] [0m            ^[0m
+[0m[[31merror[0m] [0m  symbol:   class MTApplication[0m
+[0m[[31merror[0m] [0m  location: class SwingTextureRenderer[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/SwingTextureRenderer.java:77: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    private GLTexture textureToRenderTo;[0m
+[0m[[31merror[0m] [0m            ^[0m
+[0m[[31merror[0m] [0m  symbol:   class GLTexture[0m
+[0m[[31merror[0m] [0m  location: class SwingTextureRenderer[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/SwingTextureRenderer.java:82: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    private PImage tempImage;[0m
+[0m[[31merror[0m] [0m            ^[0m
+[0m[[31merror[0m] [0m  symbol:   class PImage[0m
+[0m[[31merror[0m] [0m  location: class SwingTextureRenderer[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/SwingTextureRenderer.java:105: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    public SwingTextureRenderer(MTApplication mtApp, Component compToRender) {[0m
+[0m[[31merror[0m] [0m                                ^[0m
+[0m[[31merror[0m] [0m  symbol:   class MTApplication[0m
+[0m[[31merror[0m] [0m  location: class SwingTextureRenderer[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/SwingTextureRenderer.java:181: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    public GLTexture getTextureToRenderTo() {[0m
+[0m[[31merror[0m] [0m           ^[0m
+[0m[[31merror[0m] [0m  symbol:   class GLTexture[0m
+[0m[[31merror[0m] [0m  location: class SwingTextureRenderer[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:22: error: package org.apache.log4j does not exist[0m
+[0m[[31merror[0m] [0mimport org.apache.log4j.ConsoleAppender;[0m
+[0m[[31merror[0m] [0m                       ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:23: error: package org.apache.log4j does not exist[0m
+[0m[[31merror[0m] [0mimport org.apache.log4j.Level;[0m
+[0m[[31merror[0m] [0m                       ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:24: error: package org.apache.log4j does not exist[0m
+[0m[[31merror[0m] [0mimport org.apache.log4j.Logger;[0m
+[0m[[31merror[0m] [0m                       ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:25: error: package org.apache.log4j does not exist[0m
+[0m[[31merror[0m] [0mimport org.apache.log4j.SimpleLayout;[0m
+[0m[[31merror[0m] [0m                       ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:26: error: package org.mt4j.components.visibleComponents does not exist[0m
+[0m[[31merror[0m] [0mimport org.mt4j.components.visibleComponents.GeometryInfo;[0m
+[0m[[31merror[0m] [0m                                            ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:27: error: package org.mt4j.util.math does not exist[0m
+[0m[[31merror[0m] [0mimport org.mt4j.util.math.ToolsGeometry;[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:28: error: package org.mt4j.util.math does not exist[0m
+[0m[[31merror[0m] [0mimport org.mt4j.util.math.ToolsMath;[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:29: error: package org.mt4j.util.math does not exist[0m
+[0m[[31merror[0m] [0mimport org.mt4j.util.math.Vector3D;[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:30: error: package org.mt4j.util.math does not exist[0m
+[0m[[31merror[0m] [0mimport org.mt4j.util.math.Vertex;[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:32: error: package processing.core does not exist[0m
+[0m[[31merror[0m] [0mimport processing.core.PApplet;[0m
+[0m[[31merror[0m] [0m                      ^[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:49: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    private static final Logger logger = Logger.getLogger(TriangleNormalGenerator.class.getName());[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Logger[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:61: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    private Vertex nullVect;[0m
+[0m[[31merror[0m] [0m            ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vertex[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:96: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    public GeometryInfo generateTriangleNormals(PApplet pa, GeometryInfo geometryInfo) {[0m
+[0m[[31merror[0m] [0m                                                ^[0m
+[0m[[31merror[0m] [0m  symbol:   class PApplet[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:96: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    public GeometryInfo generateTriangleNormals(PApplet pa, GeometryInfo geometryInfo) {[0m
+[0m[[31merror[0m] [0m                                                            ^[0m
+[0m[[31merror[0m] [0m  symbol:   class GeometryInfo[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:96: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    public GeometryInfo generateTriangleNormals(PApplet pa, GeometryInfo geometryInfo) {[0m
+[0m[[31merror[0m] [0m           ^[0m
+[0m[[31merror[0m] [0m  symbol:   class GeometryInfo[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:122: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    public GeometryInfo generateTriangleNormals(PApplet pa, GeometryInfo geometryInfo, float creaseAngle) {[0m
+[0m[[31merror[0m] [0m                                                ^[0m
+[0m[[31merror[0m] [0m  symbol:   class PApplet[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:122: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    public GeometryInfo generateTriangleNormals(PApplet pa, GeometryInfo geometryInfo, float creaseAngle) {[0m
+[0m[[31merror[0m] [0m                                                            ^[0m
+[0m[[31merror[0m] [0m  symbol:   class GeometryInfo[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:122: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    public GeometryInfo generateTriangleNormals(PApplet pa, GeometryInfo geometryInfo, float creaseAngle) {[0m
+[0m[[31merror[0m] [0m           ^[0m
+[0m[[31merror[0m] [0m  symbol:   class GeometryInfo[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:186: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    public GeometryInfo generateSmoothNormals(PApplet pa, Vertex[] originalVertices, int[] originalIndices, float[][] originalTexCoords, int[] originalTexIndices, float creaseAngle, boolean flipTextureY, boolean flipTextureX) {[0m
+[0m[[31merror[0m] [0m                                              ^[0m
+[0m[[31merror[0m] [0m  symbol:   class PApplet[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:186: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    public GeometryInfo generateSmoothNormals(PApplet pa, Vertex[] originalVertices, int[] originalIndices, float[][] originalTexCoords, int[] originalTexIndices, float creaseAngle, boolean flipTextureY, boolean flipTextureX) {[0m
+[0m[[31merror[0m] [0m                                                          ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vertex[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:186: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    public GeometryInfo generateSmoothNormals(PApplet pa, Vertex[] originalVertices, int[] originalIndices, float[][] originalTexCoords, int[] originalTexIndices, float creaseAngle, boolean flipTextureY, boolean flipTextureX) {[0m
+[0m[[31merror[0m] [0m           ^[0m
+[0m[[31merror[0m] [0m  symbol:   class GeometryInfo[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:507: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    public GeometryInfo generateCreaseAngleNormals(PApplet pa, Vertex[] originalVertices, int[] originalIndices, float[][] originalTexCoords, int[] originalTexIndices, float creaseAngle, boolean flipTextureY, boolean flipTextureX) {[0m
+[0m[[31merror[0m] [0m                                                   ^[0m
+[0m[[31merror[0m] [0m  symbol:   class PApplet[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:507: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    public GeometryInfo generateCreaseAngleNormals(PApplet pa, Vertex[] originalVertices, int[] originalIndices, float[][] originalTexCoords, int[] originalTexIndices, float creaseAngle, boolean flipTextureY, boolean flipTextureX) {[0m
+[0m[[31merror[0m] [0m                                                               ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vertex[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:507: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m    public GeometryInfo generateCreaseAngleNormals(PApplet pa, Vertex[] originalVertices, int[] originalIndices, float[][] originalTexCoords, int[] originalTexIndices, float creaseAngle, boolean flipTextureY, boolean flipTextureX) {[0m
+[0m[[31merror[0m] [0m           ^[0m
+[0m[[31merror[0m] [0m  symbol:   class GeometryInfo[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:1109: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        Vector3D normal;[0m
+[0m[[31merror[0m] [0m        ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vector3D[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator.MyFace[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:1114: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        Vector3D normalNormalized;[0m
+[0m[[31merror[0m] [0m        ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vector3D[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator.MyFace[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:1119: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        private Vector3D center;[0m
+[0m[[31merror[0m] [0m                ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vector3D[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator.MyFace[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:1129: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        private Vector3D vertexNormalP0;[0m
+[0m[[31merror[0m] [0m                ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vector3D[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator.MyFace[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:1134: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        private Vector3D vertexNormalP1;[0m
+[0m[[31merror[0m] [0m                ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vector3D[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator.MyFace[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:1139: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        private Vector3D vertexNormalP2;[0m
+[0m[[31merror[0m] [0m                ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vector3D[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator.MyFace[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:1144: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        private Vector3D[] vertexNormals;[0m
+[0m[[31merror[0m] [0m                ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vector3D[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator.MyFace[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:1228: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        public Vector3D getCenterPointLocal(ArrayList<VertexData> vertexDataList) {[0m
+[0m[[31merror[0m] [0m               ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vector3D[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator.MyFace[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:1425: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        public Vector3D[] getVertexNormals() {[0m
+[0m[[31merror[0m] [0m               ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vector3D[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator.MyFace[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:1449: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        private Vertex vertex;[0m
+[0m[[31merror[0m] [0m                ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vertex[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator.VertexData[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:1468: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        private Vector3D uniqueVertexNormal;[0m
+[0m[[31merror[0m] [0m                ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vector3D[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator.VertexData[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:1479: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        private Vector3D allNeighborsNormal;[0m
+[0m[[31merror[0m] [0m                ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vector3D[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator.VertexData[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:1508: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        public void setVertex(Vertex vertex) {[0m
+[0m[[31merror[0m] [0m                              ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vertex[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator.VertexData[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:1520: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        public Vertex getVertex() {[0m
+[0m[[31merror[0m] [0m               ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vertex[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator.VertexData[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:1633: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        public Vector3D calcVertexNormalAllNeighbors() {[0m
+[0m[[31merror[0m] [0m               ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vector3D[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator.VertexData[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:1664: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        public int getVertDuplicateSameVertDiffTextureCoordListIndex(Vertex vertex) {[0m
+[0m[[31merror[0m] [0m                                                                     ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vertex[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator.VertexData[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:1681: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        private boolean equalsVertex(Vertex vertex) {[0m
+[0m[[31merror[0m] [0m                                     ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vertex[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator.VertexData[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:1714: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        public Vector3D getUniqueVertexNormal() {[0m
+[0m[[31merror[0m] [0m               ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vector3D[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator.VertexData[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:1727: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        public void setUniqueVertexNormal(Vector3D newVertexNormal) {[0m
+[0m[[31merror[0m] [0m                                          ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vector3D[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator.VertexData[0m
+[0m[[31merror[0m] [0m/home/lodsb/Dokumente/development/intellij_projects/mt4j/src/main/java/org/mt4j/util/TriangleNormalGenerator.java:1752: error: cannot find symbol[0m
+[0m[[31merror[0m] [0m        public int getVertDuplicateSameVertDiffNormalListIndex(Vector3D normalToCheckWith) {[0m
+[0m[[31merror[0m] [0m                                                               ^[0m
+[0m[[31merror[0m] [0m  symbol:   class Vector3D[0m
+[0m[[31merror[0m] [0m  location: class TriangleNormalGenerator.VertexData[0m
+[0m[[31merror[0m] [0mNote: Some input files use unchecked or unsafe operations.[0m
+[0m[[31merror[0m] [0mNote: Recompile with -Xlint:unchecked for details.[0m
+[0m[[31merror[0m] [0m100 errors[0m
+[0m[[0mdebug[0m] [0mjavac returned exit code: 1[0m
+[0m[[31merror[0m] [0m(compile:[31mcompile[0m) javac returned nonzero exit code[0m
