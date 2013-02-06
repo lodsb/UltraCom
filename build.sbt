@@ -2,6 +2,12 @@ name := "UltraCom"
 
 scalaVersion := "2.9.2"
 
+organization := "org.lodsb"
+
+version := "0.1-SNAPSHOT"
+
+
+
 scalacOptions ++= Seq("-unchecked", "-deprecation") //, "-Xprint:typer")
 
 scalacOptions <++= scalaVersion map { version =>
