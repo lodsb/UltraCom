@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/mt4j_mod.iml" filepath="$PROJECT_DIR$/mt4j_mod.iml" />
-      <module fileurl="file://$PROJECT_DIR$/prototaip/prototaip.iml" filepath="$PROJECT_DIR$/prototaip/prototaip.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea_modules/UltraCom.iml" filepath="$PROJECT_DIR$/.idea_modules/UltraCom.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea_modules/UltraCom-build.iml" filepath="$PROJECT_DIR$/.idea_modules/UltraCom-build.iml" />
     </modules>
   </component>
 </project>

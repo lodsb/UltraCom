@@ -26,10 +26,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
 import org.mt4j.MTApplication;
-import org.mt4j.input.inputData.ActiveCursorPool;
-import org.mt4j.input.inputData.InputCursor;
-import org.mt4j.input.inputData.MTFiducialInputEvt;
-import org.mt4j.input.inputData.MTFingerInputEvt;
+import org.mt4j.input.inputData.*;
 import org.mt4j.util.MT4jSettings;
 
 import TUIO.TuioClient;
@@ -48,7 +45,7 @@ import TUIO.TuioTime;
  *
  * @author Christopher Ruff
  */
-public class TuioInputSource extends AbstractInputSource implements TuioListener {
+public class TuioInputSource extends AbstractInputSource<AbstractCursorInputEvt> implements TuioListener {
     private static final Logger logger = Logger.getLogger(TuioInputSource.class.getName());
 
     static {

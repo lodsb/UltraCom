@@ -21,7 +21,7 @@ import com.alderstone.multitouch.mac.touchpad.TouchpadObservable;
  *
  * @author Florian Thalmann
  */
-public class MacTrackpadSource extends AbstractInputSource implements Observer {
+public class MacTrackpadSource extends AbstractInputSource<MTFingerInputEvt> implements Observer {
 
     private TouchpadObservable tpo;
     private int windowWidth, windowHeight;

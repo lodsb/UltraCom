@@ -26,7 +26,7 @@ import org.mt4j.components.visibleComponents.shapes.MTPolygon;
 import org.mt4j.input.inputData.InputCursor;
 import org.mt4j.input.inputProcessors.componentProcessors.unistrokeProcessor.UnistrokeUtils.Direction;
 import org.mt4j.input.inputProcessors.componentProcessors.unistrokeProcessor.UnistrokeUtils.UnistrokeGesture;
-import org.mt4j.input.inputProcessors.componentProcessors.unistrokeProcessor.UnistrokeUtils.Recognizer;
+import org.mt4j.input.inputProcessors.componentProcessors.unistrokeProcessor.UnistrokeUtils;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Tools3D;
 import org.mt4j.util.math.ToolsGeometry;
@@ -93,7 +93,7 @@ public class UnistrokeContext {
     /**
      * The recognizer.
      */
-    private Recognizer recognizer;
+    private UnistrokeUtils.Recognizer recognizer;
 
     /**
      * The dollar utils.
@@ -116,7 +116,7 @@ public class UnistrokeContext {
      * @param dollarUtils  the dollar utils
      * @param target       the target
      */
-    public UnistrokeContext(PApplet pa, Vector3D planeNormal, Vector3D pointInPlane, InputCursor cursor, Recognizer recognizer, UnistrokeUtils dollarUtils, IMTComponent3D target) {
+    public UnistrokeContext(PApplet pa, Vector3D planeNormal, Vector3D pointInPlane, InputCursor cursor, UnistrokeUtils.Recognizer recognizer, UnistrokeUtils dollarUtils, IMTComponent3D target) {
         gestureAborted = false;
         this.cursor = cursor;
         this.planeNormal = planeNormal;

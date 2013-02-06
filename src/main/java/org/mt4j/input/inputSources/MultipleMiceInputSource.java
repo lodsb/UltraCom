@@ -44,7 +44,7 @@ import org.mt4j.util.math.Vector3D;
  *
  * @author Christopher Ruff
  */
-public class MultipleMiceInputSource extends AbstractInputSource {
+public class MultipleMiceInputSource extends AbstractInputSource<MTFingerInputEvt> {
 
     /**
      * The mice.

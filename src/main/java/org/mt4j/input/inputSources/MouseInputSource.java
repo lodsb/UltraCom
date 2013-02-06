@@ -32,7 +32,7 @@ import org.mt4j.input.inputData.MTFingerInputEvt;
  *
  * @author Christopher Ruff
  */
-public class MouseInputSource extends AbstractInputSource implements MouseMotionListener, MouseListener {
+public class MouseInputSource extends AbstractInputSource<MTFingerInputEvt> implements MouseMotionListener, MouseListener {
 
     /**
      * The Constant OPENGL_MODE.

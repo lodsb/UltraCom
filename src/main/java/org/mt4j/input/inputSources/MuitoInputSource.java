@@ -38,7 +38,7 @@ import org.mt4j.util.MT4jSettings;
  *
  * @author Christopher Ruff
  */
-public class MuitoInputSource extends AbstractInputSource implements MotionProviderListener {
+public class MuitoInputSource extends AbstractInputSource<MTFingerInputEvt> implements MotionProviderListener {
 
     /**
      * The muito id to input motion id.

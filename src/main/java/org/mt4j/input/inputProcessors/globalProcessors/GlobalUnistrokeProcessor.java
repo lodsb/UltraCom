@@ -20,7 +20,7 @@ import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
 
-public class GlobalUnistrokeProcessor extends AbstractGlobalInputProcessor {
+public class GlobalUnistrokeProcessor extends AbstractGlobalInputProcessor<MTInputEvent> {
     private PApplet pa;
     private MTCanvas canvas;
     private Vector3D planeNormal;

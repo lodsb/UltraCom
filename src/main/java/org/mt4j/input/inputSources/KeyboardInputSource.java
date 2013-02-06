@@ -32,7 +32,7 @@ import processing.core.PApplet;
  *
  * @author Christopher Ruff
  */
-public class KeyboardInputSource extends AbstractInputSource {
+public class KeyboardInputSource extends AbstractInputSource<MTFingerInputEvt> {
 
     /**
      * The last used keyb id.

@@ -38,7 +38,7 @@ import org.mt4j.util.MT4jSettings;
  *
  * @author C.Ruff
  */
-public class Win7NativeTouchSource extends AbstractInputSource {
+public class Win7NativeTouchSource extends AbstractInputSource<MTWin7TouchInputEvt> {
     /**
      * The Constant logger.
      */
