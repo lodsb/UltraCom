@@ -149,7 +149,7 @@ public class MTColorPicker extends MTRectangle {
               public boolean processGestureEvent(MTGestureEvent ge) {
                   DragEvent de = (DragEvent) ge;
 
-                  Vector3D hitPointLocal = getIntersectionLocal(globalToLocal(Tools3D.getCameraPickRay(app, MTColorPicker.this, de.getDragCursor().getCurrentEvtPosX(), de.getDragCursor().getCurrentEvtPosY())));
+                  Vector3D hitPointLocal = MTColorPicker.this.localHitPoint(de.getDragCursor().getCurrentEvtPosX(), de.getDragCursor().getCurrentEvtPosY());
                   if (hitPointLocal != null) {
   //					 int col = cpImage.get( (int)hitPointLocal.x, (int)hitPointLocal.y );
                       int col = cpImage.get((int) hitPointLocal.x - x, (int) hitPointLocal.y - y);

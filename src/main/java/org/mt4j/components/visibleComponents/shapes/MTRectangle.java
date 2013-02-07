@@ -26,6 +26,7 @@ import org.mt4j.components.visibleComponents.ScalaPropertyBindings;
 
 import org.lodsb.reakt.property.Property;
 import org.mt4j.util.MT4jSettings;
+import org.mt4j.util.math.Tools3D;
 import org.mt4j.util.math.Vector3D;
 import org.mt4j.util.math.Vertex;
 
@@ -91,6 +92,8 @@ public class MTRectangle extends MTPolygon {
 
 	private float _width = 0.0f;
 	private float _height = 0.0f;
+
+
 
     /**
      * Instantiates a new mT rectangle.
@@ -585,5 +588,10 @@ public class MTRectangle extends MTPolygon {
                 this.setHeightLocal(virtualStyleSheet.getHeight());
         }
     }
+
+    protected Vector3D localHitPoint(float x, float y) {
+           return getIntersectionLocal(globalToLocal(Tools3D.getCameraPickRay(this.getRenderer(), this, x,y)));
+    }
+
 
 }
