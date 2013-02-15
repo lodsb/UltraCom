@@ -123,7 +123,7 @@ public class MT4jSettings {
     /**
      * The DEFAUL t_ dat a_ folde r_ path.
      */
-    public static String DEFAULT_DATA_FOLDER_PATH = "data" + MTApplication.separator;
+    public static String DEFAULT_DATA_FOLDER_PATH = "resources" + MTApplication.separator;
 
     /**
      * The DEFAUL t_ fon t_ path.
@@ -380,6 +380,11 @@ public class MT4jSettings {
      */
     public String getFrameTitle() {
         return frameTitle;
+    }
+
+    public String defaultScSynthPath = "/usr/local/bin/scsynth";
+    public String getScSynthPath() {
+        return defaultScSynthPath;
     }
 
 //	/**

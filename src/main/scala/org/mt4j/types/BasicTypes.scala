@@ -25,9 +25,21 @@ package org.mt4j.types
 import org.mt4j.util.math.Vector3D
 
 
-class BasicTypes
-
 case class Rotation(rotationPos: Vector3D = Vector3D.ZERO_VECTOR,
 					degreeX: Float = 0, degreeY: Float = 0, degreeZ: Float = 0)
 case object ZeroRotation extends Rotation(Vector3D.ZERO_VECTOR,0,0,0);
+
+object Vec3d {
+
+	val ZERO_VECTOR = new Vector3D(0, 0, 0);
+ 	val X_AXIS = new Vector3D(1, 0, 0);
+	val Y_AXIS = new Vector3D(0, 1, 0);
+	val Z_AXIS = new Vector3D(0, 0, 1);
+
+	def apply() = new Vector3D()
+ 	def apply(x: Float, y:Float) = new Vector3D(x,y)
+	def apply(x: Float, y:Float,z:Float) = new Vector3D(x,y,z)
+	def apply(x: Float, y:Float,z:Float, w:Float) = new Vector3D(x,y,z,w)
+	def copy(v:Vector3D) = new Vector3D(v)
+}
 

@@ -47,6 +47,7 @@ import org.mt4j.input.inputProcessors.IInputProcessor;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.AbstractComponentProcessor;
 import org.mt4j.util.MT4jSettings;
+import org.mt4j.util.Util;
 import org.mt4j.util.camera.IFrustum;
 import org.mt4j.util.camera.Icamera;
 import org.mt4j.util.math.Matrix;
@@ -77,6 +78,7 @@ import org.mt4j.types.*;
  * @author Christopher Ruff                                                                                   z
  */
 public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDeferor {
+
 	/**
 	 * The Constant logger.
 	 */

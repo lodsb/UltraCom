@@ -28,6 +28,7 @@ import de.sciss.osc.Message
 import scala.collection.mutable.Map
 import de.sciss.synth.NodeManager.NodeEnd
 import de.sciss.synth.osc._
+import org.mt4j.util.MT4jSettings
 
 
 object AudioServer {
@@ -201,7 +202,8 @@ object AudioServer {
 
 		// TODO make config for this
 		// FIXME: set up to your own system path pointing to scsynth
-		cfg.programPath = "/usr/local/bin/scsynth";
+		cfg.programPath = MT4jSettings.getInstance().getScSynthPath();
+
 
 		//Server.boot("UltraCom-Audio", cfg);
 		Server.run(cfg) {

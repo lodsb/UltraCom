@@ -67,11 +67,11 @@ object ScalaPropertyBindings {
 		z.getFillColor
 	}
 
-	def setStrokeWeight(z: AbstractVisibleComponent): (Float) => Unit = {
+	def setStrokeWeight(z: AbstractVisibleComponent): (scala.Float) => Unit = {
 		z.setStrokeWeight
 	}
 
-	def getStrokeWeight(z: AbstractVisibleComponent): () => Float = {
+	def getStrokeWeight(z: AbstractVisibleComponent): () => scala.Float = {
 		z.getStrokeWeight
 	}
 

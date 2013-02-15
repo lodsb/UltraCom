@@ -26,6 +26,8 @@ import org.mt4j.components.visibleComponents.shapes.MTRectangle
 import processing.core.{PGraphics, PApplet}
 import org.lodsb.reakt.sync.VarS
 import de.sciss.synth.ControlSetMap
+import org.mt4j.MTApplication
+import org.mt4j.util.math.Vector3D
 
 class Scope (applet: PApplet, x: Int, y: Int, width: Int, height: Int, noSigPoints: Int = 100)
 			extends MTRectangle(applet, x, y, width, height) {
@@ -74,7 +76,17 @@ class Scope (applet: PApplet, x: Int, y: Int, width: Int, height: Int, noSigPoin
 		renderer.popMatrix();
 
 	}
+}
 
+object Scope {
+	def apply(): Scope = {
+		val app = MTApplication.getInstance();
+		val x = app.width / 2;
+		val y = app.height / 2;
 
+		val scope = new Scope(app,x,y,100,100);
+		scope
+	}
 
 }
+

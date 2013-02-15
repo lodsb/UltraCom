@@ -456,6 +456,10 @@ public abstract class MTApplication extends PApplet {
             String frameTitle = properties.getProperty("Frametitle", MT4jSettings.getInstance().getFrameTitle().trim());
             MT4jSettings.getInstance().frameTitle = frameTitle;
 
+            String scsynthPath = properties.getProperty("ScSynthPath", MT4jSettings.getInstance().getScSynthPath().trim());
+            MT4jSettings.getInstance().defaultScSynthPath = scsynthPath;
+
+
         } catch (Exception e) {
             logger.error("Error while loading Settings.txt. Using defaults.");
         }

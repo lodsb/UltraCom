@@ -66,6 +66,16 @@ public class CursorTracer extends AbstractGlobalInputProcessor<MTFingerInputEvt>
      */
     private MTComponent overlayGroup;
 
+    public MTComponent getOverlayGroup() {
+        return overlayGroup;
+    }
+
+    /**
+     * @deprecated use the other constructor
+     */
+    public CursorTracer(SimpleAbstractScene currentScene, MTApplication mtApp) {
+        this(mtApp, currentScene);
+    }
 
     /**
      * Instantiates a new cursor tracer.
@@ -73,7 +83,7 @@ public class CursorTracer extends AbstractGlobalInputProcessor<MTFingerInputEvt>
      * @param mtApp        the mt app
      * @param currentScene the current scene
      */
-    public CursorTracer(SimpleAbstractScene currentScene, MTApplication mtApp) {
+    public CursorTracer(MTApplication mtApp,SimpleAbstractScene currentScene) {
         super(currentScene);
         this.app = mtApp;
         this.scene = currentScene;

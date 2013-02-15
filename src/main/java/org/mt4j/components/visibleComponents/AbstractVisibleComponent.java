@@ -55,7 +55,7 @@ public abstract class AbstractVisibleComponent extends MTComponent {
 	    ================
 	*/
 
-	public final Property<Float> strokeWeight ;
+	public final Property<scala.Float> strokeWeight ;
 
 	public final Property<MTColor> strokeColor ;
 

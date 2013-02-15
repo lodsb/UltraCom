@@ -22,9 +22,9 @@
 
 package prototaip
 
-import org.mt4j.MTApplication
+import org.mt4j.{Scene, MTApplication, Application}
 import org.mt4j.sceneManagement.SimpleAbstractScene
-import org.mt4j.util.MTColor
+import org.mt4j.util.Color
 import org.mt4j.input.inputProcessors.globalProcessors.CursorTracer
 import org.mt4j.components.visibleComponents.font.FontManager
 import org.mt4j.components.visibleComponents.widgets._
@@ -32,13 +32,11 @@ import org.mt4j.input.midi.MidiCommunication
 import org.mt4j.util.math.Vector3D
 import org.mt4j.util.math.Vector3D
 import org.mt4j.components.visibleComponents.font.FontManager
-import org.mt4j.util.MTColor
 
 import java.net.InetSocketAddress
 import org.mt4j.components.ComponentImplicits._
 
 import org.mt4j.input.inputData.osc.MTOSCControllerInputEvt
-import org.mt4j.MTApplication
 import org.mt4j.sceneManagement.SimpleAbstractScene
 import org.mt4j.input.inputProcessors.globalProcessors.CursorTracer
 import org.mt4j.stateMachine.StateMachine
@@ -50,17 +48,22 @@ import org.mt4j.input.midi.{MidiCommunication, MidiCtrlMsg}
 import org.mt4j.input.kinect.KinectSkeletonSource
 import org.mt4j.components.visibleComponents.widgets._
 
-import org.lodsb.reakt.ConstantSignal._
 import org.mt4j.output.audio.AudioServer
 import de.sciss.synth.SynthDef
 import de.sciss.synth.ugen._
 import AudioServer._
-import org.mt4j.types.{Rotation}
+import org.mt4j.types.{Vec3d, Rotation}
 import org.mt4j.input.osc.OSCCommunication
 import scala.util.Random
 
+import org.lodsb.reakt.Implicits._
 
-object TutorialOne extends MTApplication {
+
+import org.lodsb.reakt.{Reactive, TSignalet, ConstantSignal}
+import org.lodsb.reakt.graph.NodeBase
+
+
+object TutorialOne extends Application {
 	/*
 			Settings, such as <b>the application name<b>, display properties, etc are set in Settings.txt
 	 */
@@ -77,116 +80,116 @@ object TutorialOne extends MTApplication {
 }
 
 
-class TutorialOneScene(app: MTApplication, name: String)
-	extends SimpleAbstractScene(app, name) {
+class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 
-	//Show touches
-	var tracer = new CursorTracer(this, app);
+	// Show touches
+	showTracer(true)
 
+	/*
+		Basics
 
+		- component creation
+		- changing properties
+	 */
 
-	var textField = new MTTextArea(app);
-	textField.setNoFill(true);
-	textField.setPositionGlobal(new Vector3D(app.width / 2f, app.height / 2f));
+	// Create two UI components ...
+	var textField = TextArea();
+	var slider = Slider(0,100);
 
-	/* rev
-	textField.text <~ cp.soundPicked +""
-	*/
+	// ^^ this can also be done java style using plain mt4j
+	var textField2 = new MTTextArea(app)
+	var slider2 = new MTSlider(app,100,100,100,20,0,100);
 
-	//Add the textfield to our canvas
+	//Adding the textarea reakt style to canvas
 	canvas += textField;
 
+	//Adding slider to canvas, original java style
+	this.getCanvas.addChild(slider);
+
+	//Adding arrays as children to an object (could be canvas), could be single object, too
+	textField += textField2++slider2
+
+	//Removing a child
+	textField -= textField2
+
+	// Setting position ... java style from original MT4J
+	textField.setPositionGlobal(new Vector3D(app.width / 2f, app.height / 2f));
+
+	// same, but reakt style (makes use of properties, see below)
+	textField.globalPosition := new Vector3D(app.width / 2f, app.height / 2f);
+
+	// setting and reading Properties
 	textField.text:="foo"
+	val foo = textField.text();
 
-	val blah = textField.text.get()
-
-	println("sdsfdlkjsdfkljsdfkljsdfkljsfdklj")
-	System.out.println(blah)
-
-	var rand = new Random();
-
-	/* rev
-	AudioServer.start(() => {
-
-
-		val ws = WaveSynth(dataset._1);
-		val wsSynth = ws.play
-
-		wsSynth.parameters <~ cp.soundPicked.map( x => "pos" -> x._1.toFloat)  // just use the position data for now
-		wsSynth.parameters <~ cp.soundPicked.map( x => "trig" -> rand.nextFloat())
-	})
-	*/
 	/*
-	AudioServer.start(() => {
-		var midiIn = MidiCommunication.createMidiInput("BCR2000, USB MIDI, BCR2000")
-		val test = AudioServer.tt2()
-		val synth = test.play
+		other component properties are
+		- global and relative position
+		- rotation
+
+	 */
+
+
+	/*
+		Linking/Connecting event streams
+
+		Some examples about making use of event streams
+		- linking
+		- modifying
+		- general observing
+
+		NOTE: All event streams are thread-save! so no worries about cross-connecting UI/Network/Input streams :)
+
+	 */
+
+	// Connect a slider to a textarea (show slider values)
+	// - every time the slider outputs a value, it is updating the text field
+	// - the type conversion of Float to String is done automatically (mostly works in simple cases)
+	textField.text <~ slider.value + ""
+
+	// convert the Float event stream to a Rotation and a Vector Event stream
+	textField.localRotation <~ slider.value.map({ x => Rotation(degreeY = x*0.4f) })
+	textField.globalPosition <~ slider.value.map({ x => Vec3d(x*10f,x*10f,0) })
+
+	// convert the Float event stream to a MtColor event stream
+	textField.strokeColor <~ slider.value.map({ x => Color(0f,x,255f-x) })
+	// 						              ^^ this creates another anonymous signal, we can't simply disconnect it explictly
+	// so the only solution is to disconnect all sources
+	textField.strokeColor.disconnectAll
+
+	// but we can also use a variable for this, so connecting/disconnecting can be done this way
+	val intermediateSignal = slider.value.map({ x => Color(0f,x,255f-x) })
+	textField.strokeColor <~ intermediateSignal
+	textField.strokeColor.disconnect(intermediateSignal)
+	// or with an overloaded operator
+	textField.strokeColor |~ (intermediateSignal)
+
+	textField.strokeColor <~ intermediateSignal
+
+	/* <b>Other signal operators are:</b>
+	   ~> 				: connect; works to successively concatenate signals as well!
+	   signal() = value : push value into signal
+	   :> merge         : merge two signals to one - creates tuple signal
+
+	   arithmetic
+	   +, - , /, * 		- creates a signal that contains the result of two signals' arithmetic operation
+
+	   min, max 		- creates signal containing the min/max of two signals
+
+	   comparisons 		- creates a boolean signal
+	   < , > , <= , >=, eq
+
+	   DIY:
+	   binop(fun: (T,T) => T) - roll your binary op
+	*/
+
+
+	// fix button
+
+	// FSM
+
+	// AUDIO
 
 
 
-
-		midiIn match {
-			case Some(midictrl) =>
-				midictrl.receipt.observe {
-					m => m match {
-						case MidiCtrlMsg(chan, num, v) => {
-							println((num,v));
-							val value: Float = (v.toFloat)
-							//sl.value.map({x => println(x);("amp"->x.toFloat)2}
-							num match {
-								case 73 => {
-									synth.parameters() = ("fmod" -> 0.98*500);
-									synth.parameters() = ("fcar" -> 0.039*1000);
-									synth.parameters() = ("idx" -> 0.76*2000);
-									synth.parameters() = ("attack" -> 0.1*0.09);
-									synth.parameters() = ("decay" -> 0.81);
-									synth.parameters() = ("operator" -> 0.03);
-									synth.parameters() = ("speed" -> 10*0.04);
-
-									synth.parameters() = ("fmod2" -> 0.98*1000);
-									synth.parameters() = ("fcar2" -> 0.24*1000);
-									synth.parameters() = ("idx2" -> 0.27*2000);
-									synth.parameters() = ("attack2" -> 0.1*0.03);
-									synth.parameters() = ("decay2" -> 0.99);
-									synth.parameters() = ("operator2" -> 0.023);
-									synth.parameters() = ("speed2" -> 10*0.33);
-
-
-
-								}
-								case 1 => synth.parameters() = ("fmod" -> value*500);         // 1
-								case 2 => synth.parameters() = ("fcar" -> value*1000);         // 2
-								case 3 => synth.parameters() = ("idx" -> value*2000);          // 3
-								case 4 => synth.parameters() = ("attack" -> value*0.1);        // 4
-								case 5 => synth.parameters() = ("decay" -> value);             // 5
-								case 6 => synth.parameters() = ("operator" -> value);          // 6
-								case 7 => synth.parameters() = ("speed" -> value*10);          // 7
-									                                                            //
-								case 81 => synth.parameters() = ("fmod2" -> value*1000);        // 81
-								case 82 => synth.parameters() = ("fcar2" -> value*1000);        // 82
-								case 83 => synth.parameters() = ("idx2" -> value*2000);         // 83
-								case 84 => synth.parameters() = ("attack2" -> value*0.1);       // 84
-								case 85 => synth.parameters() = ("decay2" -> value);            // 85
-								case 86 => synth.parameters() = ("operator2" -> value);         // 86
-								case 87 => synth.parameters() = ("speed2" -> value*10);         // 87
-
-								case 97 => synth.parameters() = ("filtertype" -> value);         // 97
-								case 98 => synth.parameters() = ("filterfreq" -> 10000*value);         // 97
-								case 99 => synth.parameters() = ("fdecay" -> value);         // 83
-								case 100 => synth.parameters() = ("fattack" -> value*0.1);       // 84
-								case 101 => synth.parameters() = ("filtermod" -> value);       // 84
-
-
-
-								case _ => Unit
-							}
-							textField.fillColor() = new MTColor(value, value, value)
-						}
-					}
-					true
-				}
-
-			case _ => println("NO DEVICE FOUND!")
-		}
-	})    */
 }
