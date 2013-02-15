@@ -116,16 +116,19 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 	textField.setPositionGlobal(new Vector3D(app.width / 2f, app.height / 2f));
 
 	// same, but reakt style (makes use of properties, see below)
-	textField.globalPosition := new Vector3D(app.width / 2f, app.height / 2f);
+	textField.globalPosition := Vec3d(app.width / 2f, app.height / 2f);
 
 	// setting and reading Properties
 	textField.text:="foo"
+	textField.text() ="foo"
 	val foo = textField.text();
+	slider.globalPosition() = Vec3d(100,200);
 
 	/*
 		other component properties are
 		- global and relative position
 		- rotation
+		- padding ...
 
 	 */
 
@@ -151,19 +154,21 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 	textField.localRotation <~ slider.value.map({ x => Rotation(degreeY = x*0.4f) })
 	textField.globalPosition <~ slider.value.map({ x => Vec3d(x*10f,x*10f,0) })
 
-	// convert the Float event stream to a MtColor event stream
+	// convert the Float event stream to a Color event stream
 	textField.strokeColor <~ slider.value.map({ x => Color(0f,x,255f-x) })
-	// 						              ^^ this creates another anonymous signal, we can't simply disconnect it explictly
-	// so the only solution is to disconnect all sources
+	// 						              ^^ this and the examples before create other anonymous signals,
+	// 										 we can't simply disconnect them explictly
+	// so the only solution is to disconnect all sources (from strokeColor in this case)
 	textField.strokeColor.disconnectAll
 
-	// but we can also use a variable for this, so connecting/disconnecting can be done this way
+	// but we can also use a variable for the intermediate signal, so connecting/disconnecting can be done this way
 	val intermediateSignal = slider.value.map({ x => Color(0f,x,255f-x) })
 	textField.strokeColor <~ intermediateSignal
 	textField.strokeColor.disconnect(intermediateSignal)
 	// or with an overloaded operator
 	textField.strokeColor |~ (intermediateSignal)
 
+	// reconnect...
 	textField.strokeColor <~ intermediateSignal
 
 	/* <b>Other signal operators are:</b>
