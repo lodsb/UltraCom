@@ -39,8 +39,8 @@ import javax.swing.ImageIcon;
 
 import codeanticode.glgraphics.GLConstants;
 import codeanticode.glgraphics.GLGraphics;
-import codeanticode.glgraphics.GLShader;
-import codeanticode.glgraphics.GLSLShader;
+//import codeanticode.glgraphics.GLShader;
+//import codeanticode.glgraphics.GLSLShader;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -689,9 +689,9 @@ public abstract class MTApplication extends PApplet {
         //Call startup at the end of setup(). Should be overridden in extending classes
         this.startUp();
 
-
-		shader = new GLSLShader(this)   ;
-		shader.loadFragmentShader("/home/lodsb/Downloads/GLGraphics/examples/textures/MovieFilters/data/Posterize.glsl");				//"/home/lodsb/Downloads/GLGraphics/examples/textures/MovieFilters/data/Posterize.glsl");
+	// currently not necessary :-)
+	//shader = new GLSLShader(this)   ;
+	//shader.loadFragmentShader("../GLGraphics/examples/textures/MovieFilters/data/Posterize.glsl");				
 
     }
 
@@ -752,14 +752,14 @@ public abstract class MTApplication extends PApplet {
      * ********************************************************************************************.
      */
 
-	private GLShader shader;
+	//private GLShader shader;
     @Override
     public void draw() {
 		GLGraphics renderer = (GLGraphics) g;
 		//renderer.beginGL();
-		shader.start();
+		//shader.start(); currently not used :-)
         this.runApplication();
-		shader.stop();
+		//shader.stop(); currently not used :-)
 
 		//renderer.endGL();
     }
