@@ -28,6 +28,7 @@ import org.mt4j.util.Color
 import org.mt4j.input.inputProcessors.globalProcessors.CursorTracer
 import org.mt4j.components.visibleComponents.font.FontManager
 import org.mt4j.components.visibleComponents.widgets._
+import buttons.MTTextButton
 import org.mt4j.input.midi.MidiCommunication
 import org.mt4j.util.math.Vector3D
 import org.mt4j.util.math.Vector3D
@@ -188,6 +189,10 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 	   binop(fun: (T,T) => T) - roll your binary op
 	*/
 
+
+	val tt : MTTextButton = new MTTextButton(app, "TESTTTTTTT FD DF FGDFG");
+	canvas += tt;
+	tt.text <~ slider.value + ""
 
 	// fix button
 

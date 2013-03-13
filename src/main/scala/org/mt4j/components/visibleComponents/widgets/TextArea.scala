@@ -61,4 +61,6 @@ object TextArea {
 		textArea
 	}
 
+	//TODO: add textarea with fixed size and textclipping
+
 }
