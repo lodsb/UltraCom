@@ -190,11 +190,11 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 	*/
 
 
-	val tt : MTTextButton = new MTTextButton(app, "TESTTTTTTT FD DF FGDFG");
-	canvas += tt;
-	tt.text <~ slider.value + ""
+	/*
+		Finite State Machine and Buttons
+	 */
+	val button : MTTextButton = Button("Trigger me!");
 
-	// fix button
 
 	// FSM
 

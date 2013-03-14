@@ -22,6 +22,7 @@
 
 package org.mt4j.components.visibleComponents.widgets.buttons;
 
+import org.lodsb.reakt.property.Attribute;
 import org.mt4j.components.bounds.BoundsZPlaneRectangle;
 import org.mt4j.components.bounds.IBoundingShape;
 import org.mt4j.components.interfaces.IclickableButton;
@@ -45,6 +46,7 @@ public class MTTextButton extends MTTextArea implements IclickableButton {
      * The selected.
      */
     private boolean selected;
+    public final Attribute<Boolean> pressed;
 
     /**
      * The registered action listeners.
@@ -54,6 +56,18 @@ public class MTTextButton extends MTTextArea implements IclickableButton {
 
     public MTTextButton(PApplet pApplet, String label) {
         super(pApplet);
+        this.pressed = new Attribute<Boolean>("pressed", false);
+        _init(pApplet, label);
+    }
+
+    public MTTextButton(PApplet pApplet, String label, float x, float y, float width, float height) {
+        super(pApplet, x, y, width, height);
+        this.pressed = new Attribute<Boolean>("pressed", false);
+
+        _init(pApplet, label);
+    }
+
+    private void _init(PApplet pApplet, String label) {
         this.setText(label);
 
         this.registeredActionListeners = new ArrayList<ActionListener>();
@@ -127,7 +141,6 @@ public class MTTextButton extends MTTextArea implements IclickableButton {
      * Fire action performed.
      */
     protected synchronized void fireActionPerformed() {
-        System.err.println("actionPerformed");
         ActionListener[] listeners = this.getActionListeners();
         for (ActionListener listener : listeners) {
             listener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "action performed on tangible button"));
@@ -140,7 +153,8 @@ public class MTTextButton extends MTTextArea implements IclickableButton {
      * @param ce the ce
      */
     public synchronized void fireActionPerformed(TapEvent ce) {
-        System.err.println("actionPerformed TAP");
+        this.pressed.update(ce.isTapDown());
+
         ActionListener[] listeners = this.getActionListeners();
         for (ActionListener listener : listeners) {
             listener.actionPerformed(new ActionEvent(this, ce.getTapID(), "action performed on tangible button"));

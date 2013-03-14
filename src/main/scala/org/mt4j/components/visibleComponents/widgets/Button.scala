@@ -22,14 +22,13 @@
 
 package org.mt4j.components.visibleComponents.widgets
 
-import buttons.{MTSvgButton, MTImageButton}
+import buttons.{MTTextButton, MTSvgButton, MTImageButton}
 import processing.core.PImage
 import org.mt4j.MTApplication
 import org.mt4j.util.math.Vector3D
+import java.io.File
 
 object Button {
-
-	// TODO: reakt events!
 
 	def apply(image: PImage): MTImageButton = {
 		val app = MTApplication.getInstance();
@@ -41,15 +40,39 @@ object Button {
 		imageButton
 	}
 
-	def apply(filename:String): MTSvgButton = {
+	def apply(file:File): MTSvgButton = {
 		val app = MTApplication.getInstance();
 		val x = app.width / 2f;
 		val y = app.height / 2f;
 
-		val svg = new MTSvgButton(app,filename);
+		val svg = new MTSvgButton(app,file.getAbsolutePath);
 		svg.setPositionGlobal(new Vector3D(app.width / 2f, app.height / 2f));
 
 		svg
+	}
+
+	def apply(text: String): MTTextButton = {
+		val app = MTApplication.getInstance();
+		val x = 200+app.width / 2f;
+		val y = app.height / 2f;
+
+		val textButton = new MTTextButton(app,text);
+		textButton.setPositionGlobal(new Vector3D(app.width / 2f, app.height / 2f));
+
+		textButton
+
+	}
+
+	// fixed size and text clipping version of textbutton
+	def apply(text: String, width: Float, height: Float): MTTextButton = {
+		val app = MTApplication.getInstance();
+		val x = app.width / 2f;
+		val y = app.height / 2f;
+
+		val textButton = new MTTextButton(app,text,x,y,width,height);	
+
+		textButton
+
 	}
 
 }

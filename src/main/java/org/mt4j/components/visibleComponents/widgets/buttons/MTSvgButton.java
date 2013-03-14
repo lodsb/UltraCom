@@ -22,6 +22,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import org.lodsb.reakt.property.Attribute;
 import org.mt4j.components.MTComponent;
 import org.mt4j.components.bounds.BoundsZPlaneRectangle;
 import org.mt4j.components.interfaces.IclickableButton;
@@ -44,6 +45,9 @@ import processing.core.PApplet;
  * The Class MTSvgButton.
  */
 public class MTSvgButton extends MTSvg implements IclickableButton {
+
+    // Attribute sends true when button is pressed or false otherwise/released
+    public final Attribute<Boolean> pressed;
 
     /**
      * The selected.
@@ -74,6 +78,7 @@ public class MTSvgButton extends MTSvg implements IclickableButton {
         //Draw this component and its children above
         //everything previously drawn and avoid z-fighting
         this.setDepthBufferDisabled(true);
+        this.pressed = new Attribute<Boolean>("pressed",false);
     }
 
 
@@ -183,6 +188,8 @@ public class MTSvgButton extends MTSvg implements IclickableButton {
      * @param ce the ce
      */
     public synchronized void fireActionPerformed(TapEvent ce) {
+        this.pressed.update(ce.isTapDown());
+
         ActionListener[] listeners = this.getActionListeners();
         for (ActionListener listener : listeners) {
             listener.actionPerformed(new ActionEvent(this, ce.getTapID(), "action performed on tangible button"));

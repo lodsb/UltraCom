@@ -165,8 +165,8 @@ class TestFSM extends StateMachine {
 		'B is {
 			println("---------State B");
 			react {
-					case x:Int 		=> println("NUMBERWHUMBA");			?('A);
-					case _ 			=> println("FUCKYOURMOM");  		?('B);
+					case x:Int 		=> println("TEST");			?('A);
+					case _ 			=> println("TEST2");  		?('B);
 			}
 		}
 	}
