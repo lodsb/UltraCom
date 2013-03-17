@@ -1,4 +1,13 @@
 .classpath
 .project
 .settings/
+.idea
 target/
+project/
+project/target
+target
+examples/tutorial_one/project/target
+examples/tutorial_one/target
+examples/cyntersizer/project/target
+examples/cyntersizer/target
+

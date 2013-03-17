@@ -87,6 +87,10 @@ trait StateMachine {
 		}
 
 		def transitionToThis: Unit = {
+			if(function == null) {
+				throw new Exception("Undefined state?");
+			}
+
 			function.function
 		}
 	}

@@ -24,7 +24,7 @@ package org.mt4j.components
 
 object ComponentImplicits {
 	implicit def MT2MTE(comp:MTComponent) = new MTComponentExtension(comp);
-	implicit def MT2MTArr1(comp: MTComponent):Array[MTComponent] = Array(comp)
+	implicit def MT2MTArr1(comp: MTComponent):Seq[MTComponent] = Array(comp)
 	implicit def MT2MTCA(comp: Array[MTComponent]) = new MTComponentArrayHelper(comp)
 }
 
@@ -32,12 +32,12 @@ class MTComponentExtension(comp: MTComponent) {
 	def ++(that:MTComponent): Array[MTComponent] = Array(comp, that)
 	def ++(that:Array[MTComponent]): Array[MTComponent] = Array.concat(Array(comp), that)
 
-	/// fun with lists
-	def +=(that: Array[MTComponent]) = {
+	/// fun with sequences
+	def +=(that: Seq[MTComponent]) = {
 		that.foreach( c => comp.addChild(c) )
 	}
 
-	def -=(that: Array[MTComponent]) = {
+	def -=(that: Seq[MTComponent]) = {
 		that.foreach( c => comp.removeChild(c) )
 	}
 }

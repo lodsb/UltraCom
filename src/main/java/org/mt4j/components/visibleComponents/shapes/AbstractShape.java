@@ -499,6 +499,8 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
 		// update centerpoint signals -> centered Positions - FIXME, resets components!
 		this.globalPosition.emit(this.getCenterPointGlobal());
 		this.relativePositionToParent.emit(this.getCenterPointRelativeToParent());
+
+        this.vertices.emit(vertices);
     }
 
     /**

@@ -21,10 +21,12 @@ import java.nio.FloatBuffer;
 
 import javax.media.opengl.GL;
 
+import org.lodsb.reakt.property.Property;
 import org.mt4j.components.bounds.BoundsArbitraryPlanarPolygon;
 import org.mt4j.components.bounds.IBoundingShape;
 import org.mt4j.components.css.style.CSSStyle;
 import org.mt4j.components.visibleComponents.GeometryInfo;
+import org.mt4j.components.visibleComponents.ScalaPropertyBindings;
 import org.mt4j.components.visibleComponents.StyleInfo;
 import org.mt4j.util.MT4jSettings;
 import org.mt4j.util.MTColor;
@@ -35,6 +37,7 @@ import org.mt4j.util.math.Vertex;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
+import processing.core.PImage;
 import processing.opengl.PGraphicsOpenGL;
 
 /**
@@ -48,6 +51,15 @@ public class MTLine extends MTCSSStylableShape {
      * The p context.
      */
     private PApplet pContext;
+
+    private Vertex startPoint;
+    private Vertex endPoint;
+
+
+    public final Property<Vector3D> startPosition;
+    public final Property<Vector3D> endPosition;
+
+
 
     /**
      * Instantiates a new mT line.
@@ -97,9 +109,69 @@ public class MTLine extends MTCSSStylableShape {
         this.setBoundsBehaviour(BOUNDS_ONLY_CHECK);
 
         this.setName("unnamed MTLine");
+
+        startPosition = new Property<Vector3D>(this, "startPosition",
+                this.getStartPoint(),
+                ScalaPropertyBindings.setStartPosition(this),
+                ScalaPropertyBindings.getStartPosition(this)
+                );
+
+        endPosition = new Property<Vector3D>(this, "endPosition",
+                this.getEndPoint(),
+                ScalaPropertyBindings.setEndPosition(this),
+                ScalaPropertyBindings.getEndPosition(this)
+                );
+
+
     }
 
     //TODO override vobs?
+
+    private Object mutex = new Object();
+
+    public Vector3D getStartPoint() {
+        Vector3D ret;
+
+        //synchronized(mutex){
+            ret = this.getVerticesLocal()[0];
+        //}
+
+        return ret;
+    }
+
+    public Vector3D getEndPoint() {
+        Vector3D ret;
+
+        //synchronized(mutex){
+            ret = this.getVerticesLocal()[1];
+        //}
+
+        return ret;
+
+    }
+
+    public void setStartPoint(Vector3D sp) {
+        Vertex end = null;
+        Vertex start = null;
+       // synchronized(mutex) {
+            start = new Vertex(sp);
+            end = this.getVerticesLocal()[1];
+       // }
+
+        this.setVertices(new Vertex[]{start,end});
+    }
+
+    public void setEndPoint(Vector3D ep) {
+        Vertex end = null;
+        Vertex start = null;
+        //synchronized(mutex) {
+            start = this.getVerticesLocal()[0];
+            end = new Vertex(ep);
+        //}
+
+        this.setVertices(new Vertex[]{start,end});
+    }
+
 
 
     @Override

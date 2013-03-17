@@ -25,7 +25,7 @@ package org.mt4j.components.visibleComponents {
 import org.mt4j.util.MTColor
 import org.mt4j.util.math.{Vertex, Vector3D}
 import processing.core.PImage
-import shapes.{MTEllipse, MTRectangle, AbstractShape}
+import shapes.{MTLine, MTEllipse, MTRectangle, AbstractShape}
 import widgets.{MTTextArea, MTSlider, MTColorPicker}
 import org.mt4j.types.Rotation
 import org.mt4j.components.MTComponent
@@ -41,7 +41,6 @@ class _genSetterGetterHelper[T](set: (T) => Unit, initVal:T) {
 
 	def setter() = {
 		x: T => setVal = x; set(x)
-			System.err.println(x);
 	}
 }
 
@@ -149,6 +148,26 @@ object ScalaPropertyBindings {
 	def getDegrees(z: MTEllipse): () => Float = {
 		z.getDegrees
 	}
+
+	/////////////////////////////////////
+
+	////////MTLine
+	def setStartPosition(z: MTLine): Vector3D => Unit = {
+		z.setStartPoint
+	}
+
+	def setEndPosition(z: MTLine): Vector3D => Unit = {
+		z.setEndPoint
+	}
+
+	def getStartPosition(z: MTLine): () => Vector3D = {
+		z.getStartPoint
+	}
+
+	def getEndPosition(z: MTLine): () => Vector3D = {
+		z.getEndPoint
+	}
+
 
 	/////////////////////////////////////
 

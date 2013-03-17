@@ -31,6 +31,8 @@ import org.mt4j.components.visibleComponents.widgets._
 import org.mt4j.types.{Vec3d, Rotation}
 import org.lodsb.reakt.Implicits._
 import scala.actors.Actor._
+import org.mt4j.components.visibleComponents.shapes.{Line, MTLine}
+import java.util.Random
 
 
 object TutorialOne extends Application {
@@ -160,15 +162,30 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 
 
 	/*
-		little Finite State Machine and Buttons
+		(little) Finite State Machine and Buttons
+
+		An utterly useless example
 	 */
 	val button = Button("Some text...");
 	val slider3= Slider(0,20)
 
 	button.globalPosition() = Vec3d(100,300)
-	slider3.globalPosition() = Vec3d(200,300)
+	slider3.globalPosition() = Vec3d(100,500)
 
 	canvas += button
+
+	// just for fun: create a sequence of lines with a random start point
+	val r = new Random()
+	def rval(): Float = { (r.nextFloat()*600)%300}
+
+	val lines = (1 to 25).map({x =>
+		val l = Line()
+		l.startPosition() = Vec3d(rval()*2,rval()*2,rval())
+		l.setStrokeColor( Color(rval(),rval(),rval()) )
+		// connect the end position of each line to the (position of the) textfield
+		l.endPosition <~ textField.globalPosition
+		l
+	})
 
 	val myFSM = new StateMachine { // Derive & define a StateMachine
 
@@ -185,9 +202,15 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 				// tell the state to react on input,
 				// this can use the usual pattern matching, e.g. tuples, types,...
 				react {
+
 					// do something if true is received:
-					// transition to state ShowMoreUI
-					case true => ->('UseMoreUI)	// with UTF symbol: →('ShowMoreUI)
+					// transition to state ShowMoreUI, before that
+					// show all lines, we created before
+					case true => {
+						// add sequence (array) to the canvas
+						canvas += lines
+						->('UseMoreUI) // with UTF symbol: →('ShowMoreUI)
+					}
 				}
 			}
 
@@ -199,7 +222,7 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 
 				react {
 					case true => {
-						canvas() -= slider3
+						canvas -= lines ++ slider3
 						->('MyStart)
 					}
 
