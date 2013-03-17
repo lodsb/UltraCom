@@ -22,16 +22,13 @@
 
 package org.mt4j.stateMachine
 
-import collection.mutable.ListBuffer
-import org.mt4j.commandSystem.{CommandScope, Command}
+import org.mt4j.commandSystem.Command
 import org.mt4j.eventSystem.{foo, bar}
-import org.mt4j.input.inputProcessors.globalProcessors.AbstractGlobalInputProcessor
-import org.mt4j.input.MTEvent
 import scala.actors.Actor._
-import actors.{SchedulerAdapter, Actor}
+import actors.SchedulerAdapter
 
 object StateMachine {
-	def apply(body: => Unit) : StateMachine = {
+	def apply(body: => Unit): StateMachine = {
 		val fsm = new FSM
 		fsm.statemachine(body)
 
@@ -43,13 +40,15 @@ object StateMachine {
 class FSM extends StateMachine;
 
 trait StateMachine {
-import scala.actors.Actor
-import scala.actors.Actor._
+
+	import scala.actors.Actor
+	import scala.actors.Actor._
+
 	protected var Start: StateSymbol = null;
 	var sm = {}
 	var isSmSet = true;
 
-	implicit def sym2SS(original: Symbol) :StateSymbol = {
+	implicit def sym2SS(original: Symbol): StateSymbol = {
 
 		funMap.getOrElse(original.name, {
 			val s = new StateSymbol(original);
@@ -58,8 +57,8 @@ import scala.actors.Actor._
 		})
 	}
 
-	def sendMsg[T](msg: T) : Boolean = {
-		if(this.isSmSet) {
+	def consume[T](msg: T): Boolean = {
+		if (this.isSmSet) {
 			this.stateMachine ! msg
 			true
 		} else {
@@ -69,9 +68,10 @@ import scala.actors.Actor._
 
 	val funMap = new scala.collection.mutable.HashMap[String, StateSymbol]
 
-	var stateMachine:Actor = null;
+	var stateMachine: Actor = null;
 
 	class StateSymbol(var original: Symbol) {
+
 		abstract class StateBody {
 			def function();
 		}
@@ -79,47 +79,50 @@ import scala.actors.Actor._
 		var function: StateBody = null;
 
 		def is(body: => Unit): Unit = {
-		  	val a = new StateBody {
+			val a = new StateBody {
 				def function() = body
-		  	}
+			}
 
 			function = a;
 		}
 
-		def transitionToThis : Unit = {
+		def transitionToThis: Unit = {
 			function.function
 		}
 	}
 
 	def transition(sym: StateSymbol) = {
-		  sym.transitionToThis
+		sym.transitionToThis
 	}
 
 	def S(sym: StateSymbol): Unit = {
 		Start = sym;
 	}
 
-	def ?(sym: StateSymbol) = transition(sym);
+	def →(sym: StateSymbol) = transition(sym);
+
 	def ->(sym: StateSymbol) = transition(sym);
 
 	'End is {}
 
 	var sameThreadContext = true;
 
-	def statemachine(body: => Unit) : Unit = fsm(this.sameThreadContext)(body);
+	def statemachine(body: => Unit): Unit = fsm(this.sameThreadContext)(body);
 
-	def fsm(sameThreadContext: Boolean = true)(body: => Unit) : Unit = {
+	def fsm(body: =>Unit): Unit = fsm(true)(body)
 
-			body
-			sm = body;
-			this.isSmSet = true;
+	def fsm(sameThreadContext: Boolean = true)(body: => Unit): Unit = {
 
-		if(Start != null) {
+		body
+		sm = body;
+		this.isSmSet = true;
+
+		if (Start != null) {
 			funMap.put("Start", Start)
 
-			if(!sameThreadContext) {
+			if (!sameThreadContext) {
 				stateMachine = actor {
- 					Start.transitionToThis
+					Start.transitionToThis
 				}
 			} else {
 				stateMachine = new InternalActor;
@@ -129,7 +132,7 @@ import scala.actors.Actor._
 		} else {
 			throw new Exception("No Start-Symbol defined!")
 		}
-		}
+	}
 
 	class InternalActor extends Actor {
 		override def scheduler = new SchedulerAdapter {
@@ -153,20 +156,20 @@ class TestFSM extends StateMachine {
 		'A is {
 			println("-----State A");
 			react {
-					case Command('Test,_) => println("test"); ?('A)
-					case x:Int 		=> println(x); 						transition('B);
-					case x:foo 		=> println("FOO"); 					?('A);
-					case x:bar 		=> println("BAR"); 					?('B);
-					case "death"    => ?('End)
-					case x:String 	=> println("sdklfsdklfj!!!!!"+x);	this transition 'B;
+				case Command('Test, _) => println("test"); →('A)
+				case x: Int => println(x); transition('B);
+				case x: foo => println("FOO"); →('A);
+				case x: bar => println("BAR"); →('B);
+				case "death" => →('End)
+				case x: String => println("sdklfsdklfj!!!!!" + x); this transition 'B;
 			}
 		}
 
 		'B is {
 			println("---------State B");
 			react {
-					case x:Int 		=> println("TEST");			?('A);
-					case _ 			=> println("TEST2");  		?('B);
+				case x: Int => println("TEST"); →('A);
+				case _ => println("TEST2"); →('B);
 			}
 		}
 	}
@@ -176,7 +179,7 @@ object Hello {
 	def main(args: Array[String]): Unit = {
 		var fsm = new TestFSM
 
-		fsm.stateMachine ! Command('Test,null);
+		fsm.stateMachine ! Command('Test, null);
 		fsm.stateMachine ! new foo;
 		fsm.stateMachine ! new bar;
 		fsm.stateMachine ! "sdfsdfsdf"
@@ -186,10 +189,10 @@ object Hello {
 
 		fsm = new TestFSM
 
-		fsm.sendMsg(new foo);
-		fsm.sendMsg(new bar);
-		fsm.sendMsg("test");
-		fsm.sendMsg(2);
-		fsm.sendMsg("death")
+		fsm.consume(new foo);
+		fsm.consume(new bar);
+		fsm.consume("test");
+		fsm.consume(2);
+		fsm.consume("death")
 	}
 }

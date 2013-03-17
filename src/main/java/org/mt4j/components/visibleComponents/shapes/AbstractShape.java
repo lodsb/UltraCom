@@ -86,29 +86,9 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
 		================_
 	 */
 
-	private _genSetterGetterHelper<Vector3D> _glblPosHlpr    =
-						new _genSetterGetterHelper(ScalaPropertyBindings.setPositionGlobal(this));
-
-	public final Property<Vector3D> globalPosition = new Property<Vector3D>(this, "globalPosition",
-																			new Vector3D(0f,0f,0f),
-		                                                                    _glblPosHlpr.setter(),
-																			_glblPosHlpr.getter()
-																			);
-
-	private _genSetterGetterHelper<Vector3D> _relPosParHlpr    =
-						new _genSetterGetterHelper(ScalaPropertyBindings.setPositionRelParent(this));
-
-
-	public final Property<Vector3D> relativePositionToParent ;
-
 	public final Property<Vertex[]> vertices;
 
 	public final Property<PImage> texture ;
-
-	public final Attribute<Vector3D> globalCenterPoint ;
-
-
-	public final Attribute<Vector3D> relativeCenterPointToParent ;
 
 	//public void initProperties() {
 
@@ -213,12 +193,6 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
 
         this.setDefaultGestureActions();
 
-		relativePositionToParent = new Property<Vector3D>(this, "relativePositionToParent",
-																			new Vector3D(0f,0f,0f),
-		                                                                    _relPosParHlpr.setter(),
-																			_relPosParHlpr.getter()
-																			);
-
 		vertices = new Property<Vertex[]>(this, "vertices",
 																	 this.getVerticesLocal(),
 																	 ScalaPropertyBindings.setVertices(this),
@@ -230,11 +204,6 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
 																	 ScalaPropertyBindings.setTexture(this),
 																	 ScalaPropertyBindings.getTexture(this)
 																	 );
-
-		globalCenterPoint =	new Attribute<Vector3D>("globalCenterPoint",this.getCenterPointGlobal());
-
-
-		relativeCenterPointToParent = new Attribute<Vector3D>("globalCenterPoint",this.getCenterPointRelativeToParent());
     }
 
     /*
@@ -527,9 +496,9 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
         //vertices, they get updated first
         this.globalVerticesDirty = true;
 
-		// update centerpoint signals
-		this.globalCenterPoint.update(this.getCenterPointGlobal());
-		this.relativeCenterPointToParent.update(this.getCenterPointRelativeToParent());
+		// update centerpoint signals -> centered Positions - FIXME, resets components!
+		this.globalPosition.emit(this.getCenterPointGlobal());
+		this.relativePositionToParent.emit(this.getCenterPointRelativeToParent());
     }
 
     /**
@@ -965,43 +934,6 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
     }
 
 
-    /**
-     * Sets the global position of the component. (In global coordinates)
-     *
-     * @param pos the pos
-     */
-    public void setPositionGlobal(Vector3D pos) {
-        this.translateGlobal(pos.getSubtracted(this.getCenterPointGlobal()));
-    }
-
-    /**
-     * Sets the position of the component, relative to its parent coordinate frame.
-     *
-     * @param pos the pos
-     */
-    public void setPositionRelativeToParent(Vector3D pos) {
-        this.translate(pos.getSubtracted(this.getCenterPointRelativeToParent()), TransformSpace.RELATIVE_TO_PARENT);
-    }
-
-    /**
-     * Sets the position of this component, relative to the other specified component.
-     *
-     * @param otherComp the other comp
-     * @param pos       the pos
-     */
-    public void setPositionRelativeToOther(MTComponent otherComp, Vector3D pos) {
-        Matrix m0 = MTComponent.getTransformToDestinationLocalSpace(otherComp, this);
-        pos.transform(m0);
-
-        Vector3D centerpointGlobal = this.getCenterPointGlobal();
-        centerpointGlobal.transform(this.getGlobalInverseMatrix()); //to localobj space
-        centerpointGlobal.transform(this.getLocalMatrix()); //to parent relative space
-
-        Vector3D diff = pos.getSubtracted(centerpointGlobal);
-        this.translate(diff, TransformSpace.RELATIVE_TO_PARENT);
-    }
-
-
     /* (non-Javadoc)
       * @see org.mt4j.components.visibleComponents.AbstractVisibleComponent#getIntersectionLocal(org.mt4j.util.math.Ray)
       */
@@ -1100,6 +1032,7 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
      *         <p/>
      *         the center of this shape in global coordinates
      */
+    @Override
     public final Vector3D getCenterPointGlobal() {
         Vector3D center = this.getCenterPointLocal();
         center.transform(this.getGlobalMatrix());
@@ -1112,6 +1045,7 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
      *
      * @return the center of this shape in coordinates relative to the shapes parent coordiante frame.
      */
+    @Override
     public final Vector3D getCenterPointRelativeToParent() {
         Vector3D center = this.getCenterPointLocal();
         center.transform(this.getLocalMatrix());

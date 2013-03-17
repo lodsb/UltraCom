@@ -20,48 +20,17 @@
     >>  Made in Bavaria by fat little elves - since 1983.
  */
 
-package prototaip
+package TutorialOne
 
-import org.mt4j.{Scene, MTApplication, Application}
-import org.mt4j.sceneManagement.SimpleAbstractScene
+import org.mt4j.{Scene, Application}
 import org.mt4j.util.Color
-import org.mt4j.input.inputProcessors.globalProcessors.CursorTracer
-import org.mt4j.components.visibleComponents.font.FontManager
-import org.mt4j.components.visibleComponents.widgets._
-import buttons.MTTextButton
-import org.mt4j.input.midi.MidiCommunication
 import org.mt4j.util.math.Vector3D
-import org.mt4j.util.math.Vector3D
-import org.mt4j.components.visibleComponents.font.FontManager
-
-import java.net.InetSocketAddress
 import org.mt4j.components.ComponentImplicits._
-
-import org.mt4j.input.inputData.osc.MTOSCControllerInputEvt
-import org.mt4j.sceneManagement.SimpleAbstractScene
-import org.mt4j.input.inputProcessors.globalProcessors.CursorTracer
 import org.mt4j.stateMachine.StateMachine
-import org.mt4j.eventSystem.{foo, bar, TrEventListener}
-import org.mt4j.commandSystem.Command
-
-
-import org.mt4j.input.midi.{MidiCommunication, MidiCtrlMsg}
-import org.mt4j.input.kinect.KinectSkeletonSource
 import org.mt4j.components.visibleComponents.widgets._
-
-import org.mt4j.output.audio.AudioServer
-import de.sciss.synth.SynthDef
-import de.sciss.synth.ugen._
-import AudioServer._
 import org.mt4j.types.{Vec3d, Rotation}
-import org.mt4j.input.osc.OSCCommunication
-import scala.util.Random
-
 import org.lodsb.reakt.Implicits._
-
-
-import org.lodsb.reakt.{Reactive, TSignalet, ConstantSignal}
-import org.lodsb.reakt.graph.NodeBase
+import scala.actors.Actor._
 
 
 object TutorialOne extends Application {
@@ -152,7 +121,7 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 	textField.text <~ slider.value + ""
 
 	// convert the Float event stream to a Rotation and a Vector Event stream
-	textField.localRotation <~ slider.value.map({ x => Rotation(degreeY = x*0.4f) })
+	textField.localRotation <~ slider.value.map({ x => Rotation(degreeX = x*0.4f) })
 	textField.globalPosition <~ slider.value.map({ x => Vec3d(x*10f,x*10f,0) })
 
 	// convert the Float event stream to a Color event stream
@@ -191,12 +160,68 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 
 
 	/*
-		Finite State Machine and Buttons
+		little Finite State Machine and Buttons
 	 */
-	val button : MTTextButton = Button("Trigger me!");
+	val button = Button("Some text...");
+	val slider3= Slider(0,20)
 
+	button.globalPosition() = Vec3d(100,300)
+	slider3.globalPosition() = Vec3d(200,300)
 
-	// FSM
+	canvas += button
+
+	val myFSM = new StateMachine { // Derive & define a StateMachine
+
+		fsm {
+			// S - is used to define the start state MyStart - the "'" is used by scala to denote symbols
+			S('MyStart)
+
+			// define the state MyStart
+			'MyStart is {
+				println("I am in state MyStart")
+
+				button.text() = "Trigger me!"
+
+				// tell the state to react on input,
+				// this can use the usual pattern matching, e.g. tuples, types,...
+				react {
+					// do something if true is received:
+					// transition to state ShowMoreUI
+					case true => ->('UseMoreUI)	// with UTF symbol: →('ShowMoreUI)
+				}
+			}
+
+			'UseMoreUI is {
+				println("I am in state UseMoreUI")
+				button.text() = "Use sliders?"
+
+				canvas += slider3
+
+				react {
+					case true => {
+						canvas() -= slider3
+						->('MyStart)
+					}
+
+					case x:Float => {
+						slider.fillColor() = Color(x,0,0)
+						->('UseMoreUI)
+					}
+
+					case x:String => {
+						textField.text() = x+" use button to go back"
+						->('UseMoreUI)
+					}
+
+				}
+			}
+		}
+	}
+
+	// push the various UI outputs to the state machine and let it decide how to react
+	button.pressed.observe({ x => myFSM.consume(x); true })
+	slider.value.observe({ x => myFSM.consume(x); true })
+	slider3.value.observe({ x => myFSM.consume("Some val "+x); true })
 
 	// AUDIO
 

@@ -30,8 +30,8 @@ import widgets.{MTTextArea, MTSlider, MTColorPicker}
 import org.mt4j.types.Rotation
 import org.mt4j.components.MTComponent
 
-class _genSetterGetterHelper[T](set: (T) => Unit) {
-	var setVal: T = _;
+class _genSetterGetterHelper[T](set: (T) => Unit, initVal:T) {
+	var setVal: T = initVal;
 
 	def getter() = {
 		{
@@ -41,6 +41,7 @@ class _genSetterGetterHelper[T](set: (T) => Unit) {
 
 	def setter() = {
 		x: T => setVal = x; set(x)
+			System.err.println(x);
 	}
 }
 
@@ -78,12 +79,12 @@ object ScalaPropertyBindings {
 	/////////////////////////////////////
 
 	////////AbstractShape
-	def setPositionGlobal(z: AbstractShape): (Vector3D) => Unit = {
-		z.setPositionGlobal
+	def setPositionGlobal(z: MTComponent): (Vector3D) => Unit = {
+		z.setPositionGlobalNoUpdateTrigger
 	}
 
-	def setPositionRelParent(z: AbstractShape): (Vector3D) => Unit = {
-		z.setPositionRelativeToParent
+	def setPositionRelParent(z: MTComponent): (Vector3D) => Unit = {
+		z.setPositionRelativeToParentNoUpdateTrigger
 	}
 
 	def setVertices(z: AbstractShape): (Array[Vertex]) => Unit = {
