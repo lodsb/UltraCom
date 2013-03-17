@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="ivy-report.xsl"?>
+<ivy-report version="1.0">
+	<info
+		organisation="org.lodsb"
+		module="tutorial_one_2.9.2"
+		revision="0.1-SNAPSHOT"
+		conf="compile-internal"
+		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom"
+		date="20130310171158"/>
+	<dependencies>
+		<module organisation="org.lodsb" name="ultracom_2.9.2">
+			<revision name="0.1-SNAPSHOT" status="integration" pubdate="20130310171113" resolver="local" artresolver="local" downloaded="false" searched="true" default="false" conf="default(compile), compile" position="1">
+				<metadata-artifact status="no" details="" size="2004" time="0" location="C:\Users\ghagerer\.ivy2\cache\org.lodsb\ultracom_2.9.2\ivy-0.1-SNAPSHOT.xml" searched="true" original-local-location="C:\Users\ghagerer\.ivy2\local\org.lodsb\ultracom_2.9.2\0.1-SNAPSHOT\ivys\ivy.xml" origin-is-local="true" origin-location="C:\Users\ghagerer\.ivy2\local\org.lodsb\ultracom_2.9.2\0.1-SNAPSHOT\ivys\ivy.xml"/>
+				<caller organisation="org.lodsb" name="tutorial_one_2.9.2" conf="optional, compile, provided, compile-internal" rev="0.1-SNAPSHOT" rev-constraint-default="0.1-SNAPSHOT" rev-constraint-dynamic="0.1-SNAPSHOT" callerrev="0.1-SNAPSHOT"/>
+				<artifacts>
+					<artifact name="ultracom_2.9.2" type="jar" ext="jar" status="no" details="" size="1309803" time="0" location="C:\Users\ghagerer\.ivy2\local\org.lodsb\ultracom_2.9.2\0.1-SNAPSHOT\jars\ultracom_2.9.2.jar">
+						<origin-location is-local="true" location="C:\Users\ghagerer\.ivy2\local\org.lodsb\ultracom_2.9.2\0.1-SNAPSHOT\jars\ultracom_2.9.2.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.github.mpeltonen" name="sbt-idea">
+			<revision name="1.3.0-SNAPSHOT" status="integration" pubdate="20130127171436" resolver="Sonatype snapshots" artresolver="Sonatype snapshots" homepage="http://your.project.url" extra-sbtVersion="0.12" extra-scalaVersion="2.9.2" downloaded="false" searched="true" default="false" conf="default(compile), default, compile, runtime, master" position="4">
+				<license name="BSD-style" url="http://www.opensource.org/licenses/BSD-3-Clause"/>
+				<metadata-artifact status="no" details="" size="3533" time="0" location="C:\Users\ghagerer\.ivy2\cache\scala_2.9.2\sbt_0.12\com.github.mpeltonen\sbt-idea\ivy-1.3.0-SNAPSHOT.xml" searched="true" origin-is-local="false" origin-location="http://oss.sonatype.org/content/repositories/snapshots/com/github/mpeltonen/sbt-idea_2.9.2_0.12/1.3.0-SNAPSHOT/sbt-idea-1.3.0-SNAPSHOT.pom"/>
+				<caller organisation="org.lodsb" name="ultracom_2.9.2" conf="compile" rev="1.3.0-SNAPSHOT" rev-constraint-default="1.3.0-SNAPSHOT" rev-constraint-dynamic="1.3.0-SNAPSHOT" callerrev="0.1-SNAPSHOT" extra-sbtVersion="0.12" extra-scalaVersion="2.9.2"/>
+				<caller organisation="org.lodsb" name="tutorial_one_2.9.2" conf="optional, compile, provided, compile-internal" rev="1.3.0-SNAPSHOT" rev-constraint-default="1.3.0-SNAPSHOT" rev-constraint-dynamic="1.3.0-SNAPSHOT" callerrev="0.1-SNAPSHOT" extra-sbtVersion="0.12" extra-scalaVersion="2.9.2"/>
+				<artifacts>
+					<artifact name="sbt-idea" type="jar" ext="jar" status="no" details="" size="323322" time="0" location="C:\Users\ghagerer\.ivy2\cache\scala_2.9.2\sbt_0.12\com.github.mpeltonen\sbt-idea\jars\sbt-idea-1.3.0-SNAPSHOT.jar">
+						<origin-location is-local="false" location="http://oss.sonatype.org/content/repositories/snapshots/com/github/mpeltonen/sbt-idea_2.9.2_0.12/1.3.0-SNAPSHOT/sbt-idea-1.3.0-SNAPSHOT.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="commons-io" name="commons-io">
+			<revision name="2.0.1" status="release" pubdate="20101226181931" resolver="public" artresolver="public" homepage="http://commons.apache.org/io/" downloaded="false" searched="false" default="false" conf="compile, master(*), runtime, compile(*), runtime(*), master" position="5">
+				<metadata-artifact status="no" details="" size="6299" time="0" location="C:\Users\ghagerer\.ivy2\cache\commons-io\commons-io\ivy-2.0.1.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/commons-io/commons-io/2.0.1/commons-io-2.0.1.pom"/>
+				<caller organisation="com.github.mpeltonen" name="sbt-idea" conf="default, compile, runtime, master" rev="2.0.1" rev-constraint-default="2.0.1" rev-constraint-dynamic="2.0.1" callerrev="1.3.0-SNAPSHOT"/>
+				<artifacts>
+					<artifact name="commons-io" type="jar" ext="jar" status="no" details="" size="159509" time="0" location="C:\Users\ghagerer\.ivy2\cache\commons-io\commons-io\jars\commons-io-2.0.1.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/commons-io/commons-io/2.0.1/commons-io-2.0.1.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.lodsb" name="reakt_2.9.2">
+			<revision name="0.1-SNAPSHOT" status="integration" pubdate="20130310152258" resolver="local" artresolver="local" downloaded="false" searched="true" default="false" conf="default(compile), compile" position="2">
+				<metadata-artifact status="no" details="" size="1847" time="0" location="C:\Users\ghagerer\.ivy2\cache\org.lodsb\reakt_2.9.2\ivy-0.1-SNAPSHOT.xml" searched="true" origin-is-local="true" origin-location="C:\Users\ghagerer\.ivy2\local\org.lodsb\reakt_2.9.2\0.1-SNAPSHOT\ivys\ivy.xml"/>
+				<caller organisation="org.lodsb" name="ultracom_2.9.2" conf="compile" rev="0.1-SNAPSHOT" rev-constraint-default="0.1-SNAPSHOT" rev-constraint-dynamic="0.1-SNAPSHOT" callerrev="0.1-SNAPSHOT"/>
+				<artifacts>
+					<artifact name="reakt_2.9.2" type="jar" ext="jar" status="no" details="" size="201059" time="0" location="C:\Users\ghagerer\.ivy2\local\org.lodsb\reakt_2.9.2\0.1-SNAPSHOT\jars\reakt_2.9.2.jar">
+						<origin-location is-local="true" location="C:\Users\ghagerer\.ivy2\local\org.lodsb\reakt_2.9.2\0.1-SNAPSHOT\jars\reakt_2.9.2.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.assembla.scala-incubator" name="graph-core_2.9.2">
+			<revision name="1.5.1" status="release" pubdate="20120705194820" resolver="public" artresolver="public" homepage="http://subversion.assembla.com/svn/scala-graph/trunk" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="3">
+				<license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+				<metadata-artifact status="no" details="" size="2841" time="0" location="C:\Users\ghagerer\.ivy2\cache\com.assembla.scala-incubator\graph-core_2.9.2\ivy-1.5.1.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/com/assembla/scala-incubator/graph-core_2.9.2/1.5.1/graph-core_2.9.2-1.5.1.pom"/>
+				<caller organisation="org.lodsb" name="reakt_2.9.2" conf="compile" rev="1.5.1" rev-constraint-default="1.5.1" rev-constraint-dynamic="1.5.1" callerrev="0.1-SNAPSHOT"/>
+				<artifacts>
+					<artifact name="graph-core_2.9.2" type="jar" ext="jar" status="no" details="" size="1079772" time="0" location="C:\Users\ghagerer\.ivy2\cache\com.assembla.scala-incubator\graph-core_2.9.2\jars\graph-core_2.9.2-1.5.1.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/com/assembla/scala-incubator/graph-core_2.9.2/1.5.1/graph-core_2.9.2-1.5.1.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-lang" name="scala-library">
+			<revision name="2.9.2" status="release" pubdate="20120413142921" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, master(*), compile(*), runtime, runtime(*), master" position="0">
+				<license name="BSD-like" url="http://www.scala-lang.org/downloads/license.html          "/>
+				<metadata-artifact status="no" details="" size="2420" time="0" location="C:\Users\ghagerer\.ivy2\cache\org.scala-lang\scala-library\ivy-2.9.2.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/scala-lang/scala-library/2.9.2/scala-library-2.9.2.pom"/>
+				<caller organisation="com.assembla.scala-incubator" name="graph-core_2.9.2" conf="default, compile, runtime, master" rev="2.9.2" rev-constraint-default="2.9.2" rev-constraint-dynamic="2.9.2" callerrev="1.5.1"/>
+				<caller organisation="org.lodsb" name="reakt_2.9.2" conf="compile" rev="2.9.2" rev-constraint-default="2.9.2" rev-constraint-dynamic="2.9.2" callerrev="0.1-SNAPSHOT"/>
+				<caller organisation="org.lodsb" name="ultracom_2.9.2" conf="compile" rev="2.9.2" rev-constraint-default="2.9.2" rev-constraint-dynamic="2.9.2" callerrev="0.1-SNAPSHOT"/>
+				<caller organisation="org.lodsb" name="tutorial_one_2.9.2" conf="optional, compile, provided, compile-internal" rev="2.9.2" rev-constraint-default="2.9.2" rev-constraint-dynamic="2.9.2" callerrev="0.1-SNAPSHOT"/>
+				<artifacts>
+				</artifacts>
+			</revision>
+		</module>
+	</dependencies>
+</ivy-report>

@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="SBT: com.github.mpeltonen:sbt-idea:1.3.0-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/scala_2.9.2/sbt_0.12/com.github.mpeltonen/sbt-idea/jars/sbt-idea-1.3.0-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.ivy2/cache/scala_2.9.2/sbt_0.12/com.github.mpeltonen/sbt-idea/docs/sbt-idea-1.3.0-SNAPSHOT-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/scala_2.9.2/sbt_0.12/com.github.mpeltonen/sbt-idea/srcs/sbt-idea-1.3.0-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="GLGraphics.jar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../libraries/misc/GLGraphics.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="gluegen-rt-natives-windows-i586.jar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../libraries/misc/gluegen-rt-natives-windows-i586.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

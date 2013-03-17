@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="muito_blobtracking.jar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../libraries/misc/muito_blobtracking.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
