@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="batik-extension.jar">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../libraries/misc/batik-extension.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="concurrent-1.3.4.jar">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../libraries/misc/concurrent-1.3.4.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

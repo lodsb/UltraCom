@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="batik-bridge.jar">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../libraries/misc/batik-bridge.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

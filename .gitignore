@@ -10,4 +10,8 @@ examples/tutorial_one/project/target
 examples/tutorial_one/target
 examples/cyntersizer/project/target
 examples/cyntersizer/target
+.idea
+.idea_modules
+examples/cyntersizer/.idea
+examples/cyntersizer/.idea_modules
 

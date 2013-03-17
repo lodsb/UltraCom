@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="GlulogicMT.jar">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../libraries/misc/GlulogicMT.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

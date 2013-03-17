@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="batik-awt-util.jar">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../libraries/misc/batik-awt-util.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

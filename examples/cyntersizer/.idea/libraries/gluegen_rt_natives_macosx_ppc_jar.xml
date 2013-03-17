@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="gluegen-rt-natives-macosx-ppc.jar">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../libraries/misc/gluegen-rt-natives-macosx-ppc.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

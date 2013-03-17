@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="commons-collections-3.1.jar">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../libraries/misc/commons-collections-3.1.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

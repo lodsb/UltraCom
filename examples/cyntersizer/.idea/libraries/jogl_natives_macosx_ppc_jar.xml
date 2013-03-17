@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="jogl-natives-macosx-ppc.jar">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../libraries/misc/jogl-natives-macosx-ppc.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
