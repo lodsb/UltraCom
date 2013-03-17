@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="scalacollider_2.9.1-0.34-SNAPSHOT.jar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../libraries/misc/scalacollider_2.9.1-0.34-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../../libraries/misc/scalacollider_2.9.1-0.34-SNAPSHOT-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../libraries/misc/scalacollider_2.9.1-0.34-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

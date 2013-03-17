@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="scala" name="Scala">
+      <configuration>
+        <option name="compilerLibraryLevel" value="Project" />
+        <option name="compilerLibraryName" value="SBT: scala:2.9.2" />
+        <option name="compilerOptions" value="-unchecked -deprecation -Ydependent-method-types" />
+        <option name="deprecationWarnings" value="true" />
+        <option name="fsc" value="true" />
+        <option name="uncheckedWarnings" value="true" />
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/../target/scala-2.9.2/classes" />
+    <output-test url="file://$MODULE_DIR$/../target/scala-2.9.2/test-classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/..">
+      <sourceFolder url="file://$MODULE_DIR$/../src/main/scala" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../src/test/scala" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../src/test/resources" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="SBT: org.scala-lang:scala-library:2.9.2" level="project" />
+    <orderEntry type="library" name="SBT: org.lodsb:ultracom_2.9.2:0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="SBT: org.lodsb:reakt_2.9.2:0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="SBT: com.assembla.scala-incubator:graph-core_2.9.2:1.5.1" level="project" />
+    <orderEntry type="library" name="SBT: com.github.mpeltonen:sbt-idea:1.3.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="SBT: commons-io:commons-io:2.0.1" level="project" />
+    <orderEntry type="library" name="ani.jar" level="project" />
+    <orderEntry type="library" name="ant-launcher.jar" level="project" />
+    <orderEntry type="library" name="ant.jar" level="project" />
+    <orderEntry type="library" name="antlr.jar" level="project" />
+    <orderEntry type="library" name="batik-anim.jar" level="project" />
+    <orderEntry type="library" name="batik-awt-util.jar" level="project" />
+    <orderEntry type="library" name="batik-bridge.jar" level="project" />
+    <orderEntry type="library" name="batik-css.jar" level="project" />
+    <orderEntry type="library" name="batik-dom.jar" level="project" />
+    <orderEntry type="library" name="batik-ext.jar" level="project" />
+    <orderEntry type="library" name="batik-extension.jar" level="project" />
+    <orderEntry type="library" name="batik-gvt.jar" level="project" />
+    <orderEntry type="library" name="batik-parser.jar" level="project" />
+    <orderEntry type="library" name="batik-script.jar" level="project" />
+    <orderEntry type="library" name="batik-svg-dom.jar" level="project" />
+    <orderEntry type="library" name="batik-svggen.jar" level="project" />
+    <orderEntry type="library" name="batik-transcoder.jar" level="project" />
+    <orderEntry type="library" name="batik-util.jar" level="project" />
+    <orderEntry type="library" name="batik-xml.jar" level="project" />
+    <orderEntry type="library" name="commons-collections-3.1.jar" level="project" />
+    <orderEntry type="library" name="commons-logging.jar" level="project" />
+    <orderEntry type="library" name="concurrent-1.3.4.jar" level="project" />
+    <orderEntry type="library" name="core.jar" level="project" />
+    <orderEntry type="library" name="ecj.jar" level="project" />
+    <orderEntry type="library" name="GLGraphics.jar" level="project" />
+    <orderEntry type="library" name="gluegen-rt-natives-linux-amd64.jar" level="project" />
+    <orderEntry type="library" name="gluegen-rt-natives-linux-i586.jar" level="project" />
+    <orderEntry type="library" name="gluegen-rt-natives-macosx-ppc.jar" level="project" />
+    <orderEntry type="library" name="gluegen-rt-natives-macosx-universal.jar" level="project" />
+    <orderEntry type="library" name="gluegen-rt-natives-windows-amd64.jar" level="project" />
+    <orderEntry type="library" name="gluegen-rt-natives-windows-i586.jar" level="project" />
+    <orderEntry type="library" name="gluegen-rt.jar" level="project" />
+    <orderEntry type="library" name="GlulogicMT.jar" level="project" />
+    <orderEntry type="library" name="hamcrest.jar" level="project" />
+    <orderEntry type="library" name="jna.jar" level="project" />
+    <orderEntry type="library" name="jogl-natives-linux-amd64.jar" level="project" />
+    <orderEntry type="library" name="jogl-natives-linux-i586.jar" level="project" />
+    <orderEntry type="library" name="jogl-natives-macosx-ppc.jar" level="project" />
+    <orderEntry type="library" name="jogl-natives-macosx-universal.jar" level="project" />
+    <orderEntry type="library" name="jogl-natives-windows-amd64.jar" level="project" />
+    <orderEntry type="library" name="jogl-natives-windows-i586.jar" level="project" />
+    <orderEntry type="library" name="jogl.jar" level="project" />
+    <orderEntry type="library" name="js.jar" level="project" />
+    <orderEntry type="library" name="junit-4.8.2.jar" level="project" />
+    <orderEntry type="library" name="junit.jar" level="project" />
+    <orderEntry type="library" name="libTUIO.jar" level="project" />
+    <orderEntry type="library" name="log4j-1.2.8.jar" level="project" />
+    <orderEntry type="library" name="mri.jar" level="project" />
+    <orderEntry type="library" name="muito_blobtracking.jar" level="project" />
+    <orderEntry type="library" name="NetUtil.jar" level="project" />
+    <orderEntry type="library" name="opengl.jar" level="project" />
+    <orderEntry type="library" name="pde.jar" level="project" />
+    <orderEntry type="library" name="pdf-transcoder.jar" level="project" />
+    <orderEntry type="library" name="scalaaudiofile_2.9.1-0.20.jar" level="project" />
+    <orderEntry type="library" name="scalacollider_2.9.1-0.34-SNAPSHOT.jar" level="project" />
+    <orderEntry type="library" name="scalaosc_2.9.1-0.33.jar" level="project" />
+    <orderEntry type="library" name="scalatest-1.0.1-for-scala-2.8.0.Beta1-RC8-SNAPSHOT.jar" level="project" />
+    <orderEntry type="library" name="scalatest_2.9.1-1.7.1.jar" level="project" />
+    <orderEntry type="library" name="whirlycache-1.0.1.jar" level="project" />
+    <orderEntry type="library" name="xml-apis-ext.jar" level="project" />
+    <orderEntry type="library" name="xml-apis.jar" level="project" />
+    <orderEntry type="library" name="doesnotexist" level="project" />
+  </component>
+</module>
+

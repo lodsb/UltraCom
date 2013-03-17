@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="doesnotexist">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/doesnotexist" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

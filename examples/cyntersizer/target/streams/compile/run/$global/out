@@ -1,0 +1,77 @@
+[0m[[0minfo[0m] [0mRunning cyntersizer.app [0m
+[0m[[0mdebug[0m] [0mStarting sandboxed run...[0m
+[0m[[0mdebug[0m] [0mWaiting for threads to exit or System.exit to be called.[0m
+[0m[[0mdebug[0m] [0m  Classpath:[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\target\scala-2.9.2\classes[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\ani.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\ant-launcher.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\ant.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\antlr.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\batik-anim.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\batik-awt-util.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\batik-bridge.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\batik-css.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\batik-dom.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\batik-ext.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\batik-extension.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\batik-gvt.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\batik-parser.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\batik-script.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\batik-svg-dom.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\batik-svggen.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\batik-transcoder.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\batik-util.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\batik-xml.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\commons-collections-3.1.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\commons-logging.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\concurrent-1.3.4.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\core.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\ecj.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\GLGraphics.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\gluegen-rt-natives-linux-amd64.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\gluegen-rt-natives-linux-i586.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\gluegen-rt-natives-macosx-ppc.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\gluegen-rt-natives-macosx-universal.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\gluegen-rt-natives-windows-amd64.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\gluegen-rt-natives-windows-i586.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\gluegen-rt.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\GlulogicMT.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\hamcrest.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\jna.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\jogl-natives-linux-amd64.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\jogl-natives-linux-i586.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\jogl-natives-macosx-ppc.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\jogl-natives-macosx-universal.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\jogl-natives-windows-amd64.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\jogl-natives-windows-i586.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\jogl.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\js.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\junit-4.8.2.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\junit.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\libTUIO.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\log4j-1.2.8.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\mri.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\muito_blobtracking.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\NetUtil.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\opengl.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\pde.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\pdf-transcoder.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\scalaaudiofile_2.9.1-0.20.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\scalacollider_2.9.1-0.34-SNAPSHOT-javadoc.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\scalacollider_2.9.1-0.34-SNAPSHOT-sources.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\scalacollider_2.9.1-0.34-SNAPSHOT.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\scalaosc_2.9.1-0.33.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\scalatest-1.0.1-for-scala-2.8.0.Beta1-RC8-SNAPSHOT.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\scalatest_2.9.1-1.7.1.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\whirlycache-1.0.1.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\xml-apis-ext.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\Documents\GitHub\UltraCom\examples\cyntersizer\..\..\libraries\misc\xml-apis.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\.sbt\boot\scala-2.9.2\lib\scala-library.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\.ivy2\local\org.lodsb\ultracom_2.9.2\0.1-SNAPSHOT\jars\ultracom_2.9.2.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\.ivy2\local\org.lodsb\reakt_2.9.2\0.1-SNAPSHOT\jars\reakt_2.9.2.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\.ivy2\cache\com.assembla.scala-incubator\graph-core_2.9.2\jars\graph-core_2.9.2-1.5.1.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\.ivy2\cache\scala_2.9.2\sbt_0.12\com.github.mpeltonen\sbt-idea\jars\sbt-idea-1.3.0-SNAPSHOT.jar[0m
+[0m[[0mdebug[0m] [0m	C:\Users\ghagerer\.ivy2\cache\commons-io\commons-io\jars\commons-io-2.0.1.jar[0m
+[0m[[0mdebug[0m] [0mWaiting for thread run-main to exit[0m
+[0m[[0mdebug[0m] [0m	Thread run-main exited.[0m
+[0m[[0mdebug[0m] [0mWaiting for thread Animation Thread to exit[0m

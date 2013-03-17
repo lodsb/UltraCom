@@ -1,0 +1,220 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>org.mt4j.input.inputSources</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link type="text/css" media="screen" rel="stylesheet" href="../../../../lib/template.css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body onload="sh_highlightDocument('../lib/', '.min.js');" class="value">
+      <div id="definition">
+        <img src="../../../../lib/package_big.png" />
+        <p id="owner"><a name="org" class="extype" href="../../../package.html">org</a>.<a name="org.mt4j" class="extype" href="../../package.html">mt4j</a>.<a name="org.mt4j.input" class="extype" href="../package.html">input</a></p>
+        <h1>inputSources</h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">inputSources</span>
+      </span>
+      </h4>
+      
+      <div class="fullcommenttop" id="comment"></div>
+    
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input accesskey="/" type="text" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div class="types members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="org.mt4j.input.inputSources.AbstractInputSource" data-isabs="true">
+      <a id="AbstractInputSource:AbstractInputSource[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="AbstractInputSource.html"><span class="name">AbstractInputSource</span></a><span class="tparams">[<span name="T">T &lt;: MTInputEvent</span>]</span><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.input.inputSources.IInputSourceListener" data-isabs="true">
+      <a id="IInputSourceListener:IInputSourceListener[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="IInputSourceListener.html"><span class="name">IInputSourceListener</span></a><span class="tparams">[<span name="T">T &lt;: MTInputEvent</span>]</span><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.input.inputSources.KeyboardInputSource" data-isabs="false">
+      <a id="KeyboardInputSource:KeyboardInputSource"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="KeyboardInputSource.html"><span class="name">KeyboardInputSource</span></a><span class="result"> extends AbstractInputSource[MTFingerInputEvt]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.input.inputSources.MacTrackpadSource" data-isabs="false">
+      <a id="MacTrackpadSource:MacTrackpadSource"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="MacTrackpadSource.html"><span class="name">MacTrackpadSource</span></a><span class="result"> extends AbstractInputSource[MTFingerInputEvt] with Observer</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.input.inputSources.MouseInputSource" data-isabs="false">
+      <a id="MouseInputSource:MouseInputSource"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="MouseInputSource.html"><span class="name">MouseInputSource</span></a><span class="result"> extends AbstractInputSource[MTFingerInputEvt] with MouseMotionListener with MouseListener</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.input.inputSources.MuitoInputSource" data-isabs="false">
+      <a id="MuitoInputSource:MuitoInputSource"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="MuitoInputSource.html"><span class="name">MuitoInputSource</span></a><span class="result"> extends AbstractInputSource[MTFingerInputEvt] with MotionProviderListener</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.input.inputSources.MultipleMiceInputSource" data-isabs="false">
+      <a id="MultipleMiceInputSource:MultipleMiceInputSource"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="MultipleMiceInputSource.html"><span class="name">MultipleMiceInputSource</span></a><span class="result"> extends AbstractInputSource[MTFingerInputEvt]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.input.inputSources.TuioInputSource" data-isabs="false">
+      <a id="TuioInputSource:TuioInputSource"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="TuioInputSource.html"><span class="name">TuioInputSource</span></a><span class="result"> extends AbstractInputSource[AbstractCursorInputEvt] with TuioListener</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.input.inputSources.Win7NativeTouchSource" data-isabs="false">
+      <a id="Win7NativeTouchSource:Win7NativeTouchSource"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Win7NativeTouchSource.html"><span class="name">Win7NativeTouchSource</span></a><span class="result"> extends AbstractInputSource[MTWin7TouchInputEvt]</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+
+        <div class="values members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="org.mt4j.input.inputSources.MouseInputSource" data-isabs="false">
+      <a id="MouseInputSource:MouseInputSource"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="MouseInputSource$.html"><span class="name">MouseInputSource</span></a><span class="result"> extends </span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.input.inputSources.MultipleMiceInputSource" data-isabs="false">
+      <a id="MultipleMiceInputSource:MultipleMiceInputSource"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="MultipleMiceInputSource$.html"><span class="name">MultipleMiceInputSource</span></a><span class="result"> extends </span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.input.inputSources.osc" data-isabs="false">
+      <a id="osc:osc"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="osc/package.html"><span class="name">osc</span></a>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>

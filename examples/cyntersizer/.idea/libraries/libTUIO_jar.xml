@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="libTUIO.jar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../libraries/misc/libTUIO.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

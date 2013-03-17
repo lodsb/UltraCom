@@ -1,0 +1,1168 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>org.mt4j.util.opengl.GLTexture</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link type="text/css" media="screen" rel="stylesheet" href="../../../../lib/template.css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body onload="sh_highlightDocument('../lib/', '.min.js');" class="type">
+      <div id="definition">
+        <a title="Go to companion" href="GLTexture$.html"><img src="../../../../lib/class_to_object_big.png" /></a>
+        <p id="owner"><a name="org" class="extype" href="../../../package.html">org</a>.<a name="org.mt4j" class="extype" href="../../package.html">mt4j</a>.<a name="org.mt4j.util" class="extype" href="../package.html">util</a>.<a name="org.mt4j.util.opengl" class="extype" href="package.html">opengl</a></p>
+        <h1><a title="Go to companion" href="GLTexture$.html">GLTexture</a></h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <span class="name">GLTexture</span><span class="result"> extends <span name="processing.core.PImage" class="extype">PImage</span></span>
+      </span>
+      </h4>
+      
+      <div class="fullcommenttop" id="comment"><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span name="processing.core.PImage" class="extype">PImage</span>, <span name="java.lang.Cloneable" class="extype">Cloneable</span>, <span name="processing.core.PConstants" class="extype">PConstants</span>, AnyRef, <span name="scala.Any" class="extype">Any</span></div>
+        </div></div>
+    
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input accesskey="/" type="text" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol><li class="alpha in"><span>Alphabetic</span></li><li class="inherit out"><span>By inheritance</span></li></ol>
+            </div>
+        <div id="ancestors">
+              <span class="filtertype">Inherited</span>
+              <ol><li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li></ol>
+              <ol id="linearization"><li name="org.mt4j.util.opengl.GLTexture" class="in"><span>GLTexture</span></li><li name="processing.core.PImage" class="in"><span>PImage</span></li><li name="java.lang.Cloneable" class="in"><span>Cloneable</span></li><li name="processing.core.PConstants" class="in"><span>PConstants</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
+            </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        <div class="members" id="constructors">
+              <h3>Instance Constructors</h3>
+              <ol><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#this" data-isabs="false">
+      <a id="this:GLTexture"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">new</span>
+      </span>
+      <span class="symbol">
+        <span class="name">GLTexture</span><span class="params">(<span name="parent">parent: <span name="processing.core.PApplet" class="extype">PApplet</span></span>, <span name="pImage">pImage: <span name="processing.core.PImage" class="extype">PImage</span></span>, <span name="settings">settings: <a name="org.mt4j.util.opengl.GLTextureSettings" class="extype" href="GLTextureSettings.html">GLTextureSettings</a></span>)</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#this" data-isabs="false">
+      <a id="this:GLTexture"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">new</span>
+      </span>
+      <span class="symbol">
+        <span class="name">GLTexture</span><span class="params">(<span name="parent">parent: <span name="processing.core.PApplet" class="extype">PApplet</span></span>, <span name="pImage">pImage: <span name="processing.core.PImage" class="extype">PImage</span></span>)</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#this" data-isabs="false">
+      <a id="this:GLTexture"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">new</span>
+      </span>
+      <span class="symbol">
+        <span class="name">GLTexture</span><span class="params">(<span name="parent">parent: <span name="processing.core.PApplet" class="extype">PApplet</span></span>, <span name="fileName">fileName: <span name="java.lang.String" class="extype">String</span></span>, <span name="settings">settings: <a name="org.mt4j.util.opengl.GLTextureSettings" class="extype" href="GLTextureSettings.html">GLTextureSettings</a></span>)</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#this" data-isabs="false">
+      <a id="this:GLTexture"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">new</span>
+      </span>
+      <span class="symbol">
+        <span class="name">GLTexture</span><span class="params">(<span name="parent">parent: <span name="processing.core.PApplet" class="extype">PApplet</span></span>, <span name="fileName">fileName: <span name="java.lang.String" class="extype">String</span></span>)</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#this" data-isabs="false">
+      <a id="this:GLTexture"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">new</span>
+      </span>
+      <span class="symbol">
+        <span class="name">GLTexture</span><span class="params">(<span name="parent">parent: <span name="processing.core.PApplet" class="extype">PApplet</span></span>, <span name="width">width: <span name="scala.Int" class="extype">Int</span></span>, <span name="height">height: <span name="scala.Int" class="extype">Int</span></span>, <span name="settings">settings: <a name="org.mt4j.util.opengl.GLTextureSettings" class="extype" href="GLTextureSettings.html">GLTextureSettings</a></span>)</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#this" data-isabs="false">
+      <a id="this:GLTexture"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">new</span>
+      </span>
+      <span class="symbol">
+        <span class="name">GLTexture</span><span class="params">(<span name="parent">parent: <span name="processing.core.PApplet" class="extype">PApplet</span></span>, <span name="width">width: <span name="scala.Int" class="extype">Int</span></span>, <span name="height">height: <span name="scala.Int" class="extype">Int</span></span>)</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#this" data-isabs="false">
+      <a id="this:GLTexture"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">new</span>
+      </span>
+      <span class="symbol">
+        <span class="name">GLTexture</span><span class="params">(<span name="parent">parent: <span name="processing.core.PApplet" class="extype">PApplet</span></span>, <span name="settings">settings: <a name="org.mt4j.util.opengl.GLTextureSettings" class="extype" href="GLTextureSettings.html">GLTextureSettings</a></span>)</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#this" data-isabs="false">
+      <a id="this:GLTexture"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">new</span>
+      </span>
+      <span class="symbol">
+        <span class="name">GLTexture</span><span class="params">(<span name="parent">parent: <span name="processing.core.PApplet" class="extype">PApplet</span></span>)</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+
+        <div class="values members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="scala.AnyRef#!=" data-isabs="false">
+      <a id="!=(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $bang$eq">!=</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.Any#!=" data-isabs="false">
+      <a id="!=(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $bang$eq">!=</span><span class="params">(<span name="arg0">arg0: <span name="scala.Any" class="extype">Any</span></span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef###" data-isabs="false">
+      <a id="##():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $hash$hash">##</span><span class="params">()</span><span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#==" data-isabs="false">
+      <a id="==(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $eq$eq">==</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.Any#==" data-isabs="false">
+      <a id="==(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name" title="gt4s: $eq$eq">==</span><span class="params">(<span name="arg0">arg0: <span name="scala.Any" class="extype">Any</span></span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="scala.Any#asInstanceOf" data-isabs="false">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: T0</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="processing.core.PImage#blend" data-isabs="false">
+      <a id="blend(PImage,Int,Int,Int,Int,Int,Int,Int,Int,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">blend</span><span class="params">(<span name="arg0">arg0: <span name="processing.core.PImage" class="extype">PImage</span></span>, <span name="arg1">arg1: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg2">arg2: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg3">arg3: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg4">arg4: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg5">arg5: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg6">arg6: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg7">arg7: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg8">arg8: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg9">arg9: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="processing.core.PImage#blend" data-isabs="false">
+      <a id="blend(Int,Int,Int,Int,Int,Int,Int,Int,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">blend</span><span class="params">(<span name="arg0">arg0: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg1">arg1: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg2">arg2: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg3">arg3: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg4">arg4: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg5">arg5: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg6">arg6: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg7">arg7: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg8">arg8: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="prt" name="processing.core.PImage#blurARGB" data-isabs="false">
+      <a id="blurARGB(Float):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">blurARGB</span><span class="params">(<span name="arg0">arg0: <span name="scala.Float" class="extype">Float</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="processing.core" class="extype" href="../../../../processing/core/package.html">core</a>] </dd><dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="prt" name="processing.core.PImage#blurAlpha" data-isabs="false">
+      <a id="blurAlpha(Float):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">blurAlpha</span><span class="params">(<span name="arg0">arg0: <span name="scala.Float" class="extype">Float</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="processing.core" class="extype" href="../../../../processing/core/package.html">core</a>] </dd><dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="prt" name="processing.core.PImage#blurRGB" data-isabs="false">
+      <a id="blurRGB(Float):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">blurRGB</span><span class="params">(<span name="arg0">arg0: <span name="scala.Float" class="extype">Float</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="processing.core" class="extype" href="../../../../processing/core/package.html">core</a>] </dd><dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="prt" name="processing.core.PImage#buildBlurKernel" data-isabs="false">
+      <a id="buildBlurKernel(Float):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">buildBlurKernel</span><span class="params">(<span name="arg0">arg0: <span name="scala.Float" class="extype">Float</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="processing.core" class="extype" href="../../../../processing/core/package.html">core</a>] </dd><dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="prt" name="processing.core.PImage#checkAlpha" data-isabs="false">
+      <a id="checkAlpha():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">checkAlpha</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="processing.core" class="extype" href="../../../../processing/core/package.html">core</a>] </dd><dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="processing.core.PImage#clone" data-isabs="false">
+      <a id="clone():AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: AnyRef</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage → AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="processing.core.PImage#copy" data-isabs="false">
+      <a id="copy(PImage,Int,Int,Int,Int,Int,Int,Int,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">copy</span><span class="params">(<span name="arg0">arg0: <span name="processing.core.PImage" class="extype">PImage</span></span>, <span name="arg1">arg1: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg2">arg2: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg3">arg3: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg4">arg4: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg5">arg5: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg6">arg6: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg7">arg7: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg8">arg8: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="processing.core.PImage#copy" data-isabs="false">
+      <a id="copy(Int,Int,Int,Int,Int,Int,Int,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">copy</span><span class="params">(<span name="arg0">arg0: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg1">arg1: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg2">arg2: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg3">arg3: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg4">arg4: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg5">arg5: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg6">arg6: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg7">arg7: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#destroy" data-isabs="false">
+      <a id="destroy():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">destroy</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="prt" name="processing.core.PImage#dilate" data-isabs="false">
+      <a id="dilate(Boolean):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">dilate</span><span class="params">(<span name="arg0">arg0: <span name="scala.Boolean" class="extype">Boolean</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="processing.core" class="extype" href="../../../../processing/core/package.html">core</a>] </dd><dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#eq" data-isabs="false">
+      <a id="eq(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#equals" data-isabs="false">
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span name="scala.Any" class="extype">Any</span></span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="processing.core.PImage#filter" data-isabs="false">
+      <a id="filter(Int,Float):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">filter</span><span class="params">(<span name="arg0">arg0: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg1">arg1: <span name="scala.Float" class="extype">Float</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="processing.core.PImage#filter" data-isabs="false">
+      <a id="filter(Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">filter</span><span class="params">(<span name="arg0">arg0: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="prt" name="org.mt4j.util.opengl.GLTexture#finalize" data-isabs="false">
+      <a id="finalize():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="org.mt4j.util.opengl" class="extype" href="package.html">opengl</a>] </dd><dt>Definition Classes</dt><dd><a name="org.mt4j.util.opengl.GLTexture" class="extype" href="">GLTexture</a> → AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="processing.core.PImage#get" data-isabs="false">
+      <a id="get():PImage"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">get</span><span class="params">()</span><span class="result">: <span name="processing.core.PImage" class="extype">PImage</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="processing.core.PImage#get" data-isabs="false">
+      <a id="get(Int,Int,Int,Int):PImage"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">get</span><span class="params">(<span name="arg0">arg0: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg1">arg1: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg2">arg2: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg3">arg3: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="processing.core.PImage" class="extype">PImage</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="processing.core.PImage#get" data-isabs="false">
+      <a id="get(Int,Int):Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">get</span><span class="params">(<span name="arg0">arg0: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg1">arg1: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="processing.core.PImage#getCache" data-isabs="false">
+      <a id="getCache(Any):AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getCache</span><span class="params">(<span name="arg0">arg0: <span name="scala.Any" class="extype">Any</span></span>)</span><span class="result">: AnyRef</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#getClass" data-isabs="false">
+      <a id="getClass():java.lang.Class[_]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: java.lang.Class[_]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#getExpansionFilter" data-isabs="false">
+      <a id="getExpansionFilter():EXPANSION_FILTER"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getExpansionFilter</span><span class="params">()</span><span class="result">: <a name="org.mt4j.util.opengl.GLTexture.EXPANSION_FILTER" class="extype" href="GLTexture$$EXPANSION_FILTER.html">EXPANSION_FILTER</a></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="processing.core.PImage#getImage" data-isabs="false">
+      <a id="getImage():Image"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getImage</span><span class="params">()</span><span class="result">: <span name="java.awt.Image" class="extype">Image</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="prt" name="processing.core.PImage#getImpl" data-isabs="false">
+      <a id="getImpl(Int,Int,Int,Int):PImage"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getImpl</span><span class="params">(<span name="arg0">arg0: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg1">arg1: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg2">arg2: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg3">arg3: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="processing.core.PImage" class="extype">PImage</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="processing.core" class="extype" href="../../../../processing/core/package.html">core</a>] </dd><dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#getShrinkageFilter" data-isabs="false">
+      <a id="getShrinkageFilter():SHRINKAGE_FILTER"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getShrinkageFilter</span><span class="params">()</span><span class="result">: <a name="org.mt4j.util.opengl.GLTexture.SHRINKAGE_FILTER" class="extype" href="GLTexture$$SHRINKAGE_FILTER.html">SHRINKAGE_FILTER</a></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#getTextureID" data-isabs="false">
+      <a id="getTextureID():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getTextureID</span><span class="params">()</span><span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#getTextureTarget" data-isabs="false">
+      <a id="getTextureTarget():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getTextureTarget</span><span class="params">()</span><span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#getTextureTargetEnum" data-isabs="false">
+      <a id="getTextureTargetEnum():TEXTURE_TARGET"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getTextureTargetEnum</span><span class="params">()</span><span class="result">: <a name="org.mt4j.util.opengl.GLTexture.TEXTURE_TARGET" class="extype" href="GLTexture$$TEXTURE_TARGET.html">TEXTURE_TARGET</a></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#getWrappingHorizontal" data-isabs="false">
+      <a id="getWrappingHorizontal():WRAP_MODE"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getWrappingHorizontal</span><span class="params">()</span><span class="result">: <a name="org.mt4j.util.opengl.GLTexture.WRAP_MODE" class="extype" href="GLTexture$$WRAP_MODE.html">WRAP_MODE</a></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#getWrappingVertical" data-isabs="false">
+      <a id="getWrappingVertical():WRAP_MODE"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getWrappingVertical</span><span class="params">()</span><span class="result">: <a name="org.mt4j.util.opengl.GLTexture.WRAP_MODE" class="extype" href="GLTexture$$WRAP_MODE.html">WRAP_MODE</a></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.AnyRef#hashCode" data-isabs="false">
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="processing.core.PImage#init" data-isabs="false">
+      <a id="init(Int,Int,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">init</span><span class="params">(<span name="arg0">arg0: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg1">arg1: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg2">arg2: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#isGLTexObjectInitialized" data-isabs="false">
+      <a id="isGLTexObjectInitialized():Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isGLTexObjectInitialized</span><span class="params">()</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#isGLTextureInitialized" data-isabs="false">
+      <a id="isGLTextureInitialized():Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isGLTextureInitialized</span><span class="params">()</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.Any#isInstanceOf" data-isabs="false">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="processing.core.PImage#isModified" data-isabs="false">
+      <a id="isModified():Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isModified</span><span class="params">()</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#loadGLTexture" data-isabs="false">
+      <a id="loadGLTexture(PImage):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">loadGLTexture</span><span class="params">(<span name="img">img: <span name="processing.core.PImage" class="extype">PImage</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#loadPImageTexture" data-isabs="false">
+      <a id="loadPImageTexture(PImage):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">loadPImageTexture</span><span class="params">(<span name="img">img: <span name="processing.core.PImage" class="extype">PImage</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="processing.core.PImage#loadPixels" data-isabs="false">
+      <a id="loadPixels():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">loadPixels</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#loadTexture" data-isabs="false">
+      <a id="loadTexture(PImage,GLTextureSettings):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">loadTexture</span><span class="params">(<span name="img">img: <span name="processing.core.PImage" class="extype">PImage</span></span>, <span name="settings">settings: <a name="org.mt4j.util.opengl.GLTextureSettings" class="extype" href="GLTextureSettings.html">GLTextureSettings</a></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#loadTexture" data-isabs="false">
+      <a id="loadTexture(String,GLTextureSettings):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">loadTexture</span><span class="params">(<span name="filename">filename: <span name="java.lang.String" class="extype">String</span></span>, <span name="settings">settings: <a name="org.mt4j.util.opengl.GLTextureSettings" class="extype" href="GLTextureSettings.html">GLTextureSettings</a></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="processing.core.PImage#mask" data-isabs="false">
+      <a id="mask(PImage):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mask</span><span class="params">(<span name="arg0">arg0: <span name="processing.core.PImage" class="extype">PImage</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="processing.core.PImage#mask" data-isabs="false">
+      <a id="mask(Array[Int]):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mask</span><span class="params">(<span name="arg0">arg0: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Int" class="extype">Int</span>]</span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#ne" data-isabs="false">
+      <a id="ne(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#notify" data-isabs="false">
+      <a id="notify():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#notifyAll" data-isabs="false">
+      <a id="notifyAll():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="processing.core.PImage#removeCache" data-isabs="false">
+      <a id="removeCache(Any):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">removeCache</span><span class="params">(<span name="arg0">arg0: <span name="scala.Any" class="extype">Any</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="processing.core.PImage#resize" data-isabs="false">
+      <a id="resize(Int,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">resize</span><span class="params">(<span name="arg0">arg0: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg1">arg1: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="processing.core.PImage#save" data-isabs="false">
+      <a id="save(String):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">save</span><span class="params">(<span name="arg0">arg0: <span name="java.lang.String" class="extype">String</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="prt" name="processing.core.PImage#saveImageIO" data-isabs="false">
+      <a id="saveImageIO(String):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">saveImageIO</span><span class="params">(<span name="arg0">arg0: <span name="java.lang.String" class="extype">String</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="processing.core" class="extype" href="../../../../processing/core/package.html">core</a>] </dd><dt>Definition Classes</dt><dd>PImage</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="prt" name="processing.core.PImage#saveTGA" data-isabs="false">
+      <a id="saveTGA(OutputStream):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">saveTGA</span><span class="params">(<span name="arg0">arg0: <span name="java.io.OutputStream" class="extype">OutputStream</span></span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="processing.core" class="extype" href="../../../../processing/core/package.html">core</a>] </dd><dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="prt" name="processing.core.PImage#saveTIFF" data-isabs="false">
+      <a id="saveTIFF(OutputStream):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">saveTIFF</span><span class="params">(<span name="arg0">arg0: <span name="java.io.OutputStream" class="extype">OutputStream</span></span>)</span><span class="result">: <span name="scala.Boolean" class="extype">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="processing.core" class="extype" href="../../../../processing/core/package.html">core</a>] </dd><dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="processing.core.PImage#set" data-isabs="false">
+      <a id="set(Int,Int,PImage):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">set</span><span class="params">(<span name="arg0">arg0: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg1">arg1: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg2">arg2: <span name="processing.core.PImage" class="extype">PImage</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="processing.core.PImage#set" data-isabs="false">
+      <a id="set(Int,Int,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">set</span><span class="params">(<span name="arg0">arg0: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg1">arg1: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg2">arg2: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="processing.core.PImage#setCache" data-isabs="false">
+      <a id="setCache(Any,Any):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">setCache</span><span class="params">(<span name="arg0">arg0: <span name="scala.Any" class="extype">Any</span></span>, <span name="arg1">arg1: <span name="scala.Any" class="extype">Any</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#setFilter" data-isabs="false">
+      <a id="setFilter(SHRINKAGE_FILTER,EXPANSION_FILTER):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">setFilter</span><span class="params">(<span name="minFilter">minFilter: <a name="org.mt4j.util.opengl.GLTexture.SHRINKAGE_FILTER" class="extype" href="GLTexture$$SHRINKAGE_FILTER.html">SHRINKAGE_FILTER</a></span>, <span name="magFilter">magFilter: <a name="org.mt4j.util.opengl.GLTexture.EXPANSION_FILTER" class="extype" href="GLTexture$$EXPANSION_FILTER.html">EXPANSION_FILTER</a></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="prt" name="processing.core.PImage#setImpl" data-isabs="false">
+      <a id="setImpl(Int,Int,Int,Int,Int,Int,PImage):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">setImpl</span><span class="params">(<span name="arg0">arg0: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg1">arg1: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg2">arg2: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg3">arg3: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg4">arg4: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg5">arg5: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg6">arg6: <span name="processing.core.PImage" class="extype">PImage</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="processing.core" class="extype" href="../../../../processing/core/package.html">core</a>] </dd><dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="processing.core.PImage#setModified" data-isabs="false">
+      <a id="setModified(Boolean):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">setModified</span><span class="params">(<span name="arg0">arg0: <span name="scala.Boolean" class="extype">Boolean</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="processing.core.PImage#setModified" data-isabs="false">
+      <a id="setModified():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">setModified</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#setWrapMode" data-isabs="false">
+      <a id="setWrapMode(WRAP_MODE,WRAP_MODE):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">setWrapMode</span><span class="params">(<span name="wrappingHorizontal">wrappingHorizontal: <a name="org.mt4j.util.opengl.GLTexture.WRAP_MODE" class="extype" href="GLTexture$$WRAP_MODE.html">WRAP_MODE</a></span>, <span name="wrappingVertical">wrappingVertical: <a name="org.mt4j.util.opengl.GLTexture.WRAP_MODE" class="extype" href="GLTexture$$WRAP_MODE.html">WRAP_MODE</a></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#setupGLTexture" data-isabs="false">
+      <a id="setupGLTexture(Int,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">setupGLTexture</span><span class="params">(<span name="width">width: <span name="scala.Int" class="extype">Int</span></span>, <span name="height">height: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.AnyRef#synchronized" data-isabs="false">
+      <a id="synchronized[T0](⇒ T0):T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ T0</span>)</span><span class="result">: T0</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#toString" data-isabs="false">
+      <a id="toString():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span name="java.lang.String" class="extype">String</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#updateGLTexture" data-isabs="false">
+      <a id="updateGLTexture(IntBuffer):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">updateGLTexture</span><span class="params">(<span name="buffer">buffer: <span name="java.nio.IntBuffer" class="extype">IntBuffer</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#updateGLTexture" data-isabs="false">
+      <a id="updateGLTexture(Array[Int]):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">updateGLTexture</span><span class="params">(<span name="intArray">intArray: <span name="scala.Array" class="extype">Array</span>[<span name="scala.Int" class="extype">Int</span>]</span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#updateGLTextureFromPImage" data-isabs="false">
+      <a id="updateGLTextureFromPImage():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">updateGLTextureFromPImage</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.mt4j.util.opengl.GLTexture#updatePImageFromGLTexture" data-isabs="false">
+      <a id="updatePImageFromGLTexture():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">updatePImageFromGLTexture</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="processing.core.PImage#updatePixels" data-isabs="false">
+      <a id="updatePixels(Int,Int,Int,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">updatePixels</span><span class="params">(<span name="arg0">arg0: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg1">arg1: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg2">arg2: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg3">arg3: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="processing.core.PImage#updatePixels" data-isabs="false">
+      <a id="updatePixels():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">updatePixels</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="prt" name="processing.core.PImage#updatePixelsImpl" data-isabs="false">
+      <a id="updatePixelsImpl(Int,Int,Int,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">updatePixelsImpl</span><span class="params">(<span name="arg0">arg0: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg1">arg1: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg2">arg2: <span name="scala.Int" class="extype">Int</span></span>, <span name="arg3">arg3: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a name="processing.core" class="extype" href="../../../../processing/core/package.html">core</a>] </dd><dt>Definition Classes</dt><dd>PImage</dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#wait" data-isabs="false">
+      <a id="wait():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#wait" data-isabs="false">
+      <a id="wait(Long,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span name="scala.Long" class="extype">Long</span></span>, <span name="arg1">arg1: <span name="scala.Int" class="extype">Int</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li visbl="pub" name="scala.AnyRef#wait" data-isabs="false">
+      <a id="wait(Long):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span name="scala.Long" class="extype">Long</span></span>)</span><span class="result">: <span name="scala.Unit" class="extype">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div name="processing.core.PImage" class="parent">
+              <h3>Inherited from <span name="processing.core.PImage" class="extype">PImage</span></h3>
+            </div><div name="java.lang.Cloneable" class="parent">
+              <h3>Inherited from <span name="java.lang.Cloneable" class="extype">Cloneable</span></h3>
+            </div><div name="processing.core.PConstants" class="parent">
+              <h3>Inherited from <span name="processing.core.PConstants" class="extype">PConstants</span></h3>
+            </div><div name="scala.AnyRef" class="parent">
+              <h3>Inherited from AnyRef</h3>
+            </div><div name="scala.Any" class="parent">
+              <h3>Inherited from <span name="scala.Any" class="extype">Any</span></h3>
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>
