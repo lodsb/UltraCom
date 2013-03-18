@@ -9,24 +9,30 @@ all dependencies are included in the supplied libraries directory, the only part
 reakt (https://github.com/lodsb/reakt), you have to build reakt first.
 
 1. check out reakt from github 
+
 	git clone http://www.scala-sbt.org/
 
 2. build it
+
 	sbt compile
 
 3. publish it on your system, so it is packaged for UltraCom
+
 	sbt publish-local
 
 ###Finally:
 There is not much more to do:
 
 1. check out UltraCom from github:
+
 	git clone https://github.com/lodsb/UltraCom.git
 
 2. build it
+
 	sbt compile
 
 3. publish it (so you can build the examples)
+
 	sbt publish local
 
 ## Example Projects
