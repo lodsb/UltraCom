@@ -17,10 +17,13 @@ reakt (https://github.com/lodsb/reakt), you have to build reakt first.
 
 ###Finally:
 There is not much more to do:
+
 1. check out UltraCom from github:
 	git clone https://github.com/lodsb/UltraCom.git
+
 2. build it
 	sbt compile
+
 3. publish it (so you can build the examples)
 	sbt publish local
 
