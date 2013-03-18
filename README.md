@@ -29,23 +29,7 @@ In examples/ are small project files, you can build/execute them by running sbt 
 
 ## Example
 This lenghty example is taken from examples/tutorial_one and shows how the API looks like and how it can be used
-
-
-object TutorialOne extends Application {
-	/*
-			Settings, such as <b>the application name<b>, display properties, etc are set in Settings.txt
-	 */
-
-	def main(args: Array[String]): Unit = {
-		this.execute(false)
-	}
-
-	override def startUp() = {
-		val scene = new TutorialOneScene(this, "Scene of Tutorial One");
-		this.addScene(scene)
-	}
-
-}
+Note: Settings, such as the application name, display properties, etc are set in Settings.txt
 
 
 class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
