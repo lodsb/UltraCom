@@ -32,7 +32,7 @@ There is not much more to do:
 ## Example Projects
 In examples/ are small project files, you can build/execute them by running sbt compile/run in the corresponding directory
 
-## Example
+## API Examples and a little bit more about the concept
 This lenghty example is taken from examples/tutorial_one and shows how the API looks like and how it can be used
 Note: Settings, such as the application name, display properties, etc are set in Settings.txt
 
