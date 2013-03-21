@@ -109,8 +109,6 @@ class TutorialTwoScene(app: Application, name: String) extends Scene(app,name) {
 	AudioServer.start({
 		val mySynth = mySynthDef.play
 
-		//mySynth.parameters() = ( "coupling" -> 123 )
-
 		// to update the parameters of a synth, send tuples
 		// these muse be formated as ("parametername", value); the shorthand writing is "parametername"->value
 		mySynth.parameters <~ couplingSlider.value.map { x => ( "oscfreq" -> x ) }

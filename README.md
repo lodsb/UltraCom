@@ -242,9 +242,9 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 ###Audio
 	//Define a synthesizer (using ScalaCollider)
 	val mySynthDef = SynthDef("mySynth"){
+
 		// simple synthesizer parameters, oscillator frequency, modulator frequency, coupling
 		// these can be lateron controlled, .kr for controlrate
-
 		val oscFreq = "oscfreq".kr(440)
 		val modFreq = "modfreq".kr(440)
 		val coupling= "coupling".kr(0.0)
@@ -288,8 +288,6 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 	// The function given as startargument is executed once the server did this.
 	AudioServer.start({
 		val mySynth = mySynthDef.play
-
-		//mySynth.parameters() = ( "coupling" -> 123 )
 
 		// to update the parameters of a synth, send tuples
 		// these muse be formated as ("parametername", value); the shorthand writing is "parametername"->value
