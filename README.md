@@ -39,6 +39,7 @@ There is not much more to do:
 In examples/ are small project files, you can build/execute them by running sbt compile/run in the corresponding directory
 
 ## API Examples and a little bit more about the concept
+###General API
 This lenghty example is taken from examples/tutorial_one and shows how the API looks like and how it can be used
 Note: Settings, such as the application name, display properties, etc are set in Settings.txt
 
@@ -238,3 +239,72 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 	slider3.value.observe({ x => myFSM.consume("Some val "+x); true })
 }
 
+###Audio
+	//Define a synthesizer (using ScalaCollider)
+	val mySynthDef = SynthDef("mySynth"){
+		// simple synthesizer parameters, oscillator frequency, modulator frequency, coupling
+		// these can be lateron controlled, .kr for controlrate
+
+		val oscFreq = "oscfreq".kr(440)
+		val modFreq = "modfreq".kr(440)
+		val coupling= "coupling".kr(0.0)
+
+		// use a repeating envelope to create a rhythmic effect
+		// the impulse (2Hz = 120 BPM) triggers the envelope
+		val imp = Impulse.kr(2);
+		val envelope = EnvGen.ar(Env.perc(0.1, 0.6, 1.0, curveShape(-4)),imp );
+
+		// the modulator has a fixed frequency, the amplitude of the modulator is scaled
+		// by the envelope and the amount of coupling
+		val modulation = SinOsc.ar(modFreq)*coupling*envelope
+
+
+		val signal = SinOsc.ar(oscFreq + modulation)
+
+		// this function is called to make sure the produced audio signal lands
+		// on the supercollider output, it also ensures, that the audio signal is
+		// fed back to UltraCom (low sampling rate = 10Hz) for UI updates!
+		//
+		// if you leave it out, you can still use the synth, just make sure you
+		// put the output on an audio bus; you won't get the audio feedback to
+		// UltraCom though!
+		AudioServer attach signal
+	}
+
+
+	// graphical controls
+	val couplingSlider = Slider(0,1000.0f)
+	val freqmodEllipse = Ellipse(25f,25f)
+	freqmodEllipse.fillColor() = Color(255,0,0)
+
+	// ui feedback
+	val scope = Scope(10,100,600,150)
+
+
+	canvas += couplingSlider++freqmodEllipse++scope
+
+	// The audio is running in a different process, so before we
+	// can use the audio server we have to wait until it booted.
+	// The function given as startargument is executed once the server did this.
+	AudioServer.start({
+		val mySynth = mySynthDef.play
+
+		//mySynth.parameters() = ( "coupling" -> 123 )
+
+		// to update the parameters of a synth, send tuples
+		// these muse be formated as ("parametername", value); the shorthand writing is "parametername"->value
+		mySynth.parameters <~ couplingSlider.value.map { x => ( "oscfreq" -> x ) }
+
+		freqmodEllipse.globalPosition.observe {
+			pos =>{ mySynth.parameters() = ("modfreq" -> pos.x);
+					mySynth.parameters() = ("coupling" -> 5*pos.y);
+					true }
+		}
+
+
+		// plot the output
+		scope.plot <~ mySynth.amplitude
+
+		// faster update, to see more of the waveform
+		mySynth.setAmplitudeUpdateDivisions(1)
+	})
