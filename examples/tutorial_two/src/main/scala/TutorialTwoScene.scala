@@ -107,6 +107,7 @@ class TutorialTwoScene(app: Application, name: String) extends Scene(app,name) {
 	// can use the audio server we have to wait until it booted.
 	// The function given as startargument is executed once the server did this.
 	AudioServer.start({
+		//create an actual instance of the synthesizer defined before
 		val mySynth = mySynthDef.play
 
 		// to update the parameters of a synth, send tuples
