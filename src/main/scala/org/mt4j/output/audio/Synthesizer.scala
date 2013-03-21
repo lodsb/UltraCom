@@ -32,6 +32,10 @@ class Synthesizer(val synth: Synth) {
 
 	parameters.observe({ x => synth.set(x); true;})
 
+	def setAmplitudeUpdateDivisions(divisions: Int) = {
+		synth.set( "__pulseDivision" -> divisions  )
+	}
+
 }
 
 

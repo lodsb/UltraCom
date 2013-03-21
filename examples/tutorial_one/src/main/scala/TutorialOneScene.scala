@@ -246,8 +246,4 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 	slider.value.observe({ x => myFSM.consume(x); true })
 	slider3.value.observe({ x => myFSM.consume("Some val "+x); true })
 
-	// AUDIO
-
-
-
 }

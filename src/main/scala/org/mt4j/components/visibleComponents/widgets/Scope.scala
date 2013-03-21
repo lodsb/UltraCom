@@ -25,12 +25,10 @@ package org.mt4j.components.visibleComponents.widgets
 import org.mt4j.components.visibleComponents.shapes.MTRectangle
 import processing.core.{PGraphics, PApplet}
 import org.lodsb.reakt.sync.VarS
-import de.sciss.synth.ControlSetMap
 import org.mt4j.MTApplication
-import org.mt4j.util.math.Vector3D
 
-class Scope (applet: PApplet, x: Int, y: Int, width: Int, height: Int, noSigPoints: Int = 100)
-			extends MTRectangle(applet, x, y, width, height) {
+class Scope(applet: PApplet, x: Int, y: Int, width: Int, height: Int, noSigPoints: Int = 100)
+	extends MTRectangle(applet, x, y, width, height) {
 
 	val plot: VarS[Float] = new VarS[Float](0.0f);
 
@@ -38,16 +36,17 @@ class Scope (applet: PApplet, x: Int, y: Int, width: Int, height: Int, noSigPoin
 	private var currentArrayIndex = 0;
 
 	plot.observe({
-		x => 	signalPoints(currentArrayIndex) = x;
-				currentArrayIndex = (currentArrayIndex+1) % noSigPoints;
-				true;
+		x => signalPoints(currentArrayIndex) = x;
+		System.err.println("scope "+x)
+		currentArrayIndex = (currentArrayIndex + 1) % noSigPoints;
+		true;
 	})
 
 	override def drawComponent(g: PGraphics): Unit = {
 		val width = this.getWidthLocal();
 		val height = this.getHeightLocal();
 
-		val pixPerPointOffset:Float = width/noSigPoints;
+		val pixPerPointOffset: Float = width / noSigPoints;
 
 		val renderer = this.getRenderer();
 
@@ -56,15 +55,15 @@ class Scope (applet: PApplet, x: Int, y: Int, width: Int, height: Int, noSigPoin
 		renderer.translate(this.x, this.y + this.height / 2)
 
 		renderer.noFill();
-		renderer.stroke(0f,200f,255f)
-		renderer.rect(0,-height,width,height)
+		renderer.stroke(0f, 200f, 255f)
+		renderer.rect(0, -height, width, height)
 
 		var lastY: Float = 0.0f;
 		var lastX: Float = 0.0f;
 
-		for (i <- 0 to  noSigPoints-1) {
-			val curY = -signalPoints(i)*height/2;
-			val curX:Float = i.toFloat*pixPerPointOffset;
+		for (i <- 0 to noSigPoints - 1) {
+			val curY = -signalPoints(i) * height / 2;
+			val curX: Float = i.toFloat * pixPerPointOffset;
 
 			renderer.line(lastX, lastY, curX, curY);
 
@@ -84,7 +83,19 @@ object Scope {
 		val x = app.width / 2;
 		val y = app.height / 2;
 
-		val scope = new Scope(app,x,y,100,100);
+		val scope = new Scope(app, x, y, 100, 100);
+		scope
+	}
+
+	def apply(x: Int, y: Int): Scope = {
+		val app = MTApplication.getInstance();
+		val scope = new Scope(app, x, y, 100, 100);
+		scope
+	}
+
+	def apply(x: Int, y: Int,w:Int, h:Int): Scope = {
+		val app = MTApplication.getInstance();
+		val scope = new Scope(app, x, y, w, h);
 		scope
 	}
 

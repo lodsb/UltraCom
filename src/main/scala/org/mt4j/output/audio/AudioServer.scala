@@ -33,18 +33,21 @@ import org.mt4j.util.MT4jSettings
 
 object AudioServer {
 	implicit def synth2Synthesizer(s: Synth):Synthesizer = AudioServer.lookupOrCreateAndRegister(s)
+	implicit def jstringjDoubleControlSet( tup: (java.lang.String, java.lang.Double) )            = ControlSetMap.Single( tup._1, tup._2.toFloat )
+	implicit def jstringjFloatControlSet( tup: (java.lang.String, java.lang.Float) )            = ControlSetMap.Single( tup._1, tup._2.toFloat )
 
 	private val timerBus = 511;
-	private val timerInterval = 100
+	private val timerFreq = 500
 	private val amplitudeTriggerID = 63
 	private val ctrlBusChannels = 512
+	private val defaultTriggerDivisions = 20
 
 	private val mapLock = new Object;
 	private var idToSynthMap = Map[Int, Synthesizer]();
 
 	private def timerTriggerSynth: SynthDef = {
 		SynthDef("triggerSynth") {
-			Out.kr(timerBus, Impulse.kr(timerInterval))
+			Out.kr(timerBus, Impulse.ar(timerFreq))
 		}
 	}
 
@@ -114,10 +117,10 @@ object AudioServer {
 
 	// once you made your processing graph, dont forget to call attach
 	// to add its output and _RECEIVE_ ui updates (amplitude)
-
 	def attach(graph : GE) : GE = {
+		val pdiv = "__pulseDivision".kr(defaultTriggerDivisions)
 		Out.ar(Seq(0,1), graph)
-		SendTrig.kr(In.kr(timerBus), amplitudeTriggerID, 1000 * Amplitude.kr(graph))
+		SendTrig.kr(PulseDivider.kr(In.kr(timerBus),pdiv), amplitudeTriggerID, graph*1000f)//1000 * Amplitude.kr(graph))
 	}
 
 	def tt:SynthDef = {SynthDef("test") {
@@ -196,23 +199,20 @@ object AudioServer {
 						}}
 
 
-	def start( func: () => Unit ) = {
+	def start( func: => Unit ) = {
 		val cfg = Server.Config();
 		cfg.controlBusChannels = ctrlBusChannels;
 
-		// TODO make config for this
-		// FIXME: set up to your own system path pointing to scsynth
 		cfg.programPath = MT4jSettings.getInstance().getScSynthPath();
 
-
-		//Server.boot("UltraCom-Audio", cfg);
 		Server.run(cfg) {
 
 			s =>
 				s.nodeMgr.addListener(NodeListener)
 				timerTriggerSynth.play
 				Responder.add(ServerResponder)
-				func()
+
+				func
 		}
 	}
 
