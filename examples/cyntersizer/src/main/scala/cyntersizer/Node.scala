@@ -26,14 +26,14 @@ import scala.util.Random
 
 
 abstract class Node extends DragableNode {
+
   var synthesizer: NodeSynthesizer = null
   var radius: Float = 10f
   var rotationAngle: Float = 0f
 
-  // abstract methods
-  def isLastWithinTree: Boolean = true
-  def play {}
-  def prepare {}
+  def play() {}
+  def prepare() {}
+
 }
 
 
@@ -43,7 +43,7 @@ class Circle extends Node {
 }
 
 class Triangle extends Node {
-  form = new TriangleForm(2*radius,new MTColor(0,255,0))
+  form = new TriangleForm(radius,new MTColor(0,255,0))
   synthesizer = new NodeSynthesizer()
 }
 

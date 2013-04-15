@@ -51,7 +51,7 @@ object app extends Application {
   var scene:NodeScene = null
 
   //all nodes are stored here
-  var globalNodeSet = new NodeSet[DragableNode]() {}
+  var globalNodeSet = new NodeSet[DragableNode] {}
 
   // start scene
   def main(args: Array[String]) {
@@ -68,9 +68,10 @@ object app extends Application {
 
 class CyntersizerScene() extends NodeScene() {
 
+  Metronome().start()
   //SourceNode()
   SourceNode() += (NewRandomNode() += NewRandomNode(),NewRandomNode(),NewRandomNode(),NewRandomNode())
-
+  println("SourceNode().size = "+SourceNode().size)
   /*
 
   // Show touches

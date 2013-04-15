@@ -1,8 +1,9 @@
 package cyntersizer
 
 import org.mt4j.util.MTColor
-import org.mt4j.components.visibleComponents.shapes.MTRectangle
-import org.mt4j.util.math.Vertex
+import org.mt4j.components.visibleComponents.shapes.{MTPolygon, MTRectangle}
+import org.mt4j.util.math.{Vector3D, Vertex}
+import processing.core.PApplet
 
 /**
  * This source code is licensed as GPLv3 if not stated otherwise.
@@ -26,5 +27,25 @@ import org.mt4j.util.math.Vertex
 class SquareForm(width: Float, color: MTColor)
   extends MTRectangle(app, new Vertex(app.center), width, width) {
 
-  this.setFillColor(color)
+  setFillColor(color)
+}
+
+class TriangleForm(width: Float, color: MTColor)
+  extends MTPolygon(app, Array(new Vertex(),new Vertex(),new Vertex())) {
+
+  // create all vertices from the 2d triangle
+  val upperVertex = new Vertex(0,width,0)
+  val nextVertex = new Vertex(upperVertex.getCopy.rotateAroundAxisLocal(new Vector3D(0,0,1), (120*math.Pi/180).toFloat))
+  val anotherVertex = new Vertex(nextVertex.getCopy.rotateAroundAxisLocal(new Vector3D(0,0,1), (120*math.Pi/180).toFloat))
+
+  // translate the triangle to center
+  upperVertex.addLocal(app.center)
+  nextVertex.addLocal(app.center)
+  anotherVertex.addLocal(app.center)
+
+  // set vertices for the triangle
+  super.setVertices(Array(upperVertex,nextVertex,anotherVertex))
+
+  // set the color
+  setFillColor(color)
 }
