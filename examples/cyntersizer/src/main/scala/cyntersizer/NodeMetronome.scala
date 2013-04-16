@@ -76,9 +76,10 @@ class NodeMetronome extends Actor with mutable.Set[Node]{
   def bpmInMillisecs = {
     60f / beatsPerMinute * 1000
   }
+
   def notifyForms() {
     registeredNodes.clone().map(node => {
-      if (node != null) {println("- while schleife: registeredNodes.size: "+registeredNodes.size)
+      if (node != null) {//println("- while schleife: registeredNodes.size: "+registeredNodes.size)
 
         // play the sound of each registered node
         node.play()
@@ -110,15 +111,15 @@ class NodeMetronome extends Actor with mutable.Set[Node]{
 
   def act() {
     running = true
+
+    // add all children of SourceNode() to Metronome
     SourceNode().map(node => this += node.asInstanceOf[Node])
+
+    // start Metronome()
     while (running) {
       notifyForms()
-      println("--------------------------------------------")
-      try {
-        Thread.sleep(bpmInMillisecs.toLong)
-      } catch {
-        case interrupted: InterruptedException => {}
-      }
+      try { Thread.sleep(bpmInMillisecs.toLong) }
+      catch { case interrupted: InterruptedException => {} }
     }
   }
 

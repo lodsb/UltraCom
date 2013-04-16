@@ -1,6 +1,6 @@
 package cyntersizer
 
-import org.mt4j.components.visibleComponents.shapes.{MTEllipse, MTLine}
+import org.mt4j.components.visibleComponents.shapes.{Line, MTEllipse, MTLine}
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor
 import scala.actors.Actor
 import org.mt4j.util.MTColor
@@ -24,9 +24,13 @@ import org.mt4j.util.MTColor
 
 
 class AnimatedLine(val node: DragableNode) {
-  val line = new MTLine(app, node.ancestor.position, node.position)
+  //val line = new MTLine(app, node.ancestor.position, node.position)
+  val line = Line()
+  line.startPosition <~ node.ancestor.form.globalPosition
+  line.endPosition <~ node.form.globalPosition
+
   line.unregisterAllInputProcessors()
-  line.removeAllGestureEventListeners(classOf[DragProcessor])
+  line.removeAllGestureEventListeners()
   update()
   app.scene.canvas.addChild(line)
 
@@ -62,12 +66,12 @@ class AnimatedLine(val node: DragableNode) {
   }
 
   // for the silver line
-  def update() {
+  def update() {/*
     if (node.ancestor != null) {
       line.setVertices(Array(node.ancestor.position, node.position))
       line.setVisible(true)
     } else {
       line.setVisible(false)
     }
-  }
+  */}
 }

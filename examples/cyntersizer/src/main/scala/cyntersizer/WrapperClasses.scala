@@ -46,10 +46,10 @@ trait NodeSet[NodeType <: NodeSet[NodeType]] extends mutable.Set[NodeType] {
       // if a subtree gets added to SourceNode(),
       // which doesn't contain a running beat signal,
       // then the first node of this subtree has to be added to Metronome()
-      if (!node.containsRunningSignal) {println("!node.containsRunningSignal")
+      if (!node.containsRunningSignal) {//println("!node.containsRunningSignal")
         Metronome() += node.asInstanceOf[Node]
       }
-      if (oldAncestor != null && !oldAncestor.containsRunningSignal) {println("!oldAncestor.containsRunningSignal")
+      if (oldAncestor != null && !oldAncestor.containsRunningSignal) {//println("!oldAncestor.containsRunningSignal")
         Metronome() += oldAncestor.firstNodeInTree.asInstanceOf[Node] //TODO: maybe 1 beat latency?!? a bit pause!
       }
     }
@@ -137,7 +137,7 @@ trait NodeSet[NodeType <: NodeSet[NodeType]] extends mutable.Set[NodeType] {
       ancestor.firstNodeInTree
     }
   }
-  def isLastInTree: Boolean = { println("isLastInTree. treeLevel="+treeLevel+"treeDepth="+treeDepth)
+  def isLastInTree: Boolean = { //println("isLastInTree. treeLevel="+treeLevel+"treeDepth="+treeDepth)
     treeLevel == treeDepth
   }
   def treeLevel: Int = {
@@ -237,10 +237,12 @@ trait DragableNode extends NodeSet[DragableNode] {
         child.update(childrenAlso = false)
       })
 
-      // set nearest node to ancestor if necessary
-      var nearestNode = getNearestPossibleAncestor
-      if (nearestNode.ne(null)) {
-        nearestNode += this
+      // set nearest node to new ancestor if necessary
+      var nearest = nearestPossibleAncestor
+      if (nearest.ne(null)) {
+        lineToAncestor.line.startPosition |~ ancestor.form.globalPosition
+        nearest += this
+        lineToAncestor.line.startPosition <~ ancestor.form.globalPosition
       }
     }
 
@@ -254,7 +256,7 @@ trait DragableNode extends NodeSet[DragableNode] {
   }
 
 
-  def getNearestPossibleAncestor: DragableNode = {
+  def nearestPossibleAncestor: DragableNode = {
     var lowestDistance = Float.MaxValue
     var nearestNode: DragableNode = null
     var distance = Float.MaxValue

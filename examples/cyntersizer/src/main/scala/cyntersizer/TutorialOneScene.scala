@@ -36,10 +36,10 @@ import org.mt4j.util.math.Vector3D
  * Made in Bavaria by tons of eager fast pixies - since 1986.
  *
  * ^     ^
- * ^   ^
- * (o o)
+ *  ^   ^
+ *  (o o)
  * {  |  }                  (Wong)
- * "
+ *    "
  *
  * Don't eat the pills!
  */

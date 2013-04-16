@@ -82,17 +82,19 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 	textField += textField2++slider2
 
 	//Removing a child
-	textField -= textField2
+	//textField -= textField2
 
 	// Setting position ... java style from original MT4J
 	textField.setPositionGlobal(new Vector3D(app.width / 2f, app.height / 2f));
+  textField2.setPositionGlobal(new Vector3D(app.width / 2f, app.height / 2f));
 
 	// same, but reakt style (makes use of properties, see below)
 	textField.globalPosition := Vec3d(app.width / 2f, app.height / 2f);
+  textField2.setPositionGlobal(new Vector3D(app.width / 2f, app.height / 2f));
 
 	// setting and reading Properties
 	textField.text:="foo"
-	textField.text() ="foo"
+	textField2.text() ="foo"
 	val foo = textField.text();
 	slider.globalPosition() = Vec3d(100,200);
 
@@ -184,6 +186,8 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 		l.setStrokeColor( Color(rval(),rval(),rval()) )
 		// connect the end position of each line to the (position of the) textfield
 		l.endPosition <~ textField.globalPosition
+    l.endPosition <~ textField2.globalPosition
+    l.endPosition |~ textField.globalPosition
 		l
 	})
 
