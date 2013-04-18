@@ -2,7 +2,6 @@ package cyntersizer
 
 import collection.mutable.ArrayBuffer
 import actors.Actor
-import collection.mutable.Set
 import collection.mutable
 
 /**
@@ -77,9 +76,14 @@ class NodeMetronome extends Actor with mutable.Set[Node]{
     60f / beatsPerMinute * 1000
   }
 
-  def notifyForms() {
+  var nodesToBeAnimated = ArrayBuffer[Node]()
+  def notifyNodes() {
+
+    // the lines of these get animated via running dots later...
+    nodesToBeAnimated = ArrayBuffer[Node]()
+
     registeredNodes.clone().map(node => {
-      if (node != null) {//println("- while schleife: registeredNodes.size: "+registeredNodes.size)
+      if (node != null) {
 
         // play the sound of each registered node
         node.play()
@@ -98,15 +102,19 @@ class NodeMetronome extends Actor with mutable.Set[Node]{
           nextNodes += node.firstNodeInTree.asInstanceOf[Node]
         }
 
-        nextNodes.map(node => {
+        nextNodes.foreach(node => {
+          // put the following nodes into the Metronome() for the next round/beat...
           this += node
+
+          // animate the lines of the children
           if (node.lineToAncestor != null) {
-            node.lineToAncestor.animate()
+            nodesToBeAnimated += node
           }
         })
-      }
 
+      }
     })
+    LineAnimator().start(nodesToBeAnimated)
   }
 
   def act() {
@@ -117,7 +125,8 @@ class NodeMetronome extends Actor with mutable.Set[Node]{
 
     // start Metronome()
     while (running) {
-      notifyForms()
+      // every some millisecs notify some nodes, that a beat took place
+      notifyNodes()
       try { Thread.sleep(bpmInMillisecs.toLong) }
       catch { case interrupted: InterruptedException => {} }
     }

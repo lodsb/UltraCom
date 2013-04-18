@@ -1,9 +1,8 @@
 package cyntersizer
 
 import org.mt4j.util.MTColor
-import org.mt4j.components.visibleComponents.shapes.{MTPolygon, MTRectangle}
+import org.mt4j.components.visibleComponents.shapes.{MTPolygon, MTRectangle, MTEllipse}
 import org.mt4j.util.math.{Vector3D, Vertex}
-import processing.core.PApplet
 
 /**
  * This source code is licensed as GPLv3 if not stated otherwise.
@@ -23,18 +22,25 @@ import processing.core.PApplet
  * Don't eat the pills!
  */
 
-
-class SquareForm(width: Float, color: MTColor)
-  extends MTRectangle(app, new Vertex(app.center), width, width) {
-
-  setFillColor(color)
+trait Form {
+  var radius: Float
+  var color: MTColor
 }
 
-class TriangleForm(width: Float, color: MTColor)
-  extends MTPolygon(app, Array(new Vertex(),new Vertex(),new Vertex())) {
+class SquareForm(var radius: Float, var color: MTColor)
+  extends MTRectangle(app, new Vertex(app.center.subtractLocal(new Vector3D(radius, radius))), 2*radius, 2*radius)
+  with Form {
 
-  // create all vertices from the 2d triangle
-  val upperVertex = new Vertex(0,width,0)
+  setFillColor(color)
+
+}
+
+class TriangleForm(var radius: Float, var color: MTColor)
+  extends MTPolygon(app, Array(new Vertex(),new Vertex(),new Vertex()))
+  with Form {
+
+  // create all vertices from the 2-dimensional triangle
+  val upperVertex = new Vertex(0,radius,0)
   val nextVertex = new Vertex(upperVertex.getCopy.rotateAroundAxisLocal(new Vector3D(0,0,1), (120*math.Pi/180).toFloat))
   val anotherVertex = new Vertex(nextVertex.getCopy.rotateAroundAxisLocal(new Vector3D(0,0,1), (120*math.Pi/180).toFloat))
 
@@ -48,4 +54,12 @@ class TriangleForm(width: Float, color: MTColor)
 
   // set the color
   setFillColor(color)
+}
+
+class CircleForm(var radius: Float, var color: MTColor)
+  extends MTEllipse(app, app.center, radius, radius)
+  with Form {
+
+  setFillColor(color)
+
 }

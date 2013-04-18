@@ -1,8 +1,7 @@
 package cyntersizer
 
-import org.mt4j.components.visibleComponents.shapes.{Line, MTEllipse, MTLine}
+import org.mt4j.components.visibleComponents.shapes.{MTEllipse, MTLine}
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor
-import scala.actors.Actor
 import org.mt4j.util.MTColor
 
 /*
@@ -24,54 +23,26 @@ import org.mt4j.util.MTColor
 
 
 class AnimatedLine(val node: DragableNode) {
-  //val line = new MTLine(app, node.ancestor.position, node.position)
-  val line = Line()
-  line.startPosition <~ node.ancestor.form.globalPosition
-  line.endPosition <~ node.form.globalPosition
-
+  val line = new MTLine(app, node.ancestor.position, node.position)
   line.unregisterAllInputProcessors()
-  line.removeAllGestureEventListeners()
+  line.removeAllGestureEventListeners(classOf[DragProcessor])
   update()
   app.scene.canvas.addChild(line)
 
-  val animationActor = new Actor() {
-    var duration = Metronome().bpmInMillisecs
-    var startTime = 0l
-    var movingCircle = new MTEllipse(app, node.ancestor.position, 5f, 5f)
-    movingCircle.setFillColor(new MTColor(255,255,255))
-    movingCircle.setVisible(false)
-    app.scene.canvas.addChild(movingCircle)
-    def circlePosition = node.ancestor.position.getAdded(connectionLine.getScaled(expiredTimeFactor))
-    def connectionLine = node.position.getSubtracted(node.ancestor.position)
-    def expiredTime =  System.currentTimeMillis() - startTime
-    def expiredTimeFactor =  expiredTime/duration.toFloat
-
-    def act() {
-      startTime = System.currentTimeMillis()
-      movingCircle.setVisible(true)
-      while (expiredTime < duration) {
-        movingCircle.setPositionGlobal(circlePosition)
-      }
-      movingCircle.setVisible(false)
-    }
-  }
-
-  def animate() {
-    // the dot should run from the beginning to the end within milliSecs
-    if (animationActor.getState == Actor.State.Terminated) {
-      animationActor.restart()
-    } else {
-      animationActor.start()
-    }
-  }
+  val movingCircle = new MTEllipse(app, node.ancestor.position, 5f, 5f)
+  movingCircle.setVisible(false)
+  movingCircle.setFillColor(new MTColor(255,255,255))
+  app.scene.canvas.addChild(movingCircle)
 
   // for the silver line
-  def update() {/*
+  def update() {
     if (node.ancestor != null) {
       line.setVertices(Array(node.ancestor.position, node.position))
-      line.setVisible(true)
-    } else {
+      if(!line.isVisible) {
+        line.setVisible(true)
+      }
+    } else if(line.isVisible) {
       line.setVisible(false)
     }
-  */}
+  }
 }

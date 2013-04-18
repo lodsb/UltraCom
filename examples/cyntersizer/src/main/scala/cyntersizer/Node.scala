@@ -16,10 +16,10 @@ import scala.util.Random
  * Made in Bavaria by tons of eager fast pixies - since 1986.
  *
  * ^     ^
- * ^   ^
- * (o o)
+ *  ^   ^
+ *  (o o)
  * {  |  }                  (Wong)
- * "
+ *    "
  *
  * Don't eat the pills!
  */
@@ -28,8 +28,6 @@ import scala.util.Random
 abstract class Node extends DragableNode {
 
   var synthesizer: NodeSynthesizer = null
-  var radius: Float = 10f
-  var rotationAngle: Float = 0f
 
   def play() {}
   def prepare() {}
@@ -48,15 +46,35 @@ class Triangle extends Node {
 }
 
 class Square extends Node {
-  form = new SquareForm(2*radius,new MTColor(0,0,255))
+  form = new SquareForm(radius,new MTColor(0,0,255))
   synthesizer = new NodeSynthesizer()
 }
 
 object SourceNode {
   val sourceNode = new Node() {
     form = new CircleForm(radius,new MTColor(255,255,255))
+    form.unregisterAllInputProcessors()
+    form.removeAllGestureEventListeners()
   }
   def apply(): Node = sourceNode
+
+  /**
+   * Checks if there's a node lying on SourceNode()
+   * @return Boolean if yes or no
+   */
+  def isOccupied: Boolean = {
+    var isOccupied = false
+    app.globalNodeSet.foreach(node => {
+      if(
+        !node.eq(SourceNode()) &&
+        node.position.getX == app.center.getX &&
+        node.position.getY == app.center.getY
+      ) {
+        isOccupied = true
+      }
+    })
+    isOccupied
+  }
 }
 
 

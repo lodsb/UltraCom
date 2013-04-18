@@ -6,7 +6,7 @@ import org.mt4j.Scene
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.{DragEvent, DragProcessor}
 import org.mt4j.input.inputProcessors.{MTGestureEvent, IGestureEventListener}
 import scala.collection.mutable.ArrayBuffer
-import collection.{immutable, mutable}
+import collection.mutable
 
 
 
@@ -23,7 +23,7 @@ trait NodeSet[NodeType <: NodeSet[NodeType]] extends mutable.Set[NodeType] {
 
   /**
    * This function adds a node to the children from this
-   * @param node
+   * @param node the node to be added
    * @return
    */
   override def +=(node: NodeType): NodeSet.this.type = {
@@ -185,6 +185,9 @@ trait NodeSet[NodeType <: NodeSet[NodeType]] extends mutable.Set[NodeType] {
 
 trait DragableNode extends NodeSet[DragableNode] {
 
+  var radius: Float = 10f
+  var rotationAngle: Float = 0f
+
   //all nodes are globally stored here
   app.globalNodeSet += this
 
@@ -221,8 +224,24 @@ trait DragableNode extends NodeSet[DragableNode] {
       def processGestureEvent(ge: MTGestureEvent): Boolean = {
         val de = ge.asInstanceOf[DragEvent]
         de.getTarget.translateGlobal(de.getTranslationVect); //Moves the component
-        if(de.getId == MTGestureEvent.GESTURE_UPDATED) {
-          update(childrenAlso = true)
+        de.getId match {
+          case MTGestureEvent.GESTURE_UPDATED => {
+            if (isWithinField) {
+              // redraw line and update ancestor
+              update(childrenAlso = true)
+            } else {
+              // if dragged beyound to the edge of the field => remove from field entirely
+              removeFromField()
+            }
+          }
+          case MTGestureEvent.GESTURE_ENDED => {
+            // if SourceNode() isn't occupied by another node
+            // add new RandomNode() to field center
+            if(!SourceNode.isOccupied) {
+              SourceNode() += NewRandomNode()
+            }
+          }
+          case _ => {}
         }
         false
       }
@@ -238,11 +257,9 @@ trait DragableNode extends NodeSet[DragableNode] {
       })
 
       // set nearest node to new ancestor if necessary
-      var nearest = nearestPossibleAncestor
-      if (nearest.ne(null)) {
-        lineToAncestor.line.startPosition |~ ancestor.form.globalPosition
-        nearest += this
-        lineToAncestor.line.startPosition <~ ancestor.form.globalPosition
+      var nearestNode = getNearestPossibleAncestor
+      if (nearestNode.ne(null)) {
+        nearestNode += this
       }
     }
 
@@ -256,7 +273,7 @@ trait DragableNode extends NodeSet[DragableNode] {
   }
 
 
-  def nearestPossibleAncestor: DragableNode = {
+  def getNearestPossibleAncestor: DragableNode = {
     var lowestDistance = Float.MaxValue
     var nearestNode: DragableNode = null
     var distance = Float.MaxValue
@@ -277,18 +294,45 @@ trait DragableNode extends NodeSet[DragableNode] {
   }
 
   /**
-   * Starts the line animations of the connection lines to the children nodes.
-   * If this is the last node within the subtree, the first node of the subtree
-   * gets the line to the source node animated.
+   * Removes this node from the field.
+   * Children also get deleted.
+   * Should happen, whenn dragged to the edge of the field.
    */
-  def animateChildren {
-    if(!this.isEmpty) {
-      foreach((child: DragableNode) => {
-        child.lineToAncestor.animate()
-      })
-    } else if (this.isLastInTree) {
-      this.firstNodeInTree.lineToAncestor.animate()
+  def removeFromField():Unit = removeFromField(firstOne = true)
+
+  private def removeFromField(firstOne:Boolean) {
+    // first remove all visible MTComponents from canvas
+    app.scene.canvas().removeChild(form)
+    app.scene.canvas().removeChild(lineToAncestor.line)
+    app.scene.canvas().removeChild(lineToAncestor.movingCircle)
+
+    // remove other pointers to this
+    app.globalNodeSet -= this
+    ancestor -= this
+
+    // remove children (need to do this from a copy via clone())
+    clone().foreach(child => child.removeFromField(false))
+
+    // inject a new signal into the tree if necessary
+    if (firstOne) {
+      if(containsRunningSignal() || Metronome().contains(this.asInstanceOf[Node])) {//println("wannatoaddsomething")
+        //Metronome() -= this.asInstanceOf[Node]
+        //Metronome() += firstNodeInTree.asInstanceOf[Node]
+      }
     }
+  }
+
+  def isWithinField:Boolean = {
+
+    if(
+      radius < position.getX &&
+      position.getX < app.width - radius &&
+      radius < position.getY &&
+      position.getY < app.height - radius
+    ) {
+      return true
+    }
+    false
   }
 
 }
