@@ -73,6 +73,7 @@ object SourceNode {
         isOccupied = true
       }
     })
+
     isOccupied
   }
 }
@@ -80,11 +81,11 @@ object SourceNode {
 
 object NewRandomNode {
   def apply(): Node = {
-    val random = new Random().nextInt(3)
+    val random = new Random().nextInt(2)
     random match {
       case 0 => new Circle()
-      case 1 => new Triangle()
-      case _ => new Square()
+      case 1 => new Square()
+      case _ => new Triangle()
     }
   }
 }

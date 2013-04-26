@@ -29,8 +29,8 @@ import org.mt4j.util.math.Vector3D
 
   var nodesToBeAnimated = ArrayBuffer[Node]()
 
-  var duration = Metronome().bpmInMillisecs
   var startTime = 0l
+  def duration = Metronome().bpmInMillisecs
   def expiredTime = System.currentTimeMillis() - startTime
   def expiredTimeFactor = expiredTime/duration.toFloat
 
@@ -50,34 +50,52 @@ import org.mt4j.util.math.Vector3D
    */
   def act() {
 
-    // make all the dots on the lines visible...
-    nodesToBeAnimated.foreach(node => {
-      node.lineToAncestor.movingCircle.setVisible(true)
-    })
-
-    // start animation
-    startTime = System.currentTimeMillis()
     while (expiredTime < duration) {
-      // move all the dots one step forward
-      nodesToBeAnimated.foreach(node => {
-        node.lineToAncestor.movingCircle.setPositionGlobal(circlePosition(node))
-      })
+      moveCirclesForward()
+      Thread.sleep(13l)
     }
 
+  }
+
+  /**
+   * Resets the nodes, which have to be animated.
+   * Starts the thread also if not started or terminated
+   */
+  def reset() {
+    makeCirclesInvisible()
+    nodesToBeAnimated = Metronome().nodesToBeAnimated
+    startTime = System.currentTimeMillis()
+    makeCirclesVisible()
+    getState match {
+      case Actor.State.Terminated => restart()
+      case Actor.State.New => start()
+      case _ =>
+    }
+  }
+
+  def moveCirclesForward() {
+    // move all the dots one step forward
+    nodesToBeAnimated.foreach(node => {
+      node.lineToAncestor.movingCircle.setPositionGlobal(circlePosition(node))
+    })
+  }
+
+  def makeCirclesInvisible() {
     // make the dots invisible
     nodesToBeAnimated.foreach(node => {
       node.lineToAncestor.movingCircle.setVisible(false)
     })
-
   }
 
-  def start(nodes: ArrayBuffer[Node]) {
-    nodesToBeAnimated = nodes
+  def makeCirclesVisible() {
+    // make all the dots on the lines visible...
+    nodesToBeAnimated.foreach(node => {
+      node.lineToAncestor.movingCircle.setVisible(true)
+    })
+  }
 
-    getState match {
-      case Actor.State.Terminated => restart()
-      case _ => start()
-    }
+  def framesPerSecond(frames: Long): Long = {
+    1000l/frames
   }
 
   def apply() = this

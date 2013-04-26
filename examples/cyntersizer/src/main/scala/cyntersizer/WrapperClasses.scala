@@ -1,14 +1,16 @@
 package cyntersizer
 
-import org.mt4j.components.visibleComponents.shapes.MTPolygon
+import org.mt4j.components.visibleComponents.shapes.{AbstractShape, MTPolygon}
 import org.mt4j.util.math.Vertex
 import org.mt4j.Scene
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.{DragEvent, DragProcessor}
 import org.mt4j.input.inputProcessors.{MTGestureEvent, IGestureEventListener}
 import scala.collection.mutable.ArrayBuffer
 import collection.mutable
-
-
+import org.mt4j.input.inputProcessors.componentProcessors.rotate3DProcessor.{Rotate3DEvent, Rotate3DProcessor}
+import org.mt4j.input.gestureAction.{DefaultDragAction, DefaultScaleAction, DefaultRotateAction, Rotate3DAction}
+import org.mt4j.input.inputProcessors.componentProcessors.rotateProcessor.{RotateEvent, RotateProcessor}
+import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleProcessor
 
 
 class NodeScene extends Scene(app,"Cyntersizer") {
@@ -183,9 +185,9 @@ trait NodeSet[NodeType <: NodeSet[NodeType]] extends mutable.Set[NodeType] {
   }
 }
 
-trait DragableNode extends NodeSet[DragableNode] {
+trait DragableNode extends NodeSet[DragableNode] with IGestureEventListener{
 
-  var radius: Float = 10f
+  var radius: Float = 100f
   var rotationAngle: Float = 0f
 
   //all nodes are globally stored here
@@ -198,19 +200,15 @@ trait DragableNode extends NodeSet[DragableNode] {
   var lineToAncestor: AnimatedLine = null
 
   // form: if circle, square or whatever. has a touch listener.
-  private var _form: MTPolygon = null
-  def form: MTPolygon = _form
-  def form_=(newForm: MTPolygon) {
+  private var _form: AbstractShape = null
+  def form: AbstractShape = _form
+  def form_=(newForm: AbstractShape) {
     _form = newForm
     app.scene.canvas.addChild(form)
 
     // remove all drag event handlers. we want only our own
-    form.getInputProcessors.foreach (dp => {
-      if (dp.isInstanceOf[DragProcessor]) {
-        form.unregisterInputProcessor(dp)
-      }
-    })
-    form.removeAllGestureEventListeners(classOf[DragProcessor])
+    form.unregisterAllInputProcessors()
+    form.removeAllGestureEventListeners()
 
     // don't bother the SourceNode. It's not movable/dragable
     if (this.isSourceNode) return
@@ -219,40 +217,27 @@ trait DragableNode extends NodeSet[DragableNode] {
     lineToAncestor = new AnimatedLine(this)
 
     // make the form movable
+    form.registerInputProcessor(new Rotate3DProcessor(app, form))
+    form.addGestureListener(classOf[Rotate3DProcessor], new Rotate3DAction(app, form))
+    form.addGestureListener(classOf[RotateProcessor], this)
+
+    form.registerInputProcessor(new RotateProcessor(app))
+    form.addGestureListener(classOf[RotateProcessor], new DefaultRotateAction())
+    form.addGestureListener(classOf[RotateProcessor], this)
+
+    form.registerInputProcessor(new ScaleProcessor(app))
+    form.addGestureListener(classOf[ScaleProcessor], new DefaultScaleAction())
+
     form.registerInputProcessor(new DragProcessor(app))
-    form.addGestureListener(classOf[DragProcessor], new IGestureEventListener() {
-      def processGestureEvent(ge: MTGestureEvent): Boolean = {
-        val de = ge.asInstanceOf[DragEvent]
-        de.getTarget.translateGlobal(de.getTranslationVect); //Moves the component
-        de.getId match {
-          case MTGestureEvent.GESTURE_UPDATED => {
-            if (isWithinField) {
-              // redraw line and update ancestor
-              update(childrenAlso = true)
-            } else {
-              // if dragged beyound to the edge of the field => remove from field entirely
-              removeFromField()
-            }
-          }
-          case MTGestureEvent.GESTURE_ENDED => {
-            // if SourceNode() isn't occupied by another node
-            // add new RandomNode() to field center
-            if(!SourceNode.isOccupied) {
-              SourceNode() += NewRandomNode()
-            }
-          }
-          case _ => {}
-        }
-        false
-      }
-    })
+    form.addGestureListener(classOf[DragProcessor], new DefaultDragAction())
+    form.addGestureListener(classOf[DragProcessor], this)
   }
 
   def update(childrenAlso: Boolean) {
     if (childrenAlso) {
 
       // children also have to be updated, bot not their own, too! -> false parameter
-      foreach((child: DragableNode) => {
+      foreach(child => {
         child.update(childrenAlso = false)
       })
 
@@ -323,7 +308,6 @@ trait DragableNode extends NodeSet[DragableNode] {
   }
 
   def isWithinField:Boolean = {
-
     if(
       radius < position.getX &&
       position.getX < app.width - radius &&
@@ -331,6 +315,29 @@ trait DragableNode extends NodeSet[DragableNode] {
       position.getY < app.height - radius
     ) {
       return true
+    }
+    false
+  }
+
+  def processGestureEvent(ge: MTGestureEvent) = {
+    ge.getId match {
+      case MTGestureEvent.GESTURE_UPDATED => {
+        if (isWithinField) {
+          // redraw line and update ancestor
+          update(childrenAlso = true)
+        } else {
+          // if dragged beyound to the edge of the field => remove from field entirely
+          removeFromField()
+        }
+      }
+      case MTGestureEvent.GESTURE_ENDED => {
+        // if SourceNode() isn't occupied by another node
+        // add new RandomNode() to field center
+        if(!SourceNode.isOccupied) {
+          SourceNode() += NewRandomNode()
+        }
+      }
+      case _ => {}
     }
     false
   }

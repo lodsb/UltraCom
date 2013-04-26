@@ -67,8 +67,7 @@ object app extends Application {
 
 
 class CyntersizerScene() extends NodeScene() {
-
-  Metronome().start()
+  showTracer(true)
   SourceNode() += NewRandomNode()
-
+  Metronome().start()
 }

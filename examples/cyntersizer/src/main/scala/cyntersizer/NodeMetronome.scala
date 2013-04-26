@@ -24,7 +24,7 @@ import collection.mutable
  
  
 class NodeMetronome extends Actor with mutable.Set[Node]{
-  var running = false
+  var animationsAreRunning = false
   var beatsPerMinute: Int = 60
 
   // ---------- Set part START ---------- //
@@ -114,17 +114,20 @@ class NodeMetronome extends Actor with mutable.Set[Node]{
 
       }
     })
-    LineAnimator().start(nodesToBeAnimated)
+
+    LineAnimator().reset()
   }
 
   def act() {
-    running = true
+    animationsAreRunning = true
 
     // add all children of SourceNode() to Metronome
-    SourceNode().map(node => this += node.asInstanceOf[Node])
+    SourceNode().foreach(node => {
+      this += node.asInstanceOf[Node]
+    })
 
     // start Metronome()
-    while (running) {
+    while (animationsAreRunning) {
       // every some millisecs notify some nodes, that a beat took place
       notifyNodes()
       try { Thread.sleep(bpmInMillisecs.toLong) }
@@ -133,7 +136,7 @@ class NodeMetronome extends Actor with mutable.Set[Node]{
   }
 
   def stop() {
-    running = false
+    animationsAreRunning = false
   }
 
 }
