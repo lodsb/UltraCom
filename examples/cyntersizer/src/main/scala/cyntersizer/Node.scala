@@ -42,6 +42,8 @@ class Circle extends Node {
 
 class Triangle extends Node {
   form = new TriangleForm(radius,new MTColor(0,255,0))
+
+  println("Triangle:"+form.getCenterPointGlobal().toString)
   synthesizer = new NodeSynthesizer()
 }
 
@@ -81,7 +83,7 @@ object SourceNode {
 
 object NewRandomNode {
   def apply(): Node = {
-    val random = new Random().nextInt(2)
+    val random = new Random().nextInt(3)
     random match {
       case 0 => new Circle()
       case 1 => new Square()

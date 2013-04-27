@@ -3,7 +3,7 @@ package cyntersizer
 import org.mt4j.util.MTColor
 import org.mt4j.components.visibleComponents.shapes.{MTPolygon, MTRectangle, MTEllipse}
 import org.mt4j.util.math.{Vector3D, Vertex}
-import org.mt4j.components.visibleComponents.shapes.mesh.{MTCube, MTSphere}
+import org.mt4j.components.visibleComponents.shapes.mesh.{MTTriangleMesh, MTCube, MTSphere}
 import org.mt4j.input.inputProcessors.componentProcessors.rotate3DProcessor.Rotate3DProcessor
 
 import org.mt4j.util.math.Tools3D
@@ -12,6 +12,9 @@ import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.{ScaleE
 import org.mt4j.input.inputProcessors.{MTGestureEvent, IGestureEventListener}
 import org.mt4j.input.inputProcessors.componentProcessors.rotateProcessor.RotateProcessor
 import org.mt4j.util.opengl.{GLTextureSettings, GLTexture}
+import org.mt4j.components.MTComponent
+import org.mt4j.util.modelImporter.ModelImporterFactory
+import java.io.FileNotFoundException
 
 /**
  * This source code is licensed as GPLv3 if not stated otherwise.
@@ -44,8 +47,6 @@ class SquareForm(var _radius: Float, var color: MTColor)
   extends MTCube(app, 2*_radius)
   with Form {
 
-  app.scene.canvas().addChild(this)
-
   val centerCopy = app.center.getCopy
   centerCopy.setZ(SourceNode().form.getCenterPointGlobal.getZ+1)
   setPositionGlobal(centerCopy)
@@ -57,9 +58,10 @@ class SquareForm(var _radius: Float, var color: MTColor)
 }
 
 class TriangleForm(var _radius: Float, var color: MTColor)
-  extends MTPolygon(app, Array(new Vertex(),new Vertex(),new Vertex()))
+  //extends MTPolygon(app, Array(new Vertex(),new Vertex(),new Vertex()))
+  extends MTComponent(app)
   with Form {
-
+/*
   // create all vertices from the 2-dimensional triangle
   val upperVertex = new Vertex(0,_radius,0)
   val nextVertex = new Vertex(upperVertex.getCopy.rotateAroundAxisLocal(new Vector3D(0,0,1), (120*math.Pi/180).toFloat))
@@ -75,14 +77,39 @@ class TriangleForm(var _radius: Float, var color: MTColor)
 
   // set the color
   setFillColor(color)
+*/
+
+  setPositionGlobal(app.center.getScaled(0.33f))
+  println("TriangleForm First: "+getCenterPointGlobal)
+  val meshGroup = new MTComponent(app)
+  val meshes = ModelImporterFactory.loadModel(app, "AndroBot.3ds", 180, true, false )
+  meshes.foreach(mesh =>{
+    meshGroup.addChild(mesh)
+    mesh.unregisterAllInputProcessors()
+    mesh.setPickable(true)
+    val normals = mesh.getGeometryInfo().getNormals()
+    normals.foreach( vector3d => {
+      vector3d.scaleLocal(-1)
+    })
+    mesh.getGeometryInfo().setNormals(mesh.getGeometryInfo().getNormals(), mesh.isUseDirectGL(), mesh.isUseVBOs());
+    if (mesh.getVertexCount() > 20) {
+      mesh.generateAndUseDisplayLists()
+    }
+    mesh.setDrawNormals(false)
+  })
+  meshGroup.setComposite(true)
+  meshGroup.setPositionGlobal(app.center)
+  addChild(meshGroup)
+
+  println("TriangleForm Second: "+getCenterPointGlobal.toString)
+  println(meshGroup.getCenterPointGlobal.toString)
+
 }
 
 class CircleForm(var _radius: Float, var color: MTColor)
 //extends MTEllipse(app, app.center, _radius, _radius)
 extends MTSphere(app, "", 40, 40, _radius)
   with Form {
-
-  app.scene.canvas().addChild(this)
 
   try {
     SourceNode().form

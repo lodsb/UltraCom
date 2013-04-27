@@ -11,6 +11,7 @@ import org.mt4j.input.inputProcessors.componentProcessors.rotate3DProcessor.{Rot
 import org.mt4j.input.gestureAction.{DefaultDragAction, DefaultScaleAction, DefaultRotateAction, Rotate3DAction}
 import org.mt4j.input.inputProcessors.componentProcessors.rotateProcessor.{RotateEvent, RotateProcessor}
 import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleProcessor
+import org.mt4j.components.MTComponent
 
 
 class NodeScene extends Scene(app,"Cyntersizer") {
@@ -200,9 +201,9 @@ trait DragableNode extends NodeSet[DragableNode] with IGestureEventListener{
   var lineToAncestor: AnimatedLine = null
 
   // form: if circle, square or whatever. has a touch listener.
-  private var _form: AbstractShape = null
-  def form: AbstractShape = _form
-  def form_=(newForm: AbstractShape) {
+  private var _form: MTComponent = null
+  def form: MTComponent = _form
+  def form_=(newForm: MTComponent) {
     _form = newForm
     app.scene.canvas.addChild(form)
 
@@ -217,20 +218,26 @@ trait DragableNode extends NodeSet[DragableNode] with IGestureEventListener{
     lineToAncestor = new AnimatedLine(this)
 
     // make the form movable
-    form.registerInputProcessor(new Rotate3DProcessor(app, form))
-    form.addGestureListener(classOf[Rotate3DProcessor], new Rotate3DAction(app, form))
-    form.addGestureListener(classOf[RotateProcessor], this)
 
-    form.registerInputProcessor(new RotateProcessor(app))
-    form.addGestureListener(classOf[RotateProcessor], new DefaultRotateAction())
-    form.addGestureListener(classOf[RotateProcessor], this)
+    var bla = form
+    if (bla.isInstanceOf[TriangleForm]) {
+      bla = bla.asInstanceOf[TriangleForm].meshGroup
+    }
 
-    form.registerInputProcessor(new ScaleProcessor(app))
-    form.addGestureListener(classOf[ScaleProcessor], new DefaultScaleAction())
+    bla.registerInputProcessor(new Rotate3DProcessor(app, form))
+    bla.addGestureListener(classOf[Rotate3DProcessor], new Rotate3DAction(app, form))
+    bla.addGestureListener(classOf[RotateProcessor], this)
 
-    form.registerInputProcessor(new DragProcessor(app))
-    form.addGestureListener(classOf[DragProcessor], new DefaultDragAction())
-    form.addGestureListener(classOf[DragProcessor], this)
+    bla.registerInputProcessor(new RotateProcessor(app))
+    bla.addGestureListener(classOf[RotateProcessor], new DefaultRotateAction())
+    bla.addGestureListener(classOf[RotateProcessor], this)
+
+    bla.registerInputProcessor(new ScaleProcessor(app))
+    bla.addGestureListener(classOf[ScaleProcessor], new DefaultScaleAction())
+
+    bla.registerInputProcessor(new DragProcessor(app))
+    bla.addGestureListener(classOf[DragProcessor], new DefaultDragAction())
+    bla.addGestureListener(classOf[DragProcessor], this)
   }
 
   def update(childrenAlso: Boolean) {

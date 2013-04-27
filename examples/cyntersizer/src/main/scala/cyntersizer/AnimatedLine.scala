@@ -22,7 +22,7 @@ import org.mt4j.util.MTColor
  */
 
 
-class AnimatedLine(val node: DragableNode) {
+class AnimatedLine(val node: DragableNode) {println("AnimatedLine: "+node.form.getCenterPointGlobal)//node.form.translateGlobal()
   val line = new MTLine(app, node.ancestor.position, node.position)
   line.unregisterAllInputProcessors()
   line.removeAllGestureEventListeners(classOf[DragProcessor])
