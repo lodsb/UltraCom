@@ -45,6 +45,8 @@ object AudioServer {
 	private val mapLock = new Object;
 	private var idToSynthMap = Map[Int, Synthesizer]();
 
+	private var serverBooted = false
+
 	private def timerTriggerSynth: SynthDef = {
 		SynthDef("triggerSynth") {
 			Out.kr(timerBus, Impulse.ar(timerFreq))
@@ -211,8 +213,17 @@ object AudioServer {
 				s.nodeMgr.addListener(NodeListener)
 				timerTriggerSynth.play
 				Responder.add(ServerResponder)
-
+				serverBooted = true
 				func
+		}
+	}
+
+	def start(synchronously: Boolean) {
+		start()
+		if(synchronously) {
+			while(!serverBooted) {
+				Thread.sleep(100)
+			}
 		}
 	}
 
