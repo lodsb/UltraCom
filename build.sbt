@@ -36,3 +36,8 @@ resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositori
 
 addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "1.3.0-SNAPSHOT")
 
+resolvers += "Twitter repo" at "http://maven.twttr.com/"
+
+libraryDependencies ++= Seq(
+    "com.twitter" % "util-eval" % "1.12.13"
+)
