@@ -61,11 +61,11 @@ class TutorialTwoScene(app: Application, name: String) extends Scene(app,name) {
 	// create a _definition_ of simple fm synth
 	// this definition can then be used to create
 	// actual instances of a synth
-	val mySynthDef = SynthDef("mySynth"){
+	val mySynthDef = SynthDef("mySynth") {
 		// simple synthesizer parameters, oscillator frequency, modulator frequency, coupling
 		// these can be lateron controlled, .kr for controlrate
-
-		val oscFreq = "oscfreq".kr(440)
+    val array = Array[String]("oscfreq")
+		val oscFreq = array(0).kr(440)
 		val modFreq = "modfreq".kr(440)
 		val coupling= "coupling".kr(0.0)
 

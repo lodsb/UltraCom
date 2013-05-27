@@ -1,10 +1,13 @@
-package TreeQuencer
+package main.scala.TreeQuencer
 
 import java.io.File
 import collection.mutable.ArrayBuffer
 import scala.util.Random
 import de.sciss.synth.SynthDef
 import com.twitter.util.Eval
+import collection.mutable
+import org.mt4j.components.visibleComponents.shapes.mesh.MTTriangleMesh
+import org.mt4j.util.modelImporter.ModelImporterFactory
 
 /**
  * This source code is licensed as GPLv3 if not stated otherwise.
@@ -33,6 +36,9 @@ import com.twitter.util.Eval
   val formFiles = new ArrayBuffer[File]()
   val synthiFiles = new ArrayBuffer[File]()
   var sourceNodeFormFile: File = null
+  val formCache = new mutable.HashMap[File, Array[MTTriangleMesh]]()
+  val synthiCache = new mutable.HashMap[File, SynthDef]()
+  private val evaluateFile = new Eval()
 
   private var random: Int = null.asInstanceOf[Int]
 
@@ -49,32 +55,60 @@ import com.twitter.util.Eval
     }
   })
 
+  // build cache of SynthDefs and MTTriangleMeshes
+  println("Building form cache...")
+  formFiles.foreach(file => cacheMTTriangleMesh(file))
+  println("Building form cache finished!")
+
+  println("Building synthesizer cache...")
+  synthiFiles.foreach(file => cacheSynthDef(file))
+  println("Building synthesizer finished!")
+
   /**
    * Picks a form randomly from form-folder.
    * Not the sourceForm (i.e. the form from source node).
-   * @return ImportedForm The found form
+   * @return NodeForm The found form
    */
   def randomFormFile = {
     random = new Random().nextInt(formFiles.length)
     formFiles(random)
+    //new File(System.getProperty("user.dir")+"/forms/tetrahedron.obj")
   }
 
   def randomSynthiFile = {
     synthiFiles(random)
+    //new File(System.getProperty("user.dir")+"/forms/tetrahedron.scala")
   }
 
-  def apply = {
-    this
+  def apply = this
+
+  def cacheSynthDef(file: File): SynthDef = {
+    if (synthiCache.get(file).isEmpty) {
+      synthiCache += ((file,evaluateFile[SynthDef](file)))
+    }
+    synthiCache.get(file).get
+  }
+
+  def cacheMTTriangleMesh(file: File): Array[MTTriangleMesh] = {
+    if (FileImporter.formCache.get(file).isEmpty) {
+      FileImporter.formCache += ((file,ModelImporterFactory.loadModel(app, file.getAbsolutePath, 180, true, false)))
+    }
+
+    val cachedMeshes = formCache.get(file).get
+    val meshes = new Array[MTTriangleMesh](cachedMeshes.size)
+    for (i <- 0 to cachedMeshes.size-1) {
+      meshes(i) = new MTTriangleMesh(app, formCache.get(file).get(i).getGeometryInfo)
+    }
+    meshes
   }
 
 }
 
 object Import {
-  private val evaluateFile = new Eval()
   def form(formFile: File) = {
-    new ImportedForm(formFile)
+    new NodeForm(formFile)
   }
-  def synthesizer(synthiFile: File) = {
-    evaluateFile[SynthDef](synthiFile)
+  def synthesizer(node: main.scala.TreeQuencer.Node, synthiFile: File) = {
+    new NodeSynthesizer(node, synthiFile)
   }
 }

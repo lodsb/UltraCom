@@ -1,17 +1,13 @@
-package TreeQuencer
+package main.scala.TreeQuencer
 
 import org.mt4j.{Scene, Application}
 import org.mt4j.util.math.Vector3D
 import org.mt4j.components.MTLight
 import javax.media.opengl.GL
-import com.twitter.util.Eval
-import java.io.File
-import de.sciss.synth._
-import ugen._
 import org.mt4j.output.audio.AudioServer
-import org.mt4j.output.audio.AudioServer._
-import de.sciss.synth._
-import collection.mutable.ArrayBuffer
+import org.mt4j.util.MTColor
+import java.awt.event.KeyEvent
+import java.awt.event.KeyEvent._
 
 /**
  * This source code is licensed as GPLv3 if not stated otherwise.
@@ -37,9 +33,7 @@ object app extends Application {
   def center = new Vector3D(width/2f, height/2f)
   var scene: NodeScene = null
   var light: MTLight = null
-  // all nodes are globally stored here
-  var globalNodeSet = new NodeSetAternative[TreeQuencer.Node]()
-  var audioServerBooted = false
+  val globalNodeSet = new NodeSet[Node]() // all nodes are globally stored here
 
   // start scene
   def main(args: Array[String]) {
@@ -50,13 +44,20 @@ object app extends Application {
     addScene(new NodeScene())
   }
 
+  override protected def handleKeyEvent(e: KeyEvent) {
+    if (keyPressed && keyCode == VK_ESCAPE) {
+      Runtime.getRuntime.halt(0)
+    }
+    super.handleKeyEvent(e)
+  }
+
 }
 
-
-class NodeScene() extends Scene(app,"Cyntersizer") {
+class NodeScene() extends Scene(app,"TreeQuencer") {
   AudioServer.start(true)
   app.scene = this
-  app.light = new MTLight(app, GL.GL_LIGHT3, app.center.getAdded(app.scene.getSceneCam.getPosition))
+  app.scene.setClearColor(new MTColor(255,255,255))
+  app.light = new MTLight(app, GL.GL_LIGHT3, new Vector3D(0,0,200))//app.center.getAdded(app.scene.getSceneCam.getPosition))
   MTLight.enableLightningAndAmbient(app, 150, 150, 150, 255)
   showTracer(show = true)
 

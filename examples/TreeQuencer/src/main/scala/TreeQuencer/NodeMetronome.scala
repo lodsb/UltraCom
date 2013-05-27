@@ -1,4 +1,4 @@
-package TreeQuencer
+package main.scala.TreeQuencer
 
 import collection.mutable.ArrayBuffer
 import actors.Actor
@@ -23,7 +23,7 @@ import collection.mutable
  */
  
  
-object NodeMetronome extends NodeSetAternative[Node] with Actor {
+object NodeMetronome extends NodeSet[Node] with Actor {
   var animationsAreRunning = false
   var beatsPerMinute = 60
 

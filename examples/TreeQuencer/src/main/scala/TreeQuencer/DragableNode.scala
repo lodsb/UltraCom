@@ -1,13 +1,12 @@
-package TreeQuencer
+package main.scala.TreeQuencer
 
 import org.mt4j.util.math.Vertex
-import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.{DragEvent, DragProcessor}
+import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor
 import org.mt4j.input.inputProcessors.{MTGestureEvent, IGestureEventListener}
+import org.mt4j.input.inputProcessors.MTGestureEvent._
 import org.mt4j.input.inputProcessors.componentProcessors.rotate3DProcessor.Rotate3DProcessor
-import org.mt4j.input.gestureAction.Rotate3DAction
-import org.mt4j.input.inputProcessors.componentProcessors.rotateProcessor.{RotateEvent, RotateProcessor}
-import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.{ScaleEvent, ScaleProcessor}
-import org.mt4j.components.MTComponent
+import org.mt4j.input.inputProcessors.componentProcessors.rotateProcessor.RotateProcessor
+import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleProcessor
 import org.mt4j.util.camera.IFrustum
 
 class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListener {
@@ -26,9 +25,9 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
   }
 
   // form: if circle, square or whatever. has a touch listener.
-  private var _form: MTComponent = null
-  def form: MTComponent = _form
-  def form_=(newForm: MTComponent) {
+  private var _form: NodeForm = null
+  def form: NodeForm = _form
+  def form_=(newForm: NodeForm) {
     _form = newForm
     app.scene.canvas.addChild(form)
 
@@ -44,19 +43,20 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
 
     // make the form movable
     form.registerInputProcessor(new Rotate3DProcessor(app, form))
-    form.addGestureListener(classOf[Rotate3DProcessor], new Rotate3DAction(app, form))
+    form.addGestureListener(classOf[Rotate3DProcessor], this)
     form.registerInputProcessor(new RotateProcessor(app))
     form.addGestureListener(classOf[RotateProcessor], this)
     form.registerInputProcessor(new ScaleProcessor(app))
     form.addGestureListener(classOf[ScaleProcessor], this)
     form.registerInputProcessor(new DragProcessor(app))
     form.addGestureListener(classOf[DragProcessor], this)
+
   }
 
   def update(childrenAlso: Boolean) {
     if (childrenAlso) {
 
-      // children also have to be updated, bot not their own, too! -> false parameter
+      // children also have to be updated, but not their own, too! -> false parameter
       foreach( child => {
         child.update(childrenAlso = false)
       })
@@ -79,11 +79,11 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
 
   def getNearestPossibleAncestor: DragableNode = {
     var lowestDistance = Float.MaxValue
-    var nearestNode: DragableNode = null
+    var nearestNode = null.asInstanceOf[main.scala.TreeQuencer.Node]
     var distance = Float.MaxValue
-    app.globalNodeSet.foreach((node) => {
+    app.globalNodeSet.foreach( node => {
       //don't connect to own children!
-      if(!this.hasChild(node)) {
+      if(!node.isNearToCenter && !this.hasChild(node) || node.isSourceNode) {
         distance = position.distance(node.position)
         if(distance < lowestDistance){
           lowestDistance = distance
@@ -150,9 +150,9 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
     }
   }
 
-  def processGestureEvent(ge: MTGestureEvent): Boolean = {
-    ge.getId match {
-      case MTGestureEvent.GESTURE_UPDATED => {
+  def processGestureEvent(e: MTGestureEvent): Boolean = {
+    e.getId match {
+      case GESTURE_UPDATED => {
         if (isWithinField) {
           // redraw line and update ancestor
           update(childrenAlso = true)
@@ -161,7 +161,7 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
           removeFromField()
         }
       }
-      case MTGestureEvent.GESTURE_ENDED => {
+      case GESTURE_ENDED => {
         // if SourceNode() isn't occupied by another node
         // add new RandomNode() to field center
         if(!SourceNode.isOccupied) {
@@ -171,34 +171,13 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
       case _ =>
     }
 
-    if(ge.isInstanceOf[ScaleEvent]) {
-      val se = ge.asInstanceOf[ScaleEvent]
-      val max = List(se.getScaleFactorX,se.getScaleFactorY).max
-      form.scaleGlobal(max, max, max, form.getCenterPointGlobal)
-    } else if(ge.isInstanceOf[RotateEvent]) {
-      val re = ge.asInstanceOf[RotateEvent]
-      form.rotateZGlobal(form.getCenterPointGlobal, re.getRotationDegrees)
-    } else if(ge.isInstanceOf[DragEvent]) {
-      val de = ge.asInstanceOf[DragEvent]
-      form.translateGlobal(de.getTranslationVect)
-    }
+    form.handleEvent(e)
 
     false
   }
 
   override def +=(node: DragableNode): DragableNode.this.type = {
     val oldAncestor = node.ancestor
-    // only do something, if node isn't already within the Set
-    if (!this.contains(node)){
-
-      // if a subtree gets added to SourceNode(),
-      // which doesn't contain a running beat signal,
-      // then the first node of this subtree has to be added to Metronome()
-      //if (!node.containsRunningSignal) {
-      //  NodeMetronome() += node.asInstanceOf[Node]
-      //}
-
-    }
 
     super.+=(node)
 
@@ -212,6 +191,10 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
 
     this
 
+  }
+
+  def isNearToCenter: Boolean = {
+    position.distance(app.center) < 150
   }
 
 }

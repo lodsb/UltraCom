@@ -1,4 +1,4 @@
-package TreeQuencer
+package main.scala.TreeQuencer
 
 import org.mt4j.components.visibleComponents.shapes.{MTEllipse, MTLine}
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor
@@ -31,9 +31,12 @@ class AnimatedLine(val node: DragableNode)
   update()
   app.scene.canvas.addChild(this)
 
+  setStrokeColor(new MTColor(0,0,0))
+
   val movingCircle = new MTEllipse(app, new Vertex(), 5f, 5f)
   movingCircle.setVisible(false)
-  movingCircle.setFillColor(new MTColor(255,255,255))
+  //movingCircle.setFillColor(new MTColor(255,255,255))
+  movingCircle.setFillColor(new MTColor(0,0,0))
   app.scene.canvas.addChild(movingCircle)
 
   /**

@@ -1,4 +1,4 @@
-package TreeQuencer
+package main.scala.TreeQuencer
 
 import collection.mutable
 import collection.mutable.ArrayBuffer
@@ -22,7 +22,7 @@ import collection.mutable.ArrayBuffer
  */
 
 
-class NodeTreeElement[NodeType <: NodeTreeElement[NodeType]] extends NodeSetAternative[NodeType] {
+class NodeTreeElement[NodeType <: NodeTreeElement[NodeType]] extends NodeSet[NodeType] {
 
   // ---------- Set part START ---------- //
 

@@ -1,8 +1,7 @@
-package TreeQuencer
+package main.scala.TreeQuencer
 
 import collection.mutable
 import collection.mutable.ArrayBuffer
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.NodeType
 
 /**
  * This source code is licensed as GPLv3 if not stated otherwise.
@@ -23,18 +22,18 @@ import com.sun.org.apache.xalan.internal.xsltc.compiler.util.NodeType
  */
  
  
- class NodeSetAternative[NodeType <: AnyRef] extends mutable.Set[NodeType] {
+ class NodeSet[NodeType <: AnyRef] extends mutable.Set[NodeType] {
 
   private val nodes = new ArrayBuffer[NodeType]()
 
-  override def +=(node: NodeType): NodeSetAternative.this.type = {
+  override def +=(node: NodeType): NodeSet.this.type = {
     if (!this.contains(node)) {
       nodes += node
     }
     this
   }
 
-  override def -=(node: NodeType): NodeSetAternative.this.type = {
+  override def -=(node: NodeType): NodeSet.this.type = {
     for(i <- 0 to nodes.size-1) {
       if(nodes(i).eq(node)) {
         nodes.remove(i)

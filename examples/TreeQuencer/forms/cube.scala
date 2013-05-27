@@ -1,32 +1,26 @@
 import de.sciss.synth._
 import ugen._
-import org.mt4j.output.audio.AudioServer
-import de.sciss.synth._
+import org.mt4j.output.audio.{Changed1, AudioServer}
 
-/*
-SynthDef("mySynth") {
+SynthDef("Cube") {
 
-	val oscFreq = "oscfreq".kr(440)
-	val modFreq = "modfreq".kr(440)
-	val coupling= "coupling".kr(0.0)
-	
-	val imp = Impulse.kr(2)
-	val envelope = EnvGen.ar(Env.perc(0.1, 0.6, 1.0, curveShape(-4)),imp )
+  val gate = "gate".kr(1)
+  val volume = "volume".kr(1)
+  val rotationZ = "rotationZ".kr(0)
 
-	val modulation = SinOsc.ar(modFreq)*coupling*envelope
+  /**
+   * Returns a parameterised function, that maps a GE to another GE,
+   * but mainly a Float to a Float.
+   * The function maps a rotation value in degrees to a frequency.
+   * 360 degrees get mapped to the 12 halftones.
+   *
+   * @return GE The result
+   */
+  def rotationToHalftones(x: GE): GE = {
+    440 * 2.pow((x.abs/30).floor/12)
+  }
 
-
-	val signal = SinOsc.ar(oscFreq + modulation)
-
-	AudioServer.attach(signal)
-	
-}
-*/
-
-SynthDef("DropsSynth") {
-  var freq = 586.7
-  var dec = 1.35
-  val sin = SinOsc.ar(freq, 0).madd(0.5,0) * EnvGen.kr(Env.perc(0.01, dec), doneAction=2)
-  //Out.ar(0, sin ! 2)
+  val dec = 1.35
+  val sin = volume * SinOsc.ar(rotationToHalftones(rotationZ)).madd(0.5,0) * EnvGen.kr(Env.perc(0.01, dec), Changed1.kr(gate), doneAction=0)
   AudioServer.attach(sin)
 }

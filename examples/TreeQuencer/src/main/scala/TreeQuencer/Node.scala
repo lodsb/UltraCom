@@ -1,9 +1,4 @@
-package TreeQuencer
-
-import org.mt4j.util.math.Vector3D
-import de.sciss.synth.SynthDef
-import java.io.File
-import org.mt4j.output.audio.AudioServer
+package main.scala.TreeQuencer
 
 
 /**
@@ -27,19 +22,24 @@ import org.mt4j.output.audio.AudioServer
 
 class Node extends DragableNode {
 
-  var synthesizer: SynthDef = null
+  var synthesizer: NodeSynthesizer = null
 
   def play() {
-    if(synthesizer != null && 150 < position.distance2D(app.center)) {
+    if(synthesizer != null && !isSourceNode && !isNearToCenter) {
+      if (synthesizer.init) {
+        synthesizer.bind(form.rotationZ, "rotationZ", (x:Float) => {x})
+        synthesizer.bind(form.rotationZ, "rotationY", (x:Float) => {x})
+        synthesizer.bind(form.rotationZ, "rotationX", (x:Float) => {x})
+        synthesizer.bind(form.scaleFactor, "volume", (x:Float) => {if(x<0.8f) 0f else if(3f<x) 1f else 5/12f*x-1f/3})
+      }
       synthesizer.play
     }
   }
-  def prepare() {}
 
 }
 
 object SourceNode extends Node {
-  form = new ImportedForm(FileImporter.sourceNodeFormFile)
+  form = new NodeForm(FileImporter.sourceNodeFormFile)
   form.scaleGlobal(0.5f, 0.5f, 0.2f, position)
 
   def apply(): Node = this
@@ -50,10 +50,7 @@ object SourceNode extends Node {
    */
   def isOccupied: Boolean = {
     app.globalNodeSet.foreach( node => {
-      if (
-        !node.isSourceNode &&
-        node.position.distance(SourceNode.position) < 150
-      ) {
+      if (!node.isSourceNode && node.isNearToCenter) {
         return true
       }
     })
@@ -66,7 +63,7 @@ object NewRandomNode {
   def apply(): Node = {
     new Node {
       form = Import.form(FileImporter.randomFormFile)
-      synthesizer = Import.synthesizer(FileImporter.randomSynthiFile)
+      synthesizer = Import.synthesizer(this, FileImporter.randomSynthiFile)
     }
   }
 }

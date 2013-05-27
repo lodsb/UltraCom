@@ -1,4 +1,4 @@
-package TreeQuencer
+package main.scala.TreeQuencer
 
 import actors.Actor
 import collection.mutable.ArrayBuffer
