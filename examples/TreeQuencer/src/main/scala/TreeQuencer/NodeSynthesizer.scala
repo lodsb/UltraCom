@@ -47,39 +47,33 @@ class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
     }
   }
 
+  var x1: Float = 0
+  var x2: Float = 0
+  var x3: Float = 0
+
   def init: Boolean = {
     if(synthesizer == null) {
       println("Initializing Synthesizer")
       synthesizer = synthDef.play
 
       // volume <-> color of node
-      synthesizer.setAmplitudeUpdateDivisions(1)
-      synthesizer.amplitude.map( x => {
-        var z = x.abs
-        node.form.meshes.foreach(mesh => {
-          mesh.getMaterial.setAmbient(Array(5*z, z, z, 1f))
-        })
-      })
+      var max = 0f
+      var maxMem = 0f
+      synthesizer.amplitude.map( x => { if (node.isWithinField) {
+        synthesizer.setAmplitudeUpdateDivisions(0)
+        if (!(x1==0&&x2==0&&x3==0&&x==0&&maxMem<0.005)) {
+          x1 = x2
+          x2 = x3
+          x3 = x.abs*11
+          max = List(x1,x2,x3).max
+          maxMem = if (max<maxMem) (max+maxMem)/2 else max
+          node.form.meshes.foreach(mesh => {
+            mesh.getMaterial.setAmbient(Array(maxMem, maxMem, maxMem, 1f))
+          })
+        }
+      }})
       return true
     }
     false
   }
-
-/*
-  val synthi = new Synthi {
-    val node: Node = node
-    val synthiDef: SynthDef = evaluateFile[SynthDef](synthiFile)
-  }
-
-
-  node.form.
-
-  mySynth.parameters <~ couplingSlider.value.map { x => ( "oscfreq" -> x ) }
-
-  node.form.globalPosition.observe {
-    pos =>{
-      mySynth.parameters() = ("modfreq" -> pos.x)
-      mySynth.parameters() = ("coupling" -> 5*pos.y)
-      true
-  }}*/
 }

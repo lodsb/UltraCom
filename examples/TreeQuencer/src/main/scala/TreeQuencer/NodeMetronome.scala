@@ -3,6 +3,7 @@ package main.scala.TreeQuencer
 import collection.mutable.ArrayBuffer
 import actors.Actor
 import collection.mutable
+import org.lodsb.reakt.async.VarA
 
 /**
  * This source code is licensed as GPLv3 if not stated otherwise.
@@ -26,7 +27,7 @@ import collection.mutable
 object NodeMetronome extends NodeSet[Node] with Actor {
   var animationsAreRunning = false
   var beatsPerMinute = 60
-
+  val duration = new VarA[Float](bpmInMillisecs)
 
   def bpmInMillisecs = {
     math.round(60f / beatsPerMinute * 1000)

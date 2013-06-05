@@ -7,7 +7,8 @@ import org.mt4j.input.inputProcessors.MTGestureEvent._
 import org.mt4j.input.inputProcessors.componentProcessors.rotate3DProcessor.Rotate3DProcessor
 import org.mt4j.input.inputProcessors.componentProcessors.rotateProcessor.RotateProcessor
 import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleProcessor
-import org.mt4j.util.camera.IFrustum
+import org.mt4j.util.camera.IFrustum._
+import org.mt4j.util.camera.Frustum
 
 class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListener {
 
@@ -103,6 +104,12 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
    * Should happen, whenn dragged to the edge of the field.
    */
   def removeFromField() {
+    try {
+      throw new Exception
+    } catch {
+      case e: Exception => println("position = "+position);e.printStackTrace()
+      case _ => println("whatever")
+    }
     if (app.scene.canvas.containsChild(form)) {
       removeFromField(firstOne = true)
     }
@@ -141,11 +148,27 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
   }
 
   def isWithinField: Boolean = {
-    val position = app.scene.getSceneCam.getFrustum.isSphereInFrustum(this.position,60)
+    if (!app.scene.canvas.containsChild(form)) {
+      return false
+    }
+    val borderWidth = 50
+    val zero = borderWidth
+    val width = app.width-borderWidth
+    val height = app.height-borderWidth
+
+    val posX = this.position.getX
+    val posY = this.position.getY
+
+    if (posX>zero && posX<width && posY>zero && posY<height) {
+      return true
+    }
+    return false
+
+    val position = app.scene.getSceneCam.getFrustum.isPointInFrustum(this.position)
     position match {
-      case IFrustum.INSIDE => true
-      case IFrustum.INTERSECT => false
-      case IFrustum.OUTSIDE => false
+      case INSIDE => true
+      case INTERSECT => println("case INTERSECT, isWithinField => false"); false
+      case OUTSIDE => println("case OUTSIDE, isWithinField => false"); false
       case _ => false
     }
   }

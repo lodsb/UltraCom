@@ -13,6 +13,7 @@ import org.mt4j.input.inputProcessors.componentProcessors.rotateProcessor.Rotate
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent
 import org.mt4j.input.inputProcessors.componentProcessors.rotate3DProcessor.Rotate3DEvent
 import java.awt.event.KeyEvent._
+import scala.math._
 
 
 /**
@@ -112,6 +113,10 @@ class NodeForm(val file: File) extends MTComponent(app) {
     translateGlobal(newPosition.getSubtracted(center))
   }
 
+  val X_AXIS = 1
+  val Y_AXIS = 2
+  val NONE = 0
+  var rotationAxis = NONE
   def handleEvent(e: MTGestureEvent) {
     e match {
 
@@ -124,46 +129,89 @@ class NodeForm(val file: File) extends MTComponent(app) {
 
       case e: DragEvent =>
         if (e.getId == GESTURE_UPDATED && app.keyPressed) {
-          // scale while holding shift-key
-          if (app.keyCode == VK_SHIFT) {
-            if (center.distance(e.getFrom) < center.distance(e.getTo)) {
-              scale(1.01f)
-            } else {
-              scale(0.99f)
-            }
+          // when a key is pressed -> emulate multi-touch via mouse actions
+
+          app.keyCode match {
+            case VK_SHIFT => // scale while holding shift-key
+
+              if (center.distance(e.getFrom) < center.distance(e.getTo)) {
+                scale(1.01f)
+              } else {
+                scale(0.99f)
+              }
+
+            case VK_CONTROL => // rotate while holding ctrl-key
+
+              // normalize vectors
+              val from = e.getFrom.getSubtracted(center).getNormalized
+              val to = e.getTo.getSubtracted(center).getNormalized
+
+              // set the reference vector,
+              // to know what is the directorion for positive angles.
+              // It's 90 degrees to the positive direction within the x-y-plane.
+              val referenceForward = from.getCross(new Vector3D(0,0,1))
+
+              // get the sign for the angle
+              val sign = if(0<to.dot(referenceForward)) -1f else 1f
+
+              // get the angle
+              var angle = sign * from.angleBetween(to)
+
+              // transform angle in radians to degrees
+              angle *= 180/Pi.toFloat
+
+              rotateZGlobal(center, angle)
+              rotationZ() += angle
+
+            case VK_ALT => // rotate 3D while pressing Alt-key
+
+              val direction = e.getTranslationVect
+
+              // get angle between x-axis and drag direction
+              val angle = new Vector3D(1,0,0).angleBetween(direction)*180f/Pi
+
+              rotationAxis match {
+                case NONE =>
+                  // set rotation axis
+                  if ((315<angle || angle<45) || (135<angle && angle<225)) {
+                    rotationAxis = Y_AXIS
+                  } else {
+                    rotationAxis = X_AXIS
+                  }
+                case X_AXIS =>
+                  rotateXGlobal(center, -direction.getY)
+                  rotationX() += -direction.getY
+                case Y_AXIS =>
+                  rotateYGlobal(center, direction.getX)
+                  rotationY() += direction.getX
+                case _ =>
+              }
           }
-          // rotate while holding ctrl-key
-          if (app.keyCode == VK_CONTROL) {
-            // normalize vectors
-            val from = e.getFrom.getSubtracted(center).getNormalized
-            val to = e.getTo.getSubtracted(center).getNormalized
 
-            // set the reference vector,
-            // to know what is the directorion for positive angles.
-            // It's 90 degrees to the positive direction within the x-y-plane.
-            val referenceForward = from.getCross(new Vector3D(0,0,1))
-
-            // get the sign for the angle
-            val sign = if(0<to.dot(referenceForward)) -1f else 1f
-
-            // get the angle
-            var angle = sign * from.angleBetween(to)
-
-            // transform angle in radians to degrees
-            angle *= 180/math.Pi.toFloat
-
-            rotateZGlobal(center, angle)
-            rotationZ() += angle
-          }
         } else {
+          // if no key ist pressed, make a simple translation, just as usual...
           translateGlobal(e.getTranslationVect)
         }
 
+        if (!app.keyPressed && rotationAxis != NONE || e.getId == GESTURE_ENDED) {
+          // reset rotation axis after completed action
+          rotationAxis = NONE
+        }
+
       case e: Rotate3DEvent =>
-        rotateXGlobal(e.getRotationPoint, e.getRotationDirection*e.getRotationDegreesX)
-        rotateYGlobal(e.getRotationPoint, e.getRotationDirection*e.getRotationDegreesY)
-        rotationX() += e.getRotationDirection*e.getRotationDegreesX
-        rotationY() += e.getRotationDirection*e.getRotationDegreesY
+        val firstCursorPosition = new Vector3D(e.getFirstCursor.getStartPosX, e.getFirstCursor.getStartPosY)
+        val secondCursorPosition = new Vector3D(e.getSecondCursor.getStartPosX, e.getSecondCursor.getStartPosY)
+        val connection = firstCursorPosition.getSubtracted(secondCursorPosition).getNormalized
+        connection.setZ(0)
+        val xNormal = new Vector3D(1,0,0)
+        val angle = xNormal.angleBetween(connection)*180f/Pi
+        if ((315<angle || angle<45) || (135<angle && angle<225)) {
+          rotateXGlobal(e.getRotationPoint, e.getRotationDirection*e.getRotationDegreesX)
+          rotationX() += e.getRotationDirection*e.getRotationDegreesX
+        } else {
+          rotateYGlobal(e.getRotationPoint, e.getRotationDirection*e.getRotationDegreesY)
+          rotationY() += e.getRotationDirection*e.getRotationDegreesY
+        }
 
       case _ =>
     }

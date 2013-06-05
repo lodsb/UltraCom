@@ -28,8 +28,9 @@ class Node extends DragableNode {
     if(synthesizer != null && !isSourceNode && !isNearToCenter) {
       if (synthesizer.init) {
         synthesizer.bind(form.rotationZ, "rotationZ", (x:Float) => {x})
-        synthesizer.bind(form.rotationZ, "rotationY", (x:Float) => {x})
-        synthesizer.bind(form.rotationZ, "rotationX", (x:Float) => {x})
+        synthesizer.bind(form.rotationY, "rotationY", (x:Float) => {x})
+        synthesizer.bind(form.rotationX, "rotationX", (x:Float) => {x})
+        synthesizer.bind(NodeMetronome.duration, "beatDuration", (x:Float) => {x})
         synthesizer.bind(form.scaleFactor, "volume", (x:Float) => {if(x<0.8f) 0f else if(3f<x) 1f else 5/12f*x-1f/3})
       }
       synthesizer.play

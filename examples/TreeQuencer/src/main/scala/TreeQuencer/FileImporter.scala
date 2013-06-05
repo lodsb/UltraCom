@@ -32,7 +32,7 @@ import org.mt4j.util.modelImporter.ModelImporterFactory
   // load all *.obj files from form-directory
   // make 3d objects out of it, that only need to be copied late
 
-  val formsDirectory = new File(System.getProperty("user.dir")+"/forms/")
+  val formsDirectory = new File(System.getProperty("user.dir")+"/nodes/")
   val formFiles = new ArrayBuffer[File]()
   val synthiFiles = new ArrayBuffer[File]()
   var sourceNodeFormFile: File = null
