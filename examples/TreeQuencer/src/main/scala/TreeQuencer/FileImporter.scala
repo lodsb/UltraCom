@@ -8,6 +8,7 @@ import com.twitter.util.Eval
 import collection.mutable
 import org.mt4j.components.visibleComponents.shapes.mesh.MTTriangleMesh
 import org.mt4j.util.modelImporter.ModelImporterFactory
+import org.mt4j.util.opengl.GLMaterial
 
 /**
  * This source code is licensed as GPLv3 if not stated otherwise.
@@ -34,23 +35,26 @@ import org.mt4j.util.modelImporter.ModelImporterFactory
 
   val formsDirectory = new File(System.getProperty("user.dir")+"/nodes/")
   val formFiles = new ArrayBuffer[File]()
+  val materialFiles = new ArrayBuffer[File]()
   val synthiFiles = new ArrayBuffer[File]()
   var sourceNodeFormFile: File = null
   val formCache = new mutable.HashMap[File, Array[MTTriangleMesh]]()
+  val materialCache = new mutable.HashMap[File, NodeMaterial]()
   val synthiCache = new mutable.HashMap[File, SynthDef]()
   private val evaluateFile = new Eval()
-
   private var random: Int = null.asInstanceOf[Int]
 
 
   formsDirectory.listFiles.foreach( formFile => {
     val synthiFile = new File(formFile.getAbsolutePath.replace(".obj", ".scala"))
+    val materialFile = new File(formFile.getAbsolutePath.replace(".obj", "_material.scala"))
     if(formFile.getName.endsWith(".obj")) {
       if (formFile.getName.startsWith("center.obj")) {
         sourceNodeFormFile = formFile
-      } else if(synthiFile.exists()) {
+      } else if(synthiFile.exists && materialFile.exists) {
         formFiles += formFile
         synthiFiles += synthiFile
+        materialFiles += materialFile
       }
     }
   })
@@ -59,6 +63,10 @@ import org.mt4j.util.modelImporter.ModelImporterFactory
   println("Building form cache...")
   formFiles.foreach(file => cacheMTTriangleMesh(file))
   println("Building form cache finished!")
+
+  println("Building material cache...")
+  materialFiles.foreach(file => cacheGLMaterial(file))
+  println("Building material cache finished!")
 
   println("Building synthesizer cache...")
   synthiFiles.foreach(file => cacheSynthDef(file))
@@ -80,6 +88,10 @@ import org.mt4j.util.modelImporter.ModelImporterFactory
     //new File(System.getProperty("user.dir")+"/forms/tetrahedron.scala")
   }
 
+  def randomMaterialFile = {
+    materialFiles(random)
+  }
+
   def apply = this
 
   def cacheSynthDef(file: File): SynthDef = {
@@ -87,6 +99,13 @@ import org.mt4j.util.modelImporter.ModelImporterFactory
       synthiCache += ((file,evaluateFile[SynthDef](file)))
     }
     synthiCache.get(file).get
+  }
+
+  def cacheGLMaterial(file: File): NodeMaterial = {
+    if (materialCache.get(file).isEmpty) {
+      materialCache += ((file,evaluateFile[NodeMaterial](file)))
+    }
+    materialCache.get(file).get.copy
   }
 
   def cacheMTTriangleMesh(file: File): Array[MTTriangleMesh] = {

@@ -36,25 +36,24 @@ import scala.math._
 
 class NodeForm(val file: File) extends MTComponent(app) {
 
-  val minimumScaleFactor: Float = 0.8f
-  val maximumScaleFactor: Float = 3f
+  var isGrey = false
+  val minimumScaleFactor = 0.8f
+  val maximumScaleFactor = 3f
   val scaleFactor = new VarA[Float](1f)
   val rotationX = new VarA[Float](0f)
   val rotationY = new VarA[Float](0f)
   val rotationZ = new VarA[Float](0f)
 
-  //Set up a material to react to the light
-  val material = new GLMaterial(Tools3D.getGL(app))
-  //material.setAmbient(Array( 1f, .1f, .5f, 1f ))
-  //material.setDiffuse(Array( 1f, .2f, .2f, 1f ))
-  material.setEmission(Array( .0f, .0f, .0f, 1f ))
-  material.setSpecular(Array( 0.2f, 0.2f, 0.2f, 1f ))  // almost white: very reflective
-  material.setShininess(80) // 0=no shine,  127=max shine
   setLight(app.light)
 
-  var meshes: Array[MTTriangleMesh] = FileImporter.cacheMTTriangleMesh(file)
+  // Set up a material to react to the light
+  val material = FileImporter.cacheGLMaterial(FileImporter.randomMaterialFile)
+  val materialCopy = material.copy
 
-  //Get the biggest mesh and extract its width
+  // meshes, that build the form
+  val meshes = FileImporter.cacheMTTriangleMesh(file)
+
+  // Get the biggest mesh and extract its width
   private var biggestWidth = Float.MinValue
   var biggestMesh: MTTriangleMesh = null
   meshes.foreach( mesh => {
@@ -84,13 +83,8 @@ class NodeForm(val file: File) extends MTComponent(app) {
     mesh.setMaterial(material)
     mesh.setDrawNormals(false)
 
-    if (biggestMesh != null) {
-      // translate to center
-      val translationToScreenCenter = new Vector3D()
-      translationToScreenCenter.setValues(app.center.subtractLocal(center))
-      //translationToScreenCenter.addLocal(new Vector3D(0f,0f,200f)) // bring it to front
-      mesh.translateGlobal(translationToScreenCenter)
-    }
+    // translate to center
+    mesh.translateGlobal(app.center.getSubtracted(center))
 
   })
 
@@ -100,7 +94,8 @@ class NodeForm(val file: File) extends MTComponent(app) {
   // scale 3d object to adequate size on screen
   scaleGlobal(scale, scale, scale, center)
 
-  // METHODS
+
+  // METHODS -----
 
   /**
    * Override center method. The biggest mesh is the center
@@ -135,9 +130,9 @@ class NodeForm(val file: File) extends MTComponent(app) {
             case VK_SHIFT => // scale while holding shift-key
 
               if (center.distance(e.getFrom) < center.distance(e.getTo)) {
-                scale(1.01f)
+                scale(1.03f)
               } else {
-                scale(0.99f)
+                scale(0.97f)
               }
 
             case VK_CONTROL => // rotate while holding ctrl-key
@@ -202,9 +197,8 @@ class NodeForm(val file: File) extends MTComponent(app) {
         val firstCursorPosition = new Vector3D(e.getFirstCursor.getStartPosX, e.getFirstCursor.getStartPosY)
         val secondCursorPosition = new Vector3D(e.getSecondCursor.getStartPosX, e.getSecondCursor.getStartPosY)
         val connection = firstCursorPosition.getSubtracted(secondCursorPosition).getNormalized
-        connection.setZ(0)
         val xNormal = new Vector3D(1,0,0)
-        val angle = xNormal.angleBetween(connection)*180f/Pi
+        val angle = xNormal.angleBetween(connection)*180f/Pi // to degree
         if ((315<angle || angle<45) || (135<angle && angle<225)) {
           rotateXGlobal(e.getRotationPoint, e.getRotationDirection*e.getRotationDegreesX)
           rotationX() += e.getRotationDirection*e.getRotationDegreesX
@@ -230,13 +224,25 @@ class NodeForm(val file: File) extends MTComponent(app) {
     val newScaleFactor = scaleFactor()*max
 
     if (newScaleFactor < minimumScaleFactor) {
-      max =  minimumScaleFactor/scaleFactor()
+      max = minimumScaleFactor/scaleFactor()
       scaleFactor() = minimumScaleFactor
+      if (!isGrey) {
+        isGrey = true
+        material.setAmbient(Array(0.8f,0.8f,0.8f,1f))
+        material.setSpecular(Array(0.8f,0.8f,0.8f,1f))
+        material.setDiffuse(Array(0.8f,0.8f,0.8f,1f))
+      }
     } else if (maximumScaleFactor < newScaleFactor) {
       max =  maximumScaleFactor/scaleFactor()
       scaleFactor() = maximumScaleFactor
     } else {
       scaleFactor() = newScaleFactor
+      if (isGrey) {
+        isGrey = false
+        material.setAmbient(materialCopy.getAmbient)
+        material.setSpecular(materialCopy.getSpecular)
+        material.setDiffuse(materialCopy.getDiffuse)
+      }
     }
 
     scaleGlobal(max, max, max, center)
