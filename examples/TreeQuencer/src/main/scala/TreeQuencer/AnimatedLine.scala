@@ -4,6 +4,8 @@ import org.mt4j.components.visibleComponents.shapes.{MTEllipse, MTLine}
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor
 import org.mt4j.util.MTColor
 import org.mt4j.util.math.{Vertex, Vector3D}
+import actors.Actor
+import collection.mutable
 
 /*
  This source code is licensed as GPLv3 if not stated otherwise.
@@ -26,6 +28,8 @@ import org.mt4j.util.math.{Vertex, Vector3D}
 class AnimatedLine(val node: DragableNode)
   extends MTLine(app, if(node.ancestor==null) new Vertex() else node.ancestor.position, node.position) {
 
+  val movingCircles = new mutable.HashMap[Actor, MTEllipse]()
+
   unregisterAllInputProcessors()
   removeAllGestureEventListeners(classOf[DragProcessor])
   update()
@@ -33,11 +37,36 @@ class AnimatedLine(val node: DragableNode)
 
   setStrokeColor(new MTColor(0,0,0))
 
-  val movingCircle = new MTEllipse(app, new Vertex(), 5f, 5f)
-  movingCircle.setVisible(false)
-  //movingCircle.setFillColor(new MTColor(255,255,255))
-  movingCircle.setFillColor(new MTColor(0,0,0))
-  app.scene.canvas.addChild(movingCircle)
+
+  def moveCircle(actor: Actor, newPosition: Vector3D) {
+    if (movingCircles.contains(actor)) {
+      movingCircles(actor).setPositionGlobal(newPosition)
+    }
+  }
+
+  def remove {
+    app.scene.canvas().removeChild(this)
+    movingCircles.foreach( tuple => { val actor = tuple._1
+      movingCircles(actor).setVisible(false)
+      app.scene.canvas().removeChild(movingCircles(actor))
+      movingCircles.remove(actor)
+    })
+  }
+  def createAnimationCircle(actor: Actor) {
+    if (app.scene.canvas().containsChild(this) && !movingCircles.contains(actor)) {
+      movingCircles(actor) = new MTEllipse(app, new Vertex(), 5f, 5f)
+      movingCircles(actor).setVisible(true)
+      movingCircles(actor).setFillColor(new MTColor(0,0,0))
+      app.scene.canvas.addChild(movingCircles(actor))
+    }
+  }
+  def destructAnimationCircle(actor: Actor) {
+    if (movingCircles.contains(actor)) {
+      movingCircles(actor).setVisible(false)
+      app.scene.canvas.removeChild(movingCircles(actor))
+      movingCircles.remove(actor)
+    }
+  }
 
   /**
    * If this.node moves, the line needs a graphical update()

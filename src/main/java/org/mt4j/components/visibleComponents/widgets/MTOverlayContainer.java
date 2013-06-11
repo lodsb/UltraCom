@@ -82,31 +82,33 @@ public class MTOverlayContainer extends MTComponent {
     private void putLastInParentList() {
         MTComponent parent = getParent();
         if (parent != null) {
-            int childCount = parent.getChildCount();
+            try {
+                int childCount = parent.getChildCount();
 
-            if (childCount > 0
-                    && !parent.getChildByIndex(childCount - 1).equals(MTOverlayContainer.this)
-                    ) {
-                MTComponent lastChild = parent.getChildByIndex(childCount - 1);
-                if (!(lastChild instanceof MTOverlayContainer)
-                        && !(lastChild.getName().equalsIgnoreCase("Cursor Trace group"))
+                if (childCount > 0
+                        && !parent.getChildByIndex(childCount - 1).equals(MTOverlayContainer.this)
                         ) {
-                    //last component in canvas child list is not a overlay container:
-                    MTOverlayContainer.this.app.invokeLater(new Runnable() {
-                        public void run() {
-                            MTComponent parent = getParent();
-                            if (parent != null) {
-                                parent.removeChild(MTOverlayContainer.this);
-                                parent.addChild(MTOverlayContainer.this);
+                    MTComponent lastChild = parent.getChildByIndex(childCount - 1);
+                    if (!(lastChild instanceof MTOverlayContainer)
+                            && !(lastChild.getName().equalsIgnoreCase("Cursor Trace group"))
+                            ) {
+                        //last component in canvas child list is not a overlay container:
+                        MTOverlayContainer.this.app.invokeLater(new Runnable() {
+                            public void run() {
+                                MTComponent parent = getParent();
+                                if (parent != null) {
+                                    parent.removeChild(MTOverlayContainer.this);
+                                    parent.addChild(MTOverlayContainer.this);
+                                }
                             }
-                        }
-                    });
-                } else {
-                    //last component in canvas already is a different overlay container:
-//					int insertionIndex = getInsertionIndex(parent);
+                        });
+                    } else {
+                        //last component in canvas already is a different overlay container:
+    //					int insertionIndex = getInsertionIndex(parent);
 
+                    }
                 }
-            }
+            } catch (NullPointerException e) {}
         }
     }
 

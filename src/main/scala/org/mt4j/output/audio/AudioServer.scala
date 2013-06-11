@@ -227,6 +227,10 @@ object AudioServer {
 		}
 	}
 
+  def quit {
+    Server.default.quit // quit supercollider server scsynth
+  }
+
 }
 
 

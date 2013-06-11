@@ -12,9 +12,6 @@ import org.mt4j.util.camera.Frustum
 
 class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListener {
 
-  // all nodes are globally stored here, this also
-  app.globalNodeSet += this.asInstanceOf[Node]
-
   // The line to the ancestor node
   var lineToAncestor: AnimatedLine = null
 
@@ -42,6 +39,8 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
     // instantiate the connection line to the ancestor, since this.form now exists
     lineToAncestor = new AnimatedLine(this)
 
+    if (isInstanceOf[StillNode]) return
+
     // make the form movable
     form.registerInputProcessor(new Rotate3DProcessor(app, form))
     form.addGestureListener(classOf[Rotate3DProcessor], this)
@@ -51,7 +50,7 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
     form.addGestureListener(classOf[ScaleProcessor], this)
     form.registerInputProcessor(new DragProcessor(app))
     form.addGestureListener(classOf[DragProcessor], this)
-
+    form.makeGrey(makeItGrey = true)
   }
 
   def update(childrenAlso: Boolean) {
@@ -84,7 +83,7 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
     var distance = Float.MaxValue
     app.globalNodeSet.foreach( node => {
       //don't connect to own children!
-      if(!node.isNearToCenter && !this.hasChild(node) || node.isSourceNode) {
+      if((!node.isNearToCenter || app.game == app.SEQUENCE_GAME) && !this.hasChild(node) || node.isSourceNode) {
         distance = position.distance(node.position)
         if(distance < lowestDistance){
           lowestDistance = distance
@@ -104,12 +103,6 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
    * Should happen, whenn dragged to the edge of the field.
    */
   def removeFromField() {
-    try {
-      throw new Exception
-    } catch {
-      case e: Exception => println("position = "+position);e.printStackTrace()
-      case _ => println("whatever")
-    }
     if (app.scene.canvas.containsChild(form)) {
       removeFromField(firstOne = true)
     }
@@ -124,25 +117,24 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
 
     // first remove all visible MTComponents from canvas
     app.scene.canvas().removeChild(form)
-    app.scene.canvas().removeChild(lineToAncestor.movingCircle)
-    app.scene.canvas().removeChild(lineToAncestor)
+    lineToAncestor.remove
 
     // remove other pointers to this
     app.globalNodeSet -= this.asInstanceOf[Node]
     ancestor -= this
-    NodeMetronome -= this.asInstanceOf[Node]
+    Metronome().removeNode(this.asInstanceOf[Node])
 
     // remove children (need to do this from a copy via clone())
-    copy().foreach( child => {
+    copy.foreach( child => {
       child.removeFromField(firstOne = false)
     })
 
-    if (firstOne && oldAncestor != null) {
+    if (app.game == app.RANDOM_GAME && firstOne && oldAncestor != null) {
       // if subtree of ancestor contains running signal
       // incubate new signal to father's subtree
 
       if (ancestor != null && !oldAncestor.firstNodeInTree.containsRunningSignal) {
-        NodeMetronome() += oldAncestor.firstNodeInTree.asInstanceOf[Node]
+        NodeMetronome += oldAncestor.firstNodeInTree.asInstanceOf[Node]
       }
     }
   }
@@ -183,12 +175,17 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
           // if dragged beyound to the edge of the field => remove from field entirely
           removeFromField()
         }
+        if (isNearToCenter) {
+          form.makeGrey(makeItGrey = true)
+        } else {
+          form.makeGrey(makeItGrey = false)
+        }
       }
       case GESTURE_ENDED => {
         // if SourceNode() isn't occupied by another node
         // add new RandomNode() to field center
         if(!SourceNode.isOccupied) {
-          SourceNode += NewRandomNode()
+          SourceNode += RandomNode()
         }
       }
       case _ =>
@@ -204,12 +201,16 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
 
     super.+=(node)
 
-    if (oldAncestor != null && !oldAncestor.firstNodeInTree.containsRunningSignal) {
-      NodeMetronome() += node.ancestor.firstNodeInTree.asInstanceOf[Node]
-    }
+    if (app.game == app.RANDOM_GAME) {
 
-    if (!node.firstNodeInTree.containsRunningSignal) {
-      NodeMetronome() += node.firstNodeInTree.asInstanceOf[Node]
+      if (oldAncestor != null && !oldAncestor.firstNodeInTree.containsRunningSignal) {
+        NodeMetronome += node.ancestor.firstNodeInTree.asInstanceOf[Node]
+      }
+
+      if (!node.firstNodeInTree.containsRunningSignal) {
+        NodeMetronome += node.firstNodeInTree.asInstanceOf[Node]
+      }
+
     }
 
     this
@@ -217,7 +218,7 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
   }
 
   def isNearToCenter: Boolean = {
-    position.distance(app.center) < 150
+    position.distance(app.center) < app.innerCircleRadius
   }
 
 }

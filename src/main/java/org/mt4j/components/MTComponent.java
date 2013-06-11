@@ -834,18 +834,20 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
      */
     private void propagateMatrixChange(boolean matrixDirty) {
 //		System.out.println("Setting basematrix dirty on obj: " + this.getName());
-        for (MTComponent object : childComponents) {
-            //TEST - only propagate unitil we get to a already dirty component
-            //this should work because the dirty component should also have dirty children already
-            //CAUTION: object can have for example a dirty global matrix and a clean global inverse matrix
-            //so we check if both are dirty and only then dont propagate the dirty state
-            //FIXME NOT WORKING WITH SVG EXAMPLEaaaaaaaaa - cause of composite?
-//			if ((!object.isGlobalInverseMatrixDirty() || !object.isGlobalMatrixDirty())){ 
-            object.setMatricesDirty(matrixDirty);
-//			}
-//			else{
-//				System.out.println("Stopping matrix changed propagation at: " + object.getName() +  " because both its matrices are already dirty.");
-//			}
+        synchronized (childComponents) {
+            for (MTComponent object : childComponents) {
+                //TEST - only propagate unitil we get to a already dirty component
+                //this should work because the dirty component should also have dirty children already
+                //CAUTION: object can have for example a dirty global matrix and a clean global inverse matrix
+                //so we check if both are dirty and only then dont propagate the dirty state
+                //FIXME NOT WORKING WITH SVG EXAMPLEaaaaaaaaa - cause of composite?
+    //			if ((!object.isGlobalInverseMatrixDirty() || !object.isGlobalMatrixDirty())){
+                object.setMatricesDirty(matrixDirty);
+    //			}
+    //			else{
+    //				System.out.println("Stopping matrix changed propagation at: " + object.getName() +  " because both its matrices are already dirty.");
+    //			}
+            }
         }
     }
 
@@ -2127,7 +2129,9 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
      * @param tangibleComp the tangible comp
      */
     public void addChild(MTComponent tangibleComp) {
-        this.addChild(this.childComponents.size(), tangibleComp);
+        synchronized (childComponents) {
+            this.addChild(this.childComponents.size(), tangibleComp);
+        }
     }
 
     /**
@@ -2149,8 +2153,9 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
             i = (i < 0) ? 0 : i; //ensure i > 0
         }
         tangibleComp.setParent(this);
-        childComponents.add(i, tangibleComp);
-
+        synchronized (childComponents) {
+            childComponents.add(i, tangibleComp);
+        }
         if (!sameParent) { //TEST - only mark dirty if comp was added to different parent
             //To inform its children, that they have to update their
             //global matrices, because this new parent could
@@ -2186,7 +2191,9 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
      * @return the child list
      */
     protected List<MTComponent> getChildList() {
-        return childComponents;
+        synchronized (childComponents) {
+            return childComponents;
+        }
     }
 
     /**
@@ -2195,7 +2202,9 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
      * @return the children
      */
     public MTComponent[] getChildren() {
-        return childComponents.toArray(new MTComponent[childComponents.size()]);
+        synchronized (childComponents) {
+            return childComponents.toArray(new MTComponent[childComponents.size()]);
+        }
     }
 
     /**
@@ -2207,9 +2216,11 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
      */
     public MTComponent getChildbyID(int ID) {
         MTComponent returnObject = null;
-        for (MTComponent object : childComponents) {
-            if (object.getID() == ID)
-                returnObject = object;
+        synchronized (childComponents) {
+            for (MTComponent object : childComponents) {
+                if (object.getID() == ID)
+                    returnObject = object;
+            }
         }
         return returnObject;
     }
@@ -2221,7 +2232,9 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
      * @return the child by index
      */
     public MTComponent getChildByIndex(int index) {
-        return childComponents.get(index);
+        synchronized (childComponents) {
+            return childComponents.get(index);
+        }
     }
 
     /**
@@ -2232,9 +2245,11 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
      */
     public MTComponent getChildByName(String name) {
         MTComponent returnObject = null;
-        for (MTComponent object : childComponents) {
-            if (object.getName().equals(name))
-                returnObject = object;
+        synchronized (childComponents) {
+            for (MTComponent object : childComponents) {
+                if (object.getName().equals(name))
+                    returnObject = object;
+            }
         }
         return returnObject;
     }
@@ -2250,12 +2265,13 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
     public boolean containsChild(MTComponent tangibleComp) {
         if (tangibleComp == null)
             return false;
-
-        for (MTComponent currentChildComponent : childComponents) {
-            if (currentChildComponent.equals(tangibleComp))
-                return true;
-            else if (currentChildComponent.containsChild(tangibleComp))
-                return true;
+        synchronized (childComponents) {
+            for (MTComponent currentChildComponent : childComponents) {
+                if (currentChildComponent.equals(tangibleComp))
+                    return true;
+                else if (currentChildComponent.containsChild(tangibleComp))
+                    return true;
+            }
         }
         return false;
     }
@@ -2267,7 +2283,9 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
      * @return true, if contains direct child
      */
     public boolean containsDirectChild(MTComponent tangibleComp) {
-        return (childComponents.contains(tangibleComp));
+        synchronized (childComponents) {
+            return (childComponents.contains(tangibleComp));
+        }
     }
 
 /*
@@ -2339,7 +2357,9 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
      *         the number of childs this component has
      */
     public int getChildCount() {
-        return childComponents.size();
+        synchronized (childComponents) {
+            return childComponents.size();
+        }
     }
 
     /**
@@ -2373,11 +2393,13 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
      * @param i the i
      */
     public void removeChild(int i) {
-        try {
-            MTComponent comp = childComponents.get(i);
-            this.removeChild(comp);
-        } catch (Exception e) {
-            e.printStackTrace();
+        synchronized (childComponents) {
+            try {
+                MTComponent comp = childComponents.get(i);
+                this.removeChild(comp);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -2398,17 +2420,19 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
      * @param comp the comp
      */
     public void removeChild(MTComponent comp) {
-        try {
-            comp.setParent(null);
-            childComponents.remove(comp);
+        synchronized (childComponents) {
+            try {
+                comp.setParent(null);
+                childComponents.remove(comp);
 
-            //search up the tree and update the camera responsible for drawing the component
-            //will probably be null here
-            comp.searchViewingCamera();
+                //search up the tree and update the camera responsible for drawing the component
+                //will probably be null here
+                comp.searchViewingCamera();
 
-            comp.fireStateChange(StateChange.REMOVED_FROM_PARENT);
-        } catch (Exception e) {
-            e.printStackTrace();
+                comp.fireStateChange(StateChange.REMOVED_FROM_PARENT);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -2416,11 +2440,13 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
      * Removes all direct children of this component.
      */
     public void removeAllChildren() {
-        for (int i = childComponents.size() - 1; i >= 0; i--) {
-            MTComponent child = childComponents.get(i);
-            child.removeFromParent();
+        synchronized (childComponents) {
+            for (int i = childComponents.size() - 1; i >= 0; i--) {
+                MTComponent child = childComponents.get(i);
+                child.removeFromParent();
+            }
+            childComponents.clear();
         }
-        childComponents.clear();
     }
 
 
@@ -2431,7 +2457,9 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
      * @return the child index of
      */
     public int getChildIndexOf(MTComponent comp) {
-        return childComponents.indexOf(comp);
+        synchronized (childComponents) {
+            return childComponents.indexOf(comp);
+        }
     }
 
 
@@ -2478,12 +2506,14 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
      * @param child the child
      */
     protected void sendChildToFront(MTComponent child) {
-        if (this.containsDirectChild(child)
-                && !getChildByIndex(getChildCount() - 1).equals(child)
-                ) {
-            //System.out.println("Drawlast: " + tangibleComp.getName());
-            childComponents.add(getChildCount(), child);
-            childComponents.remove(child);
+        synchronized (childComponents) {
+            if (this.containsDirectChild(child)
+                    && !getChildByIndex(getChildCount() - 1).equals(child)
+                    ) {
+                //System.out.println("Drawlast: " + tangibleComp.getName());
+                childComponents.add(getChildCount(), child);
+                childComponents.remove(child);
+            }
         }
     }
 
@@ -2605,9 +2635,11 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
 //		return false;
         if (this.componentContainsPointLocal(this.globalToLocal(testPoint)))
             return true;
-        for (int i = childComponents.size() - 1; i >= 0; i--) {
-            if (childComponents.get(i).containsPointGlobal(testPoint))
-                return true;
+        synchronized (childComponents) {
+            for (int i = childComponents.size() - 1; i >= 0; i--) {
+                if (childComponents.get(i).containsPointGlobal(testPoint))
+                    return true;
+            }
         }
         return false;
     }
@@ -2692,23 +2724,24 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
             }
 
         }
+        synchronized (childComponents) {
+            /* Go through all Children */
+    //		for (int i = childComponents.size()-1; i >= 0; i--) {
+            for (MTComponent child : childComponents) {
+                //Get the intersectionpoint ray/object if there is one
+                interSP = child.getIntersectionGlobal(ray);
 
-		/* Go through all Children */
-//		for (int i = childComponents.size()-1; i >= 0; i--) {
-        for (MTComponent child : childComponents) {
-            //Get the intersectionpoint ray/object if there is one
-            interSP = child.getIntersectionGlobal(ray);
-
-            if (interSP != null) { //if ray intersects object at a point
-                //System.out.println("Intersection at: " + interSP);
-                //Get distance from raystart to the intersecting point
-                objDistance = interSP.getSubtracted(ray.getRayStartPoint()).length();
-                //If the distance is the smalles yet = closest to the raystart replace the returnObject and current distanceFrom
-                if (objDistance < currentDistance) {
-                    returnPoint = interSP;
-                    currentDistance = objDistance;
-                }
-            }//if intersection!=null
+                if (interSP != null) { //if ray intersects object at a point
+                    //System.out.println("Intersection at: " + interSP);
+                    //Get distance from raystart to the intersecting point
+                    objDistance = interSP.getSubtracted(ray.getRayStartPoint()).length();
+                    //If the distance is the smalles yet = closest to the raystart replace the returnObject and current distanceFrom
+                    if (objDistance < currentDistance) {
+                        returnPoint = interSP;
+                        currentDistance = objDistance;
+                    }
+                }//if intersection!=null
+            }
         }
         return returnPoint;
     }
@@ -2901,42 +2934,43 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
                 return currObjDist;
             }
         }
+        synchronized (childComponents) {
+            /* recursively check all children now */
+            for (MTComponent child : childComponents) {
+                if (child.isVisible()) {
+                    if (composite) {
+                        //Start a new picking with a new Pickresult obj from here
+                        PickResult compositePickRes = new PickResult();
+                        float compDistance = child.pickRecursive(pickInfo, compositePickRes, Float.MAX_VALUE, currentRay, onlyPickables);
 
-		/* recursively check all children now */
-        for (MTComponent child : childComponents) {
-            if (child.isVisible()) {
-                if (composite) {
-                    //Start a new picking with a new Pickresult obj from here
-                    PickResult compositePickRes = new PickResult();
-                    float compDistance = child.pickRecursive(pickInfo, compositePickRes, Float.MAX_VALUE, currentRay, onlyPickables);
+                        //Add the composites picks to the overall picks
+                        if (compositePickRes.getNearestPickResult() != null) {
+    //						System.out.println("In: " + this.getName() + " Composites child picked, pick resultDistance: " + compDistance);
+                            /*//TODO m�sste diese hier nach distanz geordnet in insgesamt pickresult einf�gen..
+                                                          ArrayList<MTBaseComponent> pickList = compositePickRes.getPickList();
+                                                          for(MTBaseComponent comp : pickList){
+                                                              pickResult.addPickedObject(comp, compositePickRes.getInterSectionPointOfPickedObj(comp), compositePickRes.getDistanceOfPickedObj(comp));
+                                                          }
+                                                          */
+                            //Add this composite as the last one picked with the distance of the last one picked in the composite pick
+    //						pickResult.addPickedObjects(compositePickRes.getPickList());
+    //						pickResult.addPickedObject(this, compositePickRes.getInterSectionPointNearestPickedObj(), compositePickRes.getDistanceNearestPickObj());
 
-                    //Add the composites picks to the overall picks
-                    if (compositePickRes.getNearestPickResult() != null) {
-//						System.out.println("In: " + this.getName() + " Composites child picked, pick resultDistance: " + compDistance);
-						/*//TODO m�sste diese hier nach distanz geordnet in insgesamt pickresult einf�gen..
-													  ArrayList<MTBaseComponent> pickList = compositePickRes.getPickList();
-													  for(MTBaseComponent comp : pickList){
-														  pickResult.addPickedObject(comp, compositePickRes.getInterSectionPointOfPickedObj(comp), compositePickRes.getDistanceOfPickedObj(comp));
-													  }
-													  */
-                        //Add this composite as the last one picked with the distance of the last one picked in the composite pick
-//						pickResult.addPickedObjects(compositePickRes.getPickList());
-//						pickResult.addPickedObject(this, compositePickRes.getInterSectionPointNearestPickedObj(), compositePickRes.getDistanceNearestPickObj());
+    //						if (//compDistance <= currObjDist
+    //							(compDistance - HIT_TOLERANCE) <= currObjDist
+    //						){
+    ////							System.out.println("Composites child picked and now nearest: " + this.getName()+ " dist: " + compDistance);
+    //							pickResult.addPickedObject(this, compositePickRes.getInterSectionPointNearestPickedObj(), compositePickRes.getDistanceNearestPickObj());
+    //							currObjDist = compDistance;
+    //						}
 
-//						if (//compDistance <= currObjDist 
-//							(compDistance - HIT_TOLERANCE) <= currObjDist
-//						){
-////							System.out.println("Composites child picked and now nearest: " + this.getName()+ " dist: " + compDistance);
-//							pickResult.addPickedObject(this, compositePickRes.getInterSectionPointNearestPickedObj(), compositePickRes.getDistanceNearestPickObj());
-//							currObjDist = compDistance;
-//						}
-
-                        //FIXME TEST - ADD ALL PICKED OBJECTS - SORT LATER
-                        PickEntry nearestPickEntry = compositePickRes.getNearestPickEntry();
-                        pickResult.addPickedObject(this, nearestPickEntry.intersectionPoint, nearestPickEntry.cameraDistance);
+                            //FIXME TEST - ADD ALL PICKED OBJECTS - SORT LATER
+                            PickEntry nearestPickEntry = compositePickRes.getNearestPickEntry();
+                            pickResult.addPickedObject(this, nearestPickEntry.intersectionPoint, nearestPickEntry.cameraDistance);
+                        }
+                    } else {
+                        currObjDist = child.pickRecursive(pickInfo, pickResult, currObjDist, currentRay, onlyPickables);
                     }
-                } else {
-                    currObjDist = child.pickRecursive(pickInfo, pickResult, currObjDist, currentRay, onlyPickables);
                 }
             }
         }

@@ -23,25 +23,37 @@ import org.lodsb.reakt.async.VarA
  * Don't eat the pills!
  */
  
- 
-object NodeMetronome extends NodeSet[Node] with Actor {
-  var animationsAreRunning = false
-  var beatsPerMinute = 60
-  val duration = new VarA[Float](bpmInMillisecs)
+object Metronome {
+  def apply(): Metronome = if (app.game == app.TIMESHIFT_GAME) DistanceMetronome else NodeMetronome
+}
 
+trait Metronome extends Actor {
+  protected var running: Boolean = false
+  private var beatsPerMinute = 60
+  val duration = new VarA[Float](bpmInMillisecs)
   def bpmInMillisecs = {
     math.round(60f / beatsPerMinute * 1000)
   }
+  def removeNode(node: Node)
+  def get: Metronome
+  def stop() {
+    running = false
+  }
+}
 
-  var nodesToBeAnimated = ArrayBuffer[Node]()
-  def notifyNodes() {
+
+object NodeMetronome extends NodeSet[Node] with Metronome {
+
+  var nodesToBeAnimated = new NodeSet[Node]()
+
+  private def notifyNodes() {
+    println("NodeMetronome.size="+size)
 
     // the lines of these get animated via running dots later...
-    nodesToBeAnimated = ArrayBuffer[Node]()
+    nodesToBeAnimated = new NodeSet[Node]()
 
-    copy().foreach( node => {
+    copy.foreach( node => {
       if (node != null) {
-
         // play the sound of each registered node
         node.play()
         this -= node
@@ -50,16 +62,17 @@ object NodeMetronome extends NodeSet[Node] with Actor {
 
         if(!node.isEmpty){
           // if the node has children, register each one of them for the next round
-          node.map(child => nextNodes += child.asInstanceOf[Node])
+          node.foreach(child => nextNodes += child.asInstanceOf[Node])
 
-        } else if (!node.containsRunningSignal) {
+        } else if (app.game == app.RANDOM_GAME && !node.containsRunningSignal) {
 
           // if there is no beat signal within the tree of node anymore,
           // start a new beat signal from the firstNodeInTree
           nextNodes += node.firstNodeInTree.asInstanceOf[Node]
+
         }
 
-        nextNodes.foreach(node => {
+        nextNodes.foreach( node => {
           // put the following nodes into the Metronome() for the next round/beat...
           this += node
 
@@ -72,34 +85,31 @@ object NodeMetronome extends NodeSet[Node] with Actor {
       }
     })
 
-    LineAnimator().reset()
+    LineAnimator.startLineAnimations(nodesToBeAnimated.copy)
   }
 
   def act() {
-    animationsAreRunning = true
-
-    // add all children of SourceNode() to Metronome
-    SourceNode().foreach( node => {
-      this += node.asInstanceOf[Node]
-    })
+    running = true
 
     // start Metronome()
-    while (animationsAreRunning) {
+    while (running) {
       // every some millisecs notify some nodes, that a beat took place
       notifyNodes()
       wait(bpmInMillisecs)
     }
   }
 
-  def wait(time: Int) {
+  private def wait(time: Int) {
     try { Thread.sleep(time.toLong) }
     catch { case interrupted: InterruptedException => {} }
   }
 
-  def stop() {
-    animationsAreRunning = false
+  def removeNode(node: Node) {
+    this -= node
   }
 
-  def apply() = this
+  def get = this
+
+  def apply = this
 
 }

@@ -1,8 +1,7 @@
 package main.scala.TreeQuencer
 
-import org.mt4j.util.math.{Tools3D, Vector3D}
+import org.mt4j.util.math.Vector3D
 import org.mt4j.components.visibleComponents.shapes.mesh.MTTriangleMesh
-import org.mt4j.util.opengl.GLMaterial
 import org.mt4j.components.{TransformSpace, MTComponent}
 import java.io.File
 import org.lodsb.reakt.async.VarA
@@ -47,7 +46,7 @@ class NodeForm(val file: File) extends MTComponent(app) {
   setLight(app.light)
 
   // Set up a material to react to the light
-  val material = FileImporter.cacheGLMaterial(FileImporter.randomMaterialFile)
+  val material = FileImporter.cacheGLMaterial(new File(file.getAbsolutePath.replace(".obj", "_material.scala")))
   val materialCopy = material.copy
 
   // meshes, that build the form
@@ -226,26 +225,30 @@ class NodeForm(val file: File) extends MTComponent(app) {
     if (newScaleFactor < minimumScaleFactor) {
       max = minimumScaleFactor/scaleFactor()
       scaleFactor() = minimumScaleFactor
-      if (!isGrey) {
-        isGrey = true
-        material.setAmbient(Array(0.8f,0.8f,0.8f,1f))
-        material.setSpecular(Array(0.8f,0.8f,0.8f,1f))
-        material.setDiffuse(Array(0.8f,0.8f,0.8f,1f))
-      }
+      makeGrey(makeItGrey = true)
     } else if (maximumScaleFactor < newScaleFactor) {
       max =  maximumScaleFactor/scaleFactor()
       scaleFactor() = maximumScaleFactor
     } else {
       scaleFactor() = newScaleFactor
-      if (isGrey) {
-        isGrey = false
-        material.setAmbient(materialCopy.getAmbient)
-        material.setSpecular(materialCopy.getSpecular)
-        material.setDiffuse(materialCopy.getDiffuse)
-      }
+      makeGrey(makeItGrey = false)
     }
 
     scaleGlobal(max, max, max, center)
+  }
+
+  def makeGrey(makeItGrey: Boolean) {
+    if (makeItGrey && !isGrey) {
+      isGrey = true
+      material.setAmbient(Array(0.8f,0.8f,0.8f,1f))
+      material.setSpecular(Array(0.8f,0.8f,0.8f,1f))
+      material.setDiffuse(Array(0.8f,0.8f,0.8f,1f))
+    } else if (!makeItGrey && isGrey) {
+      isGrey = false
+      material.setAmbient(materialCopy.getAmbient)
+      material.setSpecular(materialCopy.getSpecular)
+      material.setDiffuse(materialCopy.getDiffuse)
+    }
   }
 
   /**

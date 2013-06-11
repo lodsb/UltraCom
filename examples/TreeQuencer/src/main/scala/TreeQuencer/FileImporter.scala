@@ -102,10 +102,10 @@ import org.mt4j.util.opengl.GLMaterial
   }
 
   def cacheGLMaterial(file: File): NodeMaterial = {
-    if (materialCache.get(file).isEmpty) {
-      materialCache += ((file,evaluateFile[NodeMaterial](file)))
+    if (!materialCache.contains(file)) {
+      materialCache(file) = evaluateFile[NodeMaterial](file)
     }
-    materialCache.get(file).get.copy
+    materialCache(file).copy
   }
 
   def cacheMTTriangleMesh(file: File): Array[MTTriangleMesh] = {

@@ -8,18 +8,18 @@ import java.nio.FloatBuffer
 /**
  * This source code is licensed as GPLv3 if not stated otherwise.
  * NO responsibility taken for ANY harm, damage done to you, your data, animals, etc.
- * <p/>
+ *
  * Last modified:  06.06.13 :: 09:10
  * Copyright (c) 2013: Gerhard Hagerer (Email: ghagerer@gmail.com)
- * <p/>
+ *
  * Made in Bavaria by tons of eager fast pixies - since 1986.
- * <p/>
+ *
  * ^     ^
- * ^   ^
- * (o o)
+ *  ^   ^
+ *  (o o)
  * {  |  }                  (Wong)
- * "
- * <p/>
+ *    "
+ *
  * Don't eat the pills!
  */
 

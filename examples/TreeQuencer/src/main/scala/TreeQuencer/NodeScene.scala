@@ -8,6 +8,7 @@ import org.mt4j.output.audio.AudioServer
 import org.mt4j.util.MTColor
 import java.awt.event.KeyEvent
 import java.awt.event.KeyEvent._
+import org.mt4j.components.visibleComponents.shapes.MTEllipse
 
 /**
  * This source code is licensed as GPLv3 if not stated otherwise.
@@ -34,19 +35,32 @@ object app extends Application {
   var scene: NodeScene = null
   var light: MTLight = null
   val globalNodeSet = new NodeSet[Node]() // all nodes are globally stored here
+  val RANDOM_GAME = 0
+  val SEQUENCE_GAME = 1
+  val TIMESHIFT_GAME = 2
+  val game = TIMESHIFT_GAME
+  var _idCounter = 1
+  def idCounter = {_idCounter+=1; _idCounter-1}
+  val innerCircleRadius = 100
 
-  // start scene
+
   def main(args: Array[String]) {
     execute(false)
   }
 
   override def startUp() {
+    // start scene
     addScene(new NodeScene())
   }
 
+  /**
+   * Quit application, when pressing escape on keyboard
+   * @param e The key event
+   */
   override protected def handleKeyEvent(e: KeyEvent) {
     if (keyPressed && keyCode == VK_ESCAPE) {
-      Runtime.getRuntime.halt(0)
+      AudioServer.quit // quit supercollider server scsynth
+      Runtime.getRuntime.halt(0) // quit java runtime environment
     }
     super.handleKeyEvent(e)
   }
@@ -61,7 +75,49 @@ class NodeScene() extends Scene(app,"TreeQuencer") {
   MTLight.enableLightningAndAmbient(app, 150, 150, 150, 255)
   showTracer(show = true)
 
-  SourceNode() += NewRandomNode()
-  NodeMetronome().start()
+  app.game match {
+
+    case app.RANDOM_GAME =>
+      println("Random game chosen")
+      createInnerCircle
+      SourceNode() += RandomNode()
+      NodeMetronome.start()
+
+    case app.SEQUENCE_GAME =>
+      println("Sequence game chosen")
+      NodeSource.buildSources
+      val y = app.height/2f
+      val x = app.width - 200f
+      val count = 4 // important: how many still nodes?
+      val stillNodes = new Array[StillNode](count)
+      for (i <- 0 to count-1) {
+        stillNodes(i) = new StillNode(new Vector3D(i*x/(count-1)+100f,y))
+        if (i>0) {
+          stillNodes(i-1) += stillNodes(i)
+        }
+        if (i==count-1) {
+          stillNodes(i) += stillNodes(0)
+        }
+      }
+      NodeMetronome += stillNodes(0)
+      NodeMetronome.start()
+
+    case app.TIMESHIFT_GAME =>
+      createInnerCircle
+      SourceNode() += RandomNode()
+      Metronome().start()
+
+    case _ =>
+
+  }
+
+  def createInnerCircle {
+    val innerCircle: MTEllipse = new MTEllipse(app, app.center, app.innerCircleRadius.toFloat, app.innerCircleRadius.toFloat)
+    innerCircle.setNoFill(true)
+    innerCircle.setStrokeColor(new MTColor(0,0,0))
+    app.scene.canvas().addChild(innerCircle)
+    innerCircle.unregisterAllInputProcessors()
+    innerCircle.removeAllGestureEventListeners()
+  }
 
 }

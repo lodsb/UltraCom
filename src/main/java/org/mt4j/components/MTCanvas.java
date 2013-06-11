@@ -387,10 +387,12 @@ public class MTCanvas extends MTComponent implements IHitTestInfoProvider {
 //				for (MTComponent child : currentcomp.getChildList())
 //					drawUpdateRecursive(child, updateTime, graphics);
 
-                List<MTComponent> childs = currentcomp.getChildList();
-                int childCount = childs.size();
-                for (int i = 0; i < childCount; i++) {
-                    drawUpdateRecursive(childs.get(i), updateTime, graphics);
+                synchronized (currentcomp.getChildList()) {
+                    List<MTComponent> childs = currentcomp.getChildList();
+                    int childCount = childs.size();
+                    for (int i = 0; i < childCount; i++) {
+                        drawUpdateRecursive(childs.get(i), updateTime, graphics);
+                    }
                 }
 
                 currentcomp.postDrawChildren(graphics);
@@ -425,10 +427,12 @@ public class MTCanvas extends MTComponent implements IHitTestInfoProvider {
 //				for (MTComponent child : currentcomp.getChildList()) //FIXME for each loop sometimes throws concurrentmodification error because of fail-fast iterator
 //					drawUpdateRecursive(child, updateTime, graphics);
 
-                List<MTComponent> childs = currentcomp.getChildList();
-                int childCount = childs.size();
-                for (int i = 0; i < childCount; i++) {
-                    drawUpdateRecursive(childs.get(i), updateTime, graphics);
+                synchronized (currentcomp.getChildList()) {
+                    List<MTComponent> childs = currentcomp.getChildList();
+                    int childCount = childs.size();
+                    for (int i = 0; i < childCount; i++) {
+                        drawUpdateRecursive(childs.get(i), updateTime, graphics);
+                    }
                 }
 
                 currentcomp.postDrawChildren(graphics);

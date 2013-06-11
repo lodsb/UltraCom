@@ -33,7 +33,6 @@ class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
 
   def play() {
     if (synthesizer != null) {
-      println("Playing Synthesizer")
       schalter = if(schalter==1) 0 else 1
       synthesizer.parameters() = ("gate",schalter)
     }
@@ -53,7 +52,6 @@ class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
 
   def init: Boolean = {
     if(synthesizer == null) {
-      println("Initializing Synthesizer")
       synthesizer = synthDef.play
 
       // volume <-> color of node

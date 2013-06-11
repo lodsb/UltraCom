@@ -1,5 +1,7 @@
 package main.scala.TreeQuencer
 
+import org.mt4j.util.math.Vector3D
+
 
 /**
  * This source code is licensed as GPLv3 if not stated otherwise.
@@ -22,6 +24,19 @@ package main.scala.TreeQuencer
 
 class Node extends DragableNode {
 
+  val id = app.idCounter
+
+  // all nodes are globally stored in globalNodeSet
+  // this is for reconnection (see DragableNode.nearestPossibleAncestor)
+  if (app.game == app.SEQUENCE_GAME) {
+    // in sequence game only still nodes are possible ancestors
+    if (this.isInstanceOf[StillNode]) {
+      app.globalNodeSet += this
+    }
+  } else {
+    app.globalNodeSet += this
+  }
+
   var synthesizer: NodeSynthesizer = null
 
   def play() {
@@ -30,9 +45,10 @@ class Node extends DragableNode {
         synthesizer.bind(form.rotationZ, "rotationZ", (x:Float) => {x})
         synthesizer.bind(form.rotationY, "rotationY", (x:Float) => {x})
         synthesizer.bind(form.rotationX, "rotationX", (x:Float) => {x})
-        synthesizer.bind(NodeMetronome.duration, "beatDuration", (x:Float) => {x})
+        synthesizer.bind(Metronome().duration, "beatDuration", (x:Float) => {x})
         synthesizer.bind(form.scaleFactor, "volume", (x:Float) => {if(x<0.8f) 0f else if(3f<x) 1f else 5/12f*x-1f/3})
       }
+      println("synthesizer.play")
       synthesizer.play
     }
   }
@@ -60,11 +76,22 @@ object SourceNode extends Node {
 }
 
 
-object NewRandomNode {
+object RandomNode {
   def apply(): Node = {
     new Node {
       form = Import.form(FileImporter.randomFormFile)
       synthesizer = Import.synthesizer(this, FileImporter.randomSynthiFile)
     }
   }
+  def apply(pos: Vector3D): Node = {
+    val node = apply()
+    node.form.setPositionGlobal(pos)
+    node
+  }
+}
+
+class StillNode(position: Vector3D) extends Node {
+  form = new NodeForm(FileImporter.sourceNodeFormFile)
+  form.scale(0.8f) // make it still
+  form.setPositionGlobal(position)
 }

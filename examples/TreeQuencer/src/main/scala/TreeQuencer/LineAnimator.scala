@@ -1,7 +1,6 @@
 package main.scala.TreeQuencer
 
 import actors.Actor
-import collection.mutable.ArrayBuffer
 
 /**
  * This source code is licensed as GPLv3 if not stated otherwise.
@@ -25,70 +24,68 @@ import collection.mutable.ArrayBuffer
  * This object represents a thread, that is animating all the lines.
  * It's for the running dots.
  */
- object LineAnimator extends Actor {
 
-  var nodesToBeAnimated = ArrayBuffer[Node]()
+object LineAnimator {
 
-  var startTime = 0l
-  def duration = NodeMetronome().bpmInMillisecs.toFloat
-  def expiredTime = System.currentTimeMillis() - startTime
-  def expiredTimeFactor = expiredTime/duration
-
-  /**
-   * Calculates the new position for the moving circle of the line to node
-   * @param node The node to which the line goes to
-   * @return Vector3D The new position
-   */
-  def circlePosition(node :DragableNode) = {
-    val connectionLine = node.position.getSubtracted(node.ancestor.position)
-    node.ancestor.position.getAdded(connectionLine.getScaled(LineAnimator().expiredTimeFactor))
-  }
-
-  /**
-   * One single thread for the dot animation on the lines.
-   * Saves a lot of CPU power....
-   */
-  def act() {
-
-    while (expiredTime < duration) {
-      moveCirclesForward()
-      Thread.sleep(13l)
-    }
-
-  }
-
-  /**
+ /**
    * Resets the nodes, which have to be animated.
    * Starts the thread also if not started or terminated
    */
-  def reset() {
-    makeCirclesVisible(setVisible = false)
-    nodesToBeAnimated = NodeMetronome().nodesToBeAnimated
-    startTime = System.currentTimeMillis()
-    makeCirclesVisible(setVisible = true)
-    getState match {
-      case Actor.State.Terminated => restart()
-      case Actor.State.New => start()
-      case _ =>
-    }
+  def startLineAnimations(nodes: NodeSet[Node], durationFactor: Float = 1f) {println("startLineAnimations(), nodes.size="+nodes.size)
+    if (nodes.size==0) return
+    /**
+     * One single thread for the dot animation on the lines.
+     * Saves a lot of CPU power....
+     */
+    new Actor() {
+
+      // the start time, from when the line animation begins
+      var startTime = 0l
+
+      // Measures the time left from startTime
+      def expiredTime = System.currentTimeMillis() - startTime
+
+      // how much percent from the whole duration between two beat signals expired
+      def expiredTimeFactor = expiredTime/duration
+
+      // the dureation between two beat signals
+      def duration = Metronome().bpmInMillisecs.toFloat*durationFactor
+
+      /**
+       * Calculates the new position for the moving circle of the line to node
+       * @param node The node to which the line goes to
+       * @return Vector3D The new position
+       */
+      def circlePosition(node: DragableNode) = {
+        val connectionLine = node.position.getSubtracted(node.ancestor.position)
+        node.ancestor.position.getAdded(connectionLine.getScaled(expiredTimeFactor))
+      }
+
+      def act() {
+        // make all the dots on the lines visible...
+        nodes.foreach( node => {
+          node.lineToAncestor.createAnimationCircle(this)
+        })
+
+        // start animation
+        startTime = System.currentTimeMillis()
+        while (expiredTime < duration) {
+          // move all the dots one step forward
+          nodes.foreach( node => {
+            node.lineToAncestor.moveCircle(this,circlePosition(node))
+          })
+          Thread.sleep(13l) // this is the time between two animation processes
+        }
+
+        // make all the dots on the lines invisible and remove them
+        nodes.foreach( node => {
+          node.lineToAncestor.destructAnimationCircle(this)
+        })
+      }
+
+    }.start()
   }
 
-  def moveCirclesForward() {
-    // move all the dots one step forward
-    nodesToBeAnimated.foreach(node => {
-      node.lineToAncestor.movingCircle.setPositionGlobal(circlePosition(node))
-    })
-  }
-  def makeCirclesVisible(setVisible: Boolean) {
-    // make all the dots on the lines visible...
-    nodesToBeAnimated.foreach(node => {
-      node.lineToAncestor.movingCircle.setVisible(setVisible)
-    })
-  }
-
-  def framesPerSecond(frames: Long): Long = {
-    1000l/frames
-  }
-
-  def apply() = this
+  def apply = this
 }
+
