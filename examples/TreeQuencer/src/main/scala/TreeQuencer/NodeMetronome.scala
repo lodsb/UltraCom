@@ -30,9 +30,20 @@ object Metronome {
 trait Metronome extends Actor {
   protected var running: Boolean = false
   private var beatsPerMinute = 60
-  val duration = new VarA[Float](bpmInMillisecs)
-  def bpmInMillisecs = {
-    math.round(60f / beatsPerMinute * 1000)
+  val duration = new VarA[Float](bpmToDuration)
+  def bpmToDuration = {
+    math.round(60f / beatsPerMinute * 1000) // in milliSecs
+  }
+  def durationToBPM = {
+    math.round(60000f/duration())
+  }
+  def setBPM(bpm: Int) {
+    beatsPerMinute = bpm
+    duration() = bpmToDuration
+  }
+  def setDuration(dur: Float) {
+    duration() = dur
+    beatsPerMinute = durationToBPM
   }
   def removeNode(node: Node)
   def get: Metronome
@@ -95,7 +106,7 @@ object NodeMetronome extends NodeSet[Node] with Metronome {
     while (running) {
       // every some millisecs notify some nodes, that a beat took place
       notifyNodes()
-      wait(bpmInMillisecs)
+      wait(duration().toInt)
     }
   }
 

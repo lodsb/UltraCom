@@ -29,7 +29,7 @@ object DistanceMetronome extends Metronome {
     nodeGrid(i) = new NodeSet[Node]
   }
   val firstNodes = new mutable.HashMap[Int, Int]()
-  def waitingTime = math.round(Metronome().bpmInMillisecs/granulation.toFloat)
+  def waitingTime = math.round(Metronome().duration()/granulation.toFloat)
 
   def distanceToSteps(node: Node): Int = {
     var distance = node.position.distance2D(SourceNode.position)

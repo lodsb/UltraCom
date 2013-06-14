@@ -56,8 +56,10 @@ class Node extends DragableNode {
 }
 
 object SourceNode extends Node {
-  form = new NodeForm(FileImporter.sourceNodeFormFile)
-  form.scaleGlobal(0.5f, 0.5f, 0.2f, position)
+  if (app.game != app.SEQUENCE_GAME) {
+    form = new NodeForm(FileImporter.sourceNodeFormFile)
+    form.scaleGlobal(0.5f, 0.5f, 0.2f, position)
+  }
 
   def apply(): Node = this
 

@@ -49,7 +49,7 @@ object LineAnimator {
       def expiredTimeFactor = expiredTime/duration
 
       // the dureation between two beat signals
-      def duration = Metronome().bpmInMillisecs.toFloat*durationFactor
+      def duration = Metronome().duration()*durationFactor
 
       /**
        * Calculates the new position for the moving circle of the line to node

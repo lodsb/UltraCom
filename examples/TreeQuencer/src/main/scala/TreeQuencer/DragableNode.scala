@@ -29,16 +29,17 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
     _form = newForm
     app.scene.canvas.addChild(form)
 
-    // remove all drag event handlers. we want only our own
+    // remove all drag event handlers. We want only our own
     form.unregisterAllInputProcessors()
     form.removeAllGestureEventListeners()
 
-    // don't bother the SourceNode. It's not movable/dragable
+    // don't bother the SourceNode. It's not movable/dragable and has no connection line
     if (isSourceNode) return
 
     // instantiate the connection line to the ancestor, since this.form now exists
     lineToAncestor = new AnimatedLine(this)
 
+    // SillNodes aren't movable
     if (isInstanceOf[StillNode]) return
 
     // make the form movable
