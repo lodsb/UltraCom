@@ -54,7 +54,7 @@ SynthDef("Wobble") {
 
   // CREATING SOUND -----
   var base = RLPF.ar(Pulse.ar(Seq(0.99,0.5,1.01).map(_ * halftone(rotationZ)),pw),cf,0.3).madd(range(SinOsc.kr(wobbles(rotationY)),0.5,4),0).sin
-  val env = EnvGen.kr(Env.perc(attack=0.01, release=duration(rotationX)), Changed1.kr(gate), doneAction=1)
+  val env = EnvGen.kr(Env.perc(attack=0.01, release=duration(rotationX)), Changed1.kr(gate), doneAction=2)
   val bd = (Ringz.ar(LPF.ar(Trig.ar(t_bd,SampleDur.ir),beatDuration),30,0.5,5).sin*2).tanh
   var sd = (Ringz.ar(LPF.ar(Trig.ar(t_sd,SampleDur.ir),beatDuration),120,0.75,PinkNoise.ar(2)).sin*2).tanh
   sd = HPF.ar(sd,60)

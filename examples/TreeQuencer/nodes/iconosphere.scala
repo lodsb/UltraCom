@@ -81,7 +81,7 @@ SynthDef("Polywaves") {
 
 
   val gateChanger = Changed1.kr(gate)
-  val percussiveEnvelope = EnvGen.kr(Env.perc(attack=speed/atk, release=speed*overlap, level=20), gateChanger, doneAction=1)
+  val percussiveEnvelope = EnvGen.kr(Env.perc(attack=speed/atk, release=speed*overlap, level=20), gateChanger, doneAction=2)
 
 	val noiseGen = PinkNoise.ar(noiseVol);
 	val line = Line.kr(filterStart,filterEnd,3);
