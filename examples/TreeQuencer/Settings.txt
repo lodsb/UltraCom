@@ -1,6 +1,7 @@
-#Wed Jan 30 04:24:13 CET 2008	
+Wed Jan 30 04:24:13 CET 2008	
 Frametitle=TreeQuencer
-ScSynthPath=C:/Program Files (x86)/SuperCollider-3.6.2/scsynth.exe
+DefaultAudioDevice=ASIO4ALL
+ScSynthPath=/usr/local/bin/scsynth
 #Renderer: OpenGL: 1 P3D: 2
 Renderer=1
 #Fullscreen:'true' or 'false'
@@ -9,8 +10,8 @@ Fullscreen=false
 #(if not exclusive, mt4j just uses an undecorated window, other windows can overlap it)
 FullscreenExclusive=false
 #Resolution
-DisplayWidth=1100
-DisplayHeight=700
+DisplayWidth=1500
+DisplayHeight=1000
 #Which display to use for fullscreen
 Display=2
 #Framerate maximum
@@ -29,7 +30,7 @@ OpenGLAntialiasing=1
 # 0 is the standard game with the random nodes in the middle of the screen
 # 1 is the game, where several still nodes are put in sequence and the others get docked to them
 # 2 is similar to 0, but the distance of a node to the center defines how often/fast it gets triggered
-GameNumber=0
+GameNumber=1
 
 # StillNodeCount defines how many still nodes at game 2 will be on the field from the beginning
-StillNodeCount=6
+StillNodeCount=8

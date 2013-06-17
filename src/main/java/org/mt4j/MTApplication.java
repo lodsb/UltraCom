@@ -460,6 +460,10 @@ public abstract class MTApplication extends PApplet {
             String scsynthPath = properties.getProperty("ScSynthPath", MT4jSettings.getInstance().getScSynthPath().trim());
             MT4jSettings.getInstance().defaultScSynthPath = scsynthPath;
 
+            String defaultAudio = properties.getProperty("DefaultAudioDevice", MT4jSettings.getInstance().getScSynthPath().trim());
+            MT4jSettings.getInstance().defaultAudioDevice = defaultAudio;
+
+
 
         } catch (Exception e) {
             logger.error("Error while loading Settings.txt. Using defaults.");

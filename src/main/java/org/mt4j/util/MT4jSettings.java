@@ -387,6 +387,12 @@ public class MT4jSettings {
         return defaultScSynthPath;
     }
 
+    public String defaultAudioDevice = "";
+    public String getDefaultAudioDevice() {
+        return defaultAudioDevice;
+    }
+
+
 //	/**
 //	 * Sets the max frame rate.
 //	 * 
