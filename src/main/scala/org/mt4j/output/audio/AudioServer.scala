@@ -204,11 +204,15 @@ object AudioServer {
 	def start( func: => Unit ) = {
 		val cfg = Server.Config();
 		cfg.controlBusChannels = ctrlBusChannels;
-		cfg.memorySize  = 65536*256;
+		//cfg.memorySize  = 65536*256;
 
 
 		cfg.programPath = MT4jSettings.getInstance().getScSynthPath();
-		cfg.deviceName = Some(MT4jSettings.getInstance().getDefaultAudioDevice());
+		var audioDev = MT4jSettings.getInstance().getDefaultAudioDevice()
+		if(audioDev != "") {
+			println("USING AUDIO DEVICE "+audioDev)
+			cfg.deviceName = Some(audioDev);
+		}
 
 		Server.run(cfg) {
 
