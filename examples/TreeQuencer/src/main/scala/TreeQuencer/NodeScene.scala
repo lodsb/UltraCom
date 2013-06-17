@@ -144,10 +144,12 @@ class NodeScene() extends Scene(app,"TreeQuencer") {
     // create four sliders clockwise at each edge on the screen
     val sliders = new Array[MTSlider](4)
 
+    val sliderHeight = 20f
+
     for (i <- 0 to 3) {
 
       // create it
-      sliders(i) = Slider(255f,1000f)
+      sliders(i) = Slider(255f,2000f, 400, sliderHeight)
       canvas.addChild(sliders(i))
 
       // make it colourfull
@@ -155,15 +157,15 @@ class NodeScene() extends Scene(app,"TreeQuencer") {
       sliders(i).setStrokeColor(new MTColor(0,0,0))
 
       // position it
-      sliders(i).globalPosition := {
-        i match {
-          case 0 => Vec3d(app.width/2f, 40f)
-          case 1 => Vec3d(app.width-40f, app.height/2f)
-          case 2 => Vec3d(app.width/2f, app.height-40f)
-          case 3 => Vec3d(40f, app.height/2f)
-          case _ => Vec3d()
-        }
-      }
+      val margin = sliderHeight/2f
+
+      sliders(i).globalPosition := { i match { // on each side of the screen clockwise
+        case 0 => Vec3d(app.width/2f, margin)
+        case 1 => Vec3d(app.width-margin, app.height/2f)
+        case 2 => Vec3d(app.width/2f, app.height-margin)
+        case 3 => Vec3d(margin, app.height/2f)
+        case _ => Vec3d()
+      }}
 
       // rotate it
       sliders(i).rotateZGlobal(sliders(i).globalPosition(), i*90f)
@@ -190,7 +192,7 @@ class NodeScene() extends Scene(app,"TreeQuencer") {
         }
       })
 
-      // the knob of the slider makes its slider to activeSlider via DragEvent
+      // the knob of the slider makes its slider to activeSlider via start and end of DragEvents
       sliders(i).getKnob.addGestureListener(classOf[DragProcessor], new IGestureEventListener() {
         val slider = sliders(i)
         def processGestureEvent(ge: MTGestureEvent): Boolean = {

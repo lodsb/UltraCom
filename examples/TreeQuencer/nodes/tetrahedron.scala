@@ -40,7 +40,7 @@ SynthDef("EchoSinus") {
 
   // tone
   val dec = 1.35
-  var bing = volume * SinOsc.ar(rotationToHalftones(rotationZ)).madd(0.5,0) * EnvGen.kr(Env.perc(0.01, dec), Changed1.kr(gate), doneAction=0)
+  var bing = volume * SinOsc.ar(rotationToHalftones(rotationZ)).madd(0.5,0) * EnvGen.kr(Env.perc(attack=0.01, release=dec), Changed1.kr(gate), doneAction=0)
 
   // reverb
   var reverb = LocalIn.ar(2) + bing

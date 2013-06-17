@@ -79,24 +79,24 @@ SynthDef("Polywaves") {
   val (amp1, amp5, amp3, amp7, amp9, amp11, amp13) =
     (f(yZero=0.5f)(rotationY), f(xZero=0.0f)(rotationY), f(xZero=40f)(rotationY), f(xZero=80f)(rotationY), f(xZero=120f)(rotationY), f(xZero=160f)(rotationY), f(xZero=200f)(rotationY))
 
-  val percussiveEnvelope = Env.perc(speed/atk, speed*overlap, 20)
 
   val gateChanger = Changed1.kr(gate)
+  val percussiveEnvelope = EnvGen.kr(Env.perc(attack=speed/atk, release=speed*overlap, level=20), gateChanger, doneAction=0)
 
   val w1 = volume * RLPF.ar(Blip.ar(frq1,tone1).madd(amp1*globAmp,0) + PinkNoise.ar(noiseVol), Line.kr(filterStart,filterEnd,3),0.4) *
-    EnvGen.kr(percussiveEnvelope, gateChanger, doneAction=0)
+    percussiveEnvelope
   val w2 = volume * RLPF.ar(Blip.ar(frq5,tone1).madd(amp5*globAmp,0) + PinkNoise.ar(noiseVol), Line.kr(filterStart,filterEnd,3),0.4) *
-    EnvGen.kr(percussiveEnvelope, gateChanger, doneAction=0)
+    percussiveEnvelope
   val w3 = volume * RLPF.ar(Blip.ar(frq3,tone1).madd(amp3*globAmp,0) + PinkNoise.ar(noiseVol), Line.kr(filterStart,filterEnd,3),0.4) *
-    EnvGen.kr(percussiveEnvelope, gateChanger, doneAction=0)
+    percussiveEnvelope
   val w4 = volume * RLPF.ar(Blip.ar(frq7,tone1).madd(amp7*globAmp,0) + PinkNoise.ar(noiseVol), Line.kr(filterStart,filterEnd,3),0.4) *
-    EnvGen.kr(percussiveEnvelope, gateChanger, doneAction=0)
+    percussiveEnvelope
   val w5 = volume * RLPF.ar(Blip.ar(frq9,tone1).madd(amp9*globAmp,0) + PinkNoise.ar(noiseVol), Line.kr(filterStart,filterEnd,3),0.4) *
-    EnvGen.kr(percussiveEnvelope, gateChanger, doneAction=0)
+    percussiveEnvelope
   val w6 = volume * RLPF.ar(Blip.ar(frq11,tone1).madd(amp11*globAmp,0) + PinkNoise.ar(noiseVol), Line.kr(filterStart,filterEnd,3),0.4) *
-    EnvGen.kr(percussiveEnvelope, gateChanger, doneAction=0)
+    percussiveEnvelope
   val w7 = volume * RLPF.ar(Blip.ar(frq13,tone1).madd(amp13*globAmp,0) + PinkNoise.ar(noiseVol), Line.kr(filterStart,filterEnd,3),0.4) *
-    EnvGen.kr(percussiveEnvelope, gateChanger, doneAction=0)
+    percussiveEnvelope
 
   val sin = w1 + w2 + w3 + w4 + w5 + w6 + w7
 

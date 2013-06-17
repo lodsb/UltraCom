@@ -26,14 +26,14 @@ import de.sciss.synth._
  
  
 class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
-  var schalter = 1
+  var schalter = 1f
   var synthesizer = null.asInstanceOf[Synth]
   val synthDef = FileImporter.cacheSynthDef(file)
 
 
   def play() {
     if (synthesizer != null) {
-      schalter = if(schalter==1) 0 else 1
+      schalter = if(schalter==1) 0.1f else 1f
       synthesizer.parameters() = ("gate",schalter)
     }
   }
