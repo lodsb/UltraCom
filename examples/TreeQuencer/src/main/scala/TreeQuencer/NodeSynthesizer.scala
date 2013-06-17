@@ -33,7 +33,6 @@ class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
 
   def play() {
     if (synthesizer != null) {
-      println("Playing Synthesizer")
       schalter = if(schalter==1) 0 else 1
       synthesizer.parameters() = ("gate",schalter)
     }
@@ -53,12 +52,15 @@ class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
 
   def init: Boolean = {
     if(synthesizer == null) {
-      println("Initializing Synthesizer")
       synthesizer = synthDef.play
 
       // volume <-> color of node
       var max = 0f
       var maxMem = 0f
+      val r = node.form.material.getAmbient(0)
+      val b = node.form.material.getAmbient(1)
+      val g = node.form.material.getAmbient(2)
+      var colorArray = Array(r,b,g,1f)
       synthesizer.amplitude.map( x => { if (node.isWithinField) {
         synthesizer.setAmplitudeUpdateDivisions(0)
         if (!(x1==0&&x2==0&&x3==0&&x==0&&maxMem<0.005)) {
@@ -67,9 +69,17 @@ class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
           x3 = x.abs*11
           max = List(x1,x2,x3).max
           maxMem = if (max<maxMem) (max+maxMem)/2 else max
-          node.form.meshes.foreach(mesh => {
-            mesh.getMaterial.setAmbient(Array(maxMem, maxMem, maxMem, 1f))
-          })
+          if(!node.form.isGrey) {
+            colorArray = Array(
+              if(maxMem>r) maxMem else r,
+              if(maxMem>b) maxMem else b,
+              if(maxMem>g) maxMem else g,
+              1f
+            )
+            node.form.material.setAmbient(colorArray)
+            node.form.material.setDiffuse(colorArray)
+            node.form.material.setSpecular(colorArray)
+          }
         }
       }})
       return true

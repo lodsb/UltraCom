@@ -56,11 +56,18 @@ import collection.mutable.ArrayBuffer
     nodes.iterator
   }
 
-  def copy(): ArrayBuffer[NodeType] = {
-    val copy = new ArrayBuffer[NodeType](size)
+  def copy: NodeSet[NodeType] = {
+    val copy = new NodeSet[NodeType]()
     foreach( element => {
       copy += element
     })
     copy
+  }
+
+  override def empty: NodeSet.this.type = {
+    foreach( element => {
+      this -= element
+    })
+    this
   }
 }

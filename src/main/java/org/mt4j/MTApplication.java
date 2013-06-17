@@ -174,6 +174,7 @@ public abstract class MTApplication extends PApplet {
     public static char separatorChar = '/';
 
     private static boolean settingsLoadedFromFile = false; //cant initialize in constructor, need it before that!
+    private static Properties properties = null; // if settingsLoadedFromFile=true, properties are loaded from Settings.txt
 
     private ImageIcon mt4jIcon;
 
@@ -407,7 +408,7 @@ public abstract class MTApplication extends PApplet {
 
     private static void getSettingsFromFile() {
         //Load some properties from Settings.txt file
-        Properties properties = new Properties();
+        properties = new Properties();
         try {
             try {
                 FileInputStream fi = new FileInputStream(MT4jSettings.getInstance().getDefaultSettingsPath() + "Settings.txt");
@@ -464,6 +465,10 @@ public abstract class MTApplication extends PApplet {
             logger.error("Error while loading Settings.txt. Using defaults.");
         }
         settingsLoadedFromFile = true;
+    }
+
+    public static Properties getProperties() {
+        return properties;
     }
 
 	private static MTApplication instance = null;

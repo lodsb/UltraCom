@@ -58,7 +58,7 @@ class NodeTreeElement[NodeType <: NodeTreeElement[NodeType]] extends NodeSet[Nod
 
   // checks if node is a child somewhere in the subtree from this
   def hasChild(node: NodeType): Boolean = {
-    completeChildList.foreach(child => {
+    allChildren.foreach(child => {
       if (child eq node) {
         return true
       }
@@ -72,8 +72,8 @@ class NodeTreeElement[NodeType <: NodeTreeElement[NodeType]] extends NodeSet[Nod
    * @return Boolean
    */
   def containsRunningSignal(): Boolean = {
-    firstNodeInTree.completeChildList.map(child => {
-      if (NodeMetronome().contains(child.asInstanceOf[Node])) {
+    firstNodeInTree.allChildren.map(child => {
+      if (NodeMetronome.contains(child.asInstanceOf[Node])) {
         return true
       }
     })
@@ -81,14 +81,22 @@ class NodeTreeElement[NodeType <: NodeTreeElement[NodeType]] extends NodeSet[Nod
   }
 
   /**
-   * Returns a list, that contains this node and all children
-   * @return
+   * Returns a NodeSet[NodeType], that contains this node, all its children and their children to etc.
+   * @return NodeSet[NodeType] with the children
    */
-  def completeChildList: mutable.ArrayBuffer[NodeType] = {
-    val list = new ArrayBuffer[NodeType]()
-    list += this.asInstanceOf[NodeType]
-    foreach(child => list ++= child.completeChildList)
-    list
+  def allChildren: NodeSet[NodeType] = {
+    val childrenSet = new NodeSet[NodeType]()
+    childrenSet += this.asInstanceOf[NodeType]
+    foreach(child => childrenSet ++= child.allChildren)
+    childrenSet
+  }
+
+  /**
+   * Returns a NodeSet[NodeType], that contains only the children from node within the first hierarchy
+   * @return NodeSet[NodeType] with the children
+   */
+  def children: NodeSet[NodeType] = {
+    this
   }
 
 
