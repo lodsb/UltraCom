@@ -49,7 +49,7 @@ object AudioServer {
 
 	private def timerTriggerSynth: SynthDef = {
 		SynthDef("triggerSynth") {
-			Out.kr(timerBus, Impulse.ar(timerFreq))
+			Out.kr(timerBus, Impulse.kr(timerFreq))
 		}
 	}
 
