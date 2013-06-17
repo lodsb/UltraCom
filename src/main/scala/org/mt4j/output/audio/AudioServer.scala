@@ -204,7 +204,7 @@ object AudioServer {
 	def start( func: => Unit ) = {
 		val cfg = Server.Config();
 		cfg.controlBusChannels = ctrlBusChannels;
-		//cfg.memorySize  = 65536*256;
+		cfg.memorySize  = 65536*128;
 
 
 		cfg.programPath = MT4jSettings.getInstance().getScSynthPath();
