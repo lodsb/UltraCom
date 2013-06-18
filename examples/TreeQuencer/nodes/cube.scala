@@ -61,7 +61,7 @@ SynthDef("Wobble") {
 	//base = (GVerb.ar(HPF.ar(base * env,30), 70, 11, 0.15)*0.5 + base + bd + sd).tanh
 	base = (HPF.ar(base * env, 30) * 0.5 + base + bd + sd).tanh
 
-	val sig = SplayAz.ar(2, volume * base * amp * env)
+	val sig = SplayAz.ar(2, Pan2.ar(volume * base * amp * env))
 
 	AudioServer.attach(sig)
 
