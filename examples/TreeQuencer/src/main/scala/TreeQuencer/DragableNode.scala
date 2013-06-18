@@ -124,6 +124,7 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
     app.globalNodeSet -= this.asInstanceOf[Node]
     ancestor -= this
     Metronome().removeNode(this.asInstanceOf[Node])
+    this.asInstanceOf[Node].synthesizer.free
 
     // remove children (need to do this from a copy via clone())
     copy.foreach( child => {
@@ -160,8 +161,8 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
     val position = app.scene.getSceneCam.getFrustum.isPointInFrustum(this.position)
     position match {
       case INSIDE => true
-      case INTERSECT => println("case INTERSECT, isWithinField => false"); false
-      case OUTSIDE => println("case OUTSIDE, isWithinField => false"); false
+      case INTERSECT => false
+      case OUTSIDE => false
       case _ => false
     }
   }

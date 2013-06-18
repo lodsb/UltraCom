@@ -58,7 +58,6 @@ object NodeMetronome extends NodeSet[Node] with Metronome {
   var nodesToBeAnimated = new NodeSet[Node]()
 
   private def notifyNodes() {
-    println("NodeMetronome.size="+size)
 
     // the lines of these get animated via running dots later...
     nodesToBeAnimated = new NodeSet[Node]()

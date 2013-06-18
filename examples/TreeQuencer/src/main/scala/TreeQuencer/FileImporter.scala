@@ -3,7 +3,7 @@ package main.scala.TreeQuencer
 import java.io.File
 import collection.mutable.ArrayBuffer
 import scala.util.Random
-import de.sciss.synth.SynthDef
+import de.sciss.synth.{Synth, SynthDef}
 import com.twitter.util.Eval
 import collection.mutable
 import org.mt4j.components.visibleComponents.shapes.mesh.MTTriangleMesh
@@ -99,6 +99,10 @@ import org.mt4j.util.opengl.GLMaterial
       synthiCache += ((file,evaluateFile[SynthDef](file)))
     }
     synthiCache.get(file).get
+  }
+
+  def cacheSynth(file: File): Synth = {
+    cacheSynthDef(file).play
   }
 
   def cacheGLMaterial(file: File): NodeMaterial = {

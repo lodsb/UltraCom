@@ -27,63 +27,65 @@ import de.sciss.synth._
  
 class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
   var schalter = 1f
-  var synthesizer = null.asInstanceOf[Synth]
-  val synthDef = FileImporter.cacheSynthDef(file)
+  var synthesizer = FileImporter.cacheSynth(file)
 
 
   def play() {
-    if (synthesizer != null) {
-      schalter = if(schalter==1) 0.1f else 1f
-      synthesizer.parameters() = ("gate",schalter)
-    }
+    schalter = if(schalter==1) 0.1f else 1f
+    synthesizer.parameters() = ("gate",schalter)
+    synthesizer.run
+  }
+
+  def free {
+    synthesizer.run(false)
+    synthesizer.free
+    synthesizer = null
   }
 
   def bind (value: VarA[Float], parameter: String, function: Float => Float) {
-    if (synthesizer != null) {
-      value.map( z => {
-        synthesizer.parameters() = (parameter,function(z))
-      })
-    }
+    value.map( z => {
+      synthesizer.parameters() = (parameter,function(z))
+    })
   }
+
+
+  bind(node.form.rotationZ, "rotationZ", (x:Float) => {x})
+  bind(node.form.rotationY, "rotationY", (x:Float) => {x})
+  bind(node.form.rotationX, "rotationX", (x:Float) => {x})
+  bind(Metronome().duration, "beatDuration", (x:Float) => {x})
+  bind(node.form.scaleFactor, "volume", (x:Float) => {if(x<0.8f) 0f else if(3f<x) 1f else 5/12f*x-1f/3})
+
 
   var x1: Float = 0
   var x2: Float = 0
   var x3: Float = 0
 
-  def init: Boolean = {
-    if(synthesizer == null) {
-      synthesizer = synthDef.play
-
-      // volume <-> color of node
-      var max = 0f
-      var maxMem = 0f
-      val r = node.form.material.getAmbient(0)
-      val b = node.form.material.getAmbient(1)
-      val g = node.form.material.getAmbient(2)
-      var colorArray = Array(r,b,g,1f)
-      synthesizer.amplitude.map( x => { if (node.isWithinField) {
-        synthesizer.setAmplitudeUpdateDivisions(0)
-        if (!(x1==0&&x2==0&&x3==0&&x==0&&maxMem<0.005)) {
-          x1 = x2
-          x2 = x3
-          x3 = x.abs*11
-          max = List(x1,x2,x3).max
-          maxMem = if (max<maxMem) (max+maxMem)/2 else max
-          if(!node.form.isGrey) {
-            colorArray = Array(
-              if(maxMem>r) maxMem else r,
-              if(maxMem>b) maxMem else b,
-              if(maxMem>g) maxMem else g,
-              1f
-            )
-            node.form.material.setAmbient(colorArray)
-            node.form.material.setDiffuse(colorArray)
-            node.form.material.setSpecular(colorArray)
-          }
-        }
-      }})
-      return true
+  // volume <-> color of node
+  var max = 0f
+  var maxMem = 0f
+  val r = node.form.materialCopy.getAmbient(0)
+  val b = node.form.materialCopy.getAmbient(1)
+  val g = node.form.materialCopy.getAmbient(2)
+  var colorArray = Array(r,b,g,1f)
+  synthesizer.amplitude.map( x => { if (node.isWithinField) {
+    synthesizer.setAmplitudeUpdateDivisions(0)
+    if (!(x1==0&&x2==0&&x3==0&&x==0&&maxMem<0.005)) {
+      x1 = x2
+      x2 = x3
+      x3 = x.abs*11
+      max = List(x1,x2,x3).max
+      maxMem = if (max<maxMem) (max+maxMem)/2 else max
+      if(!node.form.isGrey) {
+        colorArray = Array(
+          if(maxMem>r) maxMem else r,
+          if(maxMem>b) maxMem else b,
+          if(maxMem>g) maxMem else g,
+          1f
+        )
+        node.form.material.setAmbient(colorArray)
+        node.form.material.setDiffuse(colorArray)
+        node.form.material.setSpecular(colorArray)
+      }
     }
-    false
-  }
+  }})
 }

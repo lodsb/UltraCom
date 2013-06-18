@@ -81,7 +81,7 @@ SynthDef("Polywaves") {
 
 
   val gateChanger = Changed1.kr(gate)
-  val percussiveEnvelope = EnvGen.kr(Env.perc(attack=speed/atk, release=speed*overlap, level=20), gateChanger, doneAction=2)
+  val percussiveEnvelope = EnvGen.kr(Env.perc(attack=speed/atk, release=speed*overlap, level=20), gateChanger, doneAction=1)
 
 	val noiseGen = PinkNoise.ar(noiseVol);
 	val line = Line.kr(filterStart,filterEnd,3);
@@ -115,15 +115,8 @@ SynthDef("Polywaves") {
     x.abs/360
   }
 
-  var local = LocalIn.ar(2) + sin
 
-  for(i <- 1 to 10) {
-    local = AllpassN.ar(local, 0.01, i*0.01*scaleDown(rotationX), scaleMoreDown(rotationX))
-  }
-
-
-  LocalOut.ar(local*scaleDown(rotationX))
-  AudioServer.attach(sin + local)
+  AudioServer.attach(sin)
 
 
 }

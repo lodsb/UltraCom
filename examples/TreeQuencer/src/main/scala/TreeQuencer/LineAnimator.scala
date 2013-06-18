@@ -31,7 +31,7 @@ object LineAnimator {
    * Resets the nodes, which have to be animated.
    * Starts the thread also if not started or terminated
    */
-  def startLineAnimations(nodes: NodeSet[Node], durationFactor: Float = 1f) {println("startLineAnimations(), nodes.size="+nodes.size)
+  def startLineAnimations(nodes: NodeSet[Node], durationFactor: Float = 1f) {
     if (nodes.size==0) return
     /**
      * One single thread for the dot animation on the lines.
