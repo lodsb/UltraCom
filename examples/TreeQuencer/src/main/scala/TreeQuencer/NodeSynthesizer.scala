@@ -30,7 +30,6 @@ class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
   var synthesizer = FileImporter.cacheSynth(file)
   synthesizer.run(flag = false)
 
-
   def play() {
     switch
     synthesizer.run
