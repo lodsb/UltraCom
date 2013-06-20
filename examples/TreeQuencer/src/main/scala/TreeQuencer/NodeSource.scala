@@ -6,6 +6,7 @@ import collection.mutable.ArrayBuffer
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor
 import org.mt4j.input.inputProcessors.{MTGestureEvent, IGestureEventListener}
 import org.mt4j.input.inputProcessors.MTGestureEvent._
+import org.mt4j.types.Vec3d
 
 /**
  * This source code is licensed as GPLv3 if not stated otherwise.
@@ -25,13 +26,16 @@ import org.mt4j.input.inputProcessors.MTGestureEvent._
  * Don't eat the pills!
  */
 
+/**
+ * classes for creating the nodes within sequence game
+ */
 object NodeSource {
   val sourcesList = new Array[NodeSource](FileImporter.formFiles.size)
   def buildSources {
     var x = 100
     for (i <- 0 to FileImporter.formFiles.size-1) {
-      sourcesList(i) = new NodeSource(i,new Vector3D(x,100))
-      x += 100
+      sourcesList(i) = new NodeSource(i,Vec3d(x,90))
+      x += 110
     }
   }
 }
@@ -46,9 +50,11 @@ class NodeSource(val nodeType: Int, val pos: Vector3D) {
       synthesizer = Import.synthesizer(this,FileImporter.synthiFiles(nodeType))
       form.setPositionGlobal(pos)
       form.addGestureListener(classOf[DragProcessor], new IGestureEventListener {
+        var madeOne = false
         def processGestureEvent(e: MTGestureEvent): Boolean = {
-          if (e.getId == GESTURE_ENDED) {
+          if (e.getId == GESTURE_ENDED && !madeOne) {
             createNewNode
+            madeOne = true
           }
           false
         }

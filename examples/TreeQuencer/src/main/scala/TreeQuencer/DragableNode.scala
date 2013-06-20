@@ -73,9 +73,7 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
     lineToAncestor.update()
   }
 
-  def position: Vertex = {
-    new Vertex(form.getCenterPointGlobal)
-  }
+  def position = new Vertex(form.center)
 
 
   def getNearestPossibleAncestor: DragableNode = {
@@ -186,7 +184,7 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
       case GESTURE_ENDED => {
         // if SourceNode() isn't occupied by another node
         // add new RandomNode() to field center
-        if(!SourceNode.isOccupied) {
+        if(app.game != app.SEQUENCE_GAME && !SourceNode.isOccupied) {
           SourceNode += RandomNode()
         }
       }

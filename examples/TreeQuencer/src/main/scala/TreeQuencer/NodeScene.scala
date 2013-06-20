@@ -15,6 +15,8 @@ import java.beans.{PropertyChangeEvent, PropertyChangeListener}
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor
 import org.mt4j.input.inputProcessors.{MTGestureEvent, IGestureEventListener}
 import org.mt4j.input.inputProcessors.MTGestureEvent._
+import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.{TapEvent, TapProcessor}
+import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent._
 
 /**
  * This source code is licensed as GPLv3 if not stated otherwise.
@@ -200,6 +202,20 @@ class NodeScene() extends Scene(app,"TreeQuencer") {
             activeSlider = null
           } else if (ge.getId == GESTURE_DETECTED) {
             activeSlider = slider
+          }
+          false
+        }
+      })
+      sliders(i).getOuterShape.addGestureListener(classOf[TapProcessor], new IGestureEventListener {
+        val slider = sliders(i)
+        def processGestureEvent(ge: MTGestureEvent): Boolean = {
+          val te = ge.asInstanceOf[TapEvent]
+          te.getTapID match {
+            case BUTTON_DOWN =>
+              activeSlider = slider
+            case BUTTON_UP =>
+              activeSlider = null
+            case _ =>
           }
           false
         }

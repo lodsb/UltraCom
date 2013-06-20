@@ -3,7 +3,6 @@ package main.scala.TreeQuencer
 import java.io.File
 import org.mt4j.output.audio.AudioServer._
 import org.lodsb.reakt.async.VarA
-import de.sciss.synth._
 
 
 /**
@@ -23,32 +22,33 @@ import de.sciss.synth._
  * 
  * Don't eat the pills!
  */
- 
+
  
 class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
-  var schalter = 1f
+  private var _switch = new VarA[Float](0f)
+  def switch = {_switch() = if(_switch()==1) 0f else 1f}
   var synthesizer = FileImporter.cacheSynth(file)
-
+  synthesizer.run(flag = false)
 
   def play() {
-    schalter = if(schalter==1) 0.1f else 1f
-    synthesizer.parameters() = ("gate",schalter)
+    switch
     synthesizer.run
   }
 
-  def free {
-    synthesizer.run(false)
+  def free() {
+    synthesizer.run(flag = false)
     synthesizer.free
     synthesizer = null
   }
 
-  def bind (value: VarA[Float], parameter: String, function: Float => Float) {
+  def bind (value: VarA[Float], parameter: String, function: Float => Float = (x:Float) => {x}) {
     value.map( z => {
       synthesizer.parameters() = (parameter,function(z))
     })
   }
 
-
+  bind(_switch, "gate")
+  switch
   bind(node.form.rotationZ, "rotationZ", (x:Float) => {x})
   bind(node.form.rotationY, "rotationY", (x:Float) => {x})
   bind(node.form.rotationX, "rotationX", (x:Float) => {x})
@@ -88,4 +88,5 @@ class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
       }
     }
   }})
+
 }
