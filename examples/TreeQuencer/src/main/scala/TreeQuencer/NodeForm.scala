@@ -13,6 +13,7 @@ import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEven
 import org.mt4j.input.inputProcessors.componentProcessors.rotate3DProcessor.Rotate3DEvent
 import java.awt.event.KeyEvent._
 import scala.math._
+import org.mt4j.types.Vec3d
 
 
 /**
@@ -83,7 +84,8 @@ class NodeForm(val file: File) extends MTComponent(app) {
     mesh.setDrawNormals(false)
 
     // translate to center
-    mesh.translateGlobal(app.center.getSubtracted(center))
+    mesh.translateGlobal(app.center.getSubtracted(position))
+    mesh.translateGlobal(Vec3d(0,0,app.nodeZ))
 
   })
 
@@ -91,7 +93,7 @@ class NodeForm(val file: File) extends MTComponent(app) {
   setComposite(true)
 
   // scale 3d object to adequate size on screen
-  scaleGlobal(scale, scale, scale, center)
+  scaleGlobal(scale, scale, scale, position)
 
 
   // METHODS -----
@@ -104,7 +106,7 @@ class NodeForm(val file: File) extends MTComponent(app) {
     biggestMesh.getCenterPointGlobal
   }
   override def setPositionGlobal(newPosition: Vector3D) {
-    translateGlobal(newPosition.getSubtracted(center))
+    translateGlobal(newPosition.getSubtracted(position))
   }
 
   val X_AXIS = 1
@@ -118,7 +120,7 @@ class NodeForm(val file: File) extends MTComponent(app) {
         scale(e.getScaleFactorX, e.getScaleFactorY)
 
       case e: RotateEvent =>
-        rotateZGlobal(center, e.getRotationDegrees)
+        rotateZGlobal(position, e.getRotationDegrees)
         rotationZ() += e.getRotationDegrees
 
       case e: DragEvent =>
@@ -128,7 +130,7 @@ class NodeForm(val file: File) extends MTComponent(app) {
           app.keyCode match {
             case VK_SHIFT => // scale while holding shift-key
 
-              if (center.distance(e.getFrom) < center.distance(e.getTo)) {
+              if (position.distance(e.getFrom) < position.distance(e.getTo)) {
                 scale(1.03f)
               } else {
                 scale(0.97f)
@@ -137,8 +139,8 @@ class NodeForm(val file: File) extends MTComponent(app) {
             case VK_CONTROL => // rotate while holding ctrl-key
 
               // normalize vectors
-              val from = e.getFrom.getSubtracted(center).getNormalized
-              val to = e.getTo.getSubtracted(center).getNormalized
+              val from = e.getFrom.getSubtracted(position).getNormalized
+              val to = e.getTo.getSubtracted(position).getNormalized
 
               // set the reference vector,
               // to know what is the directorion for positive angles.
@@ -154,7 +156,7 @@ class NodeForm(val file: File) extends MTComponent(app) {
               // transform angle in radians to degrees
               angle *= 180/Pi.toFloat
 
-              rotateZGlobal(center, angle)
+              rotateZGlobal(position, angle)
               rotationZ() += angle
 
             case VK_ALT => // rotate 3D while pressing Alt-key
@@ -173,10 +175,10 @@ class NodeForm(val file: File) extends MTComponent(app) {
                     rotationAxis = X_AXIS
                   }
                 case X_AXIS =>
-                  rotateXGlobal(center, -direction.getY)
+                  rotateXGlobal(position, -direction.getY)
                   rotationX() += -direction.getY
                 case Y_AXIS =>
-                  rotateYGlobal(center, direction.getX)
+                  rotateYGlobal(position, direction.getX)
                   rotationY() += direction.getX
                 case _ =>
               }
@@ -234,7 +236,7 @@ class NodeForm(val file: File) extends MTComponent(app) {
       makeGrey(makeItGrey = false)
     }
 
-    scaleGlobal(max, max, max, center)
+    scaleGlobal(max, max, max, position)
   }
 
   def makeGrey(makeItGrey: Boolean) {
@@ -255,6 +257,6 @@ class NodeForm(val file: File) extends MTComponent(app) {
    * Syntactic sugar
    * @return the global center of this form
    */
-  def center = getCenterPointGlobal
+  def position = getCenterPointGlobal
 
 }

@@ -1,7 +1,7 @@
 Wed Jan 30 04:24:13 CET 2008	
 Frametitle=TreeQuencer
-DefaultAudioDevice=ASIO4ALL
-ScSynthPath=/usr/local/bin/scsynth
+#DefaultAudioDevice=ASIO4ALL
+ScSynthPath=C:/Program Files (x86)/SuperCollider-3.6.2/scsynth.exe
 #Renderer: OpenGL: 1 P3D: 2
 Renderer=1
 #Fullscreen:'true' or 'false'
@@ -11,7 +11,7 @@ Fullscreen=false
 FullscreenExclusive=false
 #Resolution
 DisplayWidth=1500
-DisplayHeight=1000
+DisplayHeight=950
 #Which display to use for fullscreen
 Display=2
 #Framerate maximum
@@ -30,7 +30,10 @@ OpenGLAntialiasing=1
 # 0 is the standard game with the random nodes in the middle of the screen
 # 1 is the game, where several still nodes are put in sequence and the others get docked to them
 # 2 is similar to 0, but the distance of a node to the center defines how often/fast it gets triggered
-GameNumber=1
+GameNumber=0
 
 # StillNodeCount defines how many still nodes at game 2 will be on the field from the beginning
-StillNodeCount=8
+StillNodeCount=4
+
+# BackgroundImage sets the filename for the background image
+BackgroundImage=flower_mandala.jpg

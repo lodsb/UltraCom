@@ -9,8 +9,8 @@ import org.mt4j.util.MTColor
 import java.awt.event.KeyEvent
 import java.awt.event.KeyEvent._
 import org.mt4j.components.visibleComponents.shapes.MTEllipse
-import org.mt4j.components.visibleComponents.widgets.{MTSlider, Slider}
-import org.mt4j.types.{Rotation, Vec3d}
+import org.mt4j.components.visibleComponents.widgets.{MTBackgroundImage, MTSlider, Slider}
+import org.mt4j.types.Vec3d
 import java.beans.{PropertyChangeEvent, PropertyChangeListener}
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor
 import org.mt4j.input.inputProcessors.{MTGestureEvent, IGestureEventListener}
@@ -40,6 +40,7 @@ object app extends Application {
   // some global values
   def apply = this
   def center = new Vector3D(width/2f, height/2f)
+  val nodeZ = 90 // z coordinates from all NodeForms, that get instantiated
   var scene: NodeScene = null
   var light: MTLight = null
   val globalNodeSet = new NodeSet[Node]() // all nodes are globally stored here
@@ -83,7 +84,15 @@ class NodeScene() extends Scene(app,"TreeQuencer") {
   MTLight.enableLightningAndAmbient(app, 150, 150, 150, 255)
   showTracer(show = true)
 
-  initializeSliders
+  val imageFileName = MTApplication.getProperties.getProperty("BackgroundImage", "")
+  if (imageFileName != "") {
+    val image = app.loadImage(imageFileName)
+    image.resize(app.width, app.height)
+    val backgroundImage = new MTBackgroundImage(app, image, false)
+    canvas().addChild(backgroundImage)
+  }
+
+  initializeSliders()
 
   app.game = MTApplication.getProperties.getProperty("GameNumber", "0").toInt
 
@@ -91,19 +100,19 @@ class NodeScene() extends Scene(app,"TreeQuencer") {
 
     case app.RANDOM_GAME =>
       println("Random game chosen")
-      createInnerCircle
+      createInnerCircle()
       SourceNode() += RandomNode()
       NodeMetronome.start()
 
     case app.SEQUENCE_GAME =>
       println("Sequence game chosen")
-      NodeSource.buildSources
+      NodeSource.buildSources()
       initializeStillNodes(MTApplication.getProperties.getProperty("StillNodeCount","4").toInt)
       NodeMetronome.start()
 
     case app.TIMESHIFT_GAME =>
       println("Timeshift game chosen")
-      createInnerCircle
+      createInnerCircle()
       SourceNode() += RandomNode()
       Metronome().start()
 
@@ -114,7 +123,7 @@ class NodeScene() extends Scene(app,"TreeQuencer") {
 
   // method definitions
 
-  def createInnerCircle {
+  def createInnerCircle() {
     val innerCircle: MTEllipse = new MTEllipse(app, app.center, app.innerCircleRadius.toFloat, app.innerCircleRadius.toFloat)
     innerCircle.setNoFill(true)
     innerCircle.setStrokeColor(new MTColor(0,0,0))
@@ -139,28 +148,29 @@ class NodeScene() extends Scene(app,"TreeQuencer") {
     NodeMetronome += stillNodes(0)
   }
 
-  def initializeSliders {
+  def initializeSliders() {
     // the active slider is the one of all four, who is changed at the moment (only one at a time)
     var activeSlider = null.asInstanceOf[MTSlider]
 
     // create four sliders clockwise at each edge on the screen
     val sliders = new Array[MTSlider](4)
 
-    val sliderHeight = 20f
+    val sliderHeight = 20
+    val margin = sliderHeight/2f
+    val grey = new MTColor(100,100,100)
+    val black = new MTColor(0,0,0)
 
     for (i <- 0 to 3) {
 
       // create it
-      sliders(i) = Slider(255f,2000f, 400, sliderHeight)
+      sliders(i) = Slider(200f,2000f, 400, sliderHeight)
       canvas.addChild(sliders(i))
 
       // make it colourfull
-      sliders(i).setFillColor(new MTColor(100,100,100))
-      sliders(i).setStrokeColor(new MTColor(0,0,0))
+      sliders(i).setFillColor(grey)
+      sliders(i).setStrokeColor(black)
 
       // position it
-      val margin = sliderHeight/2f
-
       sliders(i).globalPosition := { i match { // on each side of the screen clockwise
         case 0 => Vec3d(app.width/2f, margin)
         case 1 => Vec3d(app.width-margin, app.height/2f)

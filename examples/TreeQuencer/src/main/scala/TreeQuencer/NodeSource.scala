@@ -1,8 +1,6 @@
 package main.scala.TreeQuencer
 
-import java.io.File
 import org.mt4j.util.math.Vector3D
-import collection.mutable.ArrayBuffer
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor
 import org.mt4j.input.inputProcessors.{MTGestureEvent, IGestureEventListener}
 import org.mt4j.input.inputProcessors.MTGestureEvent._
@@ -31,10 +29,10 @@ import org.mt4j.types.Vec3d
  */
 object NodeSource {
   val sourcesList = new Array[NodeSource](FileImporter.formFiles.size)
-  def buildSources {
+  def buildSources() {
     var x = 100
     for (i <- 0 to FileImporter.formFiles.size-1) {
-      sourcesList(i) = new NodeSource(i,Vec3d(x,90))
+      sourcesList(i) = new NodeSource(i,Vec3d(x,90,app.nodeZ))
       x += 110
     }
   }
@@ -42,18 +40,18 @@ object NodeSource {
 
 class NodeSource(val nodeType: Int, val pos: Vector3D) {
 
-  createNewNode
+  createNewNode()
 
-  def createNewNode {
+  def createNewNode() {
     new Node {
       form = Import.form(FileImporter.formFiles(nodeType))
       synthesizer = Import.synthesizer(this,FileImporter.synthiFiles(nodeType))
       form.setPositionGlobal(pos)
       form.addGestureListener(classOf[DragProcessor], new IGestureEventListener {
         var madeOne = false
-        def processGestureEvent(e: MTGestureEvent): Boolean = {
+        def processGestureEvent(e: MTGestureEvent) = {
           if (e.getId == GESTURE_ENDED && !madeOne) {
-            createNewNode
+            createNewNode()
             madeOne = true
           }
           false

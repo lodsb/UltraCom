@@ -215,14 +215,12 @@ object AudioServer {
 			cfg.deviceName = Some(audioDev);
 		}
 
-		Server.run(cfg) {
-
-			s =>
-				s.nodeMgr.addListener(NodeListener)
-				timerTriggerSynth.play
-				Responder.add(ServerResponder)
-				serverBooted = true
-				func
+		Server.run(cfg) { s =>
+      s.nodeMgr.addListener(NodeListener)
+      timerTriggerSynth.play
+      Responder.add(ServerResponder)
+      serverBooted = true
+      func
 		}
 	}
 

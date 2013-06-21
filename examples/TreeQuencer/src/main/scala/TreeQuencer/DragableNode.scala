@@ -73,7 +73,7 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
     lineToAncestor.update()
   }
 
-  def position = new Vertex(form.center)
+  def position = new Vertex(form.position)
 
 
   def getNearestPossibleAncestor: DragableNode = {

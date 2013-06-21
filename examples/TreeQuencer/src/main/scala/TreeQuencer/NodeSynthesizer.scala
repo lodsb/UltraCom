@@ -49,6 +49,7 @@ class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
 
   bind(_switch, "gate")
   switch
+
   bind(node.form.rotationZ, "rotationZ", (x:Float) => {x})
   bind(node.form.rotationY, "rotationY", (x:Float) => {x})
   bind(node.form.rotationX, "rotationX", (x:Float) => {x})
@@ -68,11 +69,11 @@ class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
   val g = node.form.materialCopy.getAmbient(2)
   var colorArray = Array(r,b,g,1f)
   synthesizer.amplitude.map( x => { if (node.isWithinField) {
-    synthesizer.setAmplitudeUpdateDivisions(0)
+    synthesizer.setAmplitudeUpdateDivisions(1)
     if (!(x1==0&&x2==0&&x3==0&&x==0&&maxMem<0.005)) {
       x1 = x2
       x2 = x3
-      x3 = x.abs*11
+      x3 = x.abs*500
       max = List(x1,x2,x3).max
       maxMem = if (max<maxMem) (max+maxMem)/2 else max
       if(!node.form.isGrey) {
