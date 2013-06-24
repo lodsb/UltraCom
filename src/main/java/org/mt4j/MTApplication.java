@@ -39,8 +39,8 @@ import java.util.Properties;
 import javax.media.opengl.GL;
 import javax.swing.ImageIcon;
 
-import codeanticode.glgraphics.GLConstants;
-import codeanticode.glgraphics.GLGraphics;
+//import codeanticode.glgraphics.GLConstants;
+//import codeanticode.glgraphics.GLGraphics;
 //import codeanticode.glgraphics.GLShader;
 //import codeanticode.glgraphics.GLSLShader;
 import org.apache.log4j.ConsoleAppender;
@@ -66,6 +66,7 @@ import org.mt4j.util.math.Tools3D;
 import org.mt4j.util.opengl.GLFBO;
 
 import processing.core.PApplet;
+import processing.opengl.*;
 
 import org.joda.time.DateTime;
 
@@ -398,7 +399,7 @@ public abstract class MTApplication extends PApplet {
             getSettingsFromFile();
 
             // Launch processing PApplet main() function
-            if (MT4jSettings.getInstance().isFullscreen()) {
+/*            if (MT4jSettings.getInstance().isFullscreen()) {
                 if (MT4jSettings.getInstance().isFullscreenExclusive()) {
                     PApplet.runSketch(new String[]{
                             "--display=" + MT4jSettings.getInstance().getDisplay(),
@@ -423,7 +424,8 @@ public abstract class MTApplication extends PApplet {
                         this);
             }
         }
-
+*/
+            PApplet.runSketch(new String[]{"fii"}, this);}
     }
 
     private static void getSettingsFromFile() {
@@ -639,7 +641,7 @@ public abstract class MTApplication extends PApplet {
         else if (MT4jSettings.getInstance().getRendererMode() == MT4jSettings.P3D_MODE)
             this.size(MT4jSettings.getInstance().getWindowWidth(), MT4jSettings.getInstance().getWindowHeight(), PApplet.P3D);
 		else if (MT4jSettings.getInstance().getRendererMode() == MT4jSettings.GLGRAPHICS_MODE) {
-			this.size(MT4jSettings.getInstance().getWindowWidth(), MT4jSettings.getInstance().getWindowHeight(), GLConstants.GLGRAPHICS);
+			this.size(MT4jSettings.getInstance().getWindowWidth(), MT4jSettings.getInstance().getWindowHeight(), OPENGL);
 		}
 
         //Switch to different resolution in fullscreen exclusive mode if neccessary
@@ -693,7 +695,7 @@ public abstract class MTApplication extends PApplet {
         logger.info("Maximum framerate: \"" + MT4jSettings.getInstance().getMaxFrameRate() + "\"");
 
         //FIXME TODO add in settings.txt?
-        hint(MTApplication.DISABLE_OPENGL_ERROR_REPORT);
+        //hint(MTApplication.DISABLE_OPENGL_ERROR_REPORT);
 
         MT4jSettings.getInstance().programStartTime = System.currentTimeMillis();
 
@@ -772,14 +774,14 @@ public abstract class MTApplication extends PApplet {
         }
     }
 
-    public void setOpenGLErrorReportingEnabled(boolean reportErros) {
+/*    public void setOpenGLErrorReportingEnabled(boolean reportErros) {
         if (reportErros) {
             hint(MTApplication.ENABLE_OPENGL_ERROR_REPORT);
         } else {
             hint(MTApplication.DISABLE_OPENGL_ERROR_REPORT);
         }
     }
-
+*/
     /**
      * ********************************************************************************************
      * Processings draw() gets called repeatedly by processings PApplet Class - unless noloop() is called
@@ -789,7 +791,7 @@ public abstract class MTApplication extends PApplet {
 	//private GLShader shader;
     @Override
     public void draw() {
-		GLGraphics renderer = (GLGraphics) g;
+		//GLGraphics renderer = (GLGraphics) g;
 		//renderer.beginGL();
 		//shader.start(); currently not used :-)
         this.runApplication();

@@ -58,7 +58,7 @@ class NodeForm(val file: File) extends MTComponent(app) {
     SessionLogger.log("Created Node", SessionEvent.Event, this, null, null)
   }
 
-  setLight(app.light)
+  //setLight(app.light)
 
   // Set up a material to react to the light
   var material = FileImporter.cacheGLMaterial(new File(file.getAbsolutePath.replace(".obj", "_material.scala")))

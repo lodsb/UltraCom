@@ -76,14 +76,14 @@ object app extends Application {
    * Quit application, when pressing escape on keyboard
    * @param e The key event
    */
-  override protected def handleKeyEvent(e: KeyEvent) {
+/*  override protected def handleKeyEvent(e: KeyEvent) {
     if (keyPressed && keyCode == VK_ESCAPE) {
       AudioServer.quit // quit supercollider server scsynth
       Runtime.getRuntime.halt(0) // quit java runtime environment
     }
     super.handleKeyEvent(e)
   }
-
+ */
 }
 
 class NodeScene() extends Scene(app,"TreeQuencer") {
@@ -91,7 +91,7 @@ class NodeScene() extends Scene(app,"TreeQuencer") {
   app.loggingEnabled = app.getProperty("EnableLogging") match {case "true"=>true case _=>false}
   app.scene = this
   app.scene.setClearColor(Color(0,0,0))
-  app.light = new MTLight(app, GL.GL_LIGHT3, Vec3d(0,0,200))//app.center.getAdded(app.scene.getSceneCam.getPosition))
+  //app.light = new MTLight(app new Vector3D(0,0,200))//app.center.getAdded(app.scene.getSceneCam.getPosition))
   MTLight.enableLightningAndAmbient(app, 150, 150, 150, 255)
   showTracer(show = true)
 

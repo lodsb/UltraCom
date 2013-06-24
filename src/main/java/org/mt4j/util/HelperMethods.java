@@ -23,8 +23,10 @@ import javax.media.opengl.GL;
 import org.mt4j.util.math.Matrix;
 
 import processing.core.PApplet;
-import processing.core.PGraphics3D;
+import processing.opengl.PGraphics3D;
 import processing.opengl.PGraphicsOpenGL;
+
+import javax.media.opengl.GL2;
 
 /**
  * The Class HelperMethods.
@@ -167,7 +169,7 @@ public class HelperMethods {
     /**
      * The gl.
      */
-    private static GL gl;
+    private static GL2 gl;
 
     /**
      * The ctm.
@@ -182,20 +184,20 @@ public class HelperMethods {
      * @param pa the pa
      * @return the gL
      */
-    public static GL beginGL(PApplet pa) {
-        switch (RENDERER_STATE) {
-            case PROCESSING_MATRIX_MODE:
-                RENDERER_STATE = OPENGL_MATRIX_MODE;
-                gl = ((PGraphicsOpenGL) pa.g).beginGL();
-                return gl;
-            case OPENGL_MATRIX_MODE:
-//			return ((PGraphicsOpenGL)pa.g).gl;
-                return getGL();
-            default:
-                break;
-        }
-        return ((PGraphicsOpenGL) pa.g).beginGL();
-    }
+//    public static GL beginGL(PApplet pa) {
+//        switch (RENDERER_STATE) {
+//            case PROCESSING_MATRIX_MODE:
+//                RENDERER_STATE = OPENGL_MATRIX_MODE;
+//                gl = ((PGraphicsOpenGL) pa.g).beginPGL();
+//                return gl;
+//            case OPENGL_MATRIX_MODE:
+////			return ((PGraphicsOpenGL)pa.g).gl;
+//                return getGL();
+//            default:
+//                break;
+//        }
+//        return ((PGraphicsOpenGL) pa.g).beginGL();
+//    }
 
     /*
     //Methoden mÃÅssten in basecomponent
@@ -239,18 +241,18 @@ public class HelperMethods {
      *
      * @param pa the pa
      */
-    public static void endGL(PApplet pa) {
-        switch (RENDERER_STATE) {
-            case PROCESSING_MATRIX_MODE:
-                break;
-            case OPENGL_MATRIX_MODE:
-                RENDERER_STATE = PROCESSING_MATRIX_MODE;
-                ((PGraphicsOpenGL) pa.g).endGL();
-                break;
-            default:
-                break;
-        }
-    }
+//    public static void endGL(PApplet pa) {
+//        switch (RENDERER_STATE) {
+//            case PROCESSING_MATRIX_MODE:
+//                break;
+//            case OPENGL_MATRIX_MODE:
+//                RENDERER_STATE = PROCESSING_MATRIX_MODE;
+//                ((PGraphicsOpenGL) pa.g).endGL();
+//                break;
+//            default:
+//                break;
+//        }
+//    }
 
 
     //TODO ÃÅberall nur noch getgel statt cast schrott
