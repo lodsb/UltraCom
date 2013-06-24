@@ -50,18 +50,28 @@ SynthDef("Wobble") {
 	def wobbles(rotation: GE): GE = {
 		(rotation.abs / 30).floor + 1
 	}
+	
+	def scaledRot(rotation:GE): GE = {
+		Clip.kr(rotation / 720, 0, 1);
+	}
 
 
-	// CREATING SOUND -----
-	var base = RLPF.ar(Pulse.ar(Seq(0.99, 0.5, 1.01).map(_ * halftone(rotationZ)), pw), cf, 0.3).madd(range(SinOsc.kr(wobbles(rotationY)), 0.5, 4), 0).sin
-	val env = EnvGen.kr(Env.perc(attack = 0.01, release = duration(rotationX)), Changed1.kr(gate), doneAction = 1)
-	val bd = (Ringz.ar(LPF.ar(Trig.ar(t_bd, SampleDur.ir), beatDuration), 30, 0.5, 5).sin * 2).tanh
-	var sd = (Ringz.ar(LPF.ar(Trig.ar(t_sd, SampleDur.ir), beatDuration), 120, 0.75, PinkNoise.ar(2)).sin * 2).tanh
-	sd = HPF.ar(sd, 60)
-	//base = (GVerb.ar(HPF.ar(base * env,30), 70, 11, 0.15)*0.5 + base + bd + sd).tanh
-	base = (HPF.ar(base * env, 30) * 0.5 + base + bd + sd).tanh
-
-	val sig = SplayAz.ar(2, Pan2.ar(volume * base * amp * env))
+	// CREATING SOUND -----	
+	var root:GE = 50+(12*scaledRot(rotationZ));
+	var trigger = Changed1.kr(gate);
+	var imp = EnvGen.ar(Env.perc(0.2,Clip.kr(scaledRot(rotationY),0,1)+0.1), trigger);
+	var freqs = Seq(root-24,root+7,root+15).midicps;
+	var freqs2 = Seq(root,root+12,root+3).midicps;
+	var osc = Pulse.ar(freqs, SinOsc.ar(0.2*LFNoise0.kr(0.2)))+ Saw.ar(freqs2);
+	 
+	 
+	 
+	var sig:GE = LeakDC.ar(BLowPass.ar(osc,10+(imp*(10 + scaledRot(rotationX)*10000))));
+	sig = 0.35*DelayN.ar(sig,0.17,0.17)+sig;
+	sig = 0.35*DelayN.ar(sig,0.27,0.27)+sig;
+	sig = 0.35*DelayN.ar(sig,0.45,0.45)+sig;
+	sig = 0.35*DelayN.ar(sig,0.75,0.75)+sig;
+	sig = Limiter.ar(FreeVerb.ar(SplayAz.ar(2,sig),0.9, 0.4));
 
 	AudioServer.attach(sig)
 
