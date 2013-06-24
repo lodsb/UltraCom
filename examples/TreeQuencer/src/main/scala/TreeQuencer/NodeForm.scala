@@ -43,6 +43,9 @@ class NodeForm(val file: File) extends MTComponent(app) {
   val rotationX = new VarA[Float](0f)
   val rotationY = new VarA[Float](0f)
   val rotationZ = new VarA[Float](0f)
+  val xRot: AutoRotation = xRotator(this)
+  val yRot: AutoRotation = yRotator(this)
+  val zRot: AutoRotation = zRotator(this)
 
   setLight(app.light)
 
@@ -111,8 +114,12 @@ class NodeForm(val file: File) extends MTComponent(app) {
 
   val X_AXIS = 1
   val Y_AXIS = 2
+  val Z_AXIS = 3
   val NONE = 0
   var rotationAxis = NONE
+
+  // stuff for rotator
+
   def handleEvent(e: MTGestureEvent) {
     e match {
 
@@ -122,6 +129,11 @@ class NodeForm(val file: File) extends MTComponent(app) {
       case e: RotateEvent =>
         rotateZGlobal(position, e.getRotationDegrees)
         rotationZ() += e.getRotationDegrees
+        if (e.getId == GESTURE_UPDATED) {
+          zRot.degrees(e.getRotationDegrees)
+        } else if (e.getId == GESTURE_ENDED) {
+          zRot.run()
+        }
 
       case e: DragEvent =>
         if (e.getId == GESTURE_UPDATED && app.keyPressed) {
@@ -137,6 +149,8 @@ class NodeForm(val file: File) extends MTComponent(app) {
               }
 
             case VK_CONTROL => // rotate while holding ctrl-key
+
+              rotationAxis = Z_AXIS
 
               // normalize vectors
               val from = e.getFrom.getSubtracted(position).getNormalized
@@ -158,6 +172,7 @@ class NodeForm(val file: File) extends MTComponent(app) {
 
               rotateZGlobal(position, angle)
               rotationZ() += angle
+              zRot.degrees(angle)
 
             case VK_ALT => // rotate 3D while pressing Alt-key
 
@@ -177,9 +192,11 @@ class NodeForm(val file: File) extends MTComponent(app) {
                 case X_AXIS =>
                   rotateXGlobal(position, -direction.getY)
                   rotationX() += -direction.getY
+                  zRot.degrees(-direction.getY)
                 case Y_AXIS =>
                   rotateYGlobal(position, direction.getX)
                   rotationY() += direction.getX
+                  zRot.degrees(direction.getX)
                 case _ =>
               }
           }
@@ -189,6 +206,14 @@ class NodeForm(val file: File) extends MTComponent(app) {
           translateGlobal(e.getTranslationVect)
         }
 
+        if (e.getId == GESTURE_ENDED) {
+          rotationAxis match {
+            case X_AXIS => xRot.run()
+            case Y_AXIS => yRot.run()
+            case Z_AXIS => zRot.run()
+            case _ =>
+          }
+        }
         if (!app.keyPressed && rotationAxis != NONE || e.getId == GESTURE_ENDED) {
           // reset rotation axis after completed action
           rotationAxis = NONE
@@ -201,11 +226,22 @@ class NodeForm(val file: File) extends MTComponent(app) {
         val xNormal = new Vector3D(1,0,0)
         val angle = xNormal.angleBetween(connection)*180f/Pi // to degree
         if ((315<angle || angle<45) || (135<angle && angle<225)) {
-          rotateXGlobal(e.getRotationPoint, e.getRotationDirection*e.getRotationDegreesX)
-          rotationX() += e.getRotationDirection*e.getRotationDegreesX
+          val degrees = e.getRotationDirection*e.getRotationDegreesX
+          rotateXGlobal(e.getRotationPoint, degrees)
+          rotationX() += degrees
+          if (e.getId == GESTURE_UPDATED) {
+            xRot.degrees(degrees)
+          }
         } else {
-          rotateYGlobal(e.getRotationPoint, e.getRotationDirection*e.getRotationDegreesY)
-          rotationY() += e.getRotationDirection*e.getRotationDegreesY
+          val degrees = e.getRotationDirection*e.getRotationDegreesX
+          rotateYGlobal(e.getRotationPoint, degrees)
+          rotationY() += degrees
+          if (e.getId == GESTURE_UPDATED) {
+            xRot.degrees(degrees)
+          }
+        }
+        if (e.getId == GESTURE_ENDED) {
+           xRot.run()
         }
 
       case _ =>
