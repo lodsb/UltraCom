@@ -32,7 +32,9 @@ class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
 
   def play() {
     switch
-    synthesizer.run
+    if(synthesizer != null) {
+      synthesizer.run
+    }
   }
 
   def free() {
@@ -56,12 +58,10 @@ class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
   bind(Metronome().duration, "beatDuration", (x:Float) => {x})
   bind(node.form.scaleFactor, "volume", (x:Float) => {if(x<0.8f) 0f else if(3f<x) 1f else 5/12f*x-1f/3})
 
-
-  var x1: Float = 0
-  var x2: Float = 0
-  var x3: Float = 0
+  val floatStack = new FloatStack(4)
 
   // volume <-> color of node
+  // kind of a low pass filter
   var max = 0f
   var maxMem = 0f
   val r = node.form.materialCopy.getAmbient(0)
@@ -70,11 +70,9 @@ class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
   var colorArray = Array(r,b,g,1f)
   synthesizer.amplitude.map( x => { if (node.isWithinField) {
     synthesizer.setAmplitudeUpdateDivisions(1)
-    if (!(x1==0&&x2==0&&x3==0&&x==0&&maxMem<0.005)) {
-      x1 = x2
-      x2 = x3
-      x3 = x.abs*500
-      max = List(x1,x2,x3).max
+    if (!(floatStack.isZero&&x==0&&maxMem<0.005)) {
+      floatStack.push(x.abs*500)
+      max = floatStack.max
       maxMem = if (max<maxMem) (max+maxMem)/2 else max
       if(!node.form.isGrey) {
         colorArray = Array(
