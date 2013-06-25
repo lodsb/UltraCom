@@ -17,17 +17,6 @@
  ***********************************************************************/
 package org.mt4j.util.math;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.DoubleBuffer;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.util.List;
-import java.util.StringTokenizer;
-
-import javax.media.opengl.GL;
-import javax.media.opengl.glu.GLU;
-
 import org.mt4j.MTApplication;
 import org.mt4j.components.interfaces.IMTComponent3D;
 import org.mt4j.components.visibleComponents.GeometryInfo;
@@ -37,13 +26,22 @@ import org.mt4j.util.MT4jSettings;
 import org.mt4j.util.camera.IFrustum;
 import org.mt4j.util.camera.Icamera;
 import org.mt4j.util.opengl.GLTexture;
-
 import processing.core.PApplet;
 import processing.core.PGraphics;
-import processing.core.PGraphics3D;
 import processing.core.PImage;
 import processing.core.PMatrix3D;
+import processing.opengl.PGL;
+import processing.opengl.PGraphics3D;
 import processing.opengl.PGraphicsOpenGL;
+
+import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
+import javax.media.opengl.GLException;
+import javax.media.opengl.glu.GLU;
+import javax.media.opengl.glu.gl2.GLUgl2;
+import java.nio.*;
+import java.util.List;
+import java.util.StringTokenizer;
 
 
 /**
@@ -66,12 +64,12 @@ public class Tools3D {
     /**
      * The model.
      */
-    private static DoubleBuffer model;
+    private static FloatBuffer model;
 
     /**
      * The proj.
      */
-    private static DoubleBuffer proj;
+    private static FloatBuffer proj;
 
     /**
      * The view.
@@ -81,13 +79,13 @@ public class Tools3D {
     /**
      * The win pos.
      */
-    private static DoubleBuffer winPos;
+    private static FloatBuffer winPos;
 
     static {
-        model = DoubleBuffer.allocate(16);
-        proj = DoubleBuffer.allocate(16);
+        model = FloatBuffer.allocate(16);
+        proj = FloatBuffer.allocate(16);
         view = IntBuffer.allocate(4);
-        winPos = DoubleBuffer.allocate(3);
+        winPos = FloatBuffer.allocate(3);
     }
 
 
@@ -137,51 +135,23 @@ public class Tools3D {
                 double[] mousePosArr = new double[4];
 
                 try {
-                    PGraphicsOpenGL pgl = ((PGraphicsOpenGL) applet.g);
-                    GL gl = pgl.beginGL();
-                    GLU glu = pgl.glu;
+                    PGL pgl = ((PGraphicsOpenGL) applet.g).beginPGL();
+                    GL2 gl = null;
 
-                    gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-                    gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, proj, 0);
-                    gl.glGetDoublev(GL.GL_MODELVIEW_MATRIX, model, 0);
+                    gl = pgl.gl.getGL2();
 
-                    /*
-                       System.out.println("OpenGL ProjectionMatrix: ");
-                       for (int i = 0; i < proj.length; i++) {
-                             double p = proj[i];
-                             System.out.print(p + ", ");
-                             //if (i%4 == 0 && i==3)
-                             if (i==3 || i== 7 || i== 11 || i==15) {
-                                 System.out.println();
-                             }
-                           }
-                       */
 
-                    /*
-                       System.out.println("OpenGL ModelviewMatrix: ");
-                       for (int i = 0; i < model.length; i++) {
-                             double p = model[i];
-                             System.out.print(p + ", ");
-                             //if (i%4 == 0 && i==3)
-                             if (i==3 || i== 7 || i== 11 || i==15) {
-                                 System.out.println();
-                             }
-                           }
-                       System.out.println();
-                       System.out.println("\n");
-                       */
+                    GLU glu = new GLUgl2();
 
-                    /*
-                       fbUn.clear();
-                       gl.glReadPixels((int)screenX, applet.height - (int)screenY, 1, 1, GL.GL_DEPTH_COMPONENT, GL.GL_FLOAT, fbUn);
-                       fbUn.rewind();
-                       glu.gluUnProject((double)screenX, applet.height - (double)screenY, (double)fbUn.get(0), model, 0, proj, 0, viewport, 0, mousePosArr, 0);
-                       */
+                    gl.glGetIntegerv(GL2.GL_VIEWPORT, viewport, 0);
+                    gl.glGetDoublev(GL2.GL_PROJECTION_MATRIX, proj, 0);
+                    gl.glGetDoublev(GL2.GL_MODELVIEW_MATRIX, model, 0);
+
 
                     //FIXME test not using glReadpixel to get the depth at the location
                     //instead we have to build a ray with the result, from the camera location going through the resulst and check for hits ourselves
                     glu.gluUnProject((double) screenX, applet.height - (double) screenY, 0, model, 0, proj, 0, viewport, 0, mousePosArr, 0);
-                    pgl.endGL();
+                    ((PGraphicsOpenGL) applet.g).endPGL();
 
                     returnVect = new Vector3D((float) mousePosArr[0], (float) mousePosArr[1], (float) mousePosArr[2]);
                 } catch (Exception e) {
@@ -189,6 +159,9 @@ public class Tools3D {
                     //System.out.println("Use method getWorldForScreenCoords only when drawing with openGL! And dont put negative screen values in!");
                 }
                 break;
+
+
+            // DEPRECATED
             case MT4jSettings.P3D_MODE:
 //			/*!
                 try {
@@ -299,7 +272,7 @@ public class Tools3D {
      * @param point the point to project to the screen
      * @return the vector3 d
      */
-    public static Vector3D projectGL(GL gl, GLU glu, Vector3D point) {
+    public static Vector3D projectGL(GL2 gl, GLU glu, Vector3D point) {
         return projectGL(gl, glu, point, null);
     }
 
@@ -307,7 +280,7 @@ public class Tools3D {
      * Projects the given point to screenspace.
      * <br>Shows where on the screen the point in 3d-Space will appear according
      * to the current viewport, model and projection matrices.
-     * <br><strong>Note</strong>: this method has to be called between a call to <code>processingApplet.beginGL()</code>
+     * <br><strong>Note</strong>: this method has to be called between a call to <code>processingApplet.beginPGL()</code>
      * and <code>processingApplet.endGL()</code>
      * <p><b>NOTE</b>: the openGL context has to be valid at the time of calling this method.
      *
@@ -317,22 +290,23 @@ public class Tools3D {
      * @param store the store - vector to store the result in or null to get a new vector
      * @return the vector3 d
      */
-    public static Vector3D projectGL(GL gl, GLU glu, Vector3D point, Vector3D store) {
+    public static Vector3D projectGL(GL2 gl, GLU glu, Vector3D point, Vector3D store) {
         if (store == null) {
             store = new Vector3D();
         }
 
         model.clear();
-        gl.glGetDoublev(GL.GL_MODELVIEW_MATRIX, model);
+        gl.glGetFloatv(GL2.GL_MODELVIEW_MATRIX, model);
 
         proj.clear();
-        gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, proj);
+        gl.glGetFloatv(GL2.GL_PROJECTION_MATRIX, proj);
 
         view.clear();
-        gl.glGetIntegerv(GL.GL_VIEWPORT, view);
+        gl.glGetIntegerv(GL2.GL_VIEWPORT, view);
         float viewPortHeight = (float) view.get(3);
 
         winPos.clear();
+
         glu.gluProject(point.x, point.y, point.z, model, proj, view, winPos);
 
         winPos.rewind();
@@ -383,10 +357,10 @@ public class Tools3D {
             case MT4jSettings.OPENGL_MODE:
                 try {
                     PGraphicsOpenGL pgl = ((PGraphicsOpenGL) applet.g);
-                    GL gl = pgl.beginGL();
-                    GLU glu = pgl.glu;
+                    GL2 gl = pgl.beginPGL().gl.getGL2();
+                    GLU glu = new GLUgl2();
                     Vector3D returnVect = projectGL(gl, glu, point);
-                    pgl.endGL();
+                    pgl.endPGL();
                     return returnVect;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -427,17 +401,18 @@ public class Tools3D {
     public static void beginDrawOnTopStayOnScreen(PApplet pa) {
         switch (MT4jSettings.getInstance().getRendererMode()) {
             case MT4jSettings.OPENGL_MODE:
-                GL gl = ((PGraphicsOpenGL) pa.g).gl;
-                gl.glDepthFunc(javax.media.opengl.GL.GL_ALWAYS); //turn off Z buffering
+                GL2 gl = Tools3D.getGL(pa);
+                gl.glDepthFunc(javax.media.opengl.GL2.GL_ALWAYS); //turn off Z buffering
                 //reset to the default camera
                 pa.camera();
                 break;
             case MT4jSettings.P3D_MODE:
-                for (int i = 0; i < ((PGraphics3D) pa.g).zbuffer.length; i++) {
+                // BROKEN
+            /*    for (int i = 0; i < ((PGraphics3D) pa.g).zbuffer.length; i++) {
                     ((PGraphics3D) pa.g).zbuffer[i] = Float.MAX_VALUE;
                 }
                 pa.camera();
-                break;
+                break;*/
             default:
                 break;
         }
@@ -452,8 +427,8 @@ public class Tools3D {
     public static void endDrawOnTopStayOnScreen(PApplet pa, Icamera camera) {
         switch (MT4jSettings.getInstance().getRendererMode()) {
             case MT4jSettings.OPENGL_MODE:
-                GL gl = ((PGraphicsOpenGL) pa.g).gl;
-                gl.glDepthFunc(GL.GL_LEQUAL); //This is used by standart processing..
+                GL2 gl = Tools3D.getGL(pa);
+                gl.glDepthFunc(GL2.GL_LEQUAL); //This is used by standart processing..
                 //Change camera back to current 3d camera
                 camera.update();
                 break;
@@ -471,27 +446,29 @@ public class Tools3D {
      *
      * @param g the g
      */
-    public static void disableDepthBuffer(PGraphics g) {
-        switch (MT4jSettings.getInstance().getRendererMode()) {
+    public static void disableDepthBuffer(PGraphicsOpenGL g) {
+        // BROKEN!!!
+/*        switch (MT4jSettings.getInstance().getRendererMode()) {
             case MT4jSettings.OPENGL_MODE:
 //			GL gl = ((PGraphicsOpenGL)pa.g).gl;
-                GL gl = ((PGraphicsOpenGL) g).gl;
-                gl.glPushAttrib(GL.GL_DEPTH_BUFFER_BIT);//FIXME TEST
-                gl.glDepthFunc(javax.media.opengl.GL.GL_ALWAYS); //turn off Z buffering
+                GL2 gl = Tools3D.getGL(g);
+                gl.glPushAttrib(GL2.GL_DEPTH_BUFFER_BIT);//FIXME TEST
+                gl.glDepthFunc(javax.media.opengl.GL2.GL_ALWAYS); //turn off Z buffering
                 break;
             case MT4jSettings.P3D_MODE:
 //			/*
 //			for(int i=0;i<((PGraphics3D)pa.g).zbuffer.length;i++){
 //			  ((PGraphics3D)pa.g).zbuffer[i]=Float.MAX_VALUE;
 //			}
-                for (int i = 0; i < ((PGraphics3D) g).zbuffer.length; i++) {
+                for (int i = 0; i < ((PGraphicsOpenGL) g).zbuffer.length; i++) {
                     ((PGraphics3D) g).zbuffer[i] = Float.MAX_VALUE;
                 }
-//			*/ 
+//
                 break;
             default:
                 break;
         }
+    */
     }
 
     /**
@@ -499,11 +476,11 @@ public class Tools3D {
      *
      * @param g the g
      */
-    public static void restoreDepthBuffer(PGraphics g) {
+    public static void restoreDepthBuffer(PGraphicsOpenGL g) {
         switch (MT4jSettings.getInstance().getRendererMode()) {
             case MT4jSettings.OPENGL_MODE:
-                GL gl = ((PGraphicsOpenGL) g).gl;
-//			gl.glDepthFunc(GL.GL_LEQUAL); //This is used by standart processing..
+                GL2 gl = Tools3D.getGL(g);
+//			gl.glDepthFunc(GL2.GL_LEQUAL); //This is used by standart processing..
                 //FIXME TEST
                 gl.glPopAttrib();
                 break;
@@ -529,8 +506,8 @@ public class Tools3D {
     public static void printGLExtensions(PApplet pa) {
         if (!MT4jSettings.getInstance().isOpenGlMode())
             return;
-        GL gl = ((PGraphicsOpenGL) pa.g).beginGL();
-        String ext = gl.glGetString(GL.GL_EXTENSIONS);
+        GL2 gl = Tools3D.getGL(pa);
+        String ext = gl.glGetString(GL2.GL_EXTENSIONS);
         StringTokenizer tok = new StringTokenizer(ext, " ");
         while (tok.hasMoreTokens()) {
             System.out.println(tok.nextToken());
@@ -541,19 +518,19 @@ public class Tools3D {
         int[] alphaBits = new int[1];
         int[] stencilBits = new int[1];
         int[] depthBits = new int[1];
-        gl.glGetIntegerv(GL.GL_RED_BITS, redBits, 0);
-        gl.glGetIntegerv(GL.GL_GREEN_BITS, greenBits, 0);
-        gl.glGetIntegerv(GL.GL_BLUE_BITS, blueBits, 0);
-        gl.glGetIntegerv(GL.GL_ALPHA_BITS, alphaBits, 0);
-        gl.glGetIntegerv(GL.GL_STENCIL_BITS, stencilBits, 0);
-        gl.glGetIntegerv(GL.GL_DEPTH_BITS, depthBits, 0);
+        gl.glGetIntegerv(GL2.GL_RED_BITS, redBits, 0);
+        gl.glGetIntegerv(GL2.GL_GREEN_BITS, greenBits, 0);
+        gl.glGetIntegerv(GL2.GL_BLUE_BITS, blueBits, 0);
+        gl.glGetIntegerv(GL2.GL_ALPHA_BITS, alphaBits, 0);
+        gl.glGetIntegerv(GL2.GL_STENCIL_BITS, stencilBits, 0);
+        gl.glGetIntegerv(GL2.GL_DEPTH_BITS, depthBits, 0);
         System.out.println("Red bits: " + redBits[0]);
         System.out.println("Green bits: " + greenBits[0]);
         System.out.println("Blue bits: " + blueBits[0]);
         System.out.println("Alpha bits: " + blueBits[0]);
         System.out.println("Depth Buffer bits: " + depthBits[0]);
         System.out.println("Stencil Buffer bits: " + stencilBits[0]);
-        ((PGraphicsOpenGL) pa.g).endGL();
+        //((PGraphicsOpenGL) pa.g).endGL();
     }
 
 
@@ -562,9 +539,9 @@ public class Tools3D {
      *
      * @param gl the gl
      */
-    public static int getGLError(GL gl) {
+    public static int getGLError(GL2 gl) {
         int error = gl.glGetError();
-        if (error != GL.GL_NO_ERROR) {
+        if (error != GL2.GL_NO_ERROR) {
             System.out.println("GL Error: " + error);
         } else {
             //			System.out.println("No gl error.");
@@ -576,7 +553,7 @@ public class Tools3D {
     /**
      * Gets the openGL context.
      * <br>NOTE: If you want to invoke any opengl drawing commands (or other commands influencing or depending on the current modelview matrix)
-     * you have to call GL <code>Tools3D.beginGL(PApplet pa)</code> instead!
+     * you have to call GL <code>Tools3D.beginPGL(PApplet pa)</code> instead!
      * <br>NOTE: the openGL context is only valid and current when the rendering thread is the current thread.
      * <br>
      * This only gets the opengl context if started in opengl mode using the opengl renderer.
@@ -584,13 +561,35 @@ public class Tools3D {
      * @param pa the pa
      * @return the gL
      */
-    public static GL getGL(PApplet pa) {
-        return ((PGraphicsOpenGL) pa.g).gl;
+    public static GL2 getGL(PApplet pa) {
+
+        PGraphicsOpenGL pogl = (PGraphicsOpenGL) pa.g;  // g may change
+        GL2 gl2 = null;
+        try {
+            gl2 = pogl.beginPGL().gl.getGL2();
+        } catch (GLException e) {
+            System.err.println("Error while getting GL2 context");
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        pogl.endPGL();
+
+        return gl2;
     }
 
 
-    public static GL getGL(PGraphics g) {
-        return ((PGraphicsOpenGL) g).gl;
+    public static GL2 getGL(PGraphicsOpenGL g) {
+
+        PGraphicsOpenGL pogl = (PGraphicsOpenGL) g;  // g may change
+        GL2 gl2 = null;
+        try {
+            gl2 = pogl.beginPGL().gl.getGL2();
+        } catch (GLException e) {
+            System.err.println("Error while getting GL2 context");
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        pogl.endPGL();
+
+        return gl2;
     }
 
 
@@ -600,8 +599,8 @@ public class Tools3D {
      * @param pa the pa
      * @return the gL
      */
-    public static GL beginGL(PApplet pa) {
-        return ((PGraphicsOpenGL) pa.g).beginGL();
+    public static PGL beginGL(PApplet pa) {
+        return ((PGraphicsOpenGL) pa.g).beginPGL();
     }
 
     /**
@@ -610,8 +609,25 @@ public class Tools3D {
      * @param g the g
      * @return the gL
      */
-    public static GL beginGL(PGraphics g) {
-        return ((PGraphicsOpenGL) g).beginGL();
+    public static PGL beginGL(PGraphics g) {
+        return ((PGraphicsOpenGL) g).beginPGL();
+    }
+
+    public static GL2 beginGLAndGetGL(PGraphics g) {
+
+        GL2 gl2 = null;
+        try {
+            gl2 = g.beginPGL().gl.getGL2();
+        } catch (GLException e) {
+            System.err.println("Error while getting GL2 context");
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return gl2;
+    }
+
+    public static GL2 beginGLAndGetGL(PApplet pa) {
+        return beginGLAndGetGL(pa.g) ;
     }
 
 
@@ -621,7 +637,7 @@ public class Tools3D {
      * @param pa the pa
      */
     public static void endGL(PApplet pa) {
-        ((PGraphicsOpenGL) pa.g).endGL();
+        ((PGraphicsOpenGL) pa.g).endPGL();
     }
 
     /**
@@ -630,7 +646,7 @@ public class Tools3D {
      * @param g the g
      */
     public static void endGL(PGraphics g) {
-        ((PGraphicsOpenGL) g).endGL();
+        ((PGraphicsOpenGL) g).endPGL();
     }
 
 
@@ -646,10 +662,10 @@ public class Tools3D {
         if (!MT4jSettings.getInstance().isOpenGlMode())
             return false;
 
-        GL gl = ((PGraphicsOpenGL) pa.g).gl;
+        GL2 gl = Tools3D.getGL(pa);
         boolean avail = gl.isExtensionAvailable(extensionName);
         /*
-          String ext = gl.glGetString(GL.GL_EXTENSIONS);
+          String ext = gl.glGetString(GL2.GL_EXTENSIONS);
           */
         return (avail);
     }
@@ -700,15 +716,15 @@ public class Tools3D {
         //and use multisampling -> we turn off multisampling then before using line_smooth for best restult
         if (enable) {
             if (MT4jSettings.getInstance().isMultiSampling()) {
-                gl.glDisable(GL.GL_MULTISAMPLE);
+                gl.glDisable(GL2.GL_MULTISAMPLE);
             }
             //TODO Eventually even dont do that since enabled form the beginning!
-            gl.glEnable(GL.GL_LINE_SMOOTH);
+            gl.glEnable(GL2.GL_LINE_SMOOTH);
         } else {
             if (MT4jSettings.getInstance().isMultiSampling()) {
-                gl.glEnable(GL.GL_MULTISAMPLE);
+                gl.glEnable(GL2.GL_MULTISAMPLE);
             }
-            //    		gl.glDisable(GL.GL_LINE_SMOOTH); //Actually never disable line smooth
+            //    		gl.glDisable(GL2.GL_LINE_SMOOTH); //Actually never disable line smooth
         }
         //    	*/
 
@@ -718,15 +734,15 @@ public class Tools3D {
         /*
               if (enable){
                   if (MT4jSettings.getInstance().isMultiSampling()){
-                      gl.glDisable(GL.GL_MULTISAMPLE);
+                      gl.glDisable(GL2.GL_MULTISAMPLE);
                   }
                   //TODO Eventually even dont do that since enabled form the beginning!
-                  gl.glEnable(GL.GL_LINE_SMOOTH);
+                  gl.glEnable(GL2.GL_LINE_SMOOTH);
               }else{
                   if (MT4jSettings.getInstance().isMultiSampling()){
-                      gl.glEnable(GL.GL_MULTISAMPLE);
+                      gl.glEnable(GL2.GL_MULTISAMPLE);
                   }
-      //    		gl.glDisable(GL.GL_LINE_SMOOTH); //Actually never disable line smooth
+      //    		gl.glDisable(GL2.GL_LINE_SMOOTH); //Actually never disable line smooth
               }
               */
     }
@@ -772,12 +788,12 @@ public class Tools3D {
                                                       float x3R, float x3G, float x3B, float x3A, float x4R, float x4G, float x4B, float x4A,
                                                       boolean useGradient
     ) {
-        GL gl = ((PGraphicsOpenGL) pa.g).beginGL();
+        GL2 gl = Tools3D.beginGLAndGetGL(pa);
 
         /*
           //Unbind any VBOs first
-          gl.glBindBufferARB(GL.GL_ARRAY_BUFFER_ARB, 0);
-          gl.glBindBufferARB(GL.GL_ELEMENT_ARRAY_BUFFER_ARB, 0);
+          gl.glBindBufferARB(GL2.GL_ARRAY_BUFFER_ARB, 0);
+          gl.glBindBufferARB(GL2.GL_ELEMENT_ARRAY_BUFFER_ARB, 0);
           */
 
         //Generate new list IDs
@@ -805,16 +821,16 @@ public class Tools3D {
 
         gl.glColor4d(0.0, 0.0, 0.0, 1.0);
 
-        gl.glEnableClientState(GL.GL_VERTEX_ARRAY);
-        gl.glEnableClientState(GL.GL_COLOR_ARRAY);
+        gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
+        gl.glEnableClientState(GL2.GL_COLOR_ARRAY);
 
-        gl.glVertexPointer(3, GL.GL_FLOAT, 0, vertBuff);
-        gl.glColorPointer(4, GL.GL_FLOAT, 0, colorBuff);
+        gl.glVertexPointer(3, GL2.GL_FLOAT, 0, vertBuff);
+        gl.glColorPointer(4, GL2.GL_FLOAT, 0, colorBuff);
 
         //Using the strokecolor buffer strokecolor AND fill!
 
         //Generate List
-        gl.glNewList(listIDFill, GL.GL_COMPILE);
+        gl.glNewList(listIDFill, GL2.GL_COMPILE);
         /////////////////////////////////////
         // Clear stencil and disable color //
         // Draw with STENCIL			   //
@@ -822,20 +838,20 @@ public class Tools3D {
 //			/*
         gl.glClearStencil(0);
         gl.glColorMask(false, false, false, false);
-        gl.glDisable(GL.GL_BLEND);
+        gl.glDisable(GL2.GL_BLEND);
 
         gl.glDepthMask(false);//remove..?
 
         //FIXME do this for non-zero rule?
 //			gl.glColorMask(true,true,true,true);
-//			gl.glEnable (GL.GL_BLEND);
+//			gl.glEnable (GL2.GL_BLEND);
 //			gl.glDepthMask(true);//remove..?
 
         //Enable stencilbuffer
-        gl.glEnable(GL.GL_STENCIL_TEST);
+        gl.glEnable(GL2.GL_STENCIL_TEST);
 //		    gl.glStencilMask (0x01);
-        gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_INVERT);
-        gl.glStencilFunc(GL.GL_ALWAYS, 0, ~0);
+        gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_INVERT);
+        gl.glStencilFunc(GL2.GL_ALWAYS, 0, ~0);
 
         //Stecilfunc bestimmt ob in den stencil geschrieben wird oder nicht
         //1.param: die vergleichsart der werte,
@@ -843,8 +859,8 @@ public class Tools3D {
         //3.prama: mask
         //ref is & anded with mask and the result with the value in the stencil buffer
         //mask is & with ref, mask is & stencil => vergleich
-//		    gl.glStencilFunc(GL.GL_ALWAYS, 0x1, 0x1);
-//		    gl.glStencilOp(GL.GL_KEEP, GL.GL_INVERT, GL.GL_INVERT);
+//		    gl.glStencilFunc(GL2.GL_ALWAYS, 0x1, 0x1);
+//		    gl.glStencilOp(GL2.GL_KEEP, GL2.GL_INVERT, GL2.GL_INVERT);
 
         //TODO notice, "stencilOP" zum wert in stencilbuffer reinschreiben
         //"stencilfunc" vergleicht framebuffer mit stencilbuffer und macht stencilOP wenn bedingung stimmt
@@ -853,40 +869,40 @@ public class Tools3D {
 
         //DRAW //FIXME why does this not work?
         if (indexBuff == null) {
-            gl.glDrawArrays(GL.GL_TRIANGLE_FAN, 0, vertBuff.capacity() / 3);
+            gl.glDrawArrays(GL2.GL_TRIANGLE_FAN, 0, vertBuff.capacity() / 3);
         } else {
-            gl.glDrawElements(GL.GL_TRIANGLE_FAN, indexBuff.capacity(), GL.GL_UNSIGNED_INT, indexBuff);
+            gl.glDrawElements(GL2.GL_TRIANGLE_FAN, indexBuff.capacity(), GL2.GL_UNSIGNED_INT, indexBuff);
         }
 
-//		    gl.glBegin (GL.GL_TRIANGLE_FAN);
+//		    gl.glBegin (GL2.GL_TRIANGLE_FAN);
 //		    for (int i = 0; i < vertexArr.length; i++) {
 //				Vertex vertex = vertexArr[i];
 //				gl.glVertex3f (vertex.getX(), vertex.getY(),  vertex.getZ());
 //			}
 //	    	gl.glEnd();
 
-//		    gl.glDrawArrays(GL.GL_TRIANGLE_FAN, 0, vertBuff.capacity()/3); 
+//		    gl.glDrawArrays(GL2.GL_TRIANGLE_FAN, 0, vertBuff.capacity()/3); 
 //			*/
         //////////////////////////////////////
         gl.glDepthMask(true);
 
-        gl.glEnable(GL.GL_BLEND);
-        gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+        gl.glEnable(GL2.GL_BLEND);
+        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
         //////////////////////
         // Draw fill		//
         //////////////////////
 //		    /*
         gl.glColorMask(true, true, true, true);
-        gl.glEnable(GL.GL_BLEND);
+        gl.glEnable(GL2.GL_BLEND);
 
-        gl.glStencilOp(GL.GL_ZERO, GL.GL_ZERO, GL.GL_ZERO); //org
-        gl.glStencilFunc(GL.GL_EQUAL, 0x01, 0x01);
+        gl.glStencilOp(GL2.GL_ZERO, GL2.GL_ZERO, GL2.GL_ZERO); //org
+        gl.glStencilFunc(GL2.GL_EQUAL, 0x01, 0x01);
 
-//		    gl.glStencilOp (GL.GL_KEEP, GL.GL_REPLACE, GL.GL_ZERO);
-//		    gl.glStencilFunc(GL.GL_EQUAL, 0x01, 0x01);
+//		    gl.glStencilOp (GL2.GL_KEEP, GL2.GL_REPLACE, GL2.GL_ZERO);
+//		    gl.glStencilFunc(GL2.GL_EQUAL, 0x01, 0x01);
 
         if (useGradient) {
-            gl.glBegin(GL.GL_QUADS);
+            gl.glBegin(GL2.GL_QUADS);
             gl.glColor4f(x1R, x1G, x1B, x1A);
             gl.glVertex3d(minX, minY, 0.0);
             gl.glColor4f(x2R, x2G, x2B, x2A);
@@ -897,7 +913,7 @@ public class Tools3D {
             gl.glVertex3d(minX, maxY, 0.0);
             gl.glEnd();
         } else {
-            gl.glBegin(GL.GL_QUADS);
+            gl.glBegin(GL2.GL_QUADS);
             gl.glVertex3d(minX, minY, 0.0);
             gl.glVertex3d(maxX, minY, 0.0);
             gl.glVertex3d(maxX, maxY, 0.0);
@@ -907,59 +923,59 @@ public class Tools3D {
 //		    */
         ////////////////////////////////////
 //		    gl.glDepthMask(true); //Disabled to avoid too many state switches, 
-        gl.glDisable(GL.GL_STENCIL_TEST);     //Disabled to avoid too many state switches
+        gl.glDisable(GL2.GL_STENCIL_TEST);     //Disabled to avoid too many state switches
         gl.glEndList();
         returnVal[0] = listIDFill;
 
         //////////////////////////////
         // Draw aliased outline		//
         //////////////////////////////
-        gl.glColorPointer(4, GL.GL_FLOAT, 0, strokeColBuff);
+        gl.glColorPointer(4, GL2.GL_FLOAT, 0, strokeColBuff);
 
-        gl.glNewList(listIDOutline, GL.GL_COMPILE);
-//		  	gl.glEnable(GL.GL_STENCIL_TEST); 
+        gl.glNewList(listIDOutline, GL2.GL_COMPILE);
+//		  	gl.glEnable(GL2.GL_STENCIL_TEST); 
 
 
 //			gl.glColorMask(true, true, true, true);
 //			gl.glDepthMask(false); //FIXME enable? disable?
 
 //		    // Draw aliased off-pixels to real
-//		    gl.glEnable (GL.GL_BLEND);
-//		    gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+//		    gl.glEnable (GL2.GL_BLEND);
+//		    gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
 //		    /*
-//		    gl.glStencilOp (GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
-//		    gl.glStencilFunc (GL.GL_EQUAL, 0x00, 0x01); //THIS IS THE ORIGINAL!
+//		    gl.glStencilOp (GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_KEEP);
+//		    gl.glStencilFunc (GL2.GL_EQUAL, 0x00, 0x01); //THIS IS THE ORIGINAL!
 
-//		  	gl.glStencilOp (GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
-//		    gl.glStencilFunc (GL.GL_EQUAL, 0x00, ~1); 
+//		  	gl.glStencilOp (GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_KEEP);
+//		    gl.glStencilFunc (GL2.GL_EQUAL, 0x00, ~1); 
 
-//		    gl.glEnable(GL.GL_LINE_SMOOTH);
+//		    gl.glEnable(GL2.GL_LINE_SMOOTH);
         //FIXME TEST
         Tools3D.setLineSmoothEnabled(gl, true);
 
         gl.glLineWidth(strokeWeight);
 
         //DRAW
-//			gl.glDrawElements(GL.GL_LINE_STRIP, indexBuff.capacity(), GL.GL_UNSIGNED_INT, indexBuff);
-//			gl.glDrawArrays(GL.GL_LINE_STRIP, 0, vertexArr.length);
+//			gl.glDrawElements(GL2.GL_LINE_STRIP, indexBuff.capacity(), GL2.GL_UNSIGNED_INT, indexBuff);
+//			gl.glDrawArrays(GL2.GL_LINE_STRIP, 0, vertexArr.length);
 
         /////TEST/// //TODO make vertex pointer arrays?
         gl.glColor4d(strokeColBuff.get(0), strokeColBuff.get(1), strokeColBuff.get(2), strokeColBuff.get(3));
         for (Vertex[] outline : outLines) {
-            gl.glBegin(GL.GL_LINE_STRIP);
+            gl.glBegin(GL2.GL_LINE_STRIP);
             for (Vertex vertex : outline) {
                 gl.glVertex3f(vertex.getX(), vertex.getY(), vertex.getZ());
             }
             gl.glEnd();
         }
         ////
-//			gl.glDisable (GL.GL_LINE_SMOOTH);
+//			gl.glDisable (GL2.GL_LINE_SMOOTH);
         //FIXME TEST
         Tools3D.setLineSmoothEnabled(gl, false);
         //////////////////////////////////
 //		*/
-//			gl.glDisable (GL.GL_STENCIL_TEST);	
+//			gl.glDisable (GL2.GL_STENCIL_TEST);	
 
 //		    gl.glDepthMask(true);
         gl.glEndList();
@@ -967,10 +983,10 @@ public class Tools3D {
         returnVal[1] = listIDOutline;
 
         //Disable client states
-        gl.glDisableClientState(GL.GL_VERTEX_ARRAY);
-        gl.glDisableClientState(GL.GL_COLOR_ARRAY);
+        gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
+        gl.glDisableClientState(GL2.GL_COLOR_ARRAY);
 
-        ((PGraphicsOpenGL) pa.g).endGL();
+        Tools3D.endGL(pa);
         ////////////////
 
         return returnVal;
@@ -1041,8 +1057,7 @@ public class Tools3D {
         FloatBuffer strokeColBuff = geometryInfo.getStrokeColBuff();
         IntBuffer indexBuff = geometryInfo.getIndexBuff(); //null if not indexed
 
-        GL gl;
-        gl = ((PGraphicsOpenGL) pa.g).gl;
+        GL2 gl = beginGLAndGetGL(pa);
 
         //Generate new list IDs
         int[] returnVal = new int[2];
@@ -1061,14 +1076,14 @@ public class Tools3D {
             return returnVal;
         }
 
-        gl.glEnableClientState(GL.GL_VERTEX_ARRAY);
-        gl.glEnableClientState(GL.GL_COLOR_ARRAY);
+        gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
+        gl.glEnableClientState(GL2.GL_COLOR_ARRAY);
 
-        gl.glVertexPointer(3, GL.GL_FLOAT, 0, vertBuff);
-        gl.glColorPointer(4, GL.GL_FLOAT, 0, colorBuff);
+        gl.glVertexPointer(3, GL2.GL_FLOAT, 0, vertBuff);
+        gl.glColorPointer(4, GL2.GL_FLOAT, 0, colorBuff);
 
         //Default target
-        int textureTarget = GL.GL_TEXTURE_2D;
+        int textureTarget = GL2.GL_TEXTURE_2D;
 
         /////// DO FILL LIST/////////////////////////////////
 
@@ -1083,26 +1098,26 @@ public class Tools3D {
             textureTarget = tex.getTextureTarget();
 
             //tells opengl which texture to reference in following calls from now on!
-            //the first parameter is eigher GL.GL_TEXTURE_2D or ..1D
+            //the first parameter is eigher GL2.GL_TEXTURE_2D or ..1D
             gl.glEnable(textureTarget);
             usedTextureID = tex.getTextureID();
             gl.glBindTexture(textureTarget, tex.getTextureID());
 
-            gl.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY);
-            gl.glTexCoordPointer(2, GL.GL_FLOAT, 0, tbuff);
+            gl.glEnableClientState(GL2.GL_TEXTURE_COORD_ARRAY);
+            gl.glTexCoordPointer(2, GL2.GL_FLOAT, 0, tbuff);
             textureDrawn = true;
         }
 
         // Normals
         if (geometryInfo.isContainsNormals()) {
-            gl.glEnableClientState(GL.GL_NORMAL_ARRAY);
-            gl.glNormalPointer(GL.GL_FLOAT, 0, geometryInfo.getNormalsBuff());
+            gl.glEnableClientState(GL2.GL_NORMAL_ARRAY);
+            gl.glNormalPointer(GL2.GL_FLOAT, 0, geometryInfo.getNormalsBuff());
         }
 
-        gl.glColorPointer(4, GL.GL_FLOAT, 0, colorBuff);
+        gl.glColorPointer(4, GL2.GL_FLOAT, 0, colorBuff);
 
         // START recording display list and DRAW////////////////////
-        gl.glNewList(listIDFill, GL.GL_COMPILE);
+        gl.glNewList(listIDFill, GL2.GL_COMPILE);
         if (textureDrawn) {
             gl.glEnable(textureTarget); //muss texture in der liste gebinded werden? anscheinend JA!
             gl.glBindTexture(textureTarget, usedTextureID);
@@ -1110,7 +1125,7 @@ public class Tools3D {
 
         //DRAW with drawElements if geometry is indexed, else draw with drawArrays!
         if (geometryInfo.isIndexed()) {
-            gl.glDrawElements(fillDrawMode, indexBuff.capacity(), GL.GL_UNSIGNED_INT, indexBuff); //limit() oder capacity()??
+            gl.glDrawElements(fillDrawMode, indexBuff.capacity(), GL2.GL_UNSIGNED_INT, indexBuff); //limit() oder capacity()??
         } else {
             gl.glDrawArrays(fillDrawMode, 0, vertBuff.capacity() / 3);
         }
@@ -1123,21 +1138,21 @@ public class Tools3D {
         //// STOP recording display list and DRAW////////////////////
 
         if (geometryInfo.isContainsNormals()) {
-            gl.glDisableClientState(GL.GL_NORMAL_ARRAY);
+            gl.glDisableClientState(GL2.GL_NORMAL_ARRAY);
         }
 
         if (textureDrawn) {
-            gl.glDisableClientState(GL.GL_TEXTURE_COORD_ARRAY);
+            gl.glDisableClientState(GL2.GL_TEXTURE_COORD_ARRAY);
         }
         returnVal[0] = listIDFill;
 
         /////// DO OUTLINE LIST////////////////////////////
-        gl.glColorPointer(4, GL.GL_FLOAT, 0, strokeColBuff);
+        gl.glColorPointer(4, GL2.GL_FLOAT, 0, strokeColBuff);
         //Start recording display list
-        gl.glNewList(listIDOutline, GL.GL_COMPILE);
+        gl.glNewList(listIDOutline, GL2.GL_COMPILE);
 
 //			if (drawSmooth)
-//				gl.glEnable(GL.GL_LINE_SMOOTH);
+//				gl.glEnable(GL2.GL_LINE_SMOOTH);
         //FIXME TEST
         Tools3D.setLineSmoothEnabled(gl, true);
 
@@ -1146,13 +1161,13 @@ public class Tools3D {
 
         //DRAW
         if (geometryInfo.isIndexed()) {
-            gl.glDrawElements(GL.GL_LINE_STRIP, indexBuff.capacity(), GL.GL_UNSIGNED_INT, indexBuff); ////indices.limit()?
+            gl.glDrawElements(GL2.GL_LINE_STRIP, indexBuff.capacity(), GL2.GL_UNSIGNED_INT, indexBuff); ////indices.limit()?
         } else {
-            gl.glDrawArrays(GL.GL_LINE_STRIP, 0, vertBuff.capacity() / 3);
+            gl.glDrawArrays(GL2.GL_LINE_STRIP, 0, vertBuff.capacity() / 3);
         }
 
 //			if (drawSmooth)
-//				gl.glDisable(GL.GL_LINE_SMOOTH);
+//				gl.glDisable(GL2.GL_LINE_SMOOTH);
         //FIXME TEST
         Tools3D.setLineSmoothEnabled(gl, false);
 
@@ -1161,8 +1176,8 @@ public class Tools3D {
         ////////////////////////////////////////////////////
 
         //Disable client states
-        gl.glDisableClientState(GL.GL_VERTEX_ARRAY);
-        gl.glDisableClientState(GL.GL_COLOR_ARRAY);
+        gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
+        gl.glDisableClientState(GL2.GL_COLOR_ARRAY);
         return returnVal;
     }
 
@@ -1184,8 +1199,7 @@ public class Tools3D {
      */
     public static int generateOutLineDisplayList(PApplet pa, FloatBuffer vertBuff, FloatBuffer strokeColBuff, IntBuffer indexBuff,
                                                  boolean drawSmooth, float strokeWeight, short lineStipple) {
-        GL gl;
-        gl = ((PGraphicsOpenGL) pa.g).beginGL();
+        GL2 gl = Tools3D.beginGLAndGetGL(pa);
 
         //Generate new list IDs
         int returnVal = -1;
@@ -1194,15 +1208,15 @@ public class Tools3D {
             System.err.println("Failed to create display list");
             return returnVal;
         }
-        gl.glEnableClientState(GL.GL_VERTEX_ARRAY);
-        gl.glEnableClientState(GL.GL_COLOR_ARRAY);
-        gl.glVertexPointer(3, GL.GL_FLOAT, 0, vertBuff);
-        gl.glColorPointer(4, GL.GL_FLOAT, 0, strokeColBuff);
+        gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
+        gl.glEnableClientState(GL2.GL_COLOR_ARRAY);
+        gl.glVertexPointer(3, GL2.GL_FLOAT, 0, vertBuff);
+        gl.glColorPointer(4, GL2.GL_FLOAT, 0, strokeColBuff);
 
         //Start recording display list
-        gl.glNewList(listIDOutline, GL.GL_COMPILE);
+        gl.glNewList(listIDOutline, GL2.GL_COMPILE);
 //			if (drawSmooth)
-//				gl.glEnable(GL.GL_LINE_SMOOTH);
+//				gl.glEnable(GL2.GL_LINE_SMOOTH);
         //FIXME TEST for multisample
         Tools3D.setLineSmoothEnabled(gl, true);
 
@@ -1210,21 +1224,21 @@ public class Tools3D {
             gl.glLineWidth(strokeWeight);
         if (lineStipple != 0) {
             gl.glLineStipple(1, lineStipple);
-            gl.glEnable(GL.GL_LINE_STIPPLE);
+            gl.glEnable(GL2.GL_LINE_STIPPLE);
         }
 
         if (indexBuff == null) {
-            gl.glDrawArrays(GL.GL_LINE_STRIP, 0, vertBuff.capacity() / 3);
+            gl.glDrawArrays(GL2.GL_LINE_STRIP, 0, vertBuff.capacity() / 3);
         } else {
-            gl.glDrawElements(GL.GL_LINE_STRIP, indexBuff.capacity(), GL.GL_UNSIGNED_INT, indexBuff); ////indices.limit()?
+            gl.glDrawElements(GL2.GL_LINE_STRIP, indexBuff.capacity(), GL2.GL_UNSIGNED_INT, indexBuff); ////indices.limit()?
         }
 
         //RESET LINE STIPPLE
         if (lineStipple != 0)
-            gl.glDisable(GL.GL_LINE_STIPPLE);
+            gl.glDisable(GL2.GL_LINE_STIPPLE);
 
 //			if (drawSmooth)
-//				gl.glDisable(GL.GL_LINE_SMOOTH);
+//				gl.glDisable(GL2.GL_LINE_SMOOTH);
         //FIXME TEST for multisample
         Tools3D.setLineSmoothEnabled(gl, false);
 
@@ -1232,9 +1246,11 @@ public class Tools3D {
         returnVal = listIDOutline;
 
         //Disable client states
-        gl.glDisableClientState(GL.GL_VERTEX_ARRAY);
-        gl.glDisableClientState(GL.GL_COLOR_ARRAY);
-        ((PGraphicsOpenGL) pa.g).endGL();
+        gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
+        gl.glDisableClientState(GL2.GL_COLOR_ARRAY);
+
+        Tools3D.endGL(pa);
+
         return returnVal;
     }
 
@@ -1247,14 +1263,17 @@ public class Tools3D {
      * @param vertexArr the vertex arr
      */
     public static void drawFilledBezierShape(PApplet pa, Vertex[] vertexArr) {
-        GL gl = ((PGraphicsOpenGL) pa.g).beginGL();
+
+        GL2 gl = Tools3D.beginGLAndGetGL(pa);
+
+
         float[] minMax = ToolsGeometry.getMinXYMaxXY(vertexArr);
 //		/*
         // Draw to stencil
-        gl.glDisable(GL.GL_BLEND);
-        gl.glEnable(GL.GL_STENCIL_TEST);
-        gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_INVERT);
-        gl.glStencilFunc(GL.GL_ALWAYS, 0, ~0);
+        gl.glDisable(GL2.GL_BLEND);
+        gl.glEnable(GL2.GL_STENCIL_TEST);
+        gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_INVERT);
+        gl.glStencilFunc(GL2.GL_ALWAYS, 0, ~0);
         gl.glColorMask(false, false, false, false);
 //		*/
         //Change beziervertices to normal vertices - THIS IS EXPENSIVE!
@@ -1262,8 +1281,8 @@ public class Tools3D {
 
         //DRAW RAW FILL
         gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        //gl.glBegin (GL.GL_LINE_STRIP);
-        gl.glBegin(GL.GL_TRIANGLE_FAN);
+        //gl.glBegin (GL2.GL_LINE_STRIP);
+        gl.glBegin(GL2.GL_TRIANGLE_FAN);
         for (Vertex vertex : allVertsBezierResolved) {
             gl.glVertex3f(vertex.x, vertex.y, vertex.z);
         }
@@ -1271,40 +1290,42 @@ public class Tools3D {
 
         //Draw aliased off-pixels to real
         gl.glColorMask(true, true, true, true);
-        gl.glEnable(GL.GL_BLEND);
-        gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+        gl.glEnable(GL2.GL_BLEND);
+        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
 //			/*		    
-        gl.glStencilFunc(GL.GL_EQUAL, 0x00, 0x01);
-        gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
+        gl.glStencilFunc(GL2.GL_EQUAL, 0x00, 0x01);
+        gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_KEEP);
 
         //DRAW OUTLINE
-        gl.glEnable(GL.GL_LINE_SMOOTH);
+        gl.glEnable(GL2.GL_LINE_SMOOTH);
         gl.glLineWidth(1.0f);
         gl.glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
-        gl.glBegin(GL.GL_LINES);
+        gl.glBegin(GL2.GL_LINES);
         for (Vertex vertex : allVertsBezierResolved) {
             gl.glVertex3f(vertex.x, vertex.y, vertex.z);
         }
         gl.glEnd();
-        gl.glDisable(GL.GL_LINE_SMOOTH);
+        gl.glDisable(GL2.GL_LINE_SMOOTH);
 //		*/
 //		/*
         // Draw FILL
-        gl.glStencilFunc(GL.GL_EQUAL, 0x01, 0x01);
-        gl.glStencilOp(GL.GL_ZERO, GL.GL_ZERO, GL.GL_ZERO);
+        gl.glStencilFunc(GL2.GL_EQUAL, 0x01, 0x01);
+        gl.glStencilOp(GL2.GL_ZERO, GL2.GL_ZERO, GL2.GL_ZERO);
 
         gl.glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
-        gl.glBegin(GL.GL_QUADS);
+        gl.glBegin(GL2.GL_QUADS);
         gl.glVertex3f(minMax[0], minMax[1], 0.0f);
         gl.glVertex3f(minMax[2], minMax[1], 0.0f);
         gl.glVertex3f(minMax[2], minMax[3], 0.0f);
         gl.glVertex3f(minMax[0], minMax[3], 0.0f);
         gl.glEnd();
 
-        gl.glDisable(GL.GL_STENCIL_TEST);
+        gl.glDisable(GL2.GL_STENCIL_TEST);
 //		*/
-        ((PGraphicsOpenGL) pa.g).endGL();
+        ((PGraphicsOpenGL) pa.g).endPGL();
+
+
     }
 
 

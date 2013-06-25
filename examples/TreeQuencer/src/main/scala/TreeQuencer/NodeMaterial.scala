@@ -2,7 +2,7 @@ package main.scala.TreeQuencer
 
 import org.mt4j.util.opengl.GLMaterial
 import org.mt4j.util.opengl.GLMaterial._
-import javax.media.opengl.GL
+import javax.media.opengl.GL2
 import java.nio.FloatBuffer
 
 /**
@@ -24,7 +24,7 @@ import java.nio.FloatBuffer
  */
 
 
-class NodeMaterial(val gl: GL) extends GLMaterial(gl) {
+class NodeMaterial(val gl: GL2) extends GLMaterial(gl) {
 
   private var _diffuse: Array[Float] = null
   private var _ambient: Array[Float] = null

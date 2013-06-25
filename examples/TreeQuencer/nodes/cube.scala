@@ -59,6 +59,10 @@ SynthDef("cube") {
 
 	val sig = Pan2.ar(SplayAz.ar(2, volume * base * amp * env)/2.0)
 
+
+
+
+
 	AudioServer.attach(sig)
 
 }
