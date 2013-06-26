@@ -392,6 +392,10 @@ public class MT4jSettings {
         return defaultAudioDevice;
     }
 
+    public static String defaultSessionLogName = "defaultSessionLog_";
+    public String getDefaultSessionLogName() {
+        return defaultSessionLogName;
+    }
 
 //	/**
 //	 * Sets the max frame rate.

@@ -28,6 +28,7 @@ import java.awt.event.WindowAdapter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.lang.String;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -65,6 +66,8 @@ import org.mt4j.util.opengl.GLFBO;
 
 import processing.core.PApplet;
 
+import org.joda.time.DateTime;
+
 
 /**
  * Use this class to create a new multitouch application.
@@ -84,10 +87,26 @@ import processing.core.PApplet;
  */
 public abstract class MTApplication extends PApplet {
 
+    private static DateTime startDateOfApplication = new DateTime();
+
+    public static DateTime getStartDateOfApplication() {
+        return startDateOfApplication;
+    }
+
     /**
      * The Constant logger.
      */
     private static final Logger logger = Logger.getLogger(MTApplication.class.getName());
+    public static void logInfo(String msg) {
+        logger.info(msg);
+    }
+    public static void logError(String msg) {
+        logger.error(msg);
+    }
+    public static void logDebug(String msg) {
+        logger.debug(msg);
+    }
+
 
     static {
 //		logger.setLevel(Level.ERROR);
@@ -463,6 +482,8 @@ public abstract class MTApplication extends PApplet {
             String defaultAudio = properties.getProperty("DefaultAudioDevice", MT4jSettings.getInstance().getScSynthPath().trim());
             MT4jSettings.getInstance().defaultAudioDevice = defaultAudio;
 
+            String defaultSessionName = properties.getProperty("DefaultSessionLogName", MT4jSettings.getInstance().getDefaultSessionLogName().trim());
+            MT4jSettings.getInstance().defaultSessionLogName = defaultSessionName;
 
 
         } catch (Exception e) {

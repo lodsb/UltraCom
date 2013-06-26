@@ -34,10 +34,16 @@ resolvers += "sbt-idea-repo" at "http://mpeltonen.github.com/maven/"
 
 resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
 
-addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "1.3.0-SNAPSHOT")
+addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "1.5.0-SNAPSHOT")
 
 resolvers += "Twitter repo" at "http://maven.twttr.com/"
+
+libraryDependencies += "com.github.nscala-time" %% "nscala-time" % "0.4.2"
 
 libraryDependencies ++= Seq(
     "com.twitter" % "util-eval" % "1.12.13"
 )
+
+//libraryDependencies ++= Seq(
+//    "com.twitter" % "util-logging" % "1.12.13"
+//)
