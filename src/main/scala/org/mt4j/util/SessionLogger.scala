@@ -6,8 +6,6 @@ import java.util
 
 object SessionLogger {
 
-  val delimiter = " , "
-
   object SessionEvent extends Enumeration {
     type SessionEvent = Value
     val Event, BeginGesture, EndGesture = Value
@@ -18,20 +16,31 @@ object SessionLogger {
 
   import com.github.nscala_time.time.Imports._
 
+  type LogMsgType = (DateTime, SessionEvent, String, Object, Object, Object)
+
+  val delimiter = " | "
+
   private val dateFormat = DateTimeFormat.forPattern("dd.MM.yy--k-m-s");
+  private val timeFormat = DateTimeFormat.forPattern("k:m:s:S");
 
   private def getDateFileFormat(date: DateTime) : String = {
     dateFormat.print(date)
   }
 
+  private def getSimpleTimeFormat(date: DateTime) : String = {
+    timeFormat.print(date)
+  }
+
+
   private val prefixName: String = MT4jSettings.getInstance().getDefaultSessionLogName;
   private val filename = prefixName +"_start_at_"+ getDateFileFormat(MTApplication.getStartDateOfApplication)+".slog";
   private val fileWriter = new PrintWriter(new File(filename ));
-  private val queue = new LinkedBlockingDeque[(DateTime, SessionEvent, String, Object)]()
+  private val queue = new LinkedBlockingDeque[LogMsgType]()
 
   private class LogThread extends Runnable {
     def run() {
       MTApplication.logInfo("Started SessionLogger, using file "+filename)
+      fileWriter.println("atMillis, eventType, message, object, millisPassed, payload");
 
       while(true) {
         val message = queue.take()
@@ -40,34 +49,51 @@ object SessionLogger {
     }
   }
 
-  private var gestureMap = Map[Object, DateTime]();
-  private def _log(message: (DateTime, SessionEvent, String, Object)) {
+  private val logThread = new Thread(new LogThread());
+  logThread.start()
+
+  private var gestureMap = Map[String, DateTime]();
+  private def _log(message: LogMsgType) {
+    var commitToLog = true;
+
     var millisGesture = -1L
+    // fake "hash"
+    val keyString = ""+message._4+message._5
 
     if (message._2 == SessionEvent.BeginGesture) {
-      gestureMap += (message._4 -> message._1)
+      // only add message if it is the first one (usually called from within update)
+      if(!gestureMap.contains(keyString)) {
+        gestureMap += (keyString -> message._1)
+      } else {
+        commitToLog = false
+      }
+
     } else if (message._2 == SessionEvent.EndGesture) {
 
-      if (gestureMap.contains(message._4)) {
-        val gestureBeginDateTime = gestureMap(message._4)
-        gestureMap -= (message._4)
+      if (gestureMap.contains(keyString)) {
+        val gestureBeginDateTime = gestureMap(keyString)
+        gestureMap -= (keyString)
 
         millisGesture = (gestureBeginDateTime to message._1).millis
       }
 
     }
 
-    val dtString = message._1.toString()
-    fileWriter.println(dtString + delimiter + message._2
-                      + delimiter + message._3
-                      + delimiter + message._4
-                      + delimiter + millisGesture);
-    fileWriter.flush();
+    if (commitToLog) {
+      val intervalSinceAppStart = (MTApplication.getStartDateOfApplication to message._1).millis
+      val csvString = intervalSinceAppStart + delimiter + message._2 + delimiter + "\""+message._3+"\"" + delimiter + message._4 + delimiter + millisGesture + delimiter + message._6;
+
+      fileWriter.println(csvString);
+      fileWriter.flush();
+
+      println(csvString)
+    }
 
   }
 
-  def log(msg: String, et: SessionEvent, obj: Object) {
-    queue.add( (DateTime.now , et, msg, obj) )
+  def log(msg: String, et: SessionEvent, obj: Object, src: Object, payload: Object) {
+    val message : LogMsgType = (DateTime.now, et, msg, obj, src, payload);
+    queue.add( message )
   }
 
 }

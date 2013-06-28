@@ -14,6 +14,8 @@ import org.mt4j.input.inputProcessors.componentProcessors.rotate3DProcessor.Rota
 import java.awt.event.KeyEvent._
 import scala.math._
 import org.mt4j.types.Vec3d
+import org.mt4j.util.SessionLogger._
+import org.mt4j.util.SessionLogger
 
 
 /**
@@ -46,6 +48,10 @@ class NodeForm(val file: File) extends MTComponent(app) {
   val xRot: AutoRotation = xRotator(this)
   val yRot: AutoRotation = yRotator(this)
   val zRot: AutoRotation = zRotator(this)
+
+  this.setName(file.getName)
+  // SessionLogging
+  SessionLogger.log("Created Node", SessionEvent.Event, this, null, null)
 
   setLight(app.light)
 
@@ -246,6 +252,14 @@ class NodeForm(val file: File) extends MTComponent(app) {
 
       case _ =>
     }
+
+        // Session Logging
+    if (e.getId == GESTURE_UPDATED) {
+      SessionLogger.log("Gesture "+e.toString, SessionEvent.BeginGesture, this, e.getSource(), (position, (rotationX(), rotationY(), rotationZ()), scaleFactor()))
+    } else if (e.getId == GESTURE_ENDED) {
+        SessionLogger.log("Gesture "+e.toString, SessionEvent.EndGesture, this, e.getSource(), (position, (rotationX(), rotationY(), rotationZ()), scaleFactor()))
+    }
+
   }
 
   /**

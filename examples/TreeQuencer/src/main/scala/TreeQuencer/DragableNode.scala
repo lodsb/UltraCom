@@ -9,6 +9,8 @@ import org.mt4j.input.inputProcessors.componentProcessors.rotateProcessor.Rotate
 import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleProcessor
 import org.mt4j.util.camera.IFrustum._
 import org.mt4j.util.camera.Frustum
+import org.mt4j.util.SessionLogger
+import org.mt4j.util.SessionLogger.SessionEvent
 
 class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListener {
 
@@ -105,6 +107,8 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
     if (app.scene.canvas.containsChild(form)) {
       removeFromField(firstOne = true)
     }
+    // Logging
+    SessionLogger.log("Removed Node", SessionEvent.Event, _form, null, null)
   }
 
   private def removeFromField(firstOne: Boolean) {
@@ -213,9 +217,20 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
 
     }
 
+    SessionLogger.log("Added node to set", SessionEvent.Event, _form, null, node.form)
+
     this
 
   }
+
+  override def -=(node: DragableNode): DragableNode.this.type = {
+    super.-=(node)
+
+    SessionLogger.log("Removed node from set", SessionEvent.Event, _form, null, node.form)
+
+    this
+  }
+
 
   def isNearToCenter: Boolean = {
     position.distance(app.center) < app.innerCircleRadius
