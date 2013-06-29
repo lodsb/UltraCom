@@ -103,7 +103,7 @@ SynthDef("Polywaves") {
 
   val sin = w1 + w2 + w3 + w4 + w5 + w6 + w7
 
-	val sig = SplayAz.ar(2, sin);
+	val sig = Pan2.ar(SplayAz.ar(2, sin));
 
 
 
@@ -118,7 +118,7 @@ SynthDef("Polywaves") {
   }
 
 
-  AudioServer.attach(sin)
+  AudioServer.attach(sig)
 
 
 }

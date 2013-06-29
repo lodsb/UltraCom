@@ -42,6 +42,9 @@ object AudioServer {
 	private val ctrlBusChannels = 512
 	private val defaultTriggerDivisions = 20
 
+  private val audioOutBusFirstChannel = 0
+  private val audioOutBusses = Seq(audioOutBusFirstChannel,audioOutBusFirstChannel+1)
+
 	private val mapLock = new Object;
 	private var idToSynthMap = Map[Int, Synthesizer]();
 
@@ -52,6 +55,12 @@ object AudioServer {
 			Out.kr(timerBus, Impulse.kr(timerFreq))
 		}
 	}
+
+  private def globalLimiter: SynthDef = {
+ 		SynthDef("globalLimiter") {
+       ReplaceOut.ar(audioOutBusses, Limiter.ar(In.ar(audioOutBusFirstChannel, 2), 0.3))
+ 		}
+ 	}
 
 	object NodeListener extends Model.Listener {
 		def isDefinedAt(v: AnyRef) = {
@@ -121,7 +130,7 @@ object AudioServer {
 	// to add its output and _RECEIVE_ ui updates (amplitude)
 	def attach(graph : GE) : GE = {
 		val pdiv = "__pulseDivision".kr(defaultTriggerDivisions)
-		Out.ar(Seq(0,1), graph)
+		Out.ar(audioOutBusses, graph)
 		SendTrig.kr(PulseDivider.kr(In.kr(timerBus),pdiv), amplitudeTriggerID, graph*1000f)//1000 * Amplitude.kr(graph))
 	}
 
@@ -200,6 +209,8 @@ object AudioServer {
 							attach(signal)
 						}}
 
+  import org.mt4j.MTApplication
+  import org.mt4j.util.MT4jSettings
 
 	def start( func: => Unit ) = {
 		val cfg = Server.Config();
@@ -209,15 +220,25 @@ object AudioServer {
 
 
 		cfg.programPath = MT4jSettings.getInstance().getScSynthPath();
-		var audioDev = MT4jSettings.getInstance().getDefaultAudioDevice()
+
+    var audioDev = MT4jSettings.getInstance().getDefaultAudioDevice()
+
 		if(audioDev != "") {
-			println("USING AUDIO DEVICE "+audioDev)
+			MTApplication.logInfo("Using Audio Device "+audioDev)
 			cfg.deviceName = Some(audioDev);
 		}
 
 		Server.run(cfg) { s =>
       s.nodeMgr.addListener(NodeListener)
+
+      // for visual feedback
       timerTriggerSynth.play
+
+      // limit output if necessary
+      if(MT4jSettings.getInstance().isLimiterEnabled()){
+        globalLimiter.play(s, addAction = addToTail)
+      }
+
       Responder.add(ServerResponder)
       serverBooted = true
       func
