@@ -25,14 +25,14 @@ import org.lodsb.reakt.async.VarA
 
  
 class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
-  private var _switch = new VarA[Float](0f)
-  def switch = {_switch() = if(_switch()==1) 0f else 1f}
+  private val _switch = new VarA[Float](1f)
+  def switch = {_switch() = if(_switch()==1) 0f else 1f; _switch()}
   var synthesizer = FileImporter.cacheSynth(file)
   synthesizer.run(flag = false)
 
   def play() {
-    switch
     if(synthesizer != null) {
+      synthesizer.parameters() = ("gate",switch)
       synthesizer.run
     }
   }
@@ -49,8 +49,6 @@ class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
     })
   }
 
-  bind(_switch, "gate")
-  switch
 
   bind(node.form.rotationZ, "rotationZ", (x:Float) => {x})
   bind(node.form.rotationY, "rotationY", (x:Float) => {x})
@@ -71,7 +69,7 @@ class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
   synthesizer.amplitude.map( x => { if (node.isWithinField) {
     synthesizer.setAmplitudeUpdateDivisions(1)
     if (!(floatStack.isZero&&x==0&&maxMem<0.005)) {
-      floatStack.push(x.abs*500)
+      floatStack.push(x.abs*80)
       max = floatStack.max
       maxMem = if (max<maxMem) (max+maxMem)/2 else max
       if(!node.form.isGrey) {

@@ -50,10 +50,10 @@ SynthDef("EchoSinus") {
   //}
   //LocalOut.ar(reverb*scaleDown(rotationX))
 
-  //bing = bing + reverb
+  bing = FreeVerb.ar(bing, 0.75, 1.0, 0.8)
 
   // hall
-  /*val echo1  = delay(bing, 1)
+  val echo1  = delay(bing, 1)
   val echo2  = delay(echo1, 2)
   val echo3  = delay(echo2, 3)
   val echo4  = delay(echo3, 4)
@@ -63,8 +63,10 @@ SynthDef("EchoSinus") {
   val echo8  = delay(echo7, 8)
   val echo9  = delay(echo8, 9)
   val echo10 = delay(echo9, 10)
-  val echo11 = delay(echo10, 11)*/
+  val echo11 = delay(echo10, 11)
  // bing = FreeVerb.ar(bing, 0.75, 1.0, 0.8) //+echo1+echo2+echo3+echo4+echo5+echo6+echo7+echo8+echo9+echo10+echo11
+
+  bing += echo1 + echo2 + echo3 + echo4 + echo5 + echo6 + echo7 + echo8 + echo9 + echo10 + echo11
 
   // put it out
   AudioServer.attach(bing)

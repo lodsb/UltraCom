@@ -5,7 +5,7 @@ import org.mt4j.util.math.Vector3D
 import org.mt4j.components.MTLight
 import javax.media.opengl.GL
 import org.mt4j.output.audio.AudioServer
-import org.mt4j.util.MTColor
+import org.mt4j.util.{Color, MTColor}
 import java.awt.event.KeyEvent
 import java.awt.event.KeyEvent._
 import org.mt4j.components.visibleComponents.shapes.MTEllipse
@@ -39,7 +39,7 @@ object app extends Application {
 
   // some global values
   def apply = this
-  def center = new Vector3D(width/2f, height/2f)
+  def center = Vec3d(width/2f, height/2f)
   val nodeZ = 90 // z coordinates from all NodeForms, that get instantiated
   var scene: NodeScene = null
   var light: MTLight = null
@@ -79,8 +79,8 @@ object app extends Application {
 class NodeScene() extends Scene(app,"TreeQuencer") {
   AudioServer.start(true)
   app.scene = this
-  app.scene.setClearColor(new MTColor(255,255,255))
-  app.light = new MTLight(app, GL.GL_LIGHT3, new Vector3D(0,0,200))//app.center.getAdded(app.scene.getSceneCam.getPosition))
+  app.scene.setClearColor(Color(0,0,0))
+  app.light = new MTLight(app, GL.GL_LIGHT3, Vec3d(0,0,200))//app.center.getAdded(app.scene.getSceneCam.getPosition))
   MTLight.enableLightningAndAmbient(app, 150, 150, 150, 255)
   showTracer(show = true)
 
@@ -157,8 +157,8 @@ class NodeScene() extends Scene(app,"TreeQuencer") {
 
     val sliderHeight = 20
     val margin = sliderHeight/2f
-    val grey = new MTColor(100,100,100)
-    val black = new MTColor(0,0,0)
+    val grey = Color(100,100,100)
+    val black = Color(0,0,0)
 
     for (i <- 0 to 3) {
 
@@ -171,7 +171,8 @@ class NodeScene() extends Scene(app,"TreeQuencer") {
       sliders(i).setStrokeColor(black)
 
       // position it
-      sliders(i).globalPosition := { i match { // on each side of the screen clockwise
+      // on each side of the screen clockwise
+      sliders(i).globalPosition := { i match {
         case 0 => Vec3d(app.width/2f, margin)
         case 1 => Vec3d(app.width-margin, app.height/2f)
         case 2 => Vec3d(app.width/2f, app.height-margin)

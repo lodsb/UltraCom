@@ -78,14 +78,12 @@ import org.mt4j.util.opengl.GLMaterial
    * @return NodeForm The found form
    */
   def randomFormFile = {
-    random = new Random().nextInt(formFiles.length)
+    random = math.round(app.random(formFiles.size.toFloat-0.5f))
     formFiles(random)
-    //new File(System.getProperty("user.dir")+"/forms/tetrahedron.obj")
   }
 
   def randomSynthiFile = {
     synthiFiles(random)
-    //new File(System.getProperty("user.dir")+"/forms/tetrahedron.scala")
   }
 
   def randomMaterialFile = {

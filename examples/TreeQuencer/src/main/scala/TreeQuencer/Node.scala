@@ -30,7 +30,7 @@ class Node extends DragableNode {
   // this is for reconnection (see DragableNode.nearestPossibleAncestor)
   if (app.game == app.SEQUENCE_GAME) {
     // in sequence game only still nodes are possible ancestors
-    if (this.isInstanceOf[StillNode]) {
+    if (isInstanceOf[StillNode]) {
       app.globalNodeSet += this
     }
   } else {
@@ -40,7 +40,7 @@ class Node extends DragableNode {
   var synthesizer: NodeSynthesizer = null
 
   def play() {
-    if(synthesizer != null && !isSourceNode && !isNearToCenter) {
+    if(synthesizer != null && !isSourceNode && (!isNearToCenter && app.game != app.SEQUENCE_GAME)) {
       synthesizer.play
     }
   }
