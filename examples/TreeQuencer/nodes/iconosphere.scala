@@ -86,13 +86,7 @@ SynthDef("Polywaves") {
 	val noiseGen = PinkNoise.ar(noiseVol)
 	val line = Line.kr(filterStart,filterEnd,3)
 
-<<<<<<< HEAD
   val vol = volume
-=======
-  val sin = w1 + w2 + w3 + w4 + w5 + w6 + w7
-
-	val sig = Pan2.ar(SplayAz.ar(2, sin));
->>>>>>> b6a5a5038cb2185aa69abd36697d17a93c60e808
 
   val w1 = vol * RLPF.ar(Blip.ar(frq1,tone1).madd(amp1*globAmp,0) + noiseGen,line ,0.4) * percussiveEnvelope
   val w2 = vol * RLPF.ar(Blip.ar(frq5,tone1).madd(amp5*globAmp,0) + noiseGen, line ,0.4) * percussiveEnvelope
@@ -104,7 +98,8 @@ SynthDef("Polywaves") {
 
   val sin = w1 + w2 + w3 + w4 + w5 + w6 + w7
 
-	val sig = SplayAz.ar(2, sin)
+  val sig = Pan2.ar(SplayAz.ar(2, sin));
+
 
   def scaleDown(x: GE): GE = {
     val a = (x.abs/360) < 0.9

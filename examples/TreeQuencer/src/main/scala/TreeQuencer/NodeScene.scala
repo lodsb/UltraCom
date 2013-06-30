@@ -17,6 +17,8 @@ import org.mt4j.input.inputProcessors.{MTGestureEvent, IGestureEventListener}
 import org.mt4j.input.inputProcessors.MTGestureEvent._
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.{TapEvent, TapProcessor}
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent._
+import org.mt4j.util.SessionLogger
+import org.mt4j.util.SessionLogger._
 
 /**
  * This source code is licensed as GPLv3 if not stated otherwise.
@@ -36,6 +38,8 @@ import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent.
  * Don't eat the pills!
  */
 object app extends Application {
+
+
 
   // some global values
   def apply = this
