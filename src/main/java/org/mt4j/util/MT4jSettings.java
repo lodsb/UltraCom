@@ -387,7 +387,7 @@ public class MT4jSettings {
         return defaultScSynthPath;
     }
 
-    public String defaultAudioDevice = "";
+    public String defaultAudioDevice = "default";
     public String getDefaultAudioDevice() {
         return defaultAudioDevice;
     }
@@ -395,6 +395,11 @@ public class MT4jSettings {
     public static String defaultSessionLogName = "defaultSessionLog_";
     public String getDefaultSessionLogName() {
         return defaultSessionLogName;
+    }
+
+    public static Boolean enableLimiter = true;
+    public Boolean isLimiterEnabled() {
+        return enableLimiter;
     }
 
 //	/**

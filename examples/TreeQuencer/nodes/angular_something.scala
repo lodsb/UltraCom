@@ -86,7 +86,7 @@ SynthDef("Wobble2") {
 		sig = (0.750*sig)+(0.125*aux);
 
 		 
-		sig = Pan2.ar(SplayAz.ar(2,sig))
+		sig = Pan2.ar(SplayAz.ar(2, sig));
 		 
 		 
 

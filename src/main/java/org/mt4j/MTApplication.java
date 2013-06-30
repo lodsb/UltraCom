@@ -28,6 +28,7 @@ import java.awt.event.WindowAdapter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.lang.Boolean;
 import java.lang.String;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -479,11 +480,14 @@ public abstract class MTApplication extends PApplet {
             String scsynthPath = properties.getProperty("ScSynthPath", MT4jSettings.getInstance().getScSynthPath().trim());
             MT4jSettings.getInstance().defaultScSynthPath = scsynthPath;
 
-            String defaultAudio = properties.getProperty("DefaultAudioDevice", MT4jSettings.getInstance().getScSynthPath().trim());
+            String defaultAudio = properties.getProperty("DefaultAudioDevice", MT4jSettings.getInstance().getDefaultAudioDevice().trim());
             MT4jSettings.getInstance().defaultAudioDevice = defaultAudio;
 
             String defaultSessionName = properties.getProperty("DefaultSessionLogName", MT4jSettings.getInstance().getDefaultSessionLogName().trim());
             MT4jSettings.getInstance().defaultSessionLogName = defaultSessionName;
+
+            Boolean enableLimiter = Boolean.parseBoolean(properties.getProperty("LimiterEnable", Boolean.valueOf(MT4jSettings.getInstance().isLimiterEnabled()).toString()).trim());
+            MT4jSettings.getInstance().enableLimiter = enableLimiter;
 
 
         } catch (Exception e) {
