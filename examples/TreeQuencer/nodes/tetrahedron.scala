@@ -40,7 +40,8 @@ SynthDef("EchoSinus") {
 
   // tone
   val dec = 1.35
-  var bing = 0.05 * volume * SinOsc.ar(rotationToHalftones(rotationZ)).madd(0.5,0) * EnvGen.kr(Env.perc(attack=0.01, release=dec), Changed1.kr(gate), doneAction=1)
+  val vol = volume * 1.0f
+  var bing = vol * SinOsc.ar(rotationToHalftones(rotationZ)).madd(0.5,0) * EnvGen.kr(Env.perc(attack=0.01, release=dec), Changed1.kr(gate), doneAction=1)
 	bing = SplayAz.ar(2, bing);
 
   // reverb
@@ -50,9 +51,21 @@ SynthDef("EchoSinus") {
   //}
   //LocalOut.ar(reverb*scaleDown(rotationX))
 
-  bing = FreeVerb.ar(bing, 0.75, 1.0, 0.8)
+  /**
+   * A function that fulfills the following conditions:
+   * f(0) = 0
+   * lim x->infinite of f(x) = 1
+   * @param x
+   * @return
+   */
+  def f(x: GE): GE = {
+    1-1/(1+x/200)
+  }
+
+  bing = FreeVerb.ar(bing, f(rotationX), f(rotationX), f(rotationX))
 
   // hall
+
   val echo1  = delay(bing, 1)
   val echo2  = delay(echo1, 2)
   val echo3  = delay(echo2, 3)
@@ -64,7 +77,6 @@ SynthDef("EchoSinus") {
   val echo9  = delay(echo8, 9)
   val echo10 = delay(echo9, 10)
   val echo11 = delay(echo10, 11)
- // bing = FreeVerb.ar(bing, 0.75, 1.0, 0.8) //+echo1+echo2+echo3+echo4+echo5+echo6+echo7+echo8+echo9+echo10+echo11
 
   bing += echo1 + echo2 + echo3 + echo4 + echo5 + echo6 + echo7 + echo8 + echo9 + echo10 + echo11
 

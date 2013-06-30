@@ -56,7 +56,7 @@ class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
   bind(Metronome().duration, "beatDuration", (x:Float) => {x})
   bind(node.form.scaleFactor, "volume", (x:Float) => {if(x<0.8f) 0f else if(3f<x) 1f else 5/12f*x-1f/3})
 
-  val floatStack = new FloatStack(4)
+  val floatStack = new FloatStack(5)
 
   // volume <-> color of node
   // kind of a low pass filter
@@ -69,14 +69,14 @@ class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
   synthesizer.amplitude.map( x => { if (node.isWithinField) {
     synthesizer.setAmplitudeUpdateDivisions(1)
     if (!(floatStack.isZero&&x==0&&maxMem<0.005)) {
-      floatStack.push(x.abs*80)
+      floatStack.push(x.abs*50)
       max = floatStack.max
       maxMem = if (max<maxMem) (max+maxMem)/2 else max
       if(!node.form.isGrey) {
         colorArray = Array(
-          if(maxMem>r) maxMem else r,
-          if(maxMem>b) maxMem else b,
-          if(maxMem>g) maxMem else g,
+          if(reduce(maxMem)>r) reduce(maxMem) else r,
+          if(reduce(maxMem)>b) reduce(maxMem) else b,
+          if(reduce(maxMem)>g) reduce(maxMem) else g,
           1f
         )
         node.form.material.setAmbient(colorArray)
@@ -85,5 +85,17 @@ class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
       }
     }
   }})
+
+  def reduce(value: Float): Float = {
+    if(value>10) {
+       0.9f+value/1000f
+    } else if(value>1) {
+       0.8f+value/100f
+    } else if (value>0.8) {
+       0.8f
+    } else {
+      value
+    }
+  }
 
 }

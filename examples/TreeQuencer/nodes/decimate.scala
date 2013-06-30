@@ -71,7 +71,7 @@ SynthDef("Wobble") {
 	sig = 0.35*DelayN.ar(sig,0.27,0.27)+sig
 	sig = 0.35*DelayN.ar(sig,0.45,0.45)+sig
 	sig = 0.35*DelayN.ar(sig,0.75,0.75)+sig
-  val vol = volume * 10.0
+  val vol = volume * 1f
   sig *= vol
 	sig = Limiter.ar(FreeVerb.ar(SplayAz.ar(2,sig),0.9, 0.4));
 

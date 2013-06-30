@@ -16,6 +16,7 @@ import scala.math._
 import org.mt4j.types.Vec3d
 import org.mt4j.util.SessionLogger._
 import org.mt4j.util.SessionLogger
+import org.mt4j.util.opengl.GLMaterial
 
 
 /**
@@ -53,7 +54,15 @@ class NodeForm(val file: File) extends MTComponent(app) {
   setLight(app.light)
 
   // Set up a material to react to the light
-  val material = FileImporter.cacheGLMaterial(new File(file.getAbsolutePath.replace(".obj", "_material.scala")))
+  var material =
+  if(file.getAbsolutePath.endsWith(".obj")) {
+    FileImporter.cacheGLMaterial(new File(file.getAbsolutePath.replace(".obj", "_material.scala")))
+  } else if(file.getAbsolutePath.endsWith(".3ds")) {
+    FileImporter.cacheGLMaterial(new File(file.getAbsolutePath.replace(".3ds", "_material.scala")))
+  } else {
+    null.asInstanceOf[NodeMaterial]
+  }
+
   val materialCopy = material.copy
 
   // meshes, that build the form

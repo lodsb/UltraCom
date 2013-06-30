@@ -86,7 +86,7 @@ SynthDef("Polywaves") {
 	val noiseGen = PinkNoise.ar(noiseVol)
 	val line = Line.kr(filterStart,filterEnd,3)
 
-  val vol = 0.5 * volume
+  val vol = volume
 
   val w1 = vol * RLPF.ar(Blip.ar(frq1,tone1).madd(amp1*globAmp,0) + noiseGen,line ,0.4) * percussiveEnvelope
   val w2 = vol * RLPF.ar(Blip.ar(frq5,tone1).madd(amp5*globAmp,0) + noiseGen, line ,0.4) * percussiveEnvelope

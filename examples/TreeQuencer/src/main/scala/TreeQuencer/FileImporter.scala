@@ -59,6 +59,20 @@ import org.mt4j.util.opengl.GLMaterial
     }
   })
 
+  formsDirectory.listFiles.foreach( formFile => {
+    val synthiFile = new File(formFile.getAbsolutePath.replace(".3ds", ".scala"))
+    val materialFile = new File(formFile.getAbsolutePath.replace(".3ds", "_material.scala"))
+    if(formFile.getName.endsWith(".3ds")) {
+      if (formFile.getName.startsWith("center.3ds")) {
+        sourceNodeFormFile = formFile
+      } else if(synthiFile.exists && materialFile.exists) {
+        formFiles += formFile
+        synthiFiles += synthiFile
+        materialFiles += materialFile
+      }
+    }
+  })
+
   // build cache of SynthDefs and MTTriangleMeshes
   println("Building form cache...")
   formFiles.foreach(file => cacheMTTriangleMesh(file))
