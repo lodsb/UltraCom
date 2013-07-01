@@ -60,7 +60,7 @@ SynthDef("Decimate") {
 	// CREATING SOUND -----	
 	var root:GE = 50+(12*scaledRot(rotationZ))
 	var trigger = Changed1.kr(gate)
-	var imp = EnvGen.ar(Env.perc(0.2, 0.5), trigger)
+	var imp = EnvGen.ar(Env.perc(0.2, 0.8), trigger)
 	var freqs = Seq(root-24,root+7,root+15).midicps
 	var freqs2 = Seq(root,root+12,root+3).midicps
 	var osc = Pulse.ar(freqs, SinOsc.ar(0.2*LFNoise0.kr(0.2)))+ Saw.ar(freqs2)+(scaledRot(rotationX)*WhiteNoise.ar);
@@ -72,8 +72,8 @@ SynthDef("Decimate") {
 	sig = 0.35*DelayL.ar(sig,0.27,0.27)+sig
 	sig = 0.35*DelayL.ar(sig,0.45,0.45)+sig
 	sig = 0.35*DelayL.ar(sig,0.75,0.75)+sig
-  sig = HPF.ar(sig, 20)
-	sig = volume*LeakDC.ar(Limiter.ar(FreeVerb.ar(SplayAz.ar(2,sig),0.9, 0.4))*0.8);
+  sig = HPF.ar(sig, 100)
+	sig = volume*LeakDC.ar(Limiter.ar(SplayAz.ar(2,FreeVerb.ar(sig))*0.8));
 
 	AudioServer.attach(sig)
 

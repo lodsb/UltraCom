@@ -44,6 +44,9 @@ import org.mt4j.util.opengl.GLMaterial
   private val evaluateFile = new Eval()
   private var random: Int = null.asInstanceOf[Int]
 
+  private var i = -1
+  private def iterator = {i+=1;i%=formFiles.size;i}
+
 
   formsDirectory.listFiles.foreach( formFile => {
     val synthiFile = new File(formFile.getAbsolutePath.replace(".obj", ".scala"))
@@ -92,7 +95,7 @@ import org.mt4j.util.opengl.GLMaterial
    * @return NodeForm The found form
    */
   def randomFormFile = {
-    random = math.round(app.random(formFiles.size.toFloat-0.5f))
+    random = iterator
     formFiles(random)
   }
 

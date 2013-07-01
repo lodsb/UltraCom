@@ -44,7 +44,7 @@ object app extends Application {
   // some global values
   def apply = this
   def center = Vec3d(width/2f, height/2f)
-  val nodeZ = 90 // z coordinates from all NodeForms, that get instantiated
+  val nodeZ = 100 // z coordinates from all NodeForms, that get instantiated
   var scene: NodeScene = null
   var light: MTLight = null
   val globalNodeSet = new NodeSet[Node]() // all nodes are globally stored here
@@ -141,7 +141,11 @@ class NodeScene() extends Scene(app,"TreeQuencer") {
     val x = app.width - 200f
     val stillNodes = new Array[StillNode](count)
     for (i <- 0 to count-1) {
-      stillNodes(i) = new StillNode(new Vector3D(i*x/(count-1)+100f,y))
+
+      // create and position StillNodes in the middle of the screen
+      stillNodes(i) = new StillNode(Vec3d(i*x/(count)+200f, y, app.nodeZ))
+
+      // set ancestors
       if (i>0) {
         stillNodes(i-1) += stillNodes(i)
       }
@@ -149,6 +153,8 @@ class NodeScene() extends Scene(app,"TreeQuencer") {
         stillNodes(i) += stillNodes(0)
       }
     }
+
+    // incubate signal into the first StillNode
     NodeMetronome += stillNodes(0)
   }
 

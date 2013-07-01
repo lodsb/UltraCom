@@ -30,10 +30,20 @@ import org.mt4j.types.Vec3d
 object NodeSource {
   val sourcesList = new Array[NodeSource](FileImporter.formFiles.size)
   def buildSources() {
-    var x = 100
+    var x = 200
     for (i <- 0 to FileImporter.formFiles.size-1) {
-      sourcesList(i) = new NodeSource(i,Vec3d(x,90,app.nodeZ))
-      x += 110
+      val count = math.floor((i)/4f).toFloat
+      ((i+1)%4) match { // corners of the screen counterclockwise
+        case 1 =>  // left upper
+          sourcesList(i) = new NodeSource(i,Vec3d(200f+count*150,170,app.nodeZ))
+        case 2 =>  // right upper
+          sourcesList(i) = new NodeSource(i,Vec3d(app.width-200f-count*150,170,app.nodeZ))
+        case 3 =>  // right bottom
+          sourcesList(i) = new NodeSource(i,Vec3d(app.width-200f-count*150,app.height-170f,app.nodeZ))
+        case 0 =>  // left bottom
+          sourcesList(i) = new NodeSource(i,Vec3d(200f+count*150,app.height-170f,app.nodeZ))
+        case _ =>
+      }
     }
   }
 }

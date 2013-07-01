@@ -16,8 +16,9 @@ import java.awt.event.KeyEvent._
 import scala.math._
 import org.mt4j.types.Vec3d
 import org.mt4j.util.SessionLogger._
-import org.mt4j.util.SessionLogger
+import org.mt4j.util.{MTColor, SessionLogger}
 import org.mt4j.util.opengl.GLMaterial
+import org.mt4j.components.visibleComponents.shapes.MTEllipse
 
 
 /**
@@ -50,6 +51,7 @@ class NodeForm(val file: File) extends MTComponent(app) {
   val rotationY = new VarS[Float](0f)
   val rotationZ = new VarS[Float](0f)
 
+
   setName(file.getName)
   // SessionLogging
   SessionLogger.log("Created Node", SessionEvent.Event, this, null, null)
@@ -75,7 +77,7 @@ class NodeForm(val file: File) extends MTComponent(app) {
     }
   })
 
-  var scale = app.width*0.1f/biggestWidth
+  var scale = app.width*0.05f/biggestWidth
 
   meshes.foreach( mesh => {
     addChild(mesh)
@@ -105,6 +107,17 @@ class NodeForm(val file: File) extends MTComponent(app) {
 
   // scale 3d object to adequate size on screen
   scaleGlobal(scale, scale, scale, position)
+
+
+
+  val xCircle = createCircle(biggestWidth+20f)
+  rotationX.map( x => {xCircle.setDegrees(x);xCircle.create()} )
+
+  val yCircle = createCircle(biggestWidth+40f)
+  rotationY.map( y => {yCircle.setDegrees(y);yCircle.create()} )
+
+  val zCircle = createCircle(biggestWidth+60f)
+  rotationZ.map( z => {zCircle.setDegrees(z);zCircle.create()})
 
 
   // METHODS -----
@@ -320,4 +333,14 @@ class NodeForm(val file: File) extends MTComponent(app) {
    */
   def position = getCenterPointGlobal
 
+  def createCircle(radius: Float): MTEllipse = {
+    val circle = new WrapperEllipse(app, app.center, radius, radius)
+    circle.setNoFill(true)
+    circle.setStrokeColor(new MTColor(255,255,255))
+    app.scene.canvas().addChild(circle)
+    circle.unregisterAllInputProcessors()
+    circle.removeAllGestureEventListeners()
+    globalPosition.map(z => circle.globalPosition() = Vec3d(z.x,z.y,z.z+10f))
+    circle
+  }
 }

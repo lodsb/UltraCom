@@ -120,6 +120,9 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
 
     // first remove all visible MTComponents from canvas
     app.scene.canvas().removeChild(form)
+    app.scene.canvas().removeChild(form.xCircle)
+    app.scene.canvas().removeChild(form.yCircle)
+    app.scene.canvas().removeChild(form.zCircle)
     lineToAncestor.remove
 
     // remove other pointers to this
@@ -147,7 +150,7 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
     if (!app.scene.canvas.containsChild(form)) {
       return false
     }
-    val borderWidth = 50
+    val borderWidth = 150
     val zero = borderWidth
     val width = app.width-borderWidth
     val height = app.height-borderWidth
@@ -233,7 +236,8 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
 
 
   def isNearToCenter: Boolean = {
-    position.distance(app.center) < app.innerCircleRadius
+    position.distance2D(app.center) < app.innerCircleRadius
   }
+
 
 }
