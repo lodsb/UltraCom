@@ -31,7 +31,7 @@ OpenGLAntialiasing=1
 # 0 is the standard game with the random nodes in the middle of the screen
 # 1 is the game, where several still nodes are put in sequence and the others get docked to them
 # 2 is similar to 0, but the distance of a node to the center defines how often/fast it gets triggered
-GameNumber=0
+GameNumber=1
 
 # StillNodeCount defines how many still nodes at game 2 will be on the field from the beginning
 StillNodeCount=4

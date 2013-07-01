@@ -119,6 +119,13 @@ object AudioServer {
 					}
 
 					if (s != null) {
+            val synth = s.synth
+            val amp = y.asInstanceOf[Int] / 1000.0f
+
+            if (Math.abs(amp) > s.maxAmplitude) {
+              s.maxAmplitude = Math.abs(amp)
+              println(synth+" max amplitude "+s.maxAmplitude)
+            }
 						s.amplitude.emit(y.asInstanceOf[Int] / 1000.0f)
 					}
 				}

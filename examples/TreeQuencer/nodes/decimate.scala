@@ -2,7 +2,7 @@ import de.sciss.synth._
 import ugen._
 import org.mt4j.output.audio.{Changed1, AudioServer}
 
-SynthDef("Wobble") {
+SynthDef("Decimate") {
 
 	// PARAMETERS  -----
 	val gate = "gate".kr(1)
@@ -62,16 +62,16 @@ SynthDef("Wobble") {
 	var imp = EnvGen.ar(Env.perc(0.2,Clip.kr(scaledRot(rotationY),0,1)+0.1), trigger);
 	var freqs = Seq(root-24,root+7,root+15).midicps;
 	var freqs2 = Seq(root,root+12,root+3).midicps;
-	var osc = Pulse.ar(freqs, SinOsc.ar(0.2*LFNoise0.kr(0.2)))+ Saw.ar(freqs2);
+	var osc = Pulse.ar(freqs, SinOsc.ar(0.2*LFNoise0.kr(0.2)))+ Saw.ar(freqs2)+(scaledRot(rotationX)*WhiteNoise.ar);
 	 
 	 
 	 
-	var sig:GE = LeakDC.ar(BLowPass.ar(osc,10+(imp*(10 + scaledRot(rotationX)*10000))));
+	var sig:GE = LeakDC.ar(BLowPass.ar(osc,(imp*(50+(scaledRot(rotationX)*10000)))));
 	sig = 0.35*DelayN.ar(sig,0.17,0.17)+sig;
 	sig = 0.35*DelayN.ar(sig,0.27,0.27)+sig;
 	sig = 0.35*DelayN.ar(sig,0.45,0.45)+sig;
 	sig = 0.35*DelayN.ar(sig,0.75,0.75)+sig;
-	sig = Limiter.ar(FreeVerb.ar(SplayAz.ar(2,sig),0.9, 0.4));
+	sig = volume*Limiter.ar(FreeVerb.ar(SplayAz.ar(2,sig),0.9, 0.4))*0.8;
 
 	AudioServer.attach(sig)
 

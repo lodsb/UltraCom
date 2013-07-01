@@ -1,10 +1,11 @@
 import de.sciss.synth._
 import de.sciss.synth.Env.Seg;
 import de.sciss.synth.Env.Seg._;
+import org.w3c.dom.ls.LSParserFilter
 import ugen._
 import org.mt4j.output.audio.{Changed1, AudioServer}
 
-SynthDef("Wobble2") {
+SynthDef("angular") {
 
 	// PARAMETERS  -----
 	val gate = "gate".kr(1)
@@ -46,12 +47,12 @@ SynthDef("Wobble2") {
 	def wobbles(rotation: GE): GE = {
 		(rotation.abs / 30).floor + 1
 	}
-	
+
 	def scaledRot(rotation:GE): GE = {
 		Clip.kr(rotation / 720, 0, 1);
 	}
-	
-	
+
+
 
 
 	// CREATING SOUND -----
@@ -59,39 +60,44 @@ SynthDef("Wobble2") {
 	//var envc1, envc2, outc, noisec1, noisec2, envs0, envs1, envs1m, envs2: GE;
 	//var oscs, noises, outs:GE;
 	//var mix, freq:GE;
-	 
-	
+
+
 		var freqs = Seq( 102.83503357415, 271.87123588774, 165.08083327752, 178.25018273397, 323.11964925229, 116.86829443705, 134.95738247509, 200.00001372448, 502.37729319678, 597.07655656184 );
 		var resos = Seq( 0.10743826856584, 0.037808643263063, 0.042253087508826, 0.037808643263063, 0.0625, 0.10027777526114, 0.10027777526114, 0.059753101151667, 0.040000001192093, 0.042253087508826 );
 		var amps = Seq( 0.23080432814507, 0.049036562352402, 0.072009509795199, 0.080804783787226, 0.082371636160548, 0.25568279423097, 0.2300671314532, 0.59489172046932, 0.29811618978107, 0.30389314914497 );
-		 		 
-		 
+
+
 		var trig = Changed1.kr(gate);
 		var env = EnvGen.ar(Env.perc(0.001, 0.1), trig);
-		 
-		 
-		var sig:GE = Klank.ar(Zip(freqs, resos, amps), env*WhiteNoise.ar()*SinOsc.ar(1000*env), MouseX.kr(0.01, 5), MouseY.kr(0.01, 2.0));
-		 
-		var aux:GE = LeakDC.ar(CombC.ar(sig, 1, LFTri.kr(0.25, iphase= 0.34).abs*0.5, 1));
-		sig = (0.750*sig)+(0.125*aux);
-		aux = LeakDC.ar(CombC.ar(sig, 0.5, LFTri.kr(0.17).abs*0.33, 0.5));
-		sig = (0.750*sig)+(0.125*aux);
-		aux = LeakDC.ar(CombC.ar(sig, 1, LFTri.kr(0.47).abs*0.25, 1));
-		sig = (0.750*sig)+(0.125*aux);
-		aux = LeakDC.ar(CombC.ar(sig, 1, LFTri.kr(0.35, iphase= 0.34).abs*0.8, 1));
-		sig = (0.750*sig)+(0.125*aux);
-		aux = LeakDC.ar(CombC.ar(sig, 0.5, LFTri.kr(0.11).abs*0.133, 0.5));
-		sig = (0.750*sig)+(0.125*aux);
-		aux = LeakDC.ar(CombC.ar(sig, 1, LFTri.kr(0.67).abs*0.66, 1));
-		sig = (0.750*sig)+(0.125*aux);
 
-		 
-		sig = Pan2.ar(SplayAz.ar(2, sig));
-		 
-		 
+    var delayLenMod = (scaledRot(rotationX)*2.0)+1;
+    var delayMod = (scaledRot(rotationY)*2.0)+1;
 
 
- 
+		var sig:GE = Klank.ar(Zip(freqs, resos, amps), env*WhiteNoise.ar()*SinOsc.ar(1000*env), Rand(0.01, 5), Rand(0.01, 2.0));
+    sig = BLowPass.ar(sig, (1.0-scaledRot(rotationZ))*18000+100)
+
+
+		var aux:GE = LeakDC.ar(CombC.ar(sig, 1, delayLenMod*LFTri.kr(0.25*delayMod, iphase= 0.34).abs*0.5, 1));
+		sig = (0.750*sig)+(0.125*aux);
+		aux = LeakDC.ar(CombC.ar(sig, 0.5, delayLenMod*LFTri.kr(0.17*delayMod).abs*0.33, 0.5));
+		sig = (0.750*sig)+(0.125*aux);
+		aux = LeakDC.ar(CombC.ar(sig, 1, delayLenMod*LFTri.kr(0.47*delayMod).abs*0.25, 1));
+		sig = (0.750*sig)+(0.125*aux);
+		aux = LeakDC.ar(CombC.ar(sig, 1, delayLenMod*LFTri.kr(0.35*delayMod, iphase= 0.34).abs*0.8, 1));
+		sig = (0.750*sig)+(0.125*aux);
+		aux = LeakDC.ar(CombC.ar(sig, 0.5, delayLenMod*LFTri.kr(0.11*delayMod).abs*0.133, 0.5));
+		sig = (0.750*sig)+(0.125*aux);
+		aux = LeakDC.ar(CombC.ar(sig, 1, delayLenMod*LFTri.kr(0.67*delayMod).abs*0.66, 1));
+		sig = (0.750*sig)+(0.125*aux);
+
+
+		sig = Pan2.ar(SplayAz.ar(2, sig/2.0))*volume;
+
+
+
+
+
 
 	AudioServer.attach(sig)
 

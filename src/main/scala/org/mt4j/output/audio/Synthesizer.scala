@@ -30,6 +30,10 @@ class Synthesizer(val synth: Synth) {
 	val amplitude: ValA[Float] = new ValA[Float](0f)
 	val parameters: VarS[ControlSetMap] = new VarS[ControlSetMap](("_"->0.0));
 
+  // for debugging
+  var currentAmp = 0.0f;
+  var maxAmplitude = 0.0f;
+
 	parameters.observe({ x => synth.set(x); true;})
 
 	def setAmplitudeUpdateDivisions(divisions: Int) = {

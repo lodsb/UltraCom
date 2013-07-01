@@ -2,7 +2,7 @@ import de.sciss.synth._
 import ugen._
 import org.mt4j.output.audio.{Changed1, AudioServer}
 
-SynthDef("Wobble2") {
+SynthDef("cube") {
 
 	// PARAMETERS  -----
 	val gate = "gate".kr(1)
@@ -61,7 +61,7 @@ SynthDef("Wobble2") {
 	//base = (GVerb.ar(HPF.ar(base * env,30), 70, 11, 0.15)*0.5 + base + bd + sd).tanh
 	base = (HPF.ar(base * env, 30) * 0.5 + base).tanh;// + bd + sd).tanh
 
-	val sig = SplayAz.ar(2, Pan2.ar( volume * base * amp * env))
+	val sig = Pan2.ar(SplayAz.ar(2, volume * base * amp * env)/2.0)
 
 	AudioServer.attach(sig)
 

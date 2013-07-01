@@ -4,7 +4,7 @@ import de.sciss.synth.Env.Seg._;
 import ugen._
 import org.mt4j.output.audio.{Changed1, AudioServer}
 
-SynthDef("Wobble2") {
+SynthDef("pentagon") {
 
 	// PARAMETERS  -----
 	val gate = "gate".kr(1)
@@ -48,7 +48,7 @@ SynthDef("Wobble2") {
 	}
 	
 	def scaledRot(rotation:GE): GE = {
-		Clip.kr(rotation / 720, 0, 1);
+		Clip.kr(rotation / 360, 0, 1);
 	}
 	
 	
@@ -102,10 +102,9 @@ SynthDef("Wobble2") {
 	 
 	var outc = noisec1 + noisec2;
 	outc = outc * 2;
-	outc = outc.softclip * volume;
+	outc = outc.softclip;
 	 
 	// snare signal
-	 
 	var oscs = de.sciss.synth.ugen.LFPulse.ar(envs1m, 0, 0.5) - 0.5  + (de.sciss.synth.ugen.LFPulse.ar(envs1m * 1.6, 0, 0.5) * 0.5 - 0.25);
 	oscs = LPF.ar(oscs, envs1m*1.2)* envs0;
 	oscs = oscs + ( SinOsc.ar(envs1m, 0.8) * envs0 );
@@ -116,11 +115,20 @@ SynthDef("Wobble2") {
 	noises = noises * envs2 * (1-scaledRot(rotationX));
 	 
 	var outs = oscs + noises ;
-	outs = outs.clip2(1) + envs2*(scaledRot(rotationZ)*SinOsc.ar(envBase*1000+80)+0.5*SinOsc.ar(envBase*10000+110)) * volume;
-	 
-	var mix = LinXFade2.ar(outc, outs, scaledRot(rotationY) - 1);
+	outs = outs.clip2(1) + envs2*(scaledRot(rotationZ)*SinOsc.ar(envBase*1000+80)+0.5*SinOsc.ar(envBase*10000+110)) ;
 
-	val sig = Pan2.ar(SplayAz.ar(2, mix));
+  // kick signal
+  val outk = (LPF.ar( Ringz.ar( trig, 60+(140*scaledRot(rotationZ)), 0.5 ), 20+(5000*(1-scaledRot(rotationX))) ) * 0.75)
+
+
+  // mix all together, 3 way crossfade, selectX seems to be missing from ScalaCollider
+  val clapSnareMix = LinXFade2.ar(outc, outs, Clip.kr(4*scaledRot(rotationY), 0, 2)-1)
+  val snareBaseMix = LinXFade2.ar(outs, outk, Clip.kr(4*scaledRot(rotationY)-2, 0, 2)-1)
+
+	var mix:GE = LinXFade2.ar(clapSnareMix, snareBaseMix, 2*scaledRot(rotationY)-1)
+  mix = LeakDC.ar(Limiter.ar(mix))
+
+	val sig = Pan2.ar(SplayAz.ar(2, mix*0.75))*volume;
 
 
 

@@ -2,7 +2,7 @@ import de.sciss.synth._
 import ugen._
 import org.mt4j.output.audio.{Changed1, AudioServer}
 
-SynthDef("EchoSinus") {
+SynthDef("tetra") {
 
   // parameters
   val gate = "gate".kr(1)
@@ -38,10 +38,14 @@ SynthDef("EchoSinus") {
     0.8*CombN.ar(signal, 1, delay, 0)*(count>index)
   }
 
+  def scaledRot(rotation:GE): GE = {
+ 		Clip.kr(rotation / 720, 0, 1);
+ 	}
+
   // tone
   val dec = 1.35
-  var bing = 0.05 * volume * SinOsc.ar(rotationToHalftones(rotationZ)).madd(0.5,0) * EnvGen.kr(Env.perc(attack=0.01, release=dec), Changed1.kr(gate), doneAction=1)
-	bing = SplayAz.ar(2, bing);
+  var bing = 0.05 * volume * SinOsc.ar(rotationToHalftones(rotationZ)*(1+scaledRot(rotationX)*5*Saw.ar(440*scaledRot(rotationY)))).madd(0.5,0) * EnvGen.kr(Env.perc(attack=0.01, release=dec), Changed1.kr(gate), doneAction=1)
+	bing = Pan2.ar(SplayAz.ar(2, bing/0.325));
 
   // reverb
   //var reverb = LocalIn.ar(2) + bing
@@ -64,7 +68,7 @@ SynthDef("EchoSinus") {
   val echo9  = delay(echo8, 9)
   val echo10 = delay(echo9, 10)
   val echo11 = delay(echo10, 11)*/
- // bing = FreeVerb.ar(bing, 0.75, 1.0, 0.8) //+echo1+echo2+echo3+echo4+echo5+echo6+echo7+echo8+echo9+echo10+echo11
+  bing = FreeVerb.ar(bing, 0.6, 0.5, 0.8) //+echo1+echo2+echo3+echo4+echo5+echo6+echo7+echo8+echo9+echo10+echo11
 
   // put it out
   AudioServer.attach(bing)

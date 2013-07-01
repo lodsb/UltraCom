@@ -387,7 +387,7 @@ public class MT4jSettings {
         return defaultScSynthPath;
     }
 
-    public String defaultAudioDevice = "default";
+    public String defaultAudioDevice = "UltraCom Output";
     public String getDefaultAudioDevice() {
         return defaultAudioDevice;
     }

@@ -17,6 +17,8 @@ import org.mt4j.input.inputProcessors.{MTGestureEvent, IGestureEventListener}
 import org.mt4j.input.inputProcessors.MTGestureEvent._
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.{TapEvent, TapProcessor}
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent._
+import org.mt4j.util.SessionLogger
+import org.mt4j.util.SessionLogger.SessionEvent
 
 /**
  * This source code is licensed as GPLv3 if not stated otherwise.
@@ -193,6 +195,8 @@ class NodeScene() extends Scene(app,"TreeQuencer") {
 
             // change the speed of the Metronome()
             Metronome().duration() = newValue
+
+            SessionLogger.log("Changed Metronome", SessionEvent.Event, slider, null, newValue.asInstanceOf[Object])
 
             // change the values of all the other sliders
             sliders.foreach( tmpSlider => {
