@@ -91,7 +91,10 @@ object RandomNode {
 }
 
 class StillNode(position: Vector3D) extends Node {
+  println("______________________ StillNode instantiation begins")
   form = new NodeForm(FileImporter.sourceNodeFormFile)
+  println("______________________ StillNode form creation ended")
   form.scale(0.8f) // make it still
   form.setPositionGlobal(position)
+  println("______________________ StillNode instantiation ends")
 }

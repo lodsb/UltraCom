@@ -57,14 +57,7 @@ class NodeForm(val file: File) extends MTComponent(app) {
   setLight(app.light)
 
   // Set up a material to react to the light
-  var material =
-  if(file.getAbsolutePath.endsWith(".obj")) {
-    FileImporter.cacheGLMaterial(new File(file.getAbsolutePath.replace(".obj", "_material.scala")))
-  } else if(file.getAbsolutePath.endsWith(".3ds")) {
-    FileImporter.cacheGLMaterial(new File(file.getAbsolutePath.replace(".3ds", "_material.scala")))
-  } else {
-    null.asInstanceOf[NodeMaterial]
-  }
+  var material = FileImporter.cacheGLMaterial(new File(file.getAbsolutePath.replace(".obj", "_material.scala")))
 
   val materialCopy = material.copy
 
@@ -93,9 +86,9 @@ class NodeForm(val file: File) extends MTComponent(app) {
     mesh.setPickable(true)
 
     //If the mesh has more than 20 vertices, use a Vertex Buffer Object for faster drawing
-    if (mesh.getVertexCount > 20) {
-      mesh.setUseVBOs(true)
-    }
+    //if (mesh.getVertexCount > 20) {
+    //  mesh.setUseVBOs(true)
+    //}
 
     //Set the material to the mesh  (determines the reaction to the lightning)
     mesh.setMaterial(material)
