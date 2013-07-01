@@ -246,7 +246,7 @@ class NodeForm(val file: File) extends MTComponent(app) {
           }
           */
         } else {
-          val degrees = e.getRotationDirection*e.getRotationDegreesX
+          val degrees = e.getRotationDirection*e.getRotationDegreesY
           rotateYGlobal(e.getRotationPoint, degrees)
           rotationY() += degrees
           /*

@@ -35,7 +35,7 @@ class AnimatedLine(val node: DragableNode)
   update()
   app.scene.canvas.addChild(this)
 
-  setStrokeColor(new MTColor(0,0,0))
+  setStrokeColor(new MTColor(255,255,255))
 
 
   def moveCircle(actor: Actor, newPosition: Vector3D) {
@@ -56,7 +56,7 @@ class AnimatedLine(val node: DragableNode)
     if (app.scene.canvas().containsChild(this) && !movingCircles.contains(actor)) {
       movingCircles(actor) = new MTEllipse(app, new Vertex(), 5f, 5f)
       movingCircles(actor).setVisible(true)
-      movingCircles(actor).setFillColor(new MTColor(0,0,0))
+      movingCircles(actor).setFillColor(new MTColor(255,255,255))
       app.scene.canvas.addChild(movingCircles(actor))
     }
   }
