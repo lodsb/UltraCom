@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Created-By: 1.4.2_11-b04 (Sun Microsystems Inc.)
+Ant-Version: Apache Ant 1.6.5
+
+Name: gluegen-rt.dll
+SHA1-Digest: hzU1Im0yWsHJai+y1ZdgH2mPlPY=
+

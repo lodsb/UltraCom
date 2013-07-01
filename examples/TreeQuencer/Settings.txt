@@ -1,7 +1,7 @@
 Wed Jan 30 04:24:13 CET 2008	
 Frametitle=TreeQuencer
 #DefaultAudioDevice=ASIO4ALL
-ScSynthPath=/usr/local/bin/scsynth
+ScSynthPath=D:/Program Files/SuperCollider/scsynth.exe
 DefaultSessionLogName=TreeQuencerSession
 #Renderer: OpenGL: 1 P3D: 2
 Renderer=1
@@ -11,10 +11,10 @@ Fullscreen=false
 #(if not exclusive, mt4j just uses an undecorated window, other windows can overlap it)
 FullscreenExclusive=false
 #Resolution
-DisplayWidth=1280
-DisplayHeight=800
+DisplayWidth=1550
+DisplayHeight=950
 #Which display to use for fullscreen
-Display=2
+Display=1
 #Framerate maximum
 MaximumFrameRate=60
 #Vertical_sync:'true' or 'false'
@@ -23,6 +23,7 @@ Vertical_sync=true
 MultiMiceEnabled=false
 #Anti aliasing multisampling - '0' disables it - 2,4,8 determines the quality of the a.a.
 OpenGLAntialiasing=1
+DefaultSessionLogName=logs/
 
 
 # TreeQuencer parameters
@@ -37,4 +38,4 @@ GameNumber=1
 StillNodeCount=4
 
 # BackgroundImage sets the filename for the background image
-BackgroundImage=fuego.jpg
+BackgroundImage=flower_mandala.jpg

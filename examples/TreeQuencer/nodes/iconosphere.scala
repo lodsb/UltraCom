@@ -83,29 +83,21 @@ SynthDef("icono") {
   val gateChanger = Changed1.kr(gate)
   val percussiveEnvelope = EnvGen.kr(Env.perc(attack=speed/atk, release=speed*overlap, level=20), gateChanger, doneAction=1)
 
-	val noiseGen = PinkNoise.ar(noiseVol);
-	val line = Line.kr(filterStart,filterEnd,3);
+	val noiseGen = PinkNoise.ar(noiseVol)
+	val line = Line.kr(filterStart,filterEnd,3)
 
   val w1 = 0.05 * RLPF.ar(Blip.ar(frq1,tone1).madd(amp1*globAmp,0) + noiseGen,line ,0.4) *
-    percussiveEnvelope
+
   val w2 = 0.05 * RLPF.ar(Blip.ar(frq5,tone1).madd(amp5*globAmp,0) + noiseGen, line ,0.4) *
-    percussiveEnvelope
   val w3 = 0.05 * RLPF.ar(Blip.ar(frq3,tone1).madd(amp3*globAmp,0) + noiseGen, line ,0.4) *
-    percussiveEnvelope
   val w4 = 0.05 * RLPF.ar(Blip.ar(frq7,tone1).madd(amp7*globAmp,0) + noiseGen, line ,0.4) *
-    percussiveEnvelope
   val w5 = 0.05 * RLPF.ar(Blip.ar(frq9,tone1).madd(amp9*globAmp,0) + noiseGen, line ,0.4) *
-    percussiveEnvelope
   val w6 = 0.05 * RLPF.ar(Blip.ar(frq11,tone1).madd(amp11*globAmp,0) + noiseGen, line ,0.4) *
-    percussiveEnvelope
   val w7 = 0.05 * RLPF.ar(Blip.ar(frq13,tone1).madd(amp13*globAmp,0) + noiseGen, line ,0.4) *
-    percussiveEnvelope
 
   val sin = w1 + w2 + w3 + w4 + w5 + w6 + w7
 
 	val sig = Pan2.ar(SplayAz.ar(2, sin/0.045))*volume;
-
-
 
 
   def scaleDown(x: GE): GE = {

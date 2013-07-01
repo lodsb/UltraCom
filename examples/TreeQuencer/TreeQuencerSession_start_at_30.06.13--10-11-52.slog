@@ -1,0 +1,8 @@
+atMillis, eventType, message, object, millisPassed, payload
+12892 | Event | "Created Node" | "center.obj" [main.scala.TreeQuencer.NodeForm@dbf42e] | -1 | null
+13211 | Event | "Created Node" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@2ad6c6] | -1 | null
+13445 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@dbf42e] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@2ad6c6]
+16174 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@af9825" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@2ad6c6] | -1 | ( X:749.1455 Y:449.99838 Z:90.000496 W:1.0,(0.0,0.0,0.0),1.0)
+16721 | Event | "Created Node" | "decimate.obj" [main.scala.TreeQuencer.NodeForm@983277] | -1 | null
+16773 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@dbf42e] | -1 | "decimate.obj" [main.scala.TreeQuencer.NodeForm@983277]
+16773 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@22d556" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@2ad6c6] | 599 | ( X:307.73923 Y:387.54916 Z:90.000496 W:1.0,(0.0,0.0,0.0),1.0)
