@@ -3,6 +3,7 @@ package main.scala.TreeQuencer
 import java.io.File
 import org.mt4j.output.audio.AudioServer._
 import org.lodsb.reakt.async.VarA
+import org.lodsb.reakt.sync.VarS
 
 
 /**
@@ -29,6 +30,10 @@ class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
   def switch = {_switch() = if(_switch()==1) 0f else 1f; _switch()}
   var synthesizer = FileImporter.cacheSynth(file)
   synthesizer.run(flag = false)
+  synthesizer.setAmplitudeUpdateDivisions(1)
+
+  // uncomment to see params sent to the synth
+  //synthesizer.parameters.observe { x=> println("synth parm "+this+" "+x); true}
 
   def play() {
     if(synthesizer != null) {
@@ -43,9 +48,13 @@ class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
     synthesizer = null
   }
 
-  def bind (value: VarA[Float], parameter: String, function: Float => Float = (x:Float) => {x}) {
+  def bind (value: VarS[Float], parameter: String, function: Float => Float = (x:Float) => {x}) {
     value.map( z => {
-      synthesizer.parameters() = (parameter,function(z))
+      //synthesizer.parameters() = (parameter,function(z))
+      //println("from bind")
+      // just to be sure, send the parameters directly, it should work with synthesizer.parameters() as well,
+      // it is a synchronous Var
+      synthesizer.synth.set(parameter -> function(z))
     })
   }
 
@@ -62,26 +71,26 @@ class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
   // kind of a low pass filter
   var max = 0f
   var maxMem = 0f
-  val r = node.form.materialCopy.getAmbient(0)
-  val b = node.form.materialCopy.getAmbient(1)
-  val g = node.form.materialCopy.getAmbient(2)
-  var colorArray = Array(r,b,g,1f)
+
+  // emission in grayscales
+  val grayEmission = node.form.materialCopy.getEmission(0)
+
+  //var colorArray = Array(grayEmission,grayEmission,grayEmission,grayEmissionAlpha)
+
   synthesizer.amplitude.map( x => { if (node.isWithinField) {
-    synthesizer.setAmplitudeUpdateDivisions(1)
     if (!(floatStack.isZero&&x==0&&maxMem<0.005)) {
-      floatStack.push(x.abs*50)
+      floatStack.push(x.abs*25)
       max = floatStack.max
       maxMem = if (max<maxMem) (max+maxMem)/2 else max
       if(!node.form.isGrey) {
-        colorArray = Array(
-          if(reduce(maxMem)>r) reduce(maxMem) else r,
-          if(reduce(maxMem)>b) reduce(maxMem) else b,
-          if(reduce(maxMem)>g) reduce(maxMem) else g,
-          1f
+        val emission = if(reduce(maxMem)> grayEmission) reduce(maxMem) else grayEmission
+        val emissionAlpha = if(reduce(maxMem)> grayEmission) 1-reduce(maxMem) else 1f
+        val colorArray = Array(
+          emission,emission,emission, emissionAlpha
         )
-        node.form.material.setAmbient(colorArray)
-        node.form.material.setDiffuse(colorArray)
-        node.form.material.setSpecular(colorArray)
+        node.form.material.setEmission(colorArray)
+        //node.form.material.setDiffuse(colorArray)
+        //node.form.material.setSpecular(colorArray)
       }
     }
   }})

@@ -37,4 +37,4 @@ GameNumber=2
 StillNodeCount=4
 
 # BackgroundImage sets the filename for the background image
-BackgroundImage=flower_mandala.jpg
+BackgroundImage=abspsy.jpg

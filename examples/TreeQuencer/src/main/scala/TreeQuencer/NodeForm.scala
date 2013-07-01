@@ -5,6 +5,7 @@ import org.mt4j.components.visibleComponents.shapes.mesh.MTTriangleMesh
 import org.mt4j.components.{TransformSpace, MTComponent}
 import java.io.File
 import org.lodsb.reakt.async.VarA
+import org.lodsb.reakt.sync.VarS
 import org.mt4j.input.inputProcessors.MTGestureEvent
 import org.mt4j.input.inputProcessors.MTGestureEvent._
 import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleEvent
@@ -42,10 +43,12 @@ class NodeForm(val file: File) extends MTComponent(app) {
   var isGrey = false
   val minimumScaleFactor = 0.8f
   val maximumScaleFactor = 3f
-  val scaleFactor = new VarA[Float](1f)
-  val rotationX = new VarA[Float](0f)
-  val rotationY = new VarA[Float](0f)
-  val rotationZ = new VarA[Float](0f)
+
+  //using synchronous signals to circumvent huge delays by scheduliung and message passing
+  val scaleFactor = new VarS[Float](1f)
+  val rotationX = new VarS[Float](0f)
+  val rotationY = new VarS[Float](0f)
+  val rotationZ = new VarS[Float](0f)
 
   setName(file.getName)
   // SessionLogging

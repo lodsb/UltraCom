@@ -80,7 +80,11 @@ object AudioServer {
 	private[audio] def lookupOrCreateAndRegister(s: Synth): Synthesizer = {
 		var ret: Synthesizer = null;
 		mapLock.synchronized{
-			ret = idToSynthMap.getOrElse(s.id, null);
+      if(s != null) {
+			  ret = idToSynthMap.getOrElse(s.id, null);
+      } else {
+        println("SYNTH == NULL")
+      }
 		}
 		if(ret == null) {
 			ret = new Synthesizer(s)

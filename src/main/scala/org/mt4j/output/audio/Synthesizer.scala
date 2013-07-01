@@ -22,12 +22,13 @@
 
 package org.mt4j.output.audio
 
-import org.lodsb.reakt.async.{ValA}
+import org.lodsb.reakt.async.{ValA, VarA}
 import de.sciss.synth.{ControlSetMap, Synth}
 import org.lodsb.reakt.sync.VarS
+import org.lodsb.reakt.sync.ValS
 
 class Synthesizer(val synth: Synth) {
-	val amplitude: ValA[Float] = new ValA[Float](0f)
+	val amplitude: ValS[Float] = new ValS[Float](0f)
 	val parameters: VarS[ControlSetMap] = new VarS[ControlSetMap](("_"->0.0));
 
   // for debugging
