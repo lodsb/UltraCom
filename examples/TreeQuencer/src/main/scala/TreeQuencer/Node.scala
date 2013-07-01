@@ -40,8 +40,14 @@ class Node extends DragableNode {
   var synthesizer: NodeSynthesizer = null
 
   def play() {
-    if(synthesizer != null && !isSourceNode && (!isNearToCenter && app.game != app.SEQUENCE_GAME)) {
-      synthesizer.play
+    if(synthesizer != null && !isSourceNode) {
+      if(app.game != app.SEQUENCE_GAME) {
+        if (!isNearToCenter) {
+          synthesizer.play
+        }
+      } else {
+        synthesizer.play
+      }
     }
   }
 
