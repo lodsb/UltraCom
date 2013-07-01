@@ -97,7 +97,7 @@ object AudioServer {
 
 	private def unregisterSynth(id: Int) = {
 		mapLock.synchronized {
-			idToSynthMap.remove(id)
+			idToSynthMap -= id
 		}
 	}
 

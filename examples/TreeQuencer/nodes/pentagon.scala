@@ -89,6 +89,12 @@ SynthDef("pentagon") {
 	var envBase = EnvGen.kr(Env.perc(0.001, 0.01), trig)
 	var envs1m = (freq+envs1).midicps;
 	var envs2 = EnvGen.ar(Env( 1, Vector[Env.Seg](Seg(0.05,0.4, curveShape(-2)), Seg(0.13,0, curveShape(-2)))) , trig);
+
+
+  // bd envelopes
+  var env1b=Env.perc(0.001,1,80,curveShape(-20));
+  var env2b=Env.perc(0.001,1,1,curveShape(-8));
+  var env3b=Env.perc(0.001,1,80,curveShape(-8));
 	 
 	 
 	// clap signal
@@ -118,14 +124,19 @@ SynthDef("pentagon") {
 	outs = outs.clip2(1) + envs2*(scaledRot(rotationZ)*SinOsc.ar(envBase*1000+80)+0.5*SinOsc.ar(envBase*10000+110)) ;
 
   // kick signal
-  val outk = (LPF.ar( Ringz.ar( trig, 60+(140*scaledRot(rotationZ)), 0.5 ), 20+(5000*(1-scaledRot(rotationX))) ) * 0.75)
+  var daNoise=LPF.ar(WhiteNoise.ar(1),EnvGen.kr(env1b,trig)+20+(5000*(scaledRot(rotationX))));
+  var daOsc=LPF.ar(SinOsc.ar(EnvGen.kr(env3b,trig)+20+(140*scaledRot(rotationZ))),200);
+  val outk = ((daNoise+daOsc))* EnvGen.kr(env2b,trig,doneAction = 0)
+
+  // there is a bug? in ringz, double triggers lead to static noise
+  //Ringz.ar( trig, 60+(140*scaledRot(rotationZ)), 0.5 );//(BLowPass.ar( Ringz.ar( trig, 60+(140*scaledRot(rotationZ)), 0.5 ), 20+(5000*(1-scaledRot(rotationX)))) * 0.75)
 
 
   // mix all together, 3 way crossfade, selectX seems to be missing from ScalaCollider
-  val clapSnareMix = LinXFade2.ar(outc, outs, Clip.kr(4*scaledRot(rotationY), 0, 2)-1)
-  val snareBaseMix = LinXFade2.ar(outs, outk, Clip.kr(4*scaledRot(rotationY)-2, 0, 2)-1)
+  val clapSnareMix = LinXFade2.ar(outc, outs, Clip.kr(Clip.kr(4*scaledRot(rotationY), 0, 2)-1,-1,1))
+  val snareBaseMix = LinXFade2.ar(outs, outk, Clip.kr(Clip.kr(4*scaledRot(rotationY)-2, 0, 2)-1,-1,1))
 
-	var mix:GE = LinXFade2.ar(clapSnareMix, snareBaseMix, 2*scaledRot(rotationY)-1)
+	var mix:GE = LinXFade2.ar(clapSnareMix, snareBaseMix, Clip.kr(2*scaledRot(rotationY)-1,-1,1))
   mix = LeakDC.ar(Limiter.ar(mix))
 
 	val sig = Pan2.ar(SplayAz.ar(2, mix*0.75))*volume;

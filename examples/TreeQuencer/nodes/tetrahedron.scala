@@ -80,7 +80,7 @@ SynthDef("tetra") {
   val echo9  = delay(echo8, 9)
   val echo10 = delay(echo9, 10)
   val echo11 = delay(echo10, 11)
-  bing = FreeVerb.ar(bing, 0.6, 0.5, 0.8) //+echo1+echo2+echo3+echo4+echo5+echo6+echo7+echo8+echo9+echo10+echo11
+
   bing += echo1 + echo2 + echo3 + echo4 + echo5 + echo6 + echo7 + echo8 + echo9 + echo10 + echo11
 
   // put it out

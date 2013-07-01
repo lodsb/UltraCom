@@ -1,8 +1,7 @@
 Wed Jan 30 04:24:13 CET 2008	
 Frametitle=TreeQuencer
 #DefaultAudioDevice=ASIO4ALL
-ScSynthPath=D:/Program Files/SuperCollider/scsynth.exe
-DefaultSessionLogName=TreeQuencerSession
+ScSynthPath=/usr/local/bin/scsynth
 #Renderer: OpenGL: 1 P3D: 2
 Renderer=1
 #Fullscreen:'true' or 'false'
@@ -23,7 +22,7 @@ Vertical_sync=true
 MultiMiceEnabled=false
 #Anti aliasing multisampling - '0' disables it - 2,4,8 determines the quality of the a.a.
 OpenGLAntialiasing=1
-DefaultSessionLogName=logs/
+DefaultSessionLogName=logs/TreeQuencerSession
 
 
 # TreeQuencer parameters
@@ -32,7 +31,7 @@ DefaultSessionLogName=logs/
 # 0 is the standard game with the random nodes in the middle of the screen
 # 1 is the game, where several still nodes are put in sequence and the others get docked to them
 # 2 is similar to 0, but the distance of a node to the center defines how often/fast it gets triggered
-GameNumber=1
+GameNumber=2
 
 # StillNodeCount defines how many still nodes at game 2 will be on the field from the beginning
 StillNodeCount=4

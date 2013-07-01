@@ -1,8 +1,0 @@
-atMillis, eventType, message, object, millisPassed, payload
-16806 | Event | "Created Node" | "center.obj" [main.scala.TreeQuencer.NodeForm@183e712] | -1 | null
-17096 | Event | "Created Node" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@37783b] | -1 | null
-17320 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@183e712] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@37783b]
-21034 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@1f98de7" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@37783b] | -1 | ( X:744.2969 Y:450.81445 Z:90.0 W:1.0,(0.0,0.0,0.0),1.0)
-22183 | Event | "Created Node" | "cube.obj" [main.scala.TreeQuencer.NodeForm@17d96f9] | -1 | null
-22214 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@183e712] | -1 | "cube.obj" [main.scala.TreeQuencer.NodeForm@17d96f9]
-22214 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@129f93b" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@37783b] | 1180 | ( X:419.9375 Y:556.7617 Z:90.0 W:1.0,(0.0,0.0,0.0),1.0)

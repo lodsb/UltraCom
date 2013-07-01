@@ -57,8 +57,6 @@ SynthDef("cube") {
 	val env = EnvGen.kr(Env.perc(attack = 0.01, release = duration(rotationX)), Changed1.kr(gate), doneAction = 1)
 	base = (HPF.ar(base * env, 30) * 0.5 + base).tanh
 
-  val vol = volume * 0.5
-
 	val sig = Pan2.ar(SplayAz.ar(2, volume * base * amp * env)/2.0)
 
 	AudioServer.attach(sig)

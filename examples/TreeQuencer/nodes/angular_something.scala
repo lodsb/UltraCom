@@ -49,7 +49,7 @@ SynthDef("angular") {
 	}
 
 	def scaledRot(rotation:GE): GE = {
-		Clip.kr(rotation / 720, 0, 1);
+		Clip.kr(rotation / 360, 0, 1);
 	}
 
 
@@ -92,7 +92,7 @@ SynthDef("angular") {
 		sig = (0.750*sig)+(0.125*aux);
 
 
-		sig = Pan2.ar(SplayAz.ar(2, sig/2.0))*volume;
+		sig = Pan2.ar(SplayAz.ar(2, sig/1.5))*volume;
 
 
 
