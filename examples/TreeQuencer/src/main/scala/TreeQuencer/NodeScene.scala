@@ -234,10 +234,8 @@ class NodeScene() extends Scene(app,"TreeQuencer") {
         def processGestureEvent(ge: MTGestureEvent): Boolean = {
           val te = ge.asInstanceOf[TapEvent]
           te.getTapID match {
-            case BUTTON_DOWN =>
-              activeSlider = slider
-            case BUTTON_UP =>
-              activeSlider = null
+            case BUTTON_DOWN => activeSlider = slider
+            case BUTTON_UP => activeSlider = null
             case _ =>
           }
           false

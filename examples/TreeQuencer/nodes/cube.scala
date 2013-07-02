@@ -54,7 +54,7 @@ SynthDef("cube") {
 
 	// CREATING SOUND -----
 	var base = RLPF.ar(Pulse.ar(Seq(0.99, 0.5, 1.01).map(_ * halftone(rotationZ)), pw), cf, 0.3).madd(range(SinOsc.kr(wobbles(rotationY)), 0.5, 4), 0).sin
-	val env = EnvGen.kr(Env.perc(attack = 0.01, release = duration(rotationX)), Changed1.kr(gate), doneAction = 1)
+	val env = EnvGen.kr(Env.perc(attack = 0.01, release = 3*duration(rotationX)), Changed1.kr(gate), doneAction = 1)
 	base = (HPF.ar(base * env, 30) * 0.5 + base).tanh
 
 	val sig = Pan2.ar(SplayAz.ar(2, volume * base * amp * env)/2.0)
