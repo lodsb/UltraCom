@@ -77,7 +77,7 @@ class NodeForm(val file: File) extends MTComponent(app) {
     }
   })
 
-  var scale = app.width*0.05f/biggestWidth
+  var scale = app.width*0.08f/biggestWidth
 
   meshes.foreach( mesh => {
     addChild(mesh)
@@ -110,13 +110,13 @@ class NodeForm(val file: File) extends MTComponent(app) {
 
 
 
-  val xCircle = createCircle(biggestWidth+20f)
+  val xCircle = createCircle(biggestMesh.getWidthXY(TransformSpace.GLOBAL)*3f/5f)
   rotationX.map( x => {xCircle.setDegrees(x);xCircle.create()} )
 
-  val yCircle = createCircle(biggestWidth+40f)
+  val yCircle = createCircle(biggestMesh.getWidthXY(TransformSpace.GLOBAL)*3f/5f+4f)
   rotationY.map( y => {yCircle.setDegrees(y);yCircle.create()} )
 
-  val zCircle = createCircle(biggestWidth+60f)
+  val zCircle = createCircle(biggestMesh.getWidthXY(TransformSpace.GLOBAL)*3f/5f+8f)
   rotationZ.map( z => {zCircle.setDegrees(z);zCircle.create()})
 
 
@@ -131,6 +131,9 @@ class NodeForm(val file: File) extends MTComponent(app) {
   }
   override def setPositionGlobal(newPosition: Vector3D) {
     translateGlobal(newPosition.getSubtracted(position))
+    xCircle.setPositionGlobal(newPosition)
+    yCircle.setPositionGlobal(newPosition)
+    zCircle.setPositionGlobal(newPosition)
   }
 
   val X_AXIS = 1
@@ -227,6 +230,9 @@ class NodeForm(val file: File) extends MTComponent(app) {
         } else {
           // if no key ist pressed, make a simple translation, just as usual...
           translateGlobal(e.getTranslationVect)
+          xCircle.translateGlobal(e.getTranslationVect)
+          yCircle.translateGlobal(e.getTranslationVect)
+          zCircle.translateGlobal(e.getTranslationVect)
         }
         /*
         if (e.getId == GESTURE_ENDED) {
@@ -311,6 +317,9 @@ class NodeForm(val file: File) extends MTComponent(app) {
     }
 
     scaleGlobal(max, max, max, position)
+    xCircle.scaleGlobal(max, max, max, position)
+    yCircle.scaleGlobal(max, max, max, position)
+    zCircle.scaleGlobal(max, max, max, position)
   }
 
   def makeGrey(makeItGrey: Boolean) {
@@ -333,14 +342,16 @@ class NodeForm(val file: File) extends MTComponent(app) {
    */
   def position = getCenterPointGlobal
 
-  def createCircle(radius: Float): MTEllipse = {
+  def createCircle(radius: Float): WrapperEllipse = {
     val circle = new WrapperEllipse(app, app.center, radius, radius)
     circle.setNoFill(true)
     circle.setStrokeColor(new MTColor(255,255,255))
-    app.scene.canvas().addChild(circle)
+    app.scene.canvas.addChild(circle)
+    circle.setPositionGlobal(position)
     circle.unregisterAllInputProcessors()
     circle.removeAllGestureEventListeners()
-    globalPosition.map(z => circle.globalPosition() = Vec3d(z.x,z.y,z.z+10f))
+    //globalPosition.map(z => circle.globalPosition() = Vec3d(z.x,z.y,z.z+10f))
     circle
   }
+
 }
