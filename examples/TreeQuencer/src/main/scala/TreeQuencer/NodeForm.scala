@@ -46,10 +46,10 @@ class NodeForm(val file: File) extends MTComponent(app) {
   val maximumScaleFactor = 3f
 
   //using synchronous signals to circumvent huge delays by scheduliung and message passing
-  val scaleFactor = new VarS[Float](1f)
-  val rotationX = new VarS[Float](0f)
-  val rotationY = new VarS[Float](0f)
-  val rotationZ = new VarS[Float](0f)
+  var scaleFactor = new VarS[Float](1f)
+  var rotationX = new VarS[Float](0f)
+  var rotationY = new VarS[Float](0f)
+  var rotationZ = new VarS[Float](0f)
 
 
   setName(file.getName)

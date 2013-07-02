@@ -4,6 +4,7 @@ import java.io.File
 import org.mt4j.output.audio.AudioServer._
 import org.lodsb.reakt.async.VarA
 import org.lodsb.reakt.sync.VarS
+import de.sciss.synth.Synth
 
 
 /**
@@ -28,7 +29,7 @@ import org.lodsb.reakt.sync.VarS
 class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
   private val _switch = new VarA[Float](1f)
   def switch = {_switch() = if(_switch()==1) 0f else 1f; _switch()}
-  var synthesizer = FileImporter.cacheSynth(file)
+  var synthesizer: Synth = FileImporter.cacheSynth(file)
   synthesizer.run(flag = false)
   synthesizer.setAmplitudeUpdateDivisions(1)
 
@@ -54,7 +55,9 @@ class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
       //println("from bind")
       // just to be sure, send the parameters directly, it should work with synthesizer.parameters() as well,
       // it is a synchronous Var
-      synthesizer.synth.set(parameter -> function(z))
+      if(synthesizer != null) {
+        synthesizer.synth.set(parameter -> function(z))
+      }
     })
   }
 
