@@ -73,7 +73,7 @@ SynthDef("Decimate") {
 	sig = 0.35*DelayL.ar(sig,0.45,0.45)+sig
 	sig = 0.35*DelayL.ar(sig,0.75,0.75)+sig
   sig = HPF.ar(sig, 100)
-	sig = volume*LeakDC.ar(Limiter.ar(SplayAz.ar(2,FreeVerb.ar(sig))*0.8));
+  sig = volume*LeakDC.ar(Limiter.ar(FreeVerb.ar(SplayAz.ar(2,sig),0.9, 0.4))*0.8);
 
 	AudioServer.attach(sig)
 
