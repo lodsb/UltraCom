@@ -56,6 +56,7 @@ object app extends Application {
   def idCounter = {_idCounter+=1; _idCounter-1}
   val innerCircleRadius = 100
   var loggingEnabled = false
+  val borderWidth = 150
 
   def getProperty(property: String, defaultValue: String = "") = {
     MTApplication.getProperties.getProperty(property, defaultValue)

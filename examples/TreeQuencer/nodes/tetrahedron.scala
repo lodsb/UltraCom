@@ -39,7 +39,7 @@ SynthDef("tetra") {
   }
 
   def scaledRot(rotation:GE): GE = {
- 		Clip.kr(rotation / 720, 0, 1);
+ 		Clip.kr(rotation / 360, 0, 1);
  	}
 
   // tone
@@ -82,6 +82,7 @@ SynthDef("tetra") {
   val echo11 = delay(echo10, 11)
 
   bing += echo1 + echo2 + echo3 + echo4 + echo5 + echo6 + echo7 + echo8 + echo9 + echo10 + echo11
+  bing = Limiter.ar(bing)
 
   // put it out
   AudioServer.attach(bing)

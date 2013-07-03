@@ -48,7 +48,7 @@ SynthDef("pentagon") {
 	}
 	
 	def scaledRot(rotation:GE): GE = {
-		Clip.kr(rotation / 360, 0, 1);
+		Clip.kr(rotation.abs / 360, 0, 1);
 	}
 	
 	
@@ -137,9 +137,9 @@ SynthDef("pentagon") {
   val snareBaseMix = LinXFade2.ar(outs, outk, Clip.kr(Clip.kr(4*scaledRot(rotationY)-2, 0, 2)-1,-1,1))
 
 	var mix:GE = LinXFade2.ar(clapSnareMix, snareBaseMix, Clip.kr(2*scaledRot(rotationY)-1,-1,1))
-  mix = LeakDC.ar(Limiter.ar(mix))
+  mix = LeakDC.ar(mix)
 
-	val sig = Pan2.ar(SplayAz.ar(2, mix*0.75))*volume;
+	val sig = Pan2.ar(SplayAz.ar(2, Limiter.ar(volume*mix*0.75)));
 
 
 

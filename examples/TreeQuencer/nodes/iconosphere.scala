@@ -95,9 +95,9 @@ SynthDef("icono") {
   val w6 = 0.05 * RLPF.ar(Blip.ar(frq11,tone1).madd(amp11*globAmp,0) + noiseGen, line ,0.4) * percussiveEnvelope
   val w7 = 0.05 * RLPF.ar(Blip.ar(frq13,tone1).madd(amp13*globAmp,0) + noiseGen, line ,0.4) * percussiveEnvelope
 
-  val sin = w1 + w2 + w3 + w4 + w5 + w6 + w7
+  var sin:GE = w1 + w2 + w3 + w4 + w5 + w6 + w7
 
-	val sig = Pan2.ar(SplayAz.ar(2, (sin*volume)/0.045));
+	val sig = Pan2.ar(SplayAz.ar(2, Limiter.ar(sin*volume)/0.045));
 
 
   def scaleDown(x: GE): GE = {
