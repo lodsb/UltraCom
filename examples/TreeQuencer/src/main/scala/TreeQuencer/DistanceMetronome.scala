@@ -22,7 +22,7 @@ import collection.mutable
 
 
 object DistanceMetronome extends Metronome {
-  val granulation = 8 // how many parts within two beats ~ solution
+  val granulation = 8 // how many parts within two beat signals ~ solution
   var step = granulation // increments each round up to granulation and then restarts
   val nodeGrid = new Array[NodeSet[Node]](granulation)
   for (i <- 0 to granulation-1) {
