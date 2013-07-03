@@ -1,0 +1,224 @@
+atMillis, eventType, message, object, millisPassed, payload
+14727 | Event | "Created Node" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@f6669a] | -1 | null
+15651 | Event | "Created Node" | "cube.obj" [main.scala.TreeQuencer.NodeForm@b5a1b0] | -1 | null
+15689 | Event | "Created Node" | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@1119487] | -1 | null
+15725 | Event | "Created Node" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@a61c42] | -1 | null
+15768 | Event | "Created Node" | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@8f46b9] | -1 | null
+15817 | Event | "Created Node" | "center.obj" [main.scala.TreeQuencer.NodeForm@d4914b] | -1 | null
+16278 | Event | "Created Node" | "center.obj" [main.scala.TreeQuencer.NodeForm@1020bff] | -1 | null
+16296 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@d4914b] | -1 | "center.obj" [main.scala.TreeQuencer.NodeForm@1020bff]
+16296 | Event | "Created Node" | "center.obj" [main.scala.TreeQuencer.NodeForm@1681a61] | -1 | null
+16316 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1020bff] | -1 | "center.obj" [main.scala.TreeQuencer.NodeForm@1681a61]
+16317 | Event | "Created Node" | "center.obj" [main.scala.TreeQuencer.NodeForm@1cb01e2] | -1 | null
+16339 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1681a61] | -1 | "center.obj" [main.scala.TreeQuencer.NodeForm@1cb01e2]
+16339 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1cb01e2] | -1 | "center.obj" [main.scala.TreeQuencer.NodeForm@d4914b]
+27431 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@d4914b] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@f6669a]
+27432 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@3afc13" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@f6669a] | -1 | ( X:199.999 Y:170.87085 Z:99.99994 W:1.0,(0.0,0.0,0.0),1.0)
+28284 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@1c5f232" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@f6669a] | 852 | ( X:245.29196 Y:351.15796 Z:99.99994 W:1.0,(0.0,0.0,0.0),1.0)
+28284 | Event | "Created Node" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@af6fa0] | -1 | null
+29632 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@d4914b] | -1 | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@8f46b9]
+29632 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@9d7b55" | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@8f46b9] | -1 | ( X:350.8711 Y:170.0 Z:99.99997 W:1.0,(0.0,0.0,0.0),1.0)
+29899 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@d4914b] | -1 | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@8f46b9]
+29899 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1020bff] | -1 | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@8f46b9]
+30700 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@ef4c79" | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@8f46b9] | 1068 | ( X:563.0215 Y:371.67383 Z:99.99997 W:1.0,(0.0,0.0,0.0),1.0)
+30700 | Event | "Created Node" | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@10e24d7] | -1 | null
+31959 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@d4914b] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@af6fa0]
+31959 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@545868" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@af6fa0] | -1 | ( X:202.6865 Y:172.68726 Z:99.99994 W:1.0,(0.0,0.0,0.0),1.0)
+32109 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@d4914b] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@af6fa0]
+32109 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1020bff] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@af6fa0]
+32209 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1020bff] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@af6fa0]
+32209 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1681a61] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@af6fa0]
+32586 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1681a61] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@af6fa0]
+32592 | Event | "Removed Node" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@af6fa0] | -1 | null
+32961 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@d83560" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@af6fa0] | 1002 | ( X:1044.0479 Y:-11.004156 Z:99.99994 W:1.0,(0.0,0.0,0.0),1.0)
+32961 | Event | "Created Node" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@16aa7ee] | -1 | null
+34187 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@d4914b] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@a61c42]
+34187 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@f3bd64" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@a61c42] | -1 | ( X:200.00058 Y:779.1465 Z:100.000015 W:1.0,(0.0,0.0,0.0),1.0)
+34387 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@d4914b] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@a61c42]
+34387 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1020bff] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@a61c42]
+34572 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1020bff] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@a61c42]
+34572 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1681a61] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@a61c42]
+34765 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1681a61] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@a61c42]
+34765 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1cb01e2] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@a61c42]
+34924 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1cb01e2] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@a61c42]
+34925 | Event | "Removed Node" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@a61c42] | -1 | null
+35633 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@1544abc" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@a61c42] | 1446 | ( X:1328.527 Y:1023.2842 Z:100.000015 W:1.0,(0.0,0.0,0.0),1.0)
+35633 | Event | "Created Node" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@106369f] | -1 | null
+36217 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1cb01e2] | -1 | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@1119487]
+36218 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@1a26839" | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@1119487] | -1 | ( X:1350.0 Y:779.1387 Z:100.0 W:1.0,(0.0,0.0,0.0),1.0)
+37027 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1cb01e2] | -1 | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@1119487]
+37027 | Event | "Removed Node" | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@1119487] | -1 | null
+37746 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@6c9fd2" | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@1119487] | 1528 | ( X:1329.3691 Y:1006.2344 Z:100.0 W:1.0,(0.0,0.0,0.0),1.0)
+37746 | Event | "Created Node" | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@1ee7fd3] | -1 | null
+40656 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1cb01e2] | -1 | "cube.obj" [main.scala.TreeQuencer.NodeForm@b5a1b0]
+40656 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@1be614e" | "cube.obj" [main.scala.TreeQuencer.NodeForm@b5a1b0] | -1 | ( X:1349.1484 Y:170.0 Z:100.00001 W:1.0,(0.0,0.0,0.0),1.0)
+41240 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1cb01e2] | -1 | "cube.obj" [main.scala.TreeQuencer.NodeForm@b5a1b0]
+41240 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1681a61] | -1 | "cube.obj" [main.scala.TreeQuencer.NodeForm@b5a1b0]
+41589 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1681a61] | -1 | "cube.obj" [main.scala.TreeQuencer.NodeForm@b5a1b0]
+41590 | Event | "Removed Node" | "cube.obj" [main.scala.TreeQuencer.NodeForm@b5a1b0] | -1 | null
+41940 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@17ffa5a" | "cube.obj" [main.scala.TreeQuencer.NodeForm@b5a1b0] | 1284 | ( X:1095.4629 Y:-58.134766 Z:100.00001 W:1.0,(0.0,0.0,0.0),1.0)
+41940 | Event | "Created Node" | "cube.obj" [main.scala.TreeQuencer.NodeForm@54b3df] | -1 | null
+43798 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1cb01e2] | -1 | "cube.obj" [main.scala.TreeQuencer.NodeForm@54b3df]
+43798 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@1551d8f" | "cube.obj" [main.scala.TreeQuencer.NodeForm@54b3df] | -1 | ( X:1349.1338 Y:170.0 Z:100.00001 W:1.0,(0.0,0.0,0.0),1.0)
+43932 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1cb01e2] | -1 | "cube.obj" [main.scala.TreeQuencer.NodeForm@54b3df]
+43933 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1681a61] | -1 | "cube.obj" [main.scala.TreeQuencer.NodeForm@54b3df]
+46404 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@18a4767" | "cube.obj" [main.scala.TreeQuencer.NodeForm@54b3df] | 2606 | ( X:903.91406 Y:318.98828 Z:100.00001 W:1.0,(0.0,0.0,0.0),1.0)
+46404 | Event | "Created Node" | "cube.obj" [main.scala.TreeQuencer.NodeForm@28782a] | -1 | null
+47891 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@1b0d579" | "cube.obj" [main.scala.TreeQuencer.NodeForm@54b3df] | -1 | ( X:903.9121 Y:318.98438 Z:100.00001 W:1.0,(0.0,0.0,0.0),1.0)
+48393 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@8646d6" | "cube.obj" [main.scala.TreeQuencer.NodeForm@54b3df] | -1 | ( X:904.7617 Y:314.7246 Z:100.00001 W:1.0,(0.0,0.0,0.0),1.0)
+48612 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1681a61] | -1 | "cube.obj" [main.scala.TreeQuencer.NodeForm@54b3df]
+48613 | Event | "Removed Node" | "cube.obj" [main.scala.TreeQuencer.NodeForm@54b3df] | -1 | null
+48914 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@111fae9" | "cube.obj" [main.scala.TreeQuencer.NodeForm@54b3df] | 521 | ( X:991.57227 Y:4.8720703 Z:100.00001 W:1.0,(0.0,0.0,0.0),1.0)
+51516 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1cb01e2] | -1 | "cube.obj" [main.scala.TreeQuencer.NodeForm@28782a]
+51516 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@c1bdd7" | "cube.obj" [main.scala.TreeQuencer.NodeForm@28782a] | -1 | ( X:1349.1387 Y:170.0 Z:100.00001 W:1.0,(0.0,0.0,0.0),1.0)
+51616 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1cb01e2] | -1 | "cube.obj" [main.scala.TreeQuencer.NodeForm@28782a]
+51616 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1681a61] | -1 | "cube.obj" [main.scala.TreeQuencer.NodeForm@28782a]
+51982 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@14b3e99" | "cube.obj" [main.scala.TreeQuencer.NodeForm@28782a] | 466 | ( X:880.0078 Y:273.2959 Z:100.00001 W:1.0,(0.0,0.0,0.0),1.0)
+51983 | Event | "Created Node" | "cube.obj" [main.scala.TreeQuencer.NodeForm@8ac1a1] | -1 | null
+52730 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1cb01e2] | -1 | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@1ee7fd3]
+52730 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@a8ad40" | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@1ee7fd3] | -1 | ( X:1349.1562 Y:779.99805 Z:100.0 W:1.0,(0.0,0.0,0.0),1.0)
+53014 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@1dd4000" | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@1ee7fd3] | 284 | ( X:1280.8125 Y:658.49805 Z:100.0 W:1.0,(0.0,0.0,0.0),1.0)
+53015 | Event | "Created Node" | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@185ceaf] | -1 | null
+53920 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1cb01e2] | -1 | "cube.obj" [main.scala.TreeQuencer.NodeForm@8ac1a1]
+53921 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@21c1f0" | "cube.obj" [main.scala.TreeQuencer.NodeForm@8ac1a1] | -1 | ( X:1346.4883 Y:170.0 Z:100.00001 W:1.0,(0.0,0.0,0.0),1.0)
+54020 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1cb01e2] | -1 | "cube.obj" [main.scala.TreeQuencer.NodeForm@8ac1a1]
+54020 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1681a61] | -1 | "cube.obj" [main.scala.TreeQuencer.NodeForm@8ac1a1]
+54623 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@111d387" | "cube.obj" [main.scala.TreeQuencer.NodeForm@8ac1a1] | 702 | ( X:909.38086 Y:668.5469 Z:100.00001 W:1.0,(0.0,0.0,0.0),1.0)
+54623 | Event | "Created Node" | "cube.obj" [main.scala.TreeQuencer.NodeForm@143363] | -1 | null
+55506 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@d4914b] | -1 | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@10e24d7]
+55506 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@ba9d81" | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@10e24d7] | -1 | ( X:351.7539 Y:170.0 Z:99.99997 W:1.0,(0.0,0.0,0.0),1.0)
+55640 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@d4914b] | -1 | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@10e24d7]
+55640 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1020bff] | -1 | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@10e24d7]
+55930 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1020bff] | -1 | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@10e24d7]
+55930 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@d4914b] | -1 | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@10e24d7]
+56321 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@63e6a1" | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@10e24d7] | 815 | ( X:235.0332 Y:543.84375 Z:99.99997 W:1.0,(0.0,0.0,0.0),1.0)
+56322 | Event | "Created Node" | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@d9541] | -1 | null
+56916 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@d4914b] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@106369f]
+56916 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@136866" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@106369f] | -1 | ( X:201.77695 Y:776.4463 Z:100.000015 W:1.0,(0.0,0.0,0.0),1.0)
+57054 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@d4914b] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@106369f]
+57054 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1020bff] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@106369f]
+57343 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@42986e" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@106369f] | 427 | ( X:522.49176 Y:607.6499 Z:100.000015 W:1.0,(0.0,0.0,0.0),1.0)
+57343 | Event | "Created Node" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@a173c4] | -1 | null
+58762 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@d4914b] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@16aa7ee]
+58762 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@149f171" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@16aa7ee] | -1 | ( X:200.00095 Y:170.89429 Z:99.99994 W:1.0,(0.0,0.0,0.0),1.0)
+58961 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@d4914b] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@16aa7ee]
+58961 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1020bff] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@16aa7ee]
+59128 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1020bff] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@16aa7ee]
+59128 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1681a61] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@16aa7ee]
+59196 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1681a61] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@16aa7ee]
+59196 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1cb01e2] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@16aa7ee]
+59578 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@b0f8c3" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@16aa7ee] | 816 | ( X:1243.0791 Y:374.8474 Z:99.99994 W:1.0,(0.0,0.0,0.0),1.0)
+59578 | Event | "Created Node" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@101063e] | -1 | null
+60677 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@d4914b] | -1 | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@d9541]
+60677 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@75ad5" | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@d9541] | -1 | ( X:350.85156 Y:170.0 Z:99.99997 W:1.0,(0.0,0.0,0.0),1.0)
+60826 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@d4914b] | -1 | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@d9541]
+60826 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1020bff] | -1 | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@d9541]
+61032 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1020bff] | -1 | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@d9541]
+61032 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1681a61] | -1 | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@d9541]
+61117 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1681a61] | -1 | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@d9541]
+61117 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1cb01e2] | -1 | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@d9541]
+61555 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@cf9a71" | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@d9541] | 878 | ( X:1206.9199 Y:256.96094 Z:99.99997 W:1.0,(0.0,0.0,0.0),1.0)
+61555 | Event | "Created Node" | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@12662df] | -1 | null
+62133 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1cb01e2] | -1 | "cube.obj" [main.scala.TreeQuencer.NodeForm@143363]
+62133 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@1253394" | "cube.obj" [main.scala.TreeQuencer.NodeForm@143363] | -1 | ( X:1345.6562 Y:170.86914 Z:100.00001 W:1.0,(0.0,0.0,0.0),1.0)
+62232 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1cb01e2] | -1 | "cube.obj" [main.scala.TreeQuencer.NodeForm@143363]
+62232 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1681a61] | -1 | "cube.obj" [main.scala.TreeQuencer.NodeForm@143363]
+62383 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1681a61] | -1 | "cube.obj" [main.scala.TreeQuencer.NodeForm@143363]
+62383 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1020bff] | -1 | "cube.obj" [main.scala.TreeQuencer.NodeForm@143363]
+62703 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1020bff] | -1 | "cube.obj" [main.scala.TreeQuencer.NodeForm@143363]
+62703 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@d4914b] | -1 | "cube.obj" [main.scala.TreeQuencer.NodeForm@143363]
+63235 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@15d227b" | "cube.obj" [main.scala.TreeQuencer.NodeForm@143363] | 1102 | ( X:178.71484 Y:345.52246 Z:100.00001 W:1.0,(0.0,0.0,0.0),1.0)
+63235 | Event | "Created Node" | "cube.obj" [main.scala.TreeQuencer.NodeForm@13d0a33] | -1 | null
+64579 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@d4914b] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@a173c4]
+64579 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@d6b556" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@a173c4] | -1 | ( X:200.858 Y:780.0 Z:100.000015 W:1.0,(0.0,0.0,0.0),1.0)
+64662 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@d4914b] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@a173c4]
+64663 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1020bff] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@a173c4]
+64729 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1020bff] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@a173c4]
+64729 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1681a61] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@a173c4]
+64799 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1681a61] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@a173c4]
+64799 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1cb01e2] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@a173c4]
+65367 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@effc4" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@a173c4] | 788 | ( X:1174.7438 Y:562.9136 Z:100.000015 W:1.0,(0.0,0.0,0.0),1.0)
+65367 | Event | "Created Node" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@17c427] | -1 | null
+66212 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1cb01e2] | -1 | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@185ceaf]
+66212 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@f3ea59" | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@185ceaf] | -1 | ( X:1348.3086 Y:779.99805 Z:100.0 W:1.0,(0.0,0.0,0.0),1.0)
+66329 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1cb01e2] | -1 | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@185ceaf]
+66329 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1681a61] | -1 | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@185ceaf]
+66806 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@1906abc" | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@185ceaf] | 594 | ( X:773.41406 Y:561.0254 Z:100.0 W:1.0,(0.0,0.0,0.0),1.0)
+66806 | Event | "Created Node" | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@bd94c6] | -1 | null
+69920 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@d4914b] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@101063e]
+69920 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@ff54ed" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@101063e] | -1 | ( X:202.55954 Y:169.99976 Z:99.99994 W:1.0,(0.0,0.0,0.0),1.0)
+70002 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@d4914b] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@101063e]
+70002 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1020bff] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@101063e]
+70109 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1020bff] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@101063e]
+70109 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1681a61] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@101063e]
+70581 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@509bc6" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@101063e] | 661 | ( X:835.0322 Y:335.5818 Z:99.99994 W:1.0,(0.0,0.0,0.0),1.0)
+70581 | Event | "Created Node" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@1889c4a] | -1 | null
+73104 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1142.6277
+73109 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1109.4708
+73112 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1114.2092
+73114 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1118.9446
+73117 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1128.4185
+73119 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1142.6277
+73144 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1152.1013
+73146 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1180.5198
+73148 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1199.4674
+73150 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1223.1504
+73152 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1261.0426
+73156 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1298.9348
+73160 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1327.3561
+73162 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1374.722
+73164 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1393.6667
+73166 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1436.2974
+73176 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1483.6633
+73187 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1521.5555
+73188 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1559.4478
+73190 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1606.8137
+73192 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1677.8627
+73194 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1715.7578
+73196 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1786.8068
+73204 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1815.2252
+73209 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1876.8004
+73212 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1924.1664
+73215 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1971.5323
+73218 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1999.9537
+73222 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1999.9999
+73227 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1152.1013
+73232 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1180.5198
+73234 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1199.4674
+73237 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1223.1504
+73239 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1261.0426
+73241 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1298.9348
+73243 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1327.3561
+73245 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1374.722
+73247 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1393.6667
+73250 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1436.2974
+73253 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1483.6633
+73255 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1521.5555
+73257 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1559.4478
+73259 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1606.8137
+73260 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1677.8627
+73262 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1715.7578
+73264 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1786.8068
+73267 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1815.2252
+73269 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1876.8004
+73270 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1924.1664
+73274 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1971.5323
+73275 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1999.9537
+73277 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1999.9999
+73561 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1995.2616
+73562 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1990.5261
+73565 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1995.2616
+73568 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1990.5261
+73586 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1981.0524
+73590 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1976.3169
+73594 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1981.0524
+73596 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1976.3169
+73617 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1966.8431
+73619 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1962.1049
+73622 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1952.6339
+73627 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1938.4219
+73630 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1966.8431
+73631 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1962.1049
+73638 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1952.6339
+73639 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1938.4219
+73659 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@75c229] | -1 | 1933.6864

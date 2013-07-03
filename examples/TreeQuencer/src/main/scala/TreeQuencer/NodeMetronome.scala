@@ -5,6 +5,8 @@ import actors.Actor
 import collection.mutable
 import org.lodsb.reakt.async.VarA
 import org.lodsb.reakt.sync.VarS
+import org.mt4j.util.SessionLogger
+import org.mt4j.util.SessionLogger.SessionEvent
 
 /**
  * This source code is licensed as GPLv3 if not stated otherwise.
@@ -30,7 +32,7 @@ object Metronome {
 
 trait Metronome extends Actor {
   protected var running: Boolean = false
-  private var beatsPerMinute = 60
+  var beatsPerMinute = 60
   val duration = new VarS[Float](bpmToDuration)
   def bpmToDuration = {
     math.round(60f / beatsPerMinute * 1000) // in milliSecs
@@ -112,7 +114,7 @@ object NodeMetronome extends NodeSet[Node] with Metronome {
 
   private def wait(time: Int) {
     try { Thread.sleep(time.toLong) }
-    catch { case interrupted: InterruptedException => {} }
+    catch { case e: InterruptedException => }
   }
 
   def removeNode(node: Node) {

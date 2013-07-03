@@ -1,0 +1,286 @@
+atMillis, eventType, message, object, millisPassed, payload
+17130 | Event | "Created Node" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@1a8422e] | -1 | null
+17946 | Event | "Changed tempo. BPM: 60, duration: 1000.0" | null | -1 | null
+17958 | Event | "Created Node" | "cube.obj" [main.scala.TreeQuencer.NodeForm@efe6fd] | -1 | null
+17973 | Event | "Created Node" | "decimate.obj" [main.scala.TreeQuencer.NodeForm@d6339c] | -1 | null
+17986 | Event | "Created Node" | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@37d8d2] | -1 | null
+17996 | Event | "Created Node" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@6b8cd1] | -1 | null
+18009 | Event | "Created Node" | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@195e579] | -1 | null
+18031 | Event | "Created Node" | "center.obj" [main.scala.TreeQuencer.NodeForm@8e6dae] | -1 | null
+18405 | Event | "Created Node" | "center.obj" [main.scala.TreeQuencer.NodeForm@81205b] | -1 | null
+18411 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@8e6dae] | -1 | "center.obj" [main.scala.TreeQuencer.NodeForm@81205b]
+18411 | Event | "Created Node" | "center.obj" [main.scala.TreeQuencer.NodeForm@e579f9] | -1 | null
+18428 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@81205b] | -1 | "center.obj" [main.scala.TreeQuencer.NodeForm@e579f9]
+18429 | Event | "Created Node" | "center.obj" [main.scala.TreeQuencer.NodeForm@638da0] | -1 | null
+18437 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@e579f9] | -1 | "center.obj" [main.scala.TreeQuencer.NodeForm@638da0]
+18437 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@638da0] | -1 | "center.obj" [main.scala.TreeQuencer.NodeForm@8e6dae]
+28879 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@8e6dae] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@1a8422e]
+28880 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@4fdf56" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@1a8422e] | -1 | ( X:199.9984 Y:170.86835 Z:100.0001 W:1.0,(0.0,0.0,0.0),1.0)
+29693 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@cfaced" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@1a8422e] | 813 | ( X:212.1898 Y:292.69452 Z:100.0001 W:1.0,(0.0,0.0,0.0),1.0)
+29693 | Event | "Created Node" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@f4fe7d] | -1 | null
+32664 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@8e6dae] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@6b8cd1]
+32665 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@50567b" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@6b8cd1] | -1 | ( X:350.85403 Y:169.99902 Z:99.99998 W:1.0,(0.0,0.0,0.0),1.0)
+32815 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@8e6dae] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@6b8cd1]
+32815 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@81205b] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@6b8cd1]
+33414 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@1a4b4cd" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@6b8cd1] | 749 | ( X:517.4439 Y:295.58594 Z:99.99998 W:1.0,(0.0,0.0,0.0),1.0)
+33414 | Event | "Created Node" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@18bcd06] | -1 | null
+34774 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@638da0] | -1 | "decimate.obj" [main.scala.TreeQuencer.NodeForm@d6339c]
+34774 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@1a72b8a" | "decimate.obj" [main.scala.TreeQuencer.NodeForm@d6339c] | -1 | ( X:1350.8525 Y:780.0 Z:99.99976 W:1.0,(0.0,0.0,0.0),1.0)
+35141 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@638da0] | -1 | "decimate.obj" [main.scala.TreeQuencer.NodeForm@d6339c]
+35141 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@e579f9] | -1 | "decimate.obj" [main.scala.TreeQuencer.NodeForm@d6339c]
+35474 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@d1692c" | "decimate.obj" [main.scala.TreeQuencer.NodeForm@d6339c] | 700 | ( X:932.70795 Y:599.9414 Z:99.99976 W:1.0,(0.0,0.0,0.0),1.0)
+35474 | Event | "Created Node" | "decimate.obj" [main.scala.TreeQuencer.NodeForm@85d9a4] | -1 | null
+36185 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@8e6dae] | -1 | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@37d8d2]
+36185 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@a9f04e" | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@37d8d2] | -1 | ( X:200.83984 Y:779.1582 Z:100.0 W:1.0,(0.0,0.0,0.0),1.0)
+36270 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@8e6dae] | -1 | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@37d8d2]
+36270 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@81205b] | -1 | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@37d8d2]
+36353 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@81205b] | -1 | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@37d8d2]
+36353 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@e579f9] | -1 | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@37d8d2]
+36519 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@e579f9] | -1 | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@37d8d2]
+36519 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@638da0] | -1 | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@37d8d2]
+36852 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@18add5e" | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@37d8d2] | 667 | ( X:1163.9844 Y:365.7871 Z:100.0 W:1.0,(0.0,0.0,0.0),1.0)
+36852 | Event | "Created Node" | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@16265c3] | -1 | null
+75992 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@8e6dae] | -1 | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@16265c3]
+75992 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@146f765" | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@16265c3] | -1 | ( X:200.85938 Y:780.0 Z:100.0 W:1.0,(0.0,0.0,0.0),1.0)
+76259 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@8e6dae] | -1 | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@16265c3]
+76259 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@81205b] | -1 | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@16265c3]
+76492 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@6b0224" | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@16265c3] | 500 | ( X:509.09766 Y:647.4043 Z:100.0 W:1.0,(0.0,0.0,0.0),1.0)
+76492 | Event | "Created Node" | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@510e91] | -1 | null
+79176 | Event | "Changed tempo. BPM: 60, duration: 1095.2617" | null | -1 | null
+79176 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 1095.2617
+79194 | Event | "Changed tempo. BPM: 60, duration: 1090.5261" | null | -1 | null
+79194 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 1090.5261
+79195 | Event | "Changed tempo. BPM: 60, duration: 1085.7878" | null | -1 | null
+79195 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 1085.7878
+79197 | Event | "Changed tempo. BPM: 60, duration: 1081.0525" | null | -1 | null
+79197 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 1081.0525
+79199 | Event | "Changed tempo. BPM: 60, duration: 1090.5261" | null | -1 | null
+79199 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 1090.5261
+79200 | Event | "Changed tempo. BPM: 60, duration: 1085.7878" | null | -1 | null
+79200 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 1085.7878
+79202 | Event | "Changed tempo. BPM: 60, duration: 1081.0525" | null | -1 | null
+79202 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 1081.0525
+79216 | Event | "Changed tempo. BPM: 60, duration: 1076.3169" | null | -1 | null
+79217 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 1076.3169
+79232 | Event | "Changed tempo. BPM: 60, duration: 1071.5786" | null | -1 | null
+79232 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 1071.5786
+79266 | Event | "Changed tempo. BPM: 60, duration: 1066.8433" | null | -1 | null
+79266 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 1066.8433
+79283 | Event | "Changed tempo. BPM: 60, duration: 1057.3694" | null | -1 | null
+79283 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 1057.3694
+79285 | Event | "Changed tempo. BPM: 60, duration: 1043.1602" | null | -1 | null
+79285 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 1043.1602
+79286 | Event | "Changed tempo. BPM: 60, duration: 1057.3694" | null | -1 | null
+79286 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 1057.3694
+79288 | Event | "Changed tempo. BPM: 60, duration: 1043.1602" | null | -1 | null
+79288 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 1043.1602
+79303 | Event | "Changed tempo. BPM: 60, duration: 1033.6865" | null | -1 | null
+79303 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 1033.6865
+79304 | Event | "Changed tempo. BPM: 60, duration: 1014.7389" | null | -1 | null
+79304 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 1014.7389
+79306 | Event | "Changed tempo. BPM: 60, duration: 1010.0034" | null | -1 | null
+79306 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 1010.0034
+79308 | Event | "Changed tempo. BPM: 60, duration: 1033.6865" | null | -1 | null
+79308 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 1033.6865
+79309 | Event | "Changed tempo. BPM: 60, duration: 1014.7389" | null | -1 | null
+79309 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 1014.7389
+79310 | Event | "Changed tempo. BPM: 60, duration: 1010.0034" | null | -1 | null
+79310 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 1010.0034
+79328 | Event | "Changed tempo. BPM: 60, duration: 991.0559" | null | -1 | null
+79328 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 991.0559
+79329 | Event | "Changed tempo. BPM: 60, duration: 981.585" | null | -1 | null
+79329 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 981.585
+79331 | Event | "Changed tempo. BPM: 60, duration: 991.0559" | null | -1 | null
+79331 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 991.0559
+79332 | Event | "Changed tempo. BPM: 60, duration: 981.585" | null | -1 | null
+79332 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 981.585
+79348 | Event | "Changed tempo. BPM: 60, duration: 972.1112" | null | -1 | null
+79348 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 972.1112
+79365 | Event | "Changed tempo. BPM: 60, duration: 967.3729" | null | -1 | null
+79365 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 967.3729
+79380 | Event | "Changed tempo. BPM: 60, duration: 962.63745" | null | -1 | null
+79380 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 962.63745
+79397 | Event | "Changed tempo. BPM: 60, duration: 957.90204" | null | -1 | null
+79397 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 957.90204
+79399 | Event | "Changed tempo. BPM: 60, duration: 948.4282" | null | -1 | null
+79399 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 948.4282
+79401 | Event | "Changed tempo. BPM: 60, duration: 957.90204" | null | -1 | null
+79401 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 957.90204
+79402 | Event | "Changed tempo. BPM: 60, duration: 948.4282" | null | -1 | null
+79402 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 948.4282
+79418 | Event | "Changed tempo. BPM: 60, duration: 943.6899" | null | -1 | null
+79418 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 943.6899
+79433 | Event | "Changed tempo. BPM: 60, duration: 938.95447" | null | -1 | null
+79433 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 938.95447
+79451 | Event | "Changed tempo. BPM: 60, duration: 934.219" | null | -1 | null
+79451 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 934.219
+79467 | Event | "Changed tempo. BPM: 60, duration: 929.4807" | null | -1 | null
+79468 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 929.4807
+79469 | Event | "Changed tempo. BPM: 60, duration: 920.0069" | null | -1 | null
+79469 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 920.0069
+79470 | Event | "Changed tempo. BPM: 60, duration: 929.4807" | null | -1 | null
+79471 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 929.4807
+79478 | Event | "Changed tempo. BPM: 60, duration: 920.0069" | null | -1 | null
+79478 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 920.0069
+79494 | Event | "Changed tempo. BPM: 60, duration: 915.2715" | null | -1 | null
+79494 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 915.2715
+79496 | Event | "Changed tempo. BPM: 60, duration: 905.79767" | null | -1 | null
+79496 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 905.79767
+79498 | Event | "Changed tempo. BPM: 60, duration: 901.06226" | null | -1 | null
+79498 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 901.06226
+79499 | Event | "Changed tempo. BPM: 60, duration: 886.853" | null | -1 | null
+79499 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 886.853
+79501 | Event | "Changed tempo. BPM: 60, duration: 915.2715" | null | -1 | null
+79501 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 915.2715
+79502 | Event | "Changed tempo. BPM: 60, duration: 905.79767" | null | -1 | null
+79502 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 905.79767
+79503 | Event | "Changed tempo. BPM: 60, duration: 901.06226" | null | -1 | null
+79503 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 901.06226
+79505 | Event | "Changed tempo. BPM: 60, duration: 886.853" | null | -1 | null
+79505 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 886.853
+79521 | Event | "Changed tempo. BPM: 60, duration: 877.3793" | null | -1 | null
+79521 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 877.3793
+79522 | Event | "Changed tempo. BPM: 60, duration: 867.90546" | null | -1 | null
+79522 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 867.90546
+79524 | Event | "Changed tempo. BPM: 60, duration: 863.17004" | null | -1 | null
+79524 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 863.17004
+79525 | Event | "Changed tempo. BPM: 60, duration: 877.3793" | null | -1 | null
+79525 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 877.3793
+79526 | Event | "Changed tempo. BPM: 60, duration: 867.90546" | null | -1 | null
+79526 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 867.90546
+79528 | Event | "Changed tempo. BPM: 60, duration: 863.17004" | null | -1 | null
+79528 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 863.17004
+79545 | Event | "Changed tempo. BPM: 60, duration: 858.4317" | null | -1 | null
+79545 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 858.4317
+79547 | Event | "Changed tempo. BPM: 60, duration: 853.6963" | null | -1 | null
+79547 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 853.6963
+79548 | Event | "Changed tempo. BPM: 60, duration: 848.95795" | null | -1 | null
+79548 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 848.95795
+79549 | Event | "Changed tempo. BPM: 60, duration: 858.4317" | null | -1 | null
+79549 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 858.4317
+79551 | Event | "Changed tempo. BPM: 60, duration: 853.6963" | null | -1 | null
+79551 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 853.6963
+79552 | Event | "Changed tempo. BPM: 60, duration: 848.95795" | null | -1 | null
+79552 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 848.95795
+79569 | Event | "Changed tempo. BPM: 60, duration: 839.48706" | null | -1 | null
+79569 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 839.48706
+79570 | Event | "Changed tempo. BPM: 60, duration: 830.0133" | null | -1 | null
+79570 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 830.0133
+79571 | Event | "Changed tempo. BPM: 60, duration: 820.5395" | null | -1 | null
+79572 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 820.5395
+79573 | Event | "Changed tempo. BPM: 60, duration: 839.48706" | null | -1 | null
+79573 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 839.48706
+79574 | Event | "Changed tempo. BPM: 60, duration: 830.0133" | null | -1 | null
+79574 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 830.0133
+79575 | Event | "Changed tempo. BPM: 60, duration: 820.5395" | null | -1 | null
+79575 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 820.5395
+79591 | Event | "Changed tempo. BPM: 60, duration: 811.06573" | null | -1 | null
+79591 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 811.06573
+79593 | Event | "Changed tempo. BPM: 60, duration: 796.8565" | null | -1 | null
+79593 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 796.8565
+79594 | Event | "Changed tempo. BPM: 60, duration: 777.90894" | null | -1 | null
+79594 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 777.90894
+79596 | Event | "Changed tempo. BPM: 60, duration: 811.06573" | null | -1 | null
+79596 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 811.06573
+79597 | Event | "Changed tempo. BPM: 60, duration: 796.8565" | null | -1 | null
+79597 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 796.8565
+79598 | Event | "Changed tempo. BPM: 60, duration: 777.90894" | null | -1 | null
+79598 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 777.90894
+79614 | Event | "Changed tempo. BPM: 60, duration: 758.9643" | null | -1 | null
+79614 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 758.9643
+79615 | Event | "Changed tempo. BPM: 60, duration: 749.49054" | null | -1 | null
+79615 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 749.49054
+79616 | Event | "Changed tempo. BPM: 60, duration: 740.0167" | null | -1 | null
+79616 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 740.0167
+79618 | Event | "Changed tempo. BPM: 60, duration: 758.9643" | null | -1 | null
+79618 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 758.9643
+79619 | Event | "Changed tempo. BPM: 60, duration: 749.49054" | null | -1 | null
+79619 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 749.49054
+79620 | Event | "Changed tempo. BPM: 60, duration: 740.0167" | null | -1 | null
+79620 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 740.0167
+79637 | Event | "Changed tempo. BPM: 60, duration: 725.80756" | null | -1 | null
+79637 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 725.80756
+79638 | Event | "Changed tempo. BPM: 60, duration: 716.33374" | null | -1 | null
+79638 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 716.33374
+79639 | Event | "Changed tempo. BPM: 60, duration: 711.5983" | null | -1 | null
+79639 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 711.5983
+79641 | Event | "Changed tempo. BPM: 60, duration: 725.80756" | null | -1 | null
+79641 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 725.80756
+79642 | Event | "Changed tempo. BPM: 60, duration: 716.33374" | null | -1 | null
+79642 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 716.33374
+79643 | Event | "Changed tempo. BPM: 60, duration: 711.5983" | null | -1 | null
+79643 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 711.5983
+79659 | Event | "Changed tempo. BPM: 60, duration: 706.86" | null | -1 | null
+79659 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 706.86
+79675 | Event | "Changed tempo. BPM: 60, duration: 702.1245" | null | -1 | null
+79675 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 702.1245
+79676 | Event | "Changed tempo. BPM: 60, duration: 697.3891" | null | -1 | null
+79676 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 697.3891
+79678 | Event | "Changed tempo. BPM: 60, duration: 702.1245" | null | -1 | null
+79678 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 702.1245
+79679 | Event | "Changed tempo. BPM: 60, duration: 697.3891" | null | -1 | null
+79679 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 697.3891
+79694 | Event | "Changed tempo. BPM: 60, duration: 692.65076" | null | -1 | null
+79694 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 692.65076
+79711 | Event | "Changed tempo. BPM: 60, duration: 687.9153" | null | -1 | null
+79711 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 687.9153
+79713 | Event | "Changed tempo. BPM: 60, duration: 673.7061" | null | -1 | null
+79713 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 673.7061
+79714 | Event | "Changed tempo. BPM: 60, duration: 687.9153" | null | -1 | null
+79714 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 687.9153
+79715 | Event | "Changed tempo. BPM: 60, duration: 673.7061" | null | -1 | null
+79715 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 673.7061
+79731 | Event | "Changed tempo. BPM: 60, duration: 668.9678" | null | -1 | null
+79731 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 668.9678
+79732 | Event | "Changed tempo. BPM: 60, duration: 664.2323" | null | -1 | null
+79732 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 664.2323
+79734 | Event | "Changed tempo. BPM: 60, duration: 668.9678" | null | -1 | null
+79734 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 668.9678
+79735 | Event | "Changed tempo. BPM: 60, duration: 664.2323" | null | -1 | null
+79735 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 664.2323
+79751 | Event | "Changed tempo. BPM: 60, duration: 659.494" | null | -1 | null
+79751 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 659.494
+79817 | Event | "Changed tempo. BPM: 60, duration: 654.75854" | null | -1 | null
+79817 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 654.75854
+79833 | Event | "Changed tempo. BPM: 60, duration: 645.2848" | null | -1 | null
+79833 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 645.2848
+79834 | Event | "Changed tempo. BPM: 60, duration: 640.5493" | null | -1 | null
+79834 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 640.5493
+79836 | Event | "Changed tempo. BPM: 60, duration: 645.2848" | null | -1 | null
+79836 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 645.2848
+79837 | Event | "Changed tempo. BPM: 60, duration: 640.5493" | null | -1 | null
+79837 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 640.5493
+79934 | Event | "Changed tempo. BPM: 60, duration: 635.81104" | null | -1 | null
+79934 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 635.81104
+79936 | Event | "Changed tempo. BPM: 60, duration: 631.07556" | null | -1 | null
+79936 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 631.07556
+79937 | Event | "Changed tempo. BPM: 60, duration: 635.81104" | null | -1 | null
+79937 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 635.81104
+79939 | Event | "Changed tempo. BPM: 60, duration: 631.07556" | null | -1 | null
+79939 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 631.07556
+79954 | Event | "Changed tempo. BPM: 60, duration: 626.3401" | null | -1 | null
+79954 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 626.3401
+80004 | Event | "Changed tempo. BPM: 60, duration: 621.6018" | null | -1 | null
+80004 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 621.6018
+80022 | Event | "Changed tempo. BPM: 60, duration: 616.86633" | null | -1 | null
+80022 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 616.86633
+80024 | Event | "Changed tempo. BPM: 60, duration: 607.3926" | null | -1 | null
+80024 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 607.3926
+80025 | Event | "Changed tempo. BPM: 60, duration: 602.6571" | null | -1 | null
+80025 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 602.6571
+80026 | Event | "Changed tempo. BPM: 60, duration: 616.86633" | null | -1 | null
+80026 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 616.86633
+80028 | Event | "Changed tempo. BPM: 60, duration: 607.3926" | null | -1 | null
+80028 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 607.3926
+80029 | Event | "Changed tempo. BPM: 60, duration: 602.6571" | null | -1 | null
+80029 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 602.6571
+80044 | Event | "Changed tempo. BPM: 60, duration: 593.18335" | null | -1 | null
+80044 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 593.18335
+80045 | Event | "Changed tempo. BPM: 60, duration: 588.445" | null | -1 | null
+80045 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 588.445
+80046 | Event | "Changed tempo. BPM: 60, duration: 593.18335" | null | -1 | null
+80046 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 593.18335
+80047 | Event | "Changed tempo. BPM: 60, duration: 588.445" | null | -1 | null
+80047 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 588.445
+81403 | Event | "Changed tempo. BPM: 60, duration: 228.44504" | null | -1 | null
+81403 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@2a1a92] | -1 | 228.44504

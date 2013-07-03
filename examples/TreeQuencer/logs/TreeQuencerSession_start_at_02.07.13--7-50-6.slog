@@ -1,0 +1,15 @@
+atMillis, eventType, message, object, millisPassed, payload
+14424 | Event | "Created Node" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@1e5d74a] | -1 | null
+14785 | Event | "Created Node" | "cube.obj" [main.scala.TreeQuencer.NodeForm@1e02f98] | -1 | null
+14808 | Event | "Created Node" | "decimate.obj" [main.scala.TreeQuencer.NodeForm@12f6ec0] | -1 | null
+14853 | Event | "Created Node" | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@a3f5f3] | -1 | null
+14887 | Event | "Created Node" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@3e4500] | -1 | null
+14915 | Event | "Created Node" | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@5c53ff] | -1 | null
+15051 | Event | "Created Node" | "center.obj" [main.scala.TreeQuencer.NodeForm@1eab608] | -1 | null
+15382 | Event | "Created Node" | "center.obj" [main.scala.TreeQuencer.NodeForm@83edb3] | -1 | null
+15393 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1eab608] | -1 | "center.obj" [main.scala.TreeQuencer.NodeForm@83edb3]
+15393 | Event | "Created Node" | "center.obj" [main.scala.TreeQuencer.NodeForm@11daf46] | -1 | null
+15407 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@83edb3] | -1 | "center.obj" [main.scala.TreeQuencer.NodeForm@11daf46]
+15407 | Event | "Created Node" | "center.obj" [main.scala.TreeQuencer.NodeForm@a808d0] | -1 | null
+15421 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@11daf46] | -1 | "center.obj" [main.scala.TreeQuencer.NodeForm@a808d0]
+15421 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@a808d0] | -1 | "center.obj" [main.scala.TreeQuencer.NodeForm@1eab608]

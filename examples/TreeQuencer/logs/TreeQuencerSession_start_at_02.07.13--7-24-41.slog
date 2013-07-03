@@ -1,0 +1,199 @@
+atMillis, eventType, message, object, millisPassed, payload
+12683 | Event | "Created Node" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@8f3412] | -1 | null
+12973 | Event | "Created Node" | "cube.obj" [main.scala.TreeQuencer.NodeForm@e2734e] | -1 | null
+13006 | Event | "Created Node" | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@e9644d] | -1 | null
+13037 | Event | "Created Node" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@4df0bf] | -1 | null
+13074 | Event | "Created Node" | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@1477dd4] | -1 | null
+13116 | Event | "Created Node" | "center.obj" [main.scala.TreeQuencer.NodeForm@117118f] | -1 | null
+13449 | Event | "Created Node" | "center.obj" [main.scala.TreeQuencer.NodeForm@b3ced4] | -1 | null
+13467 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@117118f] | -1 | "center.obj" [main.scala.TreeQuencer.NodeForm@b3ced4]
+13468 | Event | "Created Node" | "center.obj" [main.scala.TreeQuencer.NodeForm@18cec8c] | -1 | null
+13487 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@b3ced4] | -1 | "center.obj" [main.scala.TreeQuencer.NodeForm@18cec8c]
+13487 | Event | "Created Node" | "center.obj" [main.scala.TreeQuencer.NodeForm@19f9033] | -1 | null
+13520 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@18cec8c] | -1 | "center.obj" [main.scala.TreeQuencer.NodeForm@19f9033]
+13520 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@19f9033] | -1 | "center.obj" [main.scala.TreeQuencer.NodeForm@117118f]
+15188 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@117118f] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@8f3412]
+15190 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@12ca9b3" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@8f3412] | -1 | ( X:200.88376 Y:170.88452 Z:99.99994 W:1.0,(0.0,0.0,0.0),1.0)
+15305 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@117118f] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@8f3412]
+15305 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@b3ced4] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@8f3412]
+15559 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@f2e88b" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@8f3412] | 369 | ( X:430.89352 Y:323.92944 Z:99.99994 W:1.0,(0.0,0.0,0.0),1.0)
+15560 | Event | "Created Node" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@17daa96] | -1 | null
+16200 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@117118f] | -1 | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@1477dd4]
+16200 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@89bbb" | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@1477dd4] | -1 | ( X:350.86523 Y:170.0 Z:99.99997 W:1.0,(0.0,0.0,0.0),1.0)
+16265 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@117118f] | -1 | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@1477dd4]
+16265 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@b3ced4] | -1 | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@1477dd4]
+16332 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@b3ced4] | -1 | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@1477dd4]
+16333 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@18cec8c] | -1 | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@1477dd4]
+16541 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@1445091" | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@1477dd4] | 341 | ( X:897.6387 Y:305.38672 Z:99.99997 W:1.0,(0.0,0.0,0.0),1.0)
+16541 | Event | "Created Node" | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@98ae70] | -1 | null
+17326 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@117118f] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@17daa96]
+17327 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@1450c73" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@17daa96] | -1 | ( X:199.999 Y:170.88257 Z:99.99994 W:1.0,(0.0,0.0,0.0),1.0)
+17804 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@1d74a6c" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@17daa96] | 477 | ( X:213.22556 Y:335.79663 Z:99.99994 W:1.0,(0.0,0.0,0.0),1.0)
+17804 | Event | "Created Node" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@1210a77] | -1 | null
+18763 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@117118f] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@4df0bf]
+18764 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@1b356c1" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@4df0bf] | -1 | ( X:199.9996 Y:780.8667 Z:100.000015 W:1.0,(0.0,0.0,0.0),1.0)
+18908 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@117118f] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@4df0bf]
+18908 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@b3ced4] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@4df0bf]
+18932 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@b3ced4] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@4df0bf]
+18932 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@18cec8c] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@4df0bf]
+19312 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@1a391d4" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@4df0bf] | 548 | ( X:925.26227 Y:570.30615 Z:100.000015 W:1.0,(0.0,0.0,0.0),1.0)
+19312 | Event | "Created Node" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@72f7f0] | -1 | null
+20000 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@19f9033] | -1 | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@e9644d]
+20001 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@1a90f01" | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@e9644d] | -1 | ( X:1348.2988 Y:779.14844 Z:100.0 W:1.0,(0.0,0.0,0.0),1.0)
+20148 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@19f9033] | -1 | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@e9644d]
+20148 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@18cec8c] | -1 | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@e9644d]
+20316 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@18cec8c] | -1 | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@e9644d]
+20316 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@b3ced4] | -1 | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@e9644d]
+20568 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@1f8c5d2" | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@e9644d] | 567 | ( X:625.3887 Y:626.9121 Z:100.0 W:1.0,(0.0,0.0,0.0),1.0)
+20568 | Event | "Created Node" | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@8af88d] | -1 | null
+21346 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@19f9033] | -1 | "cube.obj" [main.scala.TreeQuencer.NodeForm@e2734e]
+21346 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@1666185" | "cube.obj" [main.scala.TreeQuencer.NodeForm@e2734e] | -1 | ( X:1350.0 Y:172.55371 Z:100.00001 W:1.0,(0.0,0.0,0.0),1.0)
+21679 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@18de98" | "cube.obj" [main.scala.TreeQuencer.NodeForm@e2734e] | 333 | ( X:1293.8203 Y:318.96973 Z:100.00001 W:1.0,(0.0,0.0,0.0),1.0)
+21679 | Event | "Created Node" | "cube.obj" [main.scala.TreeQuencer.NodeForm@36915f] | -1 | null
+23729 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 1095.2617
+23748 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 1090.5261
+23766 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 1076.3169
+23768 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 1071.5786
+23770 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 1066.8433
+23772 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 1076.3169
+23776 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 1071.5786
+23778 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 1066.8433
+23798 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 1062.1049
+23800 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 1057.3694
+23802 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 1062.1049
+23803 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 1057.3694
+23842 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 1038.4219
+23843 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 1028.9509
+23845 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 1024.2126
+23847 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 1038.4219
+23849 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 1028.9509
+23850 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 1024.2126
+23876 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 1014.7389
+23878 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 1000.52966
+23879 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 991.0559
+23880 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 976.8467
+23881 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 1014.7389
+23882 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 1000.52966
+23883 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 991.0559
+23885 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 976.8467
+23901 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 972.1112
+23922 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 938.95447
+23924 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 934.219
+23927 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 924.74524
+23928 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 938.95447
+23930 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 934.219
+23931 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 924.74524
+23970 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 915.2715
+23971 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 910.536
+23980 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 905.79767
+23981 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 901.06226
+23982 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 896.3239
+23983 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 891.5885
+23984 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 886.853
+23985 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 915.2715
+23987 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 910.536
+23988 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 905.79767
+23989 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 901.06226
+23990 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 896.3239
+23990 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 891.5885
+23991 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 886.853
+24022 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 858.4317
+24040 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 830.0133
+24042 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 811.06573
+24043 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 801.592
+24044 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 830.0133
+24045 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 811.06573
+24045 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 801.592
+24076 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 735.2813
+24079 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 725.80756
+24080 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 735.2813
+24081 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 725.80756
+24097 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 706.86
+24114 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 678.4415
+24115 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 659.494
+24116 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 640.5493
+24119 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 678.4415
+24120 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 659.494
+24122 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 640.5493
+24155 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 569.50037
+24172 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 536.3436
+24173 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 517.39606
+24174 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 507.92487
+24175 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 493.71277
+24176 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 536.3436
+24177 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 517.39606
+24178 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 507.92487
+24178 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 493.71277
+24210 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 460.55917
+24211 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 441.61133
+24212 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 460.55917
+24213 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 441.61133
+24227 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 422.6638
+24231 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 403.71912
+24232 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 422.6638
+24233 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 403.71912
+24248 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 356.35315
+24249 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 332.67017
+24251 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 304.2488
+24253 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 356.35315
+24253 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 332.67017
+24254 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 304.2488
+24270 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 218.99063
+24302 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 200.0
+26635 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@6a8bc5" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@17daa96] | -1 | ( X:213.22946 Y:332.39624 Z:99.99994 W:1.0,(0.0,0.0,0.0),1.0)
+26775 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@117118f] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@17daa96]
+26782 | Event | "Removed Node" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@17daa96] | -1 | null
+27032 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@1cabdc0" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@17daa96] | 397 | ( X:293.04782 Y:-114.1233 Z:99.99994 W:1.0,(0.0,0.0,0.0),1.0)
+31797 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@13df62f" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@8f3412] | -1 | ( X:432.61032 Y:323.92944 Z:99.99994 W:1.0,(0.0,0.0,0.0),1.0)
+32223 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@b3ced4] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@8f3412]
+32224 | Event | "Removed Node" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@8f3412] | -1 | null
+32392 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@b23855" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@8f3412] | 595 | ( X:450.59274 Y:41.392326 Z:99.99994 W:1.0,(0.0,0.0,0.0),1.0)
+34135 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 218.94756
+34137 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 223.683
+34139 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 209.47377
+34140 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 218.94756
+34142 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 223.683
+34161 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 228.41843
+34162 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 233.15677
+34163 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 237.89221
+34164 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 247.36598
+34168 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 261.5752
+34169 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 280.52277
+34170 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 228.41843
+34171 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 233.15677
+34172 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 237.89221
+34173 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 247.36598
+34174 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 261.5752
+34180 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 280.52277
+34199 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 299.4674
+34201 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 323.1504
+34202 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 337.36252
+34203 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 361.0455
+34204 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 375.2547
+34205 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 299.4674
+34209 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 323.1504
+34210 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 337.36252
+34210 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 361.0455
+34211 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 375.2547
+34235 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 384.72852
+34236 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 417.8824
+34237 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 436.82993
+34238 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 384.72852
+34239 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 417.8824
+34240 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 436.82993
+34255 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 465.24835
+34272 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 479.46075
+34275 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 488.93164
+34276 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 479.46075
+34276 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 488.93164
+34292 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 503.14346
+34293 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 512.6144
+34294 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 503.14346
+34295 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 512.6144
+34314 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 517.35266
+34315 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 522.08813
+34316 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 526.8264
+34317 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 517.35266
+34317 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 522.08813
+34318 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 526.8264
+34382 | Event | "Changed Metronome" | "unnamed rectangle" [org.mt4j.components.visibleComponents.widgets.MTSlider@1b00620] | -1 | 531.5622

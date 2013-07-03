@@ -1,0 +1,145 @@
+atMillis, eventType, message, object, millisPassed, payload
+14064 | Event | "Created Node" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@34f715] | -1 | null
+14306 | Event | "Created Node" | "cube.obj" [main.scala.TreeQuencer.NodeForm@6aaa6d] | -1 | null
+14326 | Event | "Created Node" | "decimate.obj" [main.scala.TreeQuencer.NodeForm@121691b] | -1 | null
+14351 | Event | "Created Node" | "iconosphere.obj" [main.scala.TreeQuencer.NodeForm@99e843] | -1 | null
+14376 | Event | "Created Node" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@65af06] | -1 | null
+14398 | Event | "Created Node" | "tetrahedron.obj" [main.scala.TreeQuencer.NodeForm@d71e97] | -1 | null
+14422 | Event | "Created Node" | "center.obj" [main.scala.TreeQuencer.NodeForm@37c2ad] | -1 | null
+14745 | Event | "Created Node" | "center.obj" [main.scala.TreeQuencer.NodeForm@121f043] | -1 | null
+14774 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@37c2ad] | -1 | "center.obj" [main.scala.TreeQuencer.NodeForm@121f043]
+14774 | Event | "Created Node" | "center.obj" [main.scala.TreeQuencer.NodeForm@639310] | -1 | null
+14787 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@121f043] | -1 | "center.obj" [main.scala.TreeQuencer.NodeForm@639310]
+14787 | Event | "Created Node" | "center.obj" [main.scala.TreeQuencer.NodeForm@1b8e77c] | -1 | null
+14796 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@639310] | -1 | "center.obj" [main.scala.TreeQuencer.NodeForm@1b8e77c]
+14796 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@1b8e77c] | -1 | "center.obj" [main.scala.TreeQuencer.NodeForm@37c2ad]
+16247 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@37c2ad] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@65af06]
+16247 | BeginGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@8af06d" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@65af06] | -1 | ( X:350.8638 Y:170.0 Z:99.99998 W:1.0,(0.0,0.0,0.0),1.0)
+16413 | Event | "Removed node from set" | "center.obj" [main.scala.TreeQuencer.NodeForm@37c2ad] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@65af06]
+16413 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@121f043] | -1 | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@65af06]
+16744 | EndGesture | "Gesture org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent@13a462c" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@65af06] | 497 | ( X:490.9224 Y:209.76562 Z:99.99998 W:1.0,(0.0,0.0,0.0),1.0)
+16745 | Event | "Created Node" | "pentagon.obj" [main.scala.TreeQuencer.NodeForm@1bbbe80] | -1 | null
+17867 | Event | "Changed Metronome; BPM: 55" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 1095.1366
+17884 | Event | "Changed Metronome; BPM: 55" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 1090.2734
+17885 | Event | "Changed Metronome; BPM: 55" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 1085.4071
+17887 | Event | "Changed Metronome; BPM: 55" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 1090.2734
+17888 | Event | "Changed Metronome; BPM: 55" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 1085.4071
+17903 | Event | "Changed Metronome; BPM: 56" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 1080.544
+17905 | Event | "Changed Metronome; BPM: 56" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 1070.8145
+17906 | Event | "Changed Metronome; BPM: 56" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 1080.544
+17907 | Event | "Changed Metronome; BPM: 56" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 1070.8145
+17922 | Event | "Changed Metronome; BPM: 56" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 1065.9512
+17924 | Event | "Changed Metronome; BPM: 57" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 1056.2217
+17925 | Event | "Changed Metronome; BPM: 58" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 1041.6289
+17926 | Event | "Changed Metronome; BPM: 56" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 1065.9512
+17928 | Event | "Changed Metronome; BPM: 57" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 1056.2217
+17930 | Event | "Changed Metronome; BPM: 58" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 1041.6289
+17945 | Event | "Changed Metronome; BPM: 58" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 1031.8994
+17946 | Event | "Changed Metronome; BPM: 58" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 1027.0332
+17948 | Event | "Changed Metronome; BPM: 59" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 1017.30664
+17949 | Event | "Changed Metronome; BPM: 58" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 1031.8994
+17950 | Event | "Changed Metronome; BPM: 58" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 1027.0332
+17951 | Event | "Changed Metronome; BPM: 59" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 1017.30664
+17966 | Event | "Changed Metronome; BPM: 60" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 1002.71094
+17967 | Event | "Changed Metronome; BPM: 61" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 988.11816
+17969 | Event | "Changed Metronome; BPM: 60" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 1002.71094
+17970 | Event | "Changed Metronome; BPM: 61" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 988.11816
+17985 | Event | "Changed Metronome; BPM: 62" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 963.7959
+17986 | Event | "Changed Metronome; BPM: 64" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 939.4737
+17987 | Event | "Changed Metronome; BPM: 66" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 910.28815
+17988 | Event | "Changed Metronome; BPM: 62" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 963.7959
+17989 | Event | "Changed Metronome; BPM: 64" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 939.4737
+17990 | Event | "Changed Metronome; BPM: 66" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 910.28815
+18006 | Event | "Changed Metronome; BPM: 67" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 890.82916
+18008 | Event | "Changed Metronome; BPM: 69" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 871.37317
+18009 | Event | "Changed Metronome; BPM: 67" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 890.82916
+18010 | Event | "Changed Metronome; BPM: 69" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 871.37317
+18025 | Event | "Changed Metronome; BPM: 70" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 861.6437
+18026 | Event | "Changed Metronome; BPM: 71" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 842.1847
+18027 | Event | "Changed Metronome; BPM: 72" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 832.4552
+18029 | Event | "Changed Metronome; BPM: 70" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 861.6437
+18031 | Event | "Changed Metronome; BPM: 71" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 842.1847
+18032 | Event | "Changed Metronome; BPM: 72" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 832.4552
+18047 | Event | "Changed Metronome; BPM: 73" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 817.8624
+18049 | Event | "Changed Metronome; BPM: 74" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 808.133
+18050 | Event | "Changed Metronome; BPM: 73" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 817.8624
+18052 | Event | "Changed Metronome; BPM: 74" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 808.133
+18067 | Event | "Changed Metronome; BPM: 75" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 798.40643
+18068 | Event | "Changed Metronome; BPM: 77" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 783.8107
+18069 | Event | "Changed Metronome; BPM: 77" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 778.94745
+18071 | Event | "Changed Metronome; BPM: 75" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 798.40643
+18072 | Event | "Changed Metronome; BPM: 77" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 783.8107
+18072 | Event | "Changed Metronome; BPM: 77" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 778.94745
+18088 | Event | "Changed Metronome; BPM: 78" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 769.21796
+18089 | Event | "Changed Metronome; BPM: 78" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 764.35474
+18090 | Event | "Changed Metronome; BPM: 80" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 749.76196
+18092 | Event | "Changed Metronome; BPM: 78" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 769.21796
+18092 | Event | "Changed Metronome; BPM: 78" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 764.35474
+18093 | Event | "Changed Metronome; BPM: 80" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 749.76196
+18109 | Event | "Changed Metronome; BPM: 81" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 740.0325
+18110 | Event | "Changed Metronome; BPM: 82" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 730.303
+18112 | Event | "Changed Metronome; BPM: 81" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 740.0325
+18113 | Event | "Changed Metronome; BPM: 82" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 730.303
+18128 | Event | "Changed Metronome; BPM: 83" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 725.4397
+18129 | Event | "Changed Metronome; BPM: 84" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 710.844
+18130 | Event | "Changed Metronome; BPM: 85" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 705.9807
+18131 | Event | "Changed Metronome; BPM: 83" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 725.4397
+18132 | Event | "Changed Metronome; BPM: 84" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 710.844
+18133 | Event | "Changed Metronome; BPM: 85" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 705.9807
+18149 | Event | "Changed Metronome; BPM: 86" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 696.2512
+18151 | Event | "Changed Metronome; BPM: 87" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 691.38794
+18152 | Event | "Changed Metronome; BPM: 86" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 696.2512
+18153 | Event | "Changed Metronome; BPM: 87" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 691.38794
+18168 | Event | "Changed Metronome; BPM: 88" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 681.65845
+18169 | Event | "Changed Metronome; BPM: 89" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 676.7952
+18170 | Event | "Changed Metronome; BPM: 91" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 662.1995
+18171 | Event | "Changed Metronome; BPM: 88" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 681.65845
+18172 | Event | "Changed Metronome; BPM: 89" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 676.7952
+18173 | Event | "Changed Metronome; BPM: 91" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 662.1995
+18188 | Event | "Changed Metronome; BPM: 92" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 652.473
+18189 | Event | "Changed Metronome; BPM: 93" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 642.7435
+18191 | Event | "Changed Metronome; BPM: 92" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 652.473
+18192 | Event | "Changed Metronome; BPM: 93" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 642.7435
+18207 | Event | "Changed Metronome; BPM: 96" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 628.15076
+18208 | Event | "Changed Metronome; BPM: 96" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 623.28455
+18209 | Event | "Changed Metronome; BPM: 96" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 628.15076
+18210 | Event | "Changed Metronome; BPM: 96" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 623.28455
+18225 | Event | "Changed Metronome; BPM: 97" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 618.42126
+18226 | Event | "Changed Metronome; BPM: 98" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 613.55505
+18227 | Event | "Changed Metronome; BPM: 97" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 618.42126
+18228 | Event | "Changed Metronome; BPM: 98" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 613.55505
+18243 | Event | "Changed Metronome; BPM: 99" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 608.6918
+18246 | Event | "Changed Metronome; BPM: 99" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 603.8285
+18247 | Event | "Changed Metronome; BPM: 99" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 608.6918
+18248 | Event | "Changed Metronome; BPM: 99" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 603.8285
+18263 | Event | "Changed Metronome; BPM: 100" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 598.9623
+18264 | Event | "Changed Metronome; BPM: 101" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 594.099
+18265 | Event | "Changed Metronome; BPM: 100" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 598.9623
+18266 | Event | "Changed Metronome; BPM: 101" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 594.099
+18281 | Event | "Changed Metronome; BPM: 102" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 589.2328
+18282 | Event | "Changed Metronome; BPM: 103" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 584.3695
+18284 | Event | "Changed Metronome; BPM: 105" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 569.77673
+18285 | Event | "Changed Metronome; BPM: 102" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 589.2328
+18286 | Event | "Changed Metronome; BPM: 103" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 584.3695
+18287 | Event | "Changed Metronome; BPM: 105" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 569.77673
+18301 | Event | "Changed Metronome; BPM: 106" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 564.9105
+18302 | Event | "Changed Metronome; BPM: 107" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 560.04724
+18303 | Event | "Changed Metronome; BPM: 106" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 564.9105
+18304 | Event | "Changed Metronome; BPM: 107" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 560.04724
+18319 | Event | "Changed Metronome; BPM: 108" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 555.184
+18320 | Event | "Changed Metronome; BPM: 110" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 545.4545
+18322 | Event | "Changed Metronome; BPM: 108" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 555.184
+18323 | Event | "Changed Metronome; BPM: 110" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 545.4545
+18338 | Event | "Changed Metronome; BPM: 112" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 535.72504
+18339 | Event | "Changed Metronome; BPM: 116" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 516.26605
+18340 | Event | "Changed Metronome; BPM: 117" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 511.4028
+18342 | Event | "Changed Metronome; BPM: 112" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 535.72504
+18342 | Event | "Changed Metronome; BPM: 116" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 516.26605
+18343 | Event | "Changed Metronome; BPM: 117" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 511.4028
+18358 | Event | "Changed Metronome; BPM: 121" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 496.80975
+18360 | Event | "Changed Metronome; BPM: 122" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 491.9435
+18361 | Event | "Changed Metronome; BPM: 121" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 496.80975
+18362 | Event | "Changed Metronome; BPM: 122" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 491.9435
+18376 | Event | "Changed Metronome; BPM: 123" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 487.08026
+19126 | Event | "Changed Metronome; BPM: 300" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 200.0
+19592 | Event | "Changed Metronome; BPM: 107" | "Top Slider" [org.mt4j.components.visibleComponents.widgets.MTSlider@1fd2f14] | -1 | 560.00006
