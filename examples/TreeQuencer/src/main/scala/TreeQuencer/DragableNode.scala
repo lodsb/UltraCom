@@ -108,9 +108,7 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
       removeFromField(firstOne = true)
     }
     // Logging
-    if(app.loggingEnabled) {
-      SessionLogger.log("Removed Node", SessionEvent.Event, _form, null, null)
-    }
+    SessionLogger.log("Removed Node", SessionEvent.Event, _form, null, null)
   }
 
   private def removeFromField(firstOne: Boolean) {
@@ -222,9 +220,7 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
 
     }
 
-    if(app.loggingEnabled) {
-      SessionLogger.log("Added node to set", SessionEvent.Event, _form, null, node.form)
-    }
+    SessionLogger.log("Added node to set", SessionEvent.Event, _form, null, node.form)
 
     this
 
@@ -233,9 +229,7 @@ class DragableNode extends NodeTreeElement[DragableNode] with IGestureEventListe
   override def -=(node: DragableNode): DragableNode.this.type = {
     super.-=(node)
 
-    if(app.loggingEnabled) {
-      SessionLogger.log("Removed node from set", SessionEvent.Event, _form, null, node.form)
-    }
+    SessionLogger.log("Removed node from set", SessionEvent.Event, _form, null, node.form)
 
     this
   }

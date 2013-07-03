@@ -55,11 +55,7 @@ object app extends Application {
   var _idCounter = 1
   def idCounter = {_idCounter+=1; _idCounter-1}
   val innerCircleRadius = 100
-  var loggingEnabled = false
 
-  def getProperty(property: String, defaultValue: String = "") = {
-    MTApplication.getProperties.getProperty(property, defaultValue)
-  }
 
   def main(args: Array[String]) {
     execute(false)
@@ -69,7 +65,6 @@ object app extends Application {
     // start scene
     addScene(new NodeScene())
   }
-
 
   /**
    * Quit application, when pressing escape on keyboard
@@ -87,7 +82,6 @@ object app extends Application {
 
 class NodeScene() extends Scene(app,"TreeQuencer") {
   AudioServer.start(true)
-  app.loggingEnabled = app.getProperty("EnableLogging") match {case "true"=>true case _=>false}
   app.scene = this
   app.scene.setClearColor(Color(0,0,0))
   app.light = new MTLight(app, GL.GL_LIGHT3, Vec3d(0,0,200))//app.center.getAdded(app.scene.getSceneCam.getPosition))
@@ -104,7 +98,7 @@ class NodeScene() extends Scene(app,"TreeQuencer") {
 
   initializeSliders()
 
-  app.game = app.getProperty("GameNumber", "0").toInt
+  app.game = MTApplication.getProperties.getProperty("GameNumber", "0").toInt
 
   app.game match {
 
@@ -117,7 +111,7 @@ class NodeScene() extends Scene(app,"TreeQuencer") {
     case app.SEQUENCE_GAME =>
       println("Sequence game chosen")
       NodeSource.buildSources()
-      initializeStillNodes(app.getProperty("StillNodeCount","4").toInt)
+      initializeStillNodes(MTApplication.getProperties.getProperty("StillNodeCount","4").toInt)
       NodeMetronome.start()
 
     case app.TIMESHIFT_GAME =>
@@ -171,7 +165,7 @@ class NodeScene() extends Scene(app,"TreeQuencer") {
     // create four sliders clockwise at each edge on the screen
     val sliders = new Array[MTSlider](4)
 
-    val sliderHeight = 30
+    val sliderHeight = 20
     val margin = sliderHeight/2f
     val grey = Color(100,100,100)
     val black = Color(0,0,0)
@@ -185,9 +179,6 @@ class NodeScene() extends Scene(app,"TreeQuencer") {
       // make it colourfull
       sliders(i).setFillColor(grey)
       sliders(i).setStrokeColor(black)
-
-      // Set name for logging
-      sliders(i).setName((i match{case 0=>"Top" case 1=>"Right" case 2=>"Bottom" case 3=>"Left" case _=>"Whatever"})+" Slider")
 
       // position it
       // on each side of the screen clockwise
@@ -212,12 +203,9 @@ class NodeScene() extends Scene(app,"TreeQuencer") {
             newValue = e.getNewValue.asInstanceOf[Float]
 
             // change the speed of the Metronome()
-            Metronome().setDuration(newValue)
+            Metronome().duration() = newValue
 
-            // Session Logging
-            if(app.loggingEnabled) {
-              SessionLogger.log("Changed Metronome; BPM: "+Metronome().beatsPerMinute, SessionEvent.Event, slider, null, newValue.asInstanceOf[Object])
-            }
+            SessionLogger.log("Changed Metronome", SessionEvent.Event, slider, null, newValue.asInstanceOf[Object])
 
             // change the values of all the other sliders
             sliders.foreach( tmpSlider => {

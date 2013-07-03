@@ -54,9 +54,7 @@ class NodeForm(val file: File) extends MTComponent(app) {
 
   setName(file.getName)
   // SessionLogging
-  if(app.loggingEnabled) {
-    SessionLogger.log("Created Node", SessionEvent.Event, this, null, null)
-  }
+  SessionLogger.log("Created Node", SessionEvent.Event, this, null, null)
 
   setLight(app.light)
 
@@ -285,13 +283,11 @@ class NodeForm(val file: File) extends MTComponent(app) {
       case _ =>
     }
 
-    // Session Logging
-    if(app.loggingEnabled) {
-      if (e.getId == GESTURE_UPDATED) {
-        SessionLogger.log("Gesture "+e.toString, SessionEvent.BeginGesture, this, e.getSource(), (position, (rotationX(), rotationY(), rotationZ()), scaleFactor()))
-      } else if (e.getId == GESTURE_ENDED) {
+        // Session Logging
+    if (e.getId == GESTURE_UPDATED) {
+      SessionLogger.log("Gesture "+e.toString, SessionEvent.BeginGesture, this, e.getSource(), (position, (rotationX(), rotationY(), rotationZ()), scaleFactor()))
+    } else if (e.getId == GESTURE_ENDED) {
         SessionLogger.log("Gesture "+e.toString, SessionEvent.EndGesture, this, e.getSource(), (position, (rotationX(), rotationY(), rotationZ()), scaleFactor()))
-      }
     }
 
   }
