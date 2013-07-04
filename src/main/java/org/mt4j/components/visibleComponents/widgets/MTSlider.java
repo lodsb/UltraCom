@@ -326,6 +326,26 @@ public class MTSlider extends MTRectangle {
 		return valueCurr;
 	}
 
+    public float getValue(Vector3D fromPosition) {
+        float outerShapeWidthLocal = outerShape.getWidthXY(TransformSpace.LOCAL);
+        float knobWidthRelParent = knob.getWidthXY(TransformSpace.RELATIVE_TO_PARENT);
+
+        float leftMostPossibleKnobPosX = x + innerPadding + knobWidthRelParent * 0.5f;
+        float rightMostPossibleKnobPosX = x + outerShapeWidthLocal - innerPadding - knobWidthRelParent * 0.5f;
+
+        //in outershape local coords
+        float slideableArea = rightMostPossibleKnobPosX - leftMostPossibleKnobPosX;
+        float knobPosX = fromPosition.x;
+        float sliderAreaToValueAreaRatio = valueRangeVar / slideableArea;
+
+        float knobCurr = knobPosX - leftMostPossibleKnobPosX;
+        float valueCurr = minValue + knobCurr * sliderAreaToValueAreaRatio;
+
+        valueCurr = ToolsMath.clamp(valueCurr, minValue, maxValue);
+
+        return valueCurr;
+    }
+
 	/**
 	 * Sets the value.
 	 *

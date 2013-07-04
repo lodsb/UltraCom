@@ -2,7 +2,7 @@ package main.scala.TreeQuencer
 
 import org.mt4j.{MTApplication, Scene, Application}
 import org.mt4j.util.math.{Tools3D, Vector3D}
-import org.mt4j.components.MTLight
+import org.mt4j.components.{TransformSpace, MTLight}
 import javax.media.opengl.GL
 import org.mt4j.output.audio.AudioServer
 import org.mt4j.util.{Color, MTColor}
@@ -256,13 +256,13 @@ class NodeScene() extends Scene(app,"TreeQuencer") {
               val intersection = outerShape.getIntersectionGlobal(Tools3D.getCameraPickRay(app, outerShape, tapPosition.x, tapPosition.y))
               if (intersection != null) {
                 val localClickPosition = knob.globalToLocal(intersection)
-                slider.setValue(localClickPosition.x)
+                slider.setValue(slider.getValue(localClickPosition))
               }
             case BUTTON_DOWN => activeSlider = slider
             case BUTTON_UP => activeSlider = null
             case _ =>
           }
-          return false
+          false
         }
       })
     }
