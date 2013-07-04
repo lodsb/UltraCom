@@ -82,7 +82,7 @@ SynthDef("tetra") {
   val echo11 = delay(echo10, 11)
 
   bing += echo1 + echo2 + echo3 + echo4 + echo5 + echo6 + echo7 + echo8 + echo9 + echo10 + echo11
-  bing = Limiter.ar(bing)
+  bing = Limiter.ar(0.5f*bing)
 
   // put it out
   AudioServer.attach(bing)

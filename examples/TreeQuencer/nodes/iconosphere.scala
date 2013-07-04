@@ -74,7 +74,7 @@ SynthDef("icono") {
     ("tone1".kr(5), "noiseVol".kr(0.005), "filterStart".kr(300), "filterEnd".kr(1000), "speed".kr(1), "overlap".kr(1.5), "atk".kr(5), "globAmp".kr(0.02))
 
   val (frq1, frq5, frq3, frq7, frq9, frq11, frq13) =
-    (z, z*f2(7), z*f2(3), z*f2(10), z*f2(15), z*f2(20))
+    (z, z*f2(7), z*f2(3), z*f2(10), z*f2(15), z*f2(20), z*f2(24))
 
   val (amp1, amp5, amp3, amp7, amp9, amp11, amp13) =
     (f(yZero=0.5f)(rotationY), f(xZero=0.0f)(rotationY), f(xZero=40f)(rotationY), f(xZero=80f)(rotationY), f(xZero=120f)(rotationY), f(xZero=160f)(rotationY), f(xZero=200f)(rotationY))
