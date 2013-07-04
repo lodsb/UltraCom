@@ -1,7 +1,7 @@
 package main.scala.TreeQuencer
 
 import org.mt4j.{MTApplication, Scene, Application}
-import org.mt4j.util.math.Vector3D
+import org.mt4j.util.math.{Tools3D, Vector3D}
 import org.mt4j.components.MTLight
 import javax.media.opengl.GL
 import org.mt4j.output.audio.AudioServer
@@ -242,16 +242,27 @@ class NodeScene() extends Scene(app,"TreeQuencer") {
           false
         }
       })
+
+      sliders(i).getOuterShape.removeAllGestureEventListeners(classOf[TapProcessor])
       sliders(i).getOuterShape.addGestureListener(classOf[TapProcessor], new IGestureEventListener {
         val slider = sliders(i)
+        val outerShape = slider.getOuterShape
+        val knob = slider.getOuterShape
         def processGestureEvent(ge: MTGestureEvent): Boolean = {
           val te = ge.asInstanceOf[TapEvent]
           te.getTapID match {
+            case BUTTON_CLICKED =>
+              val tapPosition = te.getLocationOnScreen
+              val intersection = outerShape.getIntersectionGlobal(Tools3D.getCameraPickRay(app, outerShape, tapPosition.x, tapPosition.y))
+              if (intersection != null) {
+                val localClickPosition = knob.globalToLocal(intersection)
+                slider.setValue(localClickPosition.x)
+              }
             case BUTTON_DOWN => activeSlider = slider
             case BUTTON_UP => activeSlider = null
             case _ =>
           }
-          false
+          return false
         }
       })
     }
