@@ -53,7 +53,7 @@ class SimplePitchProperty(node: ManipulableNode) extends SimpleProperty {
       g.vertex(x3, y3)     
       g.vertex(x4, y4)
       g.endShape(CLOSE)
-    })      
+    })    
   }    
   
   override def range = {

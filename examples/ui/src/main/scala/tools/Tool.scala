@@ -5,6 +5,7 @@ import org.mt4j.Application
 import org.mt4j.components.TransformSpace
 import org.mt4j.components.MTComponent
 import org.mt4j.components.visibleComponents.shapes.MTPolygon
+import org.mt4j.components.bounds.BoundsArbitraryPlanarPolygon
 
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor 
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor 
@@ -19,6 +20,11 @@ import org.mt4j.util.math.Vector3D
 import org.mt4j.util.math.Vertex
 import org.mt4j.types.Vec3d
 
+import org.mt4j.util.animation.Animation
+import org.mt4j.util.animation.AnimationEvent
+import org.mt4j.util.animation.IAnimationListener
+import org.mt4j.util.animation.MultiPurposeInterpolator
+
 import processing.core.PGraphics
 import processing.core.PConstants._
 
@@ -27,6 +33,8 @@ import ui.input._
 import ui.properties._
 import ui.properties.types._
 import ui.util._
+import ui.events._
+import ui.usability._
 
 /**
 * Companion object defining the basic look of tools.
@@ -36,9 +44,9 @@ object Tool {
   val StrokeAlpha = 70
   val ActiveStrokeAlpha = 170
   
-  val Width = Ui.width/40f //width of a tool relative to the ui width
-  val Height = Width*2.1f //height of a tool, already relative to ui (so do not change if you want to keep current proportions)
-  val BottomHeight = Width/3.0f //height of the bottom area of a tool, already relative to ui 
+  val Width = (Ui.width/38.0f).toInt //width of a tool relative to the ui width
+  val Height = (Width*2.1f).toInt //height of a tool, already relative to ui (so do not change if you want to keep current proportions)
+  val BottomHeight = (Width/3.0f).toInt //height of the bottom area of a tool, already relative to ui 
   val ArcDelta = 2*Height/7.0f //distance from arc center to tip of tool
   val ArcWidth = Height/4.0f
   
@@ -52,14 +60,16 @@ object Tool {
 * This class represents a tool.
 * Tools are used to alter the properties of paths.
 */
-class Tool(app: Application, center: (Float, Float), pType: PropertyType) extends MTPolygon(app, Array(new Vertex(center._1, center._2))) { 
-    private var rotationAngle = 0.0f //the current rotation angle of this tool  
+class Tool(app: Application, center: (Float, Float), pType: PropertyType) extends MTPolygon(app, Array(new Vertex(0, 0))) with Feedback { 
+    private var rotationAngle = 0.0f //the current rotation angle (in degrees) of this tool
     private var editing = false //whether this tool is currently in edit mode
-    
-    this.setupRepresentation()
+    private var currentColor = this.propertyType.color
+ 
+    this.setupRepresentation()          
     this.setupInteraction()
     
     private def setupRepresentation() = {
+      this.setPositionGlobal(Vec3d(center._1, center._2))
       val color = this.color //deep copy of color
       color.setAlpha(Tool.StrokeAlpha)
       this.setVertices(this.shape)
@@ -77,15 +87,19 @@ class Tool(app: Application, center: (Float, Float), pType: PropertyType) extend
   
     def isEditing = {
       this.editing
-    }
- 
+    }   
+    
     /**
-    * Returns the specific color of this tool.
-    * Note that this is a deep copy of this tool's property.
+    * Returns a deep copy of this tool's current color.
     */
-    protected def color() = {
-      this.propertyType.color
+    def color() = {
+      new MTColor(this.currentColor.getR, this.currentColor.getG, this.currentColor.getB, this.currentColor.getAlpha)
     }
+    
+    protected def setColor(col: MTColor) = {
+      this.currentColor = col
+    }
+    
     
     def manipulationRadius = {
       Tool.ArcWidth/2
@@ -119,6 +133,14 @@ class Tool(app: Application, center: (Float, Float), pType: PropertyType) extend
       val c = this.getCenterPointGlobal
       (c.getX, c.getY)
     }
+    
+    
+    /**
+    * Returns the global position of this tool's center.
+    */
+    def position = {
+      this.centerPoint
+    }
    
     /**
     * Returns the local center position of this tool's symbol.
@@ -141,11 +163,14 @@ class Tool(app: Application, center: (Float, Float), pType: PropertyType) extend
     }
     
     
-    private def shape = {
+    private def shape: Array[Vertex] = {
+      this.shape(this.color)
+   }
+   
+    private def shape(color: MTColor): Array[Vertex] = {
       import Tool._
-      val color = this.color
-      val x = center._1
-      val y = center._2
+      val centerPos = this.getCenterPointLocal
+      val (x, y) = (centerPos.getX, centerPos.getY)
       Array(
           new Vertex(x, y - Height/2, 0, color.getR(), color.getG(), color.getB(), 0), //top
           new Vertex(x - Width/2, y + Height/2 - BottomHeight, 0, color.getR(), color.getG(), color.getB(), 130), //left point
@@ -153,14 +178,15 @@ class Tool(app: Application, center: (Float, Float), pType: PropertyType) extend
           new Vertex(x + Width/2, y + Height/2 - BottomHeight, 0, color.getR(), color.getG(), color.getB(), 130), //right point
           new Vertex(x, y - Height/2, 0, color.getR(), color.getG(), color.getB(), 0) //back to top
       )
-   }
+   }   
     
     
     private def setupInteraction() = {
       //remove defaults
       this.unregisterAllInputProcessors() //no default rotate, scale & drag processors
       this.removeAllGestureEventListeners() //no default listeners as well
-      
+            
+        
       //register input processors
       this.registerInputProcessor(new DragProcessor(app))
       val tapProcessor = new TapProcessor(app)
@@ -169,7 +195,8 @@ class Tool(app: Application, center: (Float, Float), pType: PropertyType) extend
       
       //add gesture listeners
       this.addGestureListener(classOf[DragProcessor], new ManipulatingDragAction(app, this)) 
-      this.addGestureListener(classOf[DragProcessor], new InertiaDragAction(200, .95f, 17)) //interesting feature =)     
+      //this.addGestureListener(classOf[DragProcessor], new DefaultDragAction())
+      //this.addGestureListener(classOf[DragProcessor], new InertiaDragAction(200, .95f, 17)) //interesting feature =)     
       this.addGestureListener(classOf[TapProcessor], new ToolTapListener(this))
     }
     
@@ -186,18 +213,19 @@ class Tool(app: Application, center: (Float, Float), pType: PropertyType) extend
       g.stroke(color.getR, color.getG, color.getB, color.getAlpha)
       g.strokeWeight(StrokeWeight)
       g.arc(this.localTipPoint._1, this.localTipPoint._2 + ArcDelta, ArcWidth, ArcWidth, 5*PI/16, 11*PI/16)
-      this.propertyType.drawSymbol(g, this)
+      //TODO maybe add more affordance
+      this.propertyType.drawSymbol(g, this.localSymbolPoint, color)
     }
     
     /**
-    * Sets the rotation angle of this tool, with the rotation point being the tip of this tool.
+    * Sets the rotation angle (in degrees) of this tool in global space, with the rotation point being the tip of this tool.
     */
     def setRotation(angle: Float): Unit = {
       this.setRotation(angle, this.tipPoint)
     }
     
     /**
-    * Sets the rotation angle for this tool while also specifying the point around which to rotate.
+    * Sets the rotation angle (in degrees) of this tool in global space while also specifying the point around which to rotate.
     */
     def setRotation(angle: Float, point: (Float, Float)): Unit = {
       val (x,y) = point
@@ -205,4 +233,46 @@ class Tool(app: Application, center: (Float, Float), pType: PropertyType) extend
       this.rotateZ(Vec3d(x,y), angle, TransformSpace.GLOBAL) //then apply new rotation
       this.rotationAngle = angle //finally update current rotation angle
     }
+    
+    
+    override def giveFeedback(event: FeedbackEvent) = {
+      if (event.name == "ILLEGAL ACTION") {
+        wrongActionAnimation.start()
+      }
+    }
+    
+    
+    private def wrongActionAnimation = {
+      val color = this.color
+      val oldR = color.getR
+      val maxR = 200
+      val oldG = color.getG
+      val oldB = color.getB
+      val oldAlpha = color.getAlpha
+      val me = this
+      val interpolator = new MultiPurposeInterpolator(oldR, maxR, 150, 0.0f, 1.0f, 1)
+      val animation = new Animation("WRONG ACTION FADE IN", interpolator, this)
+      animation.addAnimationListener(new IAnimationListener() { 
+        def processAnimationEvent(ae: AnimationEvent) {
+          if(ae.getId() == AnimationEvent.ANIMATION_ENDED) { //if the animation has been played back uninterrupted
+              //then start animation back to default appearance of tool
+              val interpolator2 = new MultiPurposeInterpolator(maxR, oldR, 500, 0.0f, 1.0f, 1)
+              val animation2 = new Animation("WRONG ACTION FADE OUT", interpolator2, me)
+              animation2.addAnimationListener(new IAnimationListener() { 
+                def processAnimationEvent(ae: AnimationEvent) {
+                  me.setColor(new MTColor(ae.getValue, oldG - oldG*ae.getValue/maxR, oldB - oldB*ae.getValue/maxR, oldAlpha)) //works because oldR is 0 in this case
+                  me.setVertices(me.shape(me.color))
+                }
+              }).start()
+          }
+          else {
+            me.setColor(new MTColor(ae.getValue, oldG - oldG*ae.getValue/maxR, oldB - oldB*ae.getValue/maxR, oldAlpha)) //works because oldR is 0 in this case
+            me.setVertices(me.shape(me.color))
+          }
+        }
+      })
+      animation
+    }
+
+    
 }

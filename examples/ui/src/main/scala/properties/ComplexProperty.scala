@@ -3,12 +3,14 @@ package ui.properties
 import processing.core.PGraphics
 import org.mt4j.util.MTColor
 
+import ui.paths._
+
 
 /**
 * This abstract class represents a complex property.
 * A complex property manages a fixed number of 'buckets', each associated with a specific value.
 */
-abstract class ComplexProperty extends Property {
+abstract class ComplexProperty(val connection: ManipulableBezierConnection, val numberOfBuckets: Int) extends Property {
   var values = new Array[Float](this.buckets)
   val (min, max) = this.range
   this.values = this.values.map(_ + (max - min)/2 + min) //initialize values with mean per default
@@ -34,7 +36,10 @@ abstract class ComplexProperty extends Property {
   /**
   * Returns the number of buckets of this property.
   */
-  def buckets: Int
+  def buckets = {
+    this.numberOfBuckets
+  }
+  
   
   /**
   * Maps the property values to a drawable range. If not overridden, this range is [0, visualWidth].

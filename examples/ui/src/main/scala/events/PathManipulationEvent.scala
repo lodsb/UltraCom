@@ -10,7 +10,7 @@ object PathManipulationEvent {
   }
 }
 
-class PathManipulationEvent(val connection: ManipulableBezierConnection, val connectionParameter: Float, val propertyType: PropertyType, val manipulationRadius: Float, val value: Float) extends UiEvent("PATH_MANIPULATED") {
+class PathManipulationEvent(val connection: ManipulableBezierConnection, val connectionParameter: Float, propertyType: PropertyType, val manipulationRadius: Float, value: Float) extends ManipulationEvent(propertyType, value) {
 }
 
 

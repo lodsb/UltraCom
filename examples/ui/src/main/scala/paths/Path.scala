@@ -9,15 +9,6 @@ import org.mt4j.components.visibleComponents.AbstractVisibleComponent
 
 import org.mt4j.sceneManagement.AddNodeActionThreadSafe
 
-import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor 
-import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent
-import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor 
-import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent
-import org.mt4j.input.inputProcessors.IGestureEventListener
-import org.mt4j.input.inputProcessors.MTGestureEvent
-import org.mt4j.input.gestureAction.DefaultDragAction
-import org.mt4j.input.gestureAction.InertiaDragAction
-
 import org.mt4j.util.Color
 import org.mt4j.util.math.Vector3D
 import org.mt4j.util.math.Vertex
@@ -48,23 +39,38 @@ object Path {
   /**
   * Constructs a path with a variable number of connections between nodes.
   */
-  def apply(app: Application, defaultConnectionFactory: ((Application, Node, Node) => Connection), connections: List[Connection]) = {
-    new Path(app, defaultConnectionFactory, connections, Stopped, 0, 0.0f, 0.0f, 0, 0.0f)
+  def apply(app: Application, defaultConnectionFactory: ((Application, Node, Node) => ManipulableBezierConnection), connections: List[ManipulableBezierConnection]) = {
+    new Path(app, defaultConnectionFactory, connections, Stopped, StopNodeType, false, 0, 0.0f, 0.0f, 0, 0.0f, Map[TimeNode, Boolean](), List[TimeConnection]())
   }
   
   /**
   * Constructs a path with a single connection between the specified nodes.
   */
-  def apply(app: Application, defaultConnectionFactory: ((Application, Node, Node) => Connection), firstNode: Node, secondNode: Node) = {
-    new Path(app, defaultConnectionFactory, List(defaultConnectionFactory(app, firstNode, secondNode)), Stopped, 0, 0.0f, 0.0f, 0, 0.0f)
+  def apply(app: Application, defaultConnectionFactory: ((Application, Node, Node) => ManipulableBezierConnection), firstNode: Node, secondNode: Node) = {
+    val startNode = Node(app, StopNodeType, firstNode.associatedPath, firstNode.getCenterPointGlobal)
+    val endNode = Node(app, PlayNodeType, secondNode.associatedPath, secondNode.getCenterPointGlobal)
+    Ui -= firstNode
+    Ui -= secondNode
+    Ui += startNode
+    Ui += endNode
+    new Path(app, defaultConnectionFactory, List(defaultConnectionFactory(app, startNode, endNode)), Stopped, StopNodeType, false, 0, 0.0f, 0.0f, 0, 0.0f, Map[TimeNode, Boolean](), List[TimeConnection]())
   }
   
   /**
   * Constructs a path with a variable number of connections between nodes and a given playback position.
   */
-  def apply(app: Application, defaultConnectionFactory: ((Application, Node, Node) => Connection), connections: List[Connection], playback: PlaybackState, currentCon: Int, connectionAcc: Float, currentConParam: Float, currentBuck: Int, bucketAcc: Float) = {
-    new Path(app, defaultConnectionFactory, connections, playback, currentCon, connectionAcc, currentConParam, currentBuck, bucketAcc)
+  protected def apply(app: Application, defaultConnectionFactory: ((Application, Node, Node) => ManipulableBezierConnection), connections: List[ManipulableBezierConnection], playback: PlaybackState, playbackType: NodeType, reversed: Boolean, currentCon: Int, connectionAcc: Float, currentConParam: Float, currentBuck: Int, bucketAcc: Float, timeNodesMap: Map[TimeNode, Boolean], timeConnectionsList: List[TimeConnection]) = {
+    new Path(app, defaultConnectionFactory, connections, playback, playbackType, reversed, currentCon, connectionAcc, currentConParam, currentBuck, bucketAcc, timeNodesMap, timeConnectionsList)
   }
+  
+  
+  /**
+  * Constructs a path with a variable number of connections between nodes.
+  */
+  protected def apply(app: Application, defaultConnectionFactory: ((Application, Node, Node) => ManipulableBezierConnection), connections: List[ManipulableBezierConnection], playback: PlaybackState, playbackType: NodeType, timeNodes: Map[TimeNode, Boolean], timeConnections: List[TimeConnection]) = {
+    new Path(app, defaultConnectionFactory, connections, playback, playbackType, false, 0, 0.0f, 0.0f, 0, 0.0f, timeNodes, timeConnections)
+  }  
+  
   
   /**
   * Returns the center between two nodes.
@@ -79,59 +85,56 @@ object Path {
 
 
 /**
-* This class represents a path through the timbre space, that is, a sequence of connections between nodes.
+* This class represents a path through the timbre space, that is, a sequence of manipulable bezier connections between nodes.
 *
 * Note that while there is no theoretical - if practical - limit to the number of connections which can make up a path,
 * every path consists of at least one connection.
 *
 */ 
-class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node) => Connection), var connections: List[Connection], 
-           playback: PlaybackState, currentCon: Int, connectionAcc: Float, currentConParam: Float, currentBuck: Int, bucketAcc: Float) extends AbstractVisibleComponent(app) with Actor {
+class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node) => ManipulableBezierConnection), var connections: List[ManipulableBezierConnection], 
+           playback: PlaybackState, playbackType: NodeType, reversed: Boolean, currentCon: Int, connectionAcc: Float, currentConParam: Float, currentBuck: Int, bucketAcc: Float,
+           timeNodesMap: Map[TimeNode, Boolean], timeConnectionsList: List[TimeConnection]) 
+           extends AbstractVisibleComponent(app) with Actor with AudioChannels {
  
   private var exists = true
-  private var playbackState = playback //whether this path is currently played back, paused or stopped
+  
+  private var playbackState = playback //whether this path is currently played back, paused or stopped  
+  private var isReversedPlayback = reversed //whether the path is played back reversed
+  
   private var currentConnection = currentCon //index of the connection currently played 
   private var currentBucket = currentBuck //index of the current speed bucket
   private var bucketAccumulator = bucketAcc //accumulate passed time in milliseconds for current bucket
   private var connectionAccumulator = connectionAcc //accumulated passed time in milliseconds for the current connection
   private var currentConnectionParameter = currentConParam //connection parameter indicating the playback progress on the currently played back connection
+  
+  private var timeNodes = timeNodesMap
+  private var timeConnections = timeConnectionsList
       
   this.setup()
-  
-  /*
-  Note: Do not declare this a case class since those should be immutable.
-  
-  Moreover, the methods equals and hashCode which are implicitly defined by case classes 
-  recursively call equals/hashCode on their respective fields.
-  If those fields have types which themselves are case classes and which reference this class
-  (which is the case here given that paths reference nodes and nodes reference paths)
-  this will lead to StackoverflowErrors, which is bad ;)
-  */ 
-  
  
   private def setup() = {
-    connections.foreach(_.nodes.foreach(_.associatedPath = Some(this))) //set associated path to this for all connected nodes
+    connections.foreach(_.nodes.foreach(node => {
+      node.associatedPath = Some(this)
+      //node.updateRotation()
+    })) //set associated path to this for all connected nodes
+    
+    this.timeNodes.keys.foreach(_.associatedPath = Some(this)) //set associated path to this for all time nodes
+    
     connections.head.nodes.head.nodeType = if (this.playbackState == Playing) PauseNodeType else PlayNodeType //set start...
-    connections.last.nodes.last.nodeType = StopNodeType //...and end node of this path
+    connections.last.nodes.last.nodeType = playbackType //...and end node of this path
+    
     connections.foreach(connection => Ui.getCurrentScene.registerPreDrawAction(new AddNodeActionThreadSafe(connection, this))) //add connections as children
     this.start() //start acting
+    
     if (this.playbackState == Playing) {
       this ! UiEvent("PLAY") //continue playing if state dictates so
       Playback ! PathPlaybackEvent(this, true)
     }
-    println("exiting setup")
   }  
     
 
-  def act = {
-
-    /**
-    * Returns the manipulable bezier connections.
-    */
-    def manipulableConnections: List[ManipulableBezierConnection] = {
-      this.connections collect {case c: ManipulableBezierConnection => c}
-    }            
-    
+  def act = {         
+    println("path: starting to act!")
     var lastTime = System.nanoTime()
     var currentTime = System.nanoTime()
     var timeDiff = 0.0f //passed time in milliseconds
@@ -139,119 +142,379 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
     var currentBucketValue = 0.0f
     var currentConnectionValue = 0.0f
 
-    var (currentX, currentY) = (0, 0)
+    var (currentX, currentY) = (0,0)
+    
+    var ignoreNextTogglePlayback = false //whether the next play/pause playback event is to be ignored
+    var ignoreNextStopPlayback = false //whether the next stop playback event is to be ignored
+    //these two are needed to distinguish between a tap and a tapAndHold
 
     while (this.exists) {
-      receive {
+      /* Note: Obviously, synchronization goes kind of against the whole actor concept. 
+         However, we have to ensure that the mt4j drawing thread (which is not an actor) does not draw while we are updating a path.
+         Since we cannot send messages directly to the drawing thread, there is - as far as I can see - no straightforward way to
+         ensure consistent state without synchronization on some datastructure.
+      */
+      
+      receive {         
+        case event: TimeNodeAddEvent => {
+          this.synchronized {
+            this.timeNodes = this.timeNodes + (event.node -> false)
+            Ui += event.node
+          }
+        }      
+ 
+        case event: TimeConnectionAddEvent => {
+          this.synchronized {
+            if (this.timeConnections.filter(connection => connection.timeNode == event.connection.timeNode && connection.startNode == event.connection.startNode).size <= 0) {
+              //if such a connection is not already in place
+              this.timeConnections = this.timeConnections :+ event.connection
+              Ui += event.connection
+              Ui += event.connection.connectionNode
+            }
+          }
+        }  
+                
+        
+        case event: PathPlaybackTypeEvent => {
+          this.synchronized {
+            this.connections.last.nodes.last.nodeType = event.playbackType
+          }
+        }
+        
+        case event: ToggleChannelEvent => {
+          this.synchronized {
+            this.toggleChannel(event.channel)
+          }
+        }
         
         case event: NodeDeletionEvent => {
-          this -= event.node
+          this.synchronized {
+            event.node match {
+              case timeNode: TimeNode => {
+                this.removeTimeNode(timeNode)
+              }
+              case someNode => {
+                if (someNode.nodeType == TimeConnectionNodeType) {
+                  val affectedTimeConnections = this.timeConnections.filter(_.connectionNode == someNode)
+                  affectedTimeConnections.foreach(timeConnection => {
+                    println("affected: " + timeConnection.toString)
+                    this.timeConnections = this.timeConnections.filter(_ != timeConnection)
+                    timeConnection.startNode.associatedPath.foreach(_ ! event) //propagate to other path if exists
+                    timeConnection.startNode match {case node: ManipulableNode => node ! event case otherNode => {}} //or to manipulable node
+                    Ui -= timeConnection
+                  })      
+                  Ui -= someNode 
+                }
+                else {
+                  val result = (this -= someNode)
+                  /*if (result.size == 1) { //if we have just cut a node at the start or end of this path
+                    this.connections.head.nodes.head.updateRotation() //we update the start node
+                    this.connections.last.nodes.last.updateRotation() //and end node of this path
+                  }*/
+                }
+              }
+            }
+          }
         }
         
         case event: NodeAppendEvent => {
-          this += event.node
+          this.synchronized {
+            this += event.node
+            //event.node.updateRotation()
+          }
         }
         
         case event: NodePrependEvent => {
-          event.node +=: this
+          this.synchronized {
+            event.node +=: this
+            //event.node.updateRotation()
+          }
         }
         
         case event: PathAppendEvent => {
-          this ++= event.path
+          this.synchronized {
+            this ++= event.path
+          }
         }
         
-        case event: NodeMoveEvent => { //if a node was moved, update the affected connections
-          val affectedConnections = this.connections.filter(_.nodes.exists(_ == event.node)) collect {case c: ManipulableBezierConnection => c}
-          affectedConnections.foreach(_.updateCurveParameters())
+        case event: NodeMoveEvent => { //if a node was moved, update the affected connections and rotate node correspondingly
+          this.synchronized { 
+            val isControlNode = event.node.nodeType == ControlNodeType
+            val affectedConnections = this.connections.filter(_.nodes.exists(_ == event.node))
+            affectedConnections.foreach(connection => {
+              connection.updateCurveParameters() //first update the curve parameters
+              //if (isControlNode) connection.nodes.foreach(_.updateRotation())
+            })
+            //if (!isControlNode) event.node.updateRotation()
+              
+            this.timeNodes.keys.foreach(timeNode => { //only then update the time nodes
+              val (x,y) = timeNode.connection(timeNode.parameter)
+              timeNode.setPositionGlobal(Vec3d(x,y))
+            })
+            
+            this.timeConnections.foreach(timeConnection => { //and the time connections
+              timeConnection.updateConnectionNode()
+            })
+            
+          }
         }
+
+       case event: TimeNodeMoveEvent => { //different from node move event since it specifies coordinates x and y
+          this.synchronized {
+            val (connection, parameter) = this.closestSegment(event.x, event.y)
+            val (closestX, closestY) = connection(parameter)
+            event.node.connection = connection
+            event.node.parameter = parameter
+            event.node.setPositionGlobal(Vec3d(closestX, closestY))    
+            
+            val nodeConnectionIndex = this.indexOf(event.node.connection)
+            if  (nodeConnectionIndex > this.currentConnection || (nodeConnectionIndex == this.currentConnection && event.node.parameter > this.currentConnectionParameter)) {
+                //if through the movement the time node is now yet to come again
+                this.timeNodes = this.timeNodes.updated(event.node, false) //we reset the trigger mechanism
+            }
+            this.timeConnections.filter(_.timeNode == event.node).foreach(_.updateConnectionNode()) //more than needed but not costly
+          }
+        }    
         
         case event: PathManipulationEvent => {
-          event.connection.updateProperty(event.propertyType, event.connectionParameter, event.manipulationRadius, event.value) 
-          if (event.propertyType == SpeedPropertyType) { //if the speed property has been changed
-            this.connectionAccumulator = event.connection.partialPropertySum(SpeedPropertyType, this.currentBucket-1) + this.bucketAccumulator 
-            /* then we need to recalculate the connectionAccumulator since we don't want for manipulations to affect the playback position on the arc */
+          this.synchronized {
+            event.connection.updateProperty(event.propertyType, event.connectionParameter, event.manipulationRadius, event.value)
+            if (event.propertyType == SpeedPropertyType) { //if the speed property has been changed
+              this.connectionAccumulator = event.connection.partialPropertySum(SpeedPropertyType, this.currentBucket-1) + this.bucketAccumulator 
+              /* then we need to recalculate the connectionAccumulator since we don't want for manipulations to affect the playback position on the arc */
+            }
           }
         }     
         
         case event: PathFastForwardEvent => {
-          val time = event.time
+          this.synchronized {
+            val time = event.time
+            this.bucketAccumulator = this.bucketAccumulator + time
+            this.connectionAccumulator = this.connectionAccumulator + time
+          }
         }
         
         case event: PathRewindEvent => {
-          val time = event.time
+          this.synchronized {
+            val time = event.time
+            this.bucketAccumulator = this.bucketAccumulator - time
+            this.connectionAccumulator = this.connectionAccumulator - time
+          }
         }
         
         case event: UiEvent => { //a 'simple' ui event
-          if (event.name == "START_PLAYBACK") {
-            if (this.playbackState != Playing) {
-              lastTime = System.nanoTime() //init time
-              this.connections.head.nodes.head.nodeType = PauseNodeType
-              this.playbackState = Playing
-              Playback ! PathPlaybackEvent(this, true)
-              this ! UiEvent("PLAY")
+          this.synchronized {
+            
+            if (event.name == "IGNORE_NEXT_TOGGLE_PLAYBACK") {
+              ignoreNextTogglePlayback = true
             }
-          }
-          
-          else if (event.name == "PLAY") {
-            if (this.playbackState == Playing) {
-              currentTime = System.nanoTime()
-              timeDiff = (currentTime - lastTime)/1000000.0f //passed time in milliseconds
-              lastTime = currentTime
-              
-              val connections = manipulableConnections //get connections 
-              val con = connections(this.currentConnection)
-              val buckets = con.propertyBuckets(SpeedPropertyType) //get number of buckets              
-              this.bucketAccumulator = this.bucketAccumulator + timeDiff //accumulate passed time for current bucket
-              this.connectionAccumulator = this.connectionAccumulator + timeDiff //and current connection
-              currentBucketValue = con.propertyValue(SpeedPropertyType, this.currentBucket)
-              currentConnectionValue = con.propertySum(SpeedPropertyType)
-              
-              if (this.bucketAccumulator >= currentBucketValue) { //if the time specified by the bucket has been surpassed
-                this.currentBucket = this.currentBucket + 1 //we process the next current bucket of the current connection //(connectionAccumulator/currentConnectionValue * buckets).toInt //
-                this.bucketAccumulator = this.bucketAccumulator - currentBucketValue //and set back the bucket accumulator with carry-over 
-                if (this.currentBucket >= buckets) { //if we processed all buckets of the current connection
-                  this.currentConnection = this.currentConnection + 1 //we process the next connection on the path
-                  this.currentBucket = 0 //and set back the current bucket variable
-                  this.connectionAccumulator = this.bucketAccumulator //as well as the connection accumulator, again accounting for carry-over
-                  if (this.currentConnection >= connections.size) { //if we have processed all connections on the path
-                    this.resetPlayback()
-                    Playback ! PathPlaybackEvent(this, false)
-                  }
+            
+            else if (event.name == "IGNORE_NEXT_STOP_PLAYBACK") {
+              ignoreNextStopPlayback = true
+            }        
+            
+            else if (event.name == "IGNORE_IGNORE_NEXT_TOGGLE_PLAYBACK") {
+              ignoreNextTogglePlayback = false
+            }   
+            
+            else if (event.name == "IGNORE_IGNORE_NEXT_STOP_PLAYBACK") {
+              ignoreNextStopPlayback = false
+            }                          
+            
+            else if (event.name == "START_PLAYBACK") {
+              if (ignoreNextTogglePlayback) {ignoreNextTogglePlayback = false}
+              else {
+                if (this.playbackState != Playing) {
+                  lastTime = System.nanoTime() //init time
+                  this.connections.head.nodes.head.nodeType = PauseNodeType
+                  this.playbackState = Playing
+                  Playback ! PathPlaybackEvent(this, true)
+                }          
+                this ! UiEvent("PLAY")
+              }
+            }
+            
+            else if (event.name == "START_REVERSE_PLAYBACK") {         
+              this ! UiEvent("PLAY")          
+            }
+
+            else if (event.name == "PAUSE_PLAYBACK") {
+              if (ignoreNextTogglePlayback) {ignoreNextTogglePlayback = false}
+              else {              
+                if (this.playbackState != Paused) {
+                  this.connections.head.nodes.head.nodeType = PlayNodeType             
+                  this.playbackState = Paused
+                  Playback ! PathPlaybackEvent(this, false)
                 }
-              } 
-              
-              currentConnectionParameter = con.toCurveParameter(this.currentBucket/buckets.toFloat + (this.bucketAccumulator/currentBucketValue)/buckets)    
-              val (newXFloat, newYFloat) = con(currentConnectionParameter)
-              val (newX, newY) = (math.round(newXFloat), math.round(newYFloat))
+              }
+            }
+            
+            else if (event.name == "STOP_PLAYBACK") {
+              if (ignoreNextStopPlayback) {ignoreNextStopPlayback = false}
+              else {
+                this.resetPlayback()
+                Playback ! PathPlaybackEvent(this, false)
+              }
+            }
+            
+            else if (event.name == "PLAY") {  
+              if (this.playbackState == Playing) {            
+                var hasReachedEnd = false
+                currentTime = System.nanoTime()
+                timeDiff = (currentTime - lastTime)/1000000.0f //passed time in milliseconds
+                lastTime = currentTime
+                val con = this.connections(this.currentConnection)
+                val buckets = con.propertyBuckets(SpeedPropertyType) //get number of buckets    
+                currentBucketValue = con.propertyValue(SpeedPropertyType, this.currentBucket)
+                currentConnectionValue = con.propertySum(SpeedPropertyType)
+
+                /* ################################ */
+                //first send new audio event if necessary
+                val (newXFloat, newYFloat) = con(this.currentConnectionParameter)
+                val (newX, newY) = (math.round(newXFloat), math.round(newYFloat))
+                  
+                if (newX != currentX || newY != currentY){
+                  currentX = newX
+                  currentY = newY
+                  val channels = this.collectOpenChannels
+                  Synthesizer ! AudioEvent(channels, currentX, currentY, con.propertyValue(PitchPropertyType, this.currentBucket), con.propertyValue(VolumePropertyType, this.currentBucket))
+                }  
+                /* ################################ */
                 
-              if (newX != currentX || newY != currentY){
-                currentX = newX
-                currentY = newY
-                Synthesizer ! AudioEvent(0, currentX, currentY, con.propertyValue(PitchPropertyType, this.currentBucket), con.propertyValue(VolumePropertyType, this.currentBucket))
-              }   
-              
-              this ! event //keep playing until the playback is either stopped/paused or the path has been played back
-            }              
-          }
-          
-          else if (event.name == "PAUSE_PLAYBACK") {
-            if (this.playbackState != Paused) {
-              this.connections.head.nodes.head.nodeType = PlayNodeType             
-              this.playbackState = Paused
-              Playback ! PathPlaybackEvent(this, false)
+                
+                
+                
+                /* ################################ */
+                // then possibly trigger connected entities
+                this.triggerConnectedEntities()
+                /* ################################ */ 
+                
+                
+                
+                /* ################################ */
+                // then progress in time
+                if (!this.isReversedPlayback) { //progress in time
+                  this.bucketAccumulator = this.bucketAccumulator + timeDiff //accumulate passed time for current bucket
+                  this.connectionAccumulator = this.connectionAccumulator + timeDiff //and current connection
+                  
+                  if (this.bucketAccumulator >= currentBucketValue) { //if the time specified by the bucket has been surpassed
+                    this.currentBucket = this.currentBucket + 1 //we process the next current bucket of the current connection //(connectionAccumulator/currentConnectionValue * buckets).toInt //
+                    this.bucketAccumulator = this.bucketAccumulator - currentBucketValue //and set back the bucket accumulator with carry-over 
+                    if (this.currentBucket >= buckets) { //if we processed all buckets of the current connection
+                      this.currentConnection = this.currentConnection + 1 //we process the next connection on the path
+                      this.currentBucket = 0 //and set back the current bucket variable
+                      this.connectionAccumulator = this.bucketAccumulator //as well as the connection accumulator, again accounting for carry-over
+                      if (this.currentConnection >= connections.size) { //if we have processed all connections on the path
+                        hasReachedEnd = true
+                      }
+                    }
+                  } 
+                }
+                else { //reversed playback   
+                  timeDiff = -timeDiff
+                  this.bucketAccumulator = this.bucketAccumulator + timeDiff //accumulate passed time for current bucket
+                  this.connectionAccumulator = this.connectionAccumulator + timeDiff //and current connection
+                  
+                  if (this.bucketAccumulator <= 0) { //if the time specified by the bucket has been undershot
+                    this.currentBucket = this.currentBucket - 1 //we process the previous current bucket of the current connection //(connectionAccumulator/currentConnectionValue * buckets).toInt //
+                    this.bucketAccumulator = con.propertyValue(SpeedPropertyType, this.currentBucket) + this.bucketAccumulator //and set back the bucket accumulator with carry-over 
+                    if (this.currentBucket <= 0) { //if we processed all buckets of the current connection in reverse
+                      this.currentConnection = this.currentConnection - 1 //we process the previous connection on the path
+                      if (this.currentConnection >= 0) {
+                        val newCon = this.connections(this.currentConnection)
+                        this.currentBucket = newCon.propertyBuckets(SpeedPropertyType) - 1//and set back the current bucket variable
+                        this.connectionAccumulator = newCon.propertySum(SpeedPropertyType) + this.bucketAccumulator //as well as the connection accumulator, again accounting for carry-over
+                      }
+                      else if (this.currentConnection < 0) { //if we have processed all connections on the path in reverse
+                        hasReachedEnd = true
+                      }
+                    }
+                  }                   
+                }   
+                
+                this.currentConnectionParameter = con.toCurveParameter(this.currentBucket/buckets.toFloat + (this.bucketAccumulator/currentBucketValue)/buckets)        
+                /* ################################ */
+                
+
+                if (hasReachedEnd) { //if we have reached the end of the path, 
+                  this.setPlaybackToEnd() //we set the playback to the end
+                  this.triggerConnectedEntities() //then we possibly trigger one last time
+                  this.evaluateEndNode() //and then evaluate what should happen next   
+                }
+                else this ! event //else we keep playing until the playback is either stopped/paused or the path has been played back
+                
+              }              
+            }       
+            
+            else {
+              println("OH NO! Event is " + event.name)
             }
           }
-          
-          else if (event.name == "STOP_PLAYBACK") {
-            this.resetPlayback()
-            Playback ! PathPlaybackEvent(this, false)
-          }
-          
-          else println("OH NO!")
         }
       }
+      Thread.sleep(5)
     }
   }    
+
+  
+  /**
+  * Triggers connected entities - that is, either paths or manipulable nodes - if their associated time node has been reached.
+  */
+  private def triggerConnectedEntities() = {
+    this.timeNodes.foreach(entry => { //for each time node
+      val timeNode = entry._1
+      val hasBeenTriggered = entry._2
+      if (!hasBeenTriggered && timeNode.connection == this.connections(math.min(this.currentConnection, this.connections.size - 1)) && timeNode.parameter <= this.currentConnectionParameter) {
+        this.timeNodes = this.timeNodes.updated(timeNode, true)           
+        this.timeConnections.filter(_.timeNode == timeNode).foreach(timeConnection => {
+          timeConnection.startNode.associatedPath match {
+            case Some(path) => if (path.state != Playing) {           
+              path ! UiEvent("START_PLAYBACK")
+            }
+            case None => { 
+              timeConnection.startNode match {
+                case manipulableNode: ManipulableNode => {manipulableNode ! UiEvent("START_PLAYBACK")}
+                case otherNode => {}
+              }
+            }
+          }
+        })
+      }
+    })    
+  }
+  
+  
+  /**
+  * Returns the manipulable bezier connections of this path.
+  */
+  /*private def manipulableConnections: List[ManipulableBezierConnection] = {
+    this.connections collect {case c: ManipulableBezierConnection => c}
+  } */
+  
+  
+  private def evaluateEndNode() {
+    val endNodeType = this.connections.last.nodes.last.nodeType
+    if (endNodeType == RepeatNodeType) {
+      this.resetPlayback()
+      this ! UiEvent("START_PLAYBACK")
+    }
+    else if (endNodeType == ReverseNodeType) {
+      if (!this.isReversedPlayback) {
+        this.timeNodes = this.timeNodes.mapValues(value => false) //set all time nodes back to being untriggered
+        this.isReversedPlayback = true
+        this ! UiEvent("START_REVERSE_PLAYBACK")
+      }
+      else {
+        this.isReversedPlayback = false
+        this.resetPlayback()
+        Playback ! PathPlaybackEvent(this, false)
+      }
+    }
+    else { //StopNodeType
+      this.resetPlayback()
+      Playback ! PathPlaybackEvent(this, false)
+    }
+  }
   
   private def resetPlayback() = {
     this.currentConnection = 0 //we set back the connection...
@@ -259,8 +522,20 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
     this.connectionAccumulator = 0.0f
     this.bucketAccumulator = 0.0f //...and the accumulators
     this.currentConnectionParameter = 0.0f
+    
     this.connections.head.nodes.head.nodeType = PlayNodeType //then we set back the node type
     this.playbackState = Stopped
+    this.isReversedPlayback = false
+    this.timeNodes = this.timeNodes.mapValues(value => false) //set all time nodes back to being untriggered
+  }
+  
+  
+  private def setPlaybackToEnd() = {
+    this.currentConnection = this.connections.size - 1
+    this.currentBucket = this.connections(currentConnection).propertyBuckets(SpeedPropertyType) - 1
+    this.connectionAccumulator = this.connections(currentConnection).propertySum(SpeedPropertyType)
+    this.bucketAccumulator = this.connections(currentConnection).propertyValue(SpeedPropertyType, this.currentBucket)
+    this.currentConnectionParameter = 1.0f
   }
   
   /**
@@ -276,14 +551,14 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
   * Returns the time in milliseconds it takes to play back this path once.
   */
   def time: Float = {
-    this.connections.collect({case c: ManipulableBezierConnection => c}).foldLeft(0.0f)((sum, con) => sum + con.propertySum(SpeedPropertyType))
+    this.connections.foldLeft(0.0f)((sum, con) => sum + con.propertySum(SpeedPropertyType))
   }
   
   /**
   * Returns the time in milliseconds it takes to complete the playback of this path.
   */ 
   def timeLeft: Float = {
-    val timePassed = this.connections.take(this.currentConnection + 1).collect({case c: ManipulableBezierConnection => c}).foldLeft(0.0f)((sum, con) => sum + con.propertySum(SpeedPropertyType)) + this.connectionAccumulator
+    val timePassed = this.connections.take(this.currentConnection + 1).foldLeft(0.0f)((sum, con) => sum + con.propertySum(SpeedPropertyType)) + this.connectionAccumulator
     this.time - timePassed
   }
   
@@ -300,7 +575,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
   def indexOf(connection: Connection) = {
     this.connections.indexOf(connection)
   }
-
+  
 
   /**
   * Draws this path.
@@ -310,21 +585,6 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
     //thus this method is only needed if the path is to be decorated in some way - tbd
   }   
   
-  /**
-  * Returns the distance of the specified coordinate from this path.
-  * Not implemented.
-  */
-  def distance(x: Float, y: Float): Float = {
-    0 //TODO implement when actually needed; also called lazy implementation ;)
-  }
-
-  /**
-  * Returns the distance of the specified coordinate from this path.
-  * Not implemented.
-  */    
-  def distance(position: Vector3D): Float = {
-    this.distance(position.getX, position.getY)
-  }
   
   /**
   * Returns the segment on the path closest to the specified point as well as a parameter which yields the closest point on that path segment.
@@ -353,6 +613,45 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
     this.closestSegment(Vec3d(x, y))
   } 
   
+  
+  /**
+  * Returns the tangent at the specified node if it is part of or associated with this path, or (0,0) if it is not.
+  */
+  def tangent(node: Node): (Float, Float) = {
+    this.connectionForNode(node) match {
+      case Some(connection) => {
+        connection.tangent(connection.parameterizedClosestPoint(node.positionAsVertex))
+      }      
+      case None => {
+        if (node.nodeType == TimeConnectionNodeType) {        
+          this.timeConnectionForNode(node) match {
+            case Some(timeConnection) => {
+              Functions.gradient(timeConnection.timeNode.position, timeConnection.startNode.position)
+            }
+            case None => (0.0f, 0.0f)
+          }
+        }
+        else (0.0f, 0.0f)
+      }
+    }
+  }
+  
+  
+  /**
+  *Returns - as an Option - the connection corresponding to the given node, nor None if the node is not part of this path.
+  */
+  private def connectionForNode(node: Node): Option[Connection] = {
+    this.connections.find(_.nodes.exists(_ == node))   
+  }
+  
+  /**
+  *Returns - as an Option - the time connection corresponding to the given connection node, nor None if the connection node is not associated with this path.
+  */
+  private def timeConnectionForNode(connectionNode: Node): Option[TimeConnection] = {
+    this.timeConnections.find(_.connectionNode == connectionNode)
+  }  
+  
+  
   /**
   * Appends the specified path to this path. This includes updating the node types as well as the associated paths of the nodes
   * and also implies destroying the specified path afterwards.
@@ -362,29 +661,41 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
     val previousConnectionNumber = this.connections.size //get number of connections before changing anything
     
     /* 1. create new connection between the two paths */
-    val lastBefore = this.connections.last.nodes.last
-    val firstAfter = path.connections.head.nodes.head
+    val lastBefore = this.connections.last.endNode
+    val firstAfter = path.connections.head.startNode
     val newConnection = this.defaultConnectionFactory(app, lastBefore, firstAfter) //note that a manipulable connection will use the first node to determine the associated path (!)
     lastBefore.nodeType = AnchorNodeType //last node of this path is now anchor
     firstAfter.nodeType = AnchorNodeType //first node of other path is now anchor, too
     this.connections = this.connections :+ newConnection //adding connection between the two paths
     Ui.getCurrentScene.registerPreDrawAction(new AddNodeActionThreadSafe(newConnection, this))
 
-    /* 2. move connections of specified path to this and then delete obsolete path */
+    /* 2. move connections of specified path to this, update time nodes & connections*/
     path.connections.foreach(connection => this.connections = this.connections :+ connection) //adding connections of second path to this
     path.connections.foreach(_.nodes.foreach(_.associatedPath = Some(this))) //associate all nodes of specified path with this
+    
+    /* 3. move time nodes of specified path to this and update time connections */
+    val thisLegalTimeConnections = this.timeConnections.diff(path.timeConnections) //connections of this which do not connect to the specified path
+    val thisIllegalTimeConnections = this.timeConnections.diff(thisLegalTimeConnections) //connections of this which DO connect to the specified path
+    val pathLegalTimeConnections = path.timeConnections.diff(this.timeConnections) //connections from the specified path to other paths than this
+    this.timeConnections = (thisLegalTimeConnections ++ pathLegalTimeConnections)
+    thisIllegalTimeConnections.foreach(Ui -= _) //and remove them from the ui
+    this.timeNodes = this.timeNodes ++ path.timeNodes 
+    this.timeNodes.keys.foreach(_.associatedPath = Some(this))
+    
+    /* 4. delete obsolete objects */
     path.connections.foreach(connection => Ui.getCurrentScene.registerPreDrawAction(new AddNodeActionThreadSafe(connection, this)))
     Ui.getCurrentScene.registerPreDrawAction(new RemoveChildrenActionThreadSafe(path))
     Ui -= path
     Playback ! PathPlaybackEvent(path, false)
     
-    /* 3. if the appended path is currently played back or is paused while this path is not played back, set new playback position */
+    /* 5. if the appended path is currently played back or is paused while this path is not played back, set new playback position */
     if (path.playbackState == Playing || (path.playbackState == Paused && this.playbackState != Playing)) {
       this.currentConnection = previousConnectionNumber + 1 + path.currentConnection //+1 to account for additional new connection between paths
       this.currentBucket = path.currentBucket
       this.bucketAccumulator = path.bucketAccumulator
       this.connectionAccumulator = path.connectionAccumulator
       this.currentConnectionParameter = path.currentConnectionParameter
+      this.isReversedPlayback = path.isReversedPlayback
     }
     if (this.playbackState == Playing || path.playbackState == Playing) this ! UiEvent("START_PLAYBACK")
   }
@@ -393,27 +704,29 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
   * Appends the specified node to this path and sets the node types accordingly.
   */
   private def +=(node: Node) = {
-    val lastNode = this.connections.last.nodes.last //get last node of last connection   
-    val newConnection = this.defaultConnectionFactory(app, lastNode, node) //create a new connection between last node and specified node
+    val lastNode = this.connections.last.endNode //get last node of last connection 
+    val newNode = Node(node.app, lastNode.nodeType, Some(this), node.getCenterPointGlobal)
+    val newConnection = this.defaultConnectionFactory(app, lastNode, newNode) //create a new connection between last node and specified node
     lastNode.nodeType = AnchorNodeType //set node types
-    node.nodeType = StopNodeType //"
-    node.associatedPath = Some(this) //set associated path for appended node
     this.connections = this.connections :+ newConnection
+    Ui -= node
+    Ui += newNode
     Ui.getCurrentScene.registerPreDrawAction(new AddNodeActionThreadSafe(newConnection, this))
-    //note that the connection takes care of adding the node as a child of itself
   }
   
   /**
   * Prepends the specified node to this path and sets the node types accordingly.
   */
   private def +=:(node: Node) = {
-    val firstNode = this.connections.head.nodes.head //get first node of first connection
-    val newConnection = this.defaultConnectionFactory(app, node, firstNode) //create a new connection between first node and specified node
+    this.removeTimeConnectionsToStartNode(this.connections.head.startNode)
+    val firstNode = this.connections.head.startNode //get first node of first connection
+    val newNode = Node(node.app, if (this.playbackState == Playing) PauseNodeType else PlayNodeType, Some(this), node.getCenterPointGlobal)
+    val newConnection = this.defaultConnectionFactory(app, newNode, firstNode) //create a new connection between first node and specified node
     firstNode.nodeType = AnchorNodeType //set node types
-    node.nodeType = if (this.playbackState == Playing) PauseNodeType else PlayNodeType //"
-    node.associatedPath = Some(this) //set associated path for appended node
     this.connections = newConnection +: this.connections
     this.currentConnection = if (this.playbackState != Stopped) this.currentConnection + 1 else 0
+    Ui -= node
+    Ui += newNode
     Ui.getCurrentScene.registerPreDrawAction(new AddNodeActionThreadSafe(newConnection, this))
   }
 
@@ -425,21 +738,27 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
   */
   private def -=(node: Node): List[Path] = {
     var result = List(this)  
-    node.nodeType match {
-      case _: StartNodeType => {
-        println("start nodes cannot be removed")
-      }
-      case _: EndNodeType => {
-        println("end nodes cannot be removed")
-      }
-      case AnchorNodeType => {
-        println("anchor nodes cannot be removed")
-      }
-      case ControlNodeType => {
-        println("control node is being removed") 
-        result = this.removeControlNode(node)
+    if (node.nodeType == TimeNodeType) {
+      Ui -= node
+    }
+    else if (this.connections.exists(_.nodes.exists(_ == node))) {
+      node.nodeType match {
+        case _: StartNodeType => {
+          println("start nodes cannot be removed")
+        }
+        case _: EndNodeType => {
+          println("end nodes cannot be removed")
+        }
+        case AnchorNodeType => {
+          println("anchor nodes cannot be removed")
+        }
+        case ControlNodeType => {
+          println("control node is being removed") 
+          result = this.removeControlNode(node)
+        }   
       }
     }
+    else {} //node is not associated at all with this path
     result      
   }  
 
@@ -449,6 +768,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
   */
   private def removeControlNode(node: Node): List[Path] = { 
     //if a control node is removed, split the affected path into two or create one or two isolated nodes
+    Ui -= node
     val optConnection = this.connections.find(_.nodes.exists(_ == node))
     optConnection match {
       case None => List(this) //if the specified node is not part of this path, return immediately, leaving the path unchanged
@@ -459,10 +779,12 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
           println("single connection")
           val head = connection.nodes.head
           val last = connection.nodes.last
-          head.nodeType = IsolatedNodeType
-          head.associatedPath = None
-          last.nodeType = IsolatedNodeType
-          last.associatedPath = None
+          Ui += IsolatedNode(app, head.position)
+          Ui += IsolatedNode(app, last.position)
+          this.removeTimeNodesOnConnection(connection)
+          this.removeTimeConnectionsToStartNode(connection.startNode)
+          Ui -= head
+          Ui -= last
           Ui -= this
           Playback ! PathPlaybackEvent(this, false)
           List() //path, connection and control point have ceased to exist
@@ -470,10 +792,13 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
         else if (index == 0) { //else if there are other connections but the control node is part of the first connection
           println("follows start node")
           val head = connection.nodes.head
-          head.nodeType = IsolatedNodeType //start node becomes isolated
-          head.associatedPath = None
+          val previousStartNodeType = head.nodeType
           this.connections = this.connections.tail //dropping first connection
-          this.connections.head.nodes.head.nodeType = PlayNodeType //new start node (previously anchor) gets corresponding node type
+          this.connections.head.nodes.head.nodeType = previousStartNodeType //new start node (previously anchor) gets corresponding node type
+          this.removeTimeNodesOnConnection(connection)
+          this.removeTimeConnectionsToStartNode(connection.startNode)
+          Ui -= head
+          Ui += IsolatedNode(app, head.position)
           Ui -= connection //register connection to be deleted; do NOT destroy the connection directly or you will run into concurrency issues
           if (this.currentConnection == index) this.resetPlayback() else this.currentConnection = this.currentConnection - 1
           List(this)           
@@ -481,10 +806,12 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
         else if (index == this.connections.size - 1) { //else if there are other connections but the control node is part of the last connection
           println("followed by end node")
           val last = connection.nodes.last
-          last.nodeType = IsolatedNodeType //end node becomes isolated
-          last.associatedPath = None
+          val previousEndNodeType = last.nodeType
           this.connections = this.connections.init //dropping last connection
-          this.connections.last.nodes.last.nodeType = StopNodeType //new end node (previously anchor) gets corresponding node type
+          this.connections.last.nodes.last.nodeType = previousEndNodeType //new end node (previously anchor) gets corresponding node type
+          this.removeTimeNodesOnConnection(connection)
+          Ui -= last
+          Ui += IsolatedNode(app, last.position)
           Ui -= connection //register connection to be deleted; do NOT destroy the connection directly or you will run into concurrency issues
           if (this.currentConnection == index) this.resetPlayback()
           List(this)             
@@ -492,19 +819,25 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
         else { //else there is a split into two paths
           this.exists = false
           println("split")
+          
+          val firstTimeNodes = this.timeNodes.filterKeys(timeNode => this.indexOf(timeNode.connection) < index) 
+          val secondTimeNodes = this.timeNodes.filterKeys(timeNode => this.indexOf(timeNode.connection) > index) 
+          val firstTimeConnections = this.timeConnections.filter(connection => firstTimeNodes.filterKeys(timeNode => timeNode == connection.timeNode).size > 0)
+          val secondTimeConnections = this.timeConnections.filter(connection => secondTimeNodes.filterKeys(timeNode => timeNode == connection.timeNode).size > 0)
+          
           val (firstPath, secondPath) = 
           if (this.currentConnection < index) {
-            (Path(app, this.defaultConnectionFactory, this.connections.slice(0, index), this.playbackState, this.currentConnection, this.connectionAccumulator, this.currentConnectionParameter, this.currentBucket, this.bucketAccumulator),    
-             Path(app, this.defaultConnectionFactory, this.connections.slice(index+1, this.connections.size)))
+            (Path(app, this.defaultConnectionFactory, this.connections.slice(0, index), this.playbackState, StopNodeType, this.isReversedPlayback, this.currentConnection, this.connectionAccumulator, this.currentConnectionParameter, this.currentBucket, this.bucketAccumulator, firstTimeNodes, firstTimeConnections),    
+             Path(app, this.defaultConnectionFactory, this.connections.slice(index+1, this.connections.size), Stopped, this.connections.last.nodes.last.nodeType, secondTimeNodes, secondTimeConnections))
           }
           else if (this.currentConnection > index) {
-            (Path(app, this.defaultConnectionFactory, this.connections.slice(0, index)),
-             Path(app, this.defaultConnectionFactory, this.connections.slice(index+1, this.connections.size), this.playbackState, this.currentConnection - (index + 1), this.connectionAccumulator, this.currentConnectionParameter, this.currentBucket, this.bucketAccumulator))              
+            (Path(app, this.defaultConnectionFactory, this.connections.slice(0, index), Stopped, StopNodeType, firstTimeNodes, firstTimeConnections),
+             Path(app, this.defaultConnectionFactory, this.connections.slice(index+1, this.connections.size), this.playbackState, this.connections.last.nodes.last.nodeType, this.isReversedPlayback, this.currentConnection - (index + 1), this.connectionAccumulator, this.currentConnectionParameter, this.currentBucket, this.bucketAccumulator, secondTimeNodes, secondTimeConnections))              
           }
           else {//connection to be deleted is currently played back, stop all playback in this case
             this.resetPlayback()
-            (Path(app, this.defaultConnectionFactory, this.connections.slice(0, index)),
-             Path(app, this.defaultConnectionFactory, this.connections.slice(index+1, this.connections.size)))   
+            (Path(app, this.defaultConnectionFactory, this.connections.slice(0, index), Stopped, StopNodeType, firstTimeNodes, firstTimeConnections),
+             Path(app, this.defaultConnectionFactory, this.connections.slice(index+1, this.connections.size), Stopped, this.connections.last.nodes.last.nodeType, secondTimeNodes, secondTimeConnections))   
           }
           Ui.getCurrentScene.registerPreDrawAction(new RemoveChildrenActionThreadSafe(this))         
           Ui -= this
@@ -518,6 +851,39 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
         }  
       }
     }  
+  }
+
+  
+  private def removeTimeNode(timeNode: TimeNode) = {
+    val affectedTimeConnections = this.timeConnections.filter(_.timeNode == timeNode) //get all connections from the time node
+    affectedTimeConnections.foreach(timeConnection => {
+      this.timeConnections = this.timeConnections.filter(_ != timeConnection) //and remove them from this path
+      timeConnection.startNode.associatedPath.foreach(_ ! NodeDeletionEvent(timeConnection.connectionNode)) //propagate to other path if exists
+      timeConnection.startNode match {case node: ManipulableNode => node ! TimeConnectionDeletionEvent(timeConnection) case otherNode => {}} //or to manipulable node
+      Ui -= timeConnection.connectionNode //remove the connection node as well
+      Ui -= timeConnection
+    })   
+    this.timeNodes = this.timeNodes - timeNode //then also remove the time node itself
+    Ui -= timeNode    
+  }
+  
+  
+  private def removeTimeConnectionsToStartNode(startNode: Node) = {    
+    val affectedTimeConnections = this.timeConnections.filter(_.startNode == startNode) //get all connections to the start node
+    affectedTimeConnections.foreach(timeConnection => {
+      this.timeConnections = this.timeConnections.filter(_ != timeConnection) //and remove them from this path
+      timeConnection.timeNode.associatedPath.foreach(_ ! NodeDeletionEvent(timeConnection.connectionNode)) //propagate to other path if exists
+      Ui -= timeConnection.connectionNode //remove the connection node as well
+      Ui -= timeConnection
+    })      
+  }
+  
+  
+  private def removeTimeNodesOnConnection(connection: Connection) = {
+    this.timeNodes.foreach(timeNodeTrigger => {
+      val timeNode = timeNodeTrigger._1
+      if (timeNode.connection == connection) this.removeTimeNode(timeNode)
+    })
   }
   
   

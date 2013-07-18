@@ -18,6 +18,7 @@ import org.mt4j.types.{Vec3d}
 
 import processing.core.PGraphics
 
+import ui.menus._
 import ui.paths.types._
 import ui.events._
 import ui._
@@ -37,7 +38,7 @@ class RewindButton(app: Application, menu: Menu, center: Vector3D) extends Butto
   override def drawComponent(g: PGraphics) = {
     super.drawComponent(g)
     val center = this.getCenterPointLocal()
-    val r = 0.4f * Button.Radius
+    val r = 0.4f * this.radius
     val a = (3 * r/math.sqrt(3)).toFloat //side length of triangle
     val h = (math.sqrt(3)/2 * a).toFloat //height of triangle
     val segment = (math.cos(math.toRadians(60)) * r).toFloat //trigonometric function to calculate the length of one of the segments induced by the orthocenter of the triangle; here, the greater of the two segment lengths is obtained       
@@ -56,7 +57,7 @@ class RewindButton(app: Application, menu: Menu, center: Vector3D) extends Butto
     val (p6x, p6y) = (c2x - 2*segment, c2y)     
 
     g.noStroke()
-    g.fill(Button.StrokeColor.getR, Button.StrokeColor.getG, Button.StrokeColor.getB, this.alphaValue)
+    g.fill(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.alphaValue)
     g.triangle( p1x, p1y,
                 p2x, p2y,
                 p3x, p3y)
@@ -65,8 +66,12 @@ class RewindButton(app: Application, menu: Menu, center: Vector3D) extends Butto
                 p6x, p6y)
   }   
   
-  override def clicked() = {
-    Ui.paths.foreach(_ ! PathRewindEvent(50))     
-  }
+  override def clicked() = {}
+  
+  override def up() = {}
+  
+  override def down() = {
+    Ui.paths.foreach(_ ! PathRewindEvent(50)) 
+  }  
   
 }

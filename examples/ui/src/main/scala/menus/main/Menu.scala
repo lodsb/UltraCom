@@ -23,6 +23,7 @@ import org.mt4j.util.animation.MultiPurposeInterpolator
 
 import scala.actors._
 
+import ui.menus._
 import ui._
 import ui.util._
 
@@ -37,8 +38,8 @@ object Menu {
   val Height = Space
   val StrokeColor = new MTColor(200, 200, 200, 0)
   val Timeout = 5000 //number of milliseoncds without interaction before the menu fades out 
-  val FadeInTime = 1500
-  val FadeOutTime = 2000
+  val FadeInTime = 1000
+  val FadeOutTime = 1500
 
   private var registry = Set[Menu]()
   
@@ -69,7 +70,7 @@ class Menu(app: Application, val center: Vector3D, val rotationAngle: Float) ext
   
   this.setup()  
   
-  def setup() = {
+  private def setup() = {
     import Menu._
     
     this.unregisterAllInputProcessors()
@@ -97,8 +98,6 @@ class Menu(app: Application, val center: Vector3D, val rotationAngle: Float) ext
     val (cx, cy) = (center.getX, center.getY)    
     this.setNoFill(true)
     this.setNoStroke(true)
-    //this.setStrokeWeight(1)
-    //this.setStrokeColor(StrokeColor)
     this.addChild(FastForwardButton(app, this, Vec3d(cx + 6 * Button.Radius + 3*Padding, cy)))
     this.addChild(PlayButton(app, this, Vec3d(cx + 4 * Button.Radius + 2*Padding, cy)))
     this.addChild(StopButton(app, this, Vec3d(cx + 2 * Button.Radius + Padding, cy)))
@@ -108,7 +107,7 @@ class Menu(app: Application, val center: Vector3D, val rotationAngle: Float) ext
     this.addChild(NewProjectButton(app, this, Vec3d(cx - 6 * Button.Radius - 3*Padding, cy)))
     this.rotateZ(Vec3d(center.getX, center.getY), rotationAngle, TransformSpace.GLOBAL) //then apply new rotation
     
-    this.fadeInAnimation(0, Menu.FadeInTime).start() 
+    this.fadeInAnimation(0, FadeInTime).start() 
     this.start()
     this ! "CHECK_TIMEOUT"
   }
@@ -132,7 +131,10 @@ class Menu(app: Application, val center: Vector3D, val rotationAngle: Float) ext
             fadeOut.restart()
             isFadingOut = true
           }
-          else this ! "CHECK_TIMEOUT"
+          else {
+            this ! "CHECK_TIMEOUT"
+            Thread.sleep(10) 
+          }
         }
         case "RESET_TIMER" => {
           lastTime = System.nanoTime()
@@ -141,15 +143,15 @@ class Menu(app: Application, val center: Vector3D, val rotationAngle: Float) ext
             fadeOut.stop()
             fadeIn = this.fadeInAnimation(fadeOut.getValue(), Menu.FadeInTime)
             fadeIn.start()
+            this ! "CHECK_TIMEOUT"
           }
-          this ! "CHECK_TIMEOUT"
         }
       }
     }
   }
   
   
-  def fadeInAnimation(startValue: Float, time: Float) = {
+  private def fadeInAnimation(startValue: Float, time: Float) = {
     val me = this
     val fadeInInterpolator = new MultiPurposeInterpolator(startValue, 255, time, 1.0f, 1.0f, 1) //accelerated fadein in 1,5 secs
     val animation = new Animation("FADE_IN", fadeInInterpolator, this)    
@@ -163,8 +165,8 @@ class Menu(app: Application, val center: Vector3D, val rotationAngle: Float) ext
         me.setStrokeColor(componentStrokeColor)
         me.setFillColor(componentFillColor)
         
-        me.getChildren.collect({case b: Button => b}).foreach(button => {
-          button.setAlpha(ae.getValue)
+        me.getChildren.collect({case item: MenuItem => item}).foreach(item => {
+          item.setAlpha(ae.getValue)
         })
       }
     })
@@ -173,7 +175,7 @@ class Menu(app: Application, val center: Vector3D, val rotationAngle: Float) ext
   
   
   
-  def fadeOutAnimation(startValue: Float, time: Float) = {
+  private def fadeOutAnimation(startValue: Float, time: Float) = {
     val me = this
     val fadeOutInterpolator = new MultiPurposeInterpolator(startValue, 0, time, 0.0f, 0.0f, 1) //decelerated fadeout in time milliseconds
     val animation = new Animation("FADE_OUT", fadeOutInterpolator, this)
@@ -193,8 +195,8 @@ class Menu(app: Application, val center: Vector3D, val rotationAngle: Float) ext
           me.setStrokeColor(componentStrokeColor)
           me.setFillColor(componentFillColor)
           
-          me.getChildren.collect({case b: Button => b}).foreach(button => {
-            button.setAlpha(ae.getValue)
+          me.getChildren.collect({case item: MenuItem => item}).foreach(item => {
+            item.setAlpha(ae.getValue)
           })
         }
       }

@@ -25,7 +25,7 @@ object ComplexSpeedProperty {
   }
 }
 
-class ComplexSpeedProperty(connection: ManipulableBezierConnection, numberOfBuckets: Int) extends ComplexProperty {
+class ComplexSpeedProperty(connection: ManipulableBezierConnection, numberOfBuckets: Int) extends ComplexProperty(connection, numberOfBuckets) {
   
   /**
   * Draws this property.
@@ -36,11 +36,11 @@ class ComplexSpeedProperty(connection: ManipulableBezierConnection, numberOfBuck
     g.strokeWeight(LineWeight)
     val steps = this.buckets
     (0 to steps - 1).foreach(step => { //iteratively draw the lines
-      val t = connection.toCurveParameter((step+0.5f)/steps.toFloat)
+      val t = this.connection.toCurveParameter((step+0.5f)/steps.toFloat)
       val alphaValue = this.mappedValues(step)
       g.stroke(SpeedPropertyType.PropertyColor.getR, SpeedPropertyType.PropertyColor.getG, SpeedPropertyType.PropertyColor.getB, alphaValue)
-      val (x,y) = connection(t)
-      val (tx, ty) = connection.tangent(t)
+      val (x,y) = this.connection(t)
+      val (tx, ty) = this.connection.tangent(t)
       val a = math.atan2(ty, tx) - HALF_PI
       g.beginShape(LINES) //draws lines which are orthogonal to the bezier curve at the point of intersection
       g.vertex((-math.cos(a) * this.visualWidth + x).toFloat, (-math.sin(a) * this.visualWidth + y).toFloat)
@@ -49,11 +49,7 @@ class ComplexSpeedProperty(connection: ManipulableBezierConnection, numberOfBuck
       /*g.noStroke()
       g.fill(0,0,0)
       g.ellipse(x.toInt,y.toInt,4,4)*/
-    })      
-  }
-  
-  override def buckets = {
-    numberOfBuckets
+    })    
   }
   
   override def range = {

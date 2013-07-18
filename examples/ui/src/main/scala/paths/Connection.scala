@@ -26,9 +26,12 @@ import ui.paths.types._
 
 
 /**
-* This abstract class represents a connection between two (not necessarily distinct) nodes.
+* This abstract class represents a connection between two (not necessarily distinct) nodes,
+* possibly with further nodes altering the shape and/or behaviour of the connection.
 */
 abstract class Connection(app: Application, val nodes: List[Node]) extends AbstractVisibleComponent(app) {
+  
+  this.setPickable(false)
   
   /**
   * Returns the point on this connection corresponding to the specified connection parameter.

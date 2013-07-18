@@ -18,6 +18,7 @@ import org.mt4j.types.{Vec3d}
 
 import processing.core.PGraphics
 
+import ui.menus._
 import ui.paths.types._
 import ui.paths._
 import ui.events._
@@ -34,16 +35,6 @@ object PlayButton {
 
 
 class PlayButton(app: Application, menu: Menu, center: Vector3D) extends Button(app, menu, center) {
-
-  override def clicked() = {
-    if (!Playback.isPlaying) {
-      Ui.paths.foreach(_ ! UiEvent("START_PLAYBACK"))
-      Ui.nodes.collect({case m: ManipulableNode => m}).foreach(_ ! UiEvent("START_PLAYBACK"))
-    }
-    else {
-      Ui.paths.foreach(_ ! UiEvent("PAUSE_PLAYBACK"))
-    }
-  }
   
   override def drawComponent(g: PGraphics) = {
     super.drawComponent(g)
@@ -56,7 +47,7 @@ class PlayButton(app: Application, menu: Menu, center: Vector3D) extends Button(
     val cy = center.getY()  
     
     //defining an equilateral triangle circumscribed by a circle of radius r centered around (cx, cy)
-    val r = 0.50f * Button.Radius
+    val r = 0.50f * this.radius
     val a = (3 * r/math.sqrt(3)).toFloat //side length of triangle
     val h = (math.sqrt(3)/2 * a).toFloat //height of triangle
     val segment = (math.cos(math.toRadians(60)) * r).toFloat //trigonometric function to calculate the length of one of the segments induced by the orthocenter of the triangle; here, the greater of the two segment lengths is obtained
@@ -65,7 +56,7 @@ class PlayButton(app: Application, menu: Menu, center: Vector3D) extends Button(
     val (p3x, p3y) = (cx + h - segment, cy)   
 
     g.noStroke()
-    g.fill(Button.StrokeColor.getR, Button.StrokeColor.getG, Button.StrokeColor.getB, this.alphaValue)
+    g.fill(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.alphaValue)
     g.triangle( p1x, p1y,
                 p2x, p2y,
                 p3x, p3y)
@@ -76,7 +67,7 @@ class PlayButton(app: Application, menu: Menu, center: Vector3D) extends Button(
     val center = this.getCenterPointLocal()
     val cx = center.getX()
     val cy = center.getY()              
-    val r = 0.4f * Button.Radius
+    val r = 0.4f * this.radius
     
     val (p1x, p1y) = (cx - r, cy - r)
     val (p2x, p2y) = (cx - r/3, cy - r)
@@ -89,12 +80,26 @@ class PlayButton(app: Application, menu: Menu, center: Vector3D) extends Button(
     val (q4x, q4y) = (cx + r, cy + r)  
            
     g.noStroke()
-    g.fill(Button.StrokeColor.getR, Button.StrokeColor.getG, Button.StrokeColor.getB, this.alphaValue)
+    g.fill(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.alphaValue)
     g.quad(p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y)
     g.quad(q1x, q1y, q2x, q2y, q3x, q3y, q4x, q4y)
   }
+ 
   
-
+  override def clicked() = {
+    if (!Playback.isPlaying) {
+      Ui.paths.foreach(_ ! UiEvent("START_PLAYBACK"))
+      Ui.nodes.collect({case m: ManipulableNode => m}).foreach(_ ! UiEvent("START_PLAYBACK"))
+    }
+    else {
+      Ui.paths.foreach(_ ! UiEvent("PAUSE_PLAYBACK"))
+    }
+  }
+  
+  override def up() = {}
+  
+  override def down() = {}
+  
   
 }
   

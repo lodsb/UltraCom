@@ -23,23 +23,24 @@ import processing.core.PConstants._
 import org.mt4j.util.Color
 
 import ui._
+import ui.util._
 import ui.input._
 import ui.paths._
+import ui.usability._
+
 
 /**
 * This is the anchor node type.
 * A node of this type defines a point in the timbre space through which its associated path shall pass.
 */
-object AnchorNodeType extends BasicNodeType{
+object AnchorNodeType extends NodeType{
 
-  private val SymbolColor = Color(0, 0, 0, 200)  
-  val Vicinity = 0
-  val Size = 0.5f //size relative to basic node type
+  val Size = 0.65f //size relative to basic node type
+  val Symbol = Circle
   
   protected override def setupInteractionImpl(app: Application, node: Node) = {
     //scale //TODO this is also visual appearance, not just interaction, so... there...
-    node.setScale(Size)
-    //TODO REVISIT radius, distance, scale....
+    node.setScale(Size) //TODO REVISIT radius, distance, scale....
     
     //register input processors
     node.registerInputProcessor(new DragProcessor(app))
@@ -53,29 +54,17 @@ object AnchorNodeType extends BasicNodeType{
     node.addGestureListener(classOf[TapProcessor], new NodeDeletionListener(node))
   }    
  
-
-  override def drawComponent(g: PGraphics, node: Node) = {
-    super.drawComponent(g, node)
-    this.drawSymbol(g, node)
-  } 
-  
-  def drawSymbol(g: PGraphics, node: Node) = {
-    val center = node.getCenterPointLocal()
-    val cx = center.getX()
-    val cy = center.getY()
-    val r = 0.45f * this.radius    
-    g.noStroke()
-    val color = SymbolColor
-    g.fill(color.getR(), color.getG(), color.getB(), color.getAlpha())           
-    g.ellipse(cx, cy, r*2,r*2)
-  }
   
   override def toString = {
    "AnchorNode"
+  }  
+  
+  override def symbol = {
+    Some(this.Symbol)
   }
-
-  override def vicinity = {
-    Vicinity
-  }    
+  
+  override def size = {
+    this.Size
+  }
   
 }

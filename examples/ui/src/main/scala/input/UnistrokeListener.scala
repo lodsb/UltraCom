@@ -26,31 +26,33 @@ class UnistrokeListener extends IGestureEventListener {
   override def processGestureEvent(gestureEvent: MTGestureEvent): Boolean = {
     gestureEvent match {
       case unistrokeEvent: UnistrokeEvent => {
-        unistrokeEvent.getGesture match {
-          case UnistrokeUtils.UnistrokeGesture.CIRCLE => {
-            val gestureVisualization = unistrokeEvent.getVisualization
-            val position = gestureVisualization.localToGlobal(gestureVisualization.getCenterPointLocal)
-            Ui += Node(Ui, IsolatedNodeType, None, (position.getX, position.getY))
+        //if (!CursorProcessor.isCursorInUse(unistrokeEvent.getCursor)){
+          unistrokeEvent.getGesture match {
+            case UnistrokeUtils.UnistrokeGesture.CIRCLE => {
+              val gestureVisualization = unistrokeEvent.getVisualization
+              val position = gestureVisualization.getCenterPointGlobal
+              Ui += IsolatedNode(Ui, (position.getX, position.getY))
+            }
+            case UnistrokeUtils.UnistrokeGesture.DELETE => {
+              val gestureVisualization = unistrokeEvent.getVisualization
+              val position = gestureVisualization.getCenterPointGlobal
+              Ui += Tool(Ui, (position.getX, position.getY), SpeedPropertyType)
+            }
+            case UnistrokeUtils.UnistrokeGesture.TRIANGLE => {
+              val gestureVisualization = unistrokeEvent.getVisualization
+              val position = gestureVisualization.getCenterPointGlobal
+              Ui += Tool(Ui, (position.getX, position.getY), VolumePropertyType)
+            }
+            case UnistrokeUtils.UnistrokeGesture.PIGTAIL => {
+              val gestureVisualization = unistrokeEvent.getVisualization
+              val position = gestureVisualization.getCenterPointGlobal
+              Ui += Tool(Ui, (position.getX, position.getY), PitchPropertyType)
+            }          
+            case somethingElse => {}
           }
-          case UnistrokeUtils.UnistrokeGesture.DELETE => {
-            val gestureVisualization = unistrokeEvent.getVisualization
-            val position = gestureVisualization.localToGlobal(gestureVisualization.getCenterPointLocal)
-            Ui.getCurrentScene.getCanvas += Tool(Ui, (position.getX, position.getY), SpeedPropertyType)
-          }
-          case UnistrokeUtils.UnistrokeGesture.TRIANGLE => {
-            val gestureVisualization = unistrokeEvent.getVisualization
-            val position = gestureVisualization.localToGlobal(gestureVisualization.getCenterPointLocal)
-            Ui.getCurrentScene.getCanvas += Tool(Ui, (position.getX, position.getY), VolumePropertyType)
-          }
-          case UnistrokeUtils.UnistrokeGesture.PIGTAIL => {
-            val gestureVisualization = unistrokeEvent.getVisualization
-            val position = gestureVisualization.localToGlobal(gestureVisualization.getCenterPointLocal)
-            Ui.getCurrentScene.getCanvas += Tool(Ui, (position.getX, position.getY), PitchPropertyType)
-          }          
-          case somethingElse => {}
-        }
-        println("gesture is " + unistrokeEvent.getGesture)
-        true
+          true
+       //}
+       //else false
       }
       case someEvent => {
         println("I can't process this particular event: " + someEvent.toString)

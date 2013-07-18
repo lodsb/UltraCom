@@ -48,7 +48,6 @@ class MenuProcessor(app: Application) extends AbstractGlobalInputProcessor[MTFin
             if (this.cursorMap.contains(inputCursor)) { 
               val menu = this.cursorMap(inputCursor)
               this.cursorMap -= inputCursor
-              //Ui -= menu
             }
           }
           true
@@ -71,24 +70,28 @@ class MenuProcessor(app: Application) extends AbstractGlobalInputProcessor[MTFin
       if (position.getX < Menu.Space) { //left
         val vec = Vec3d(Menu.Space/2, position.getY)
         if (!Menu.isMenuInProximity(vec, 90.0f)) {
-          this.addMenu(Menu(app, Vec3d(Menu.Space/2, position.getY), 90.0f), inputCursor)    
+          if (vec.getY < Menu.Width/2 + Menu.Space) this.addMenu(Menu(app, Vec3d(Menu.Space/2, Menu.Width/2 + Menu.Space), 90.0f), inputCursor)  
+          else if (vec.getY > height - Menu.Width/2 - Menu.Space) this.addMenu(Menu(app, Vec3d(Menu.Space/2, height - Menu.Width/2 - Menu.Space), 90.0f), inputCursor)  
+          else this.addMenu(Menu(app, Vec3d(Menu.Space/2, position.getY), 90.0f), inputCursor)           
         }
       }
       else if (position.getX > width - Menu.Space) { //right
         val vec = Vec3d(width - Menu.Space/2, position.getY)
         if (!Menu.isMenuInProximity(vec, 270.0f)) {
-          this.addMenu(Menu(app, Vec3d(width - Menu.Space/2, position.getY), 270.0f), inputCursor)
+          if (vec.getY < Menu.Width/2 + Menu.Space) this.addMenu(Menu(app, Vec3d(width - Menu.Space/2, Menu.Width/2 + Menu.Space), 270.0f), inputCursor)  
+          else if (vec.getY > height - Menu.Width/2 - Menu.Space) this.addMenu(Menu(app, Vec3d(width - Menu.Space/2, height - Menu.Width/2 - Menu.Space), 270.0f), inputCursor)  
+          else this.addMenu(Menu(app, Vec3d(width - Menu.Space/2, position.getY), 270.0f), inputCursor)        
         }
       }
       else if (position.getY < Menu.Space) { //top
         val vec = Vec3d(position.getX, Menu.Space/2)
-        if (!Menu.isMenuInProximity(vec, 180.0f)) {
+        if (!Menu.isMenuInProximity(vec, 180.0f) && vec.getX >= Menu.Width/2 + Menu.Space && vec.getX <= Ui.width - Menu.Width/2 - Menu.Space) {
           this.addMenu(Menu(app, Vec3d(position.getX, Menu.Space/2), 180.0f), inputCursor)
         }
       }
       else if (position.getY > height - Menu.Space) { //bottom
         val vec = Vec3d(position.getX, height - Menu.Space/2)
-        if (!Menu.isMenuInProximity(vec, 0.0f)) {
+        if (!Menu.isMenuInProximity(vec, 0.0f) && vec.getX >= Menu.Width/2 + Menu.Space && vec.getX <= Ui.width - Menu.Width/2 - Menu.Space) {
           this.addMenu(Menu(app, Vec3d(position.getX, height - Menu.Space/2), 0.0f), inputCursor) 
         }
       }

@@ -9,6 +9,8 @@ import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProc
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor 
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent
+import org.mt4j.input.inputProcessors.componentProcessors.tapAndHoldProcessor.TapAndHoldProcessor
+import org.mt4j.input.inputProcessors.componentProcessors.tapAndHoldProcessor.TapAndHoldEvent
 import org.mt4j.input.inputProcessors.IGestureEventListener
 import org.mt4j.input.inputProcessors.MTGestureEvent
 import org.mt4j.input.gestureAction.DefaultDragAction
@@ -22,68 +24,58 @@ import processing.core.PConstants._
 import org.mt4j.util.Color
 
 import ui._
+import ui.util._
 import ui.input._
 import ui.paths._
+import ui.usability._
 
 /**
 * This is the isolated node type.
 * A node associated with this type is not part of any path, i.e. it is isolated.
 * It can be used to explore the timbre space by dragging it around.
 */
-object IsolatedNodeType extends BasicNodeType{
+object IsolatedNodeType extends NodeType{
 
-  private val SymbolColor = Color(0, 0, 0, 200)  
   val Vicinity = this.radius * 2.0f  
   val Size = 0.8f
+  val Symbol = Speaker
   
   protected override def setupInteractionImpl(app: Application, node: Node) = {
     node.setScale(Size)    
     
     //register input processors
     node.registerInputProcessor(new DragProcessor(app))
+    
     val tapProcessor = new TapProcessor(app)
     tapProcessor.setEnableDoubleTap(true)
     node.registerInputProcessor(tapProcessor)
     
+    val tapAndHoldProcessor = new TapAndHoldProcessor(app, 1000)
+    tapAndHoldProcessor.setMaxFingerUpDist(5) 
+    node.registerInputProcessor(tapAndHoldProcessor)
+    
+    
     //add gesture listeners
     node.addGestureListener(classOf[DragProcessor], new PlayTimbreDragAction(node))   
-    node.addGestureListener(classOf[DragProcessor], new InertiaDragAction(200, .95f, 17)) //interesting feature =)        
+    node.addGestureListener(classOf[TapAndHoldProcessor], new ChannelContextMenuListener(node))
+    //node.addGestureListener(classOf[DragProcessor], new InertiaDragAction(200, .95f, 17)) //interesting feature =)        
     node.addGestureListener(classOf[TapProcessor], new NodeDeletionListener(node))
-  }  
-  
-  
-  override def drawComponent(g: PGraphics, node: Node) = {
-    super.drawComponent(g, node)
-    this.drawSymbol(g, node)
-  }   
-  
-  
-  def drawSymbol(g: PGraphics, node: Node) = {
-    val center = node.getCenterPointLocal()
-    val cx = center.getX()
-    val cy = center.getY()  
-    val r = 0.50f * this.radius
-
-    val color = SymbolColor
-    g.stroke(color.getR(), color.getG(), color.getB(), color.getAlpha())
-    g.strokeWeight(4)
-    
-    /*g.line(cx-r, cy, cx+r, cy)
-    g.line(cx, cy-r, cx, cy+r)
-    */
-    g.line(cx - 11*r/8, cy, cx - 4, cy)
-    g.line(cx + 11*r/8, cy, cx + 4, cy)
-    g.line(cx, cy - 11*r/8, cx, cy - 4)
-    g.line(cx, cy + 11*r/8, cx, cy + 4)
-    
-  }
+  }    
   
   override def toString = {
     "IsolatedNode"
   }
   
   override def vicinity = {
-    Vicinity
+    this.Vicinity
+  }  
+  
+  override def symbol = {
+    Some(this.Symbol)
+  }
+  
+  override def size = {
+    this.Size
   }  
     
   

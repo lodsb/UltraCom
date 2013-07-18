@@ -14,12 +14,21 @@ import ui.paths._
 import ui.events._
 import ui.audio._
 import ui.properties.types._
+import ui.menus.main._
+import ui._
 
-class PlayTimbreDragAction(node: Node) extends DefaultDragAction {
+class PlayTimbreDragAction(node: Node) extends BoundedDragAction(Menu.Space, Menu.Space, Ui.width - Menu.Space, Ui.height - Menu.Space) {
   
   	override def processGestureEvent(gestureEvent: MTGestureEvent): Boolean = {  
   	  val returnValue = super.processGestureEvent(gestureEvent)
-      Synthesizer ! AudioEvent(0, math.round(node.position._1), math.round(node.position._2), PitchPropertyType.mean, VolumePropertyType.mean)                	  
+  	  node match {
+  	    case withChannels: AudioChannels => {
+  	      Synthesizer ! AudioEvent(withChannels.collectOpenChannels, math.round(withChannels.position._1), math.round(withChannels.position._2), PitchPropertyType.mean, VolumePropertyType.mean)   
+        }
+        case withoutChannels => {
+          Synthesizer ! AudioEvent(Array(0,1,2,3), math.round(withoutChannels.position._1), math.round(withoutChannels.position._2), PitchPropertyType.mean, VolumePropertyType.mean)   
+        }
+      }
   	  returnValue
   	}
   	

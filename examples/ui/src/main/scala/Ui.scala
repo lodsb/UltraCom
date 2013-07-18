@@ -18,6 +18,7 @@ import org.mt4j.input.inputProcessors.globalProcessors.AbstractGlobalInputProces
 import org.mt4j.input.inputProcessors.globalProcessors.RawFingerProcessor
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor 
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor
+import org.mt4j.input.inputProcessors.componentProcessors.tapAndHoldProcessor.TapAndHoldProcessor
 import org.mt4j.input.inputProcessors.componentProcessors.unistrokeProcessor.UnistrokeProcessor
 import org.mt4j.input.inputProcessors.componentProcessors.unistrokeProcessor.UnistrokeEvent
 import org.mt4j.input.inputProcessors.componentProcessors.unistrokeProcessor.UnistrokeUtils
@@ -56,40 +57,17 @@ import ui.properties.types._
 object Ui extends Application { 
 	// see Settings.txt for basic settings, e.g. application name, resolution, framerate...
 
+
   /**
-  * Registers the specified node.
-  */
-  def +=(node: Node) = {
-    this.getCurrentScene.registerPreDrawAction(new AddNodeActionThreadSafe(node, this.getCurrentScene.getCanvas))
-    println("nodeSet: " + this.nodes)
-  }
-  
-  /**
-  * Registers the specified path.
+  * Registers the specified component threadsafe.
   */  
-  def +=(path: Path) = {
-    this.getCurrentScene.registerPreDrawAction(new AddNodeActionThreadSafe(path, this.getCurrentScene.getCanvas))
-    println("pathSet: " + this.paths)
-  }
-  
   def +=(component: MTComponent) = {
     this.getCurrentScene.registerPreDrawAction(new AddNodeActionThreadSafe(component, this.getCurrentScene.getCanvas))
   }
- 
-   /**
-  * Unregisters and destroys the specified node.
-  */ 
-  def -=(node: Node) = {
-    this.getCurrentScene.registerPreDrawAction(new DeleteNodeActionThreadSafe(node))
-  }
- 
-  /**
-  * Unregisters and destroys the specified path.
-  */  
-  def -=(path: Path) = {
-    this.getCurrentScene.registerPreDrawAction(new DeleteNodeActionThreadSafe(path))
-  }
   
+  /**
+  * Unregisters and destroys the specified component threadsafe.
+  */
   def -=(component: MTComponent) = {
     this.getCurrentScene.registerPreDrawAction(new DeleteNodeActionThreadSafe(component))
   }
@@ -101,6 +79,76 @@ object Ui extends Application {
   def paths = {
     this.getCurrentScene.getCanvas.getChildren.collect({case path: Path => path})
   }
+  
+  
+	/**
+	* Returns - as an Option - the closest path, the closest connection on that path and the curve parameter yielding the closest point on that connection to the specified point,
+	* or None if there are no paths.
+	*
+	*/
+	def closestPath(point: (Float, Float)): Option[(Path, Connection, Float)] = {
+	  val paths = this.paths
+	  if (paths.size > 0) {
+      var closestPath = paths.head /* set first path as initial closest path */
+      var (closestConnection, argminParameter) = closestPath.closestSegment(point._1, point._2)
+      var minDist = Vector.euclideanDistance(closestConnection(argminParameter), point)
+      paths.tail.foreach(path => { //for all the other paths in the list of paths
+        val (connection, parameter) = path.closestSegment(point._1, point._2) //get the point on the path that is closest to the specified coordinate as well as the segment of the path
+        val dist = Vector.euclideanDistance(connection(parameter), point)
+        if (minDist > dist){ //compare its distance to the current min distance
+          closestPath = path
+          closestConnection = connection
+          argminParameter = parameter
+          minDist = dist //and update if necessary
+        }
+      })	  
+      Some((closestPath, closestConnection, argminParameter))
+    }
+    else None
+	}
+         
+	/**
+	* Returns - as an Option - out of the given collection of nodes the one closest to the specified point, or None if the array is empty.
+	*
+	* @throws NoSuchElementException if the collection is empty
+	*/	
+	def closestNode(point: (Float, Float), nodeCandidates: Iterable[Node]): Option[Node] = {
+	  if (nodeCandidates.size > 0) {	    
+      var closestNode = nodeCandidates.head /* set first node as initial closest node */
+      var minDist = Vector.euclideanDistance(closestNode.position, point)
+      nodeCandidates.tail.foreach(node => { //for all the other nodes in the list of manipulable nodes
+        val dist = Vector.euclideanDistance(node.position, point)
+        if (minDist > dist){ //compare its distance to the current min distance
+          closestNode = node
+          minDist = dist //and update if necessary
+        }
+      })	  
+      Some(closestNode)
+    }
+    else None
+	}  
+	
+	
+	/**
+	* Returns - as an Option - the node closest to the specified point, or None if there is no node.
+	*
+	* @throws NoSuchElementException if there are no nodes
+	*/	
+	def closestNode(point: (Float, Float)): Option[Node] = {
+	  this.closestNode(point, this. nodes)
+	}  	
+	
+	
+	/**
+	* Returns - as an Option - out of the manipulable nodes the one closest to the specified point, or None if there is no manipulable node.
+	*
+	* @throws NoSuchElementException if there are no manipulable nodes
+	*/		
+	def closestManipulableNode(point: (Float, Float)): Option[Node] = {
+    val manipulableNodes = this.nodes.collect({case node: ManipulableNode => node})
+    this.closestNode(point, manipulableNodes)
+	}
+  
 	
 	def main(args: Array[String]): Unit = {
 		this.execute(false)
@@ -120,45 +168,24 @@ object Ui extends Application {
 */
 class UIScene(app: Application, name: String) extends Scene(app,name){
   
-  var cPoint = (100.0f, 100.0f)
-  var tPoint = (100.0f, 100.0f)
-  
-  def setClosestPoint(p: (Float, Float)) = {
-    this.cPoint = p
-  }
-  
-  def closestPoint = {
-    this.cPoint
-  }
-  
-  def setTipPoint(p: (Float, Float)) = {
-    this.tPoint = p
-  }
-  
-  def tipPoint = {
-    this.tPoint
-  }
-  
-  
   //this.showTracer(true) //show touches
   this.setup()
   
 	
 	private def setup() = {
+	  System.setProperty("actors.enableForkJoin", "false") //disable default scheduler to avoid starvation when many actors are working
 	  this.setClearColor(Color(255,255,255))
 	 
 	  val timbreSpace = TimbreSpace(app)
-    //val debug = DebugOutput
-    
     this.canvas += timbreSpace
-    //this.canvas += debug //be sure to add this after the space itself
+    //this.canvas += DebugOutput //be sure to add this after the space itself
     
-    this.setupInteraction()
-	}
-	
-	private def setupInteraction() = {	      
+    
     //registering a global input processor for creating connections between nodes
-    this.registerGlobalInputProcessor(new NodeConnectionProcessor(app))
+    this.registerGlobalInputProcessor(new CursorProcessor(app))
+    
+    //registering a global input processor for feedforward
+    this.registerGlobalInputProcessor(new FeedforwardProcessor(app))    
     
     //registering a global input processor for showing the main menu at appropriate times
     this.registerGlobalInputProcessor(new MenuProcessor(app))
@@ -167,20 +194,27 @@ class UIScene(app: Application, name: String) extends Scene(app,name){
     val tapProcessor = new TapProcessor(app)
     tapProcessor.setEnableDoubleTap(true)
     this.canvas.registerInputProcessor(tapProcessor)
-    this.canvas.addGestureListener(classOf[TapProcessor], new NodeCreationListener())	  
+    this.canvas.addGestureListener(classOf[TapProcessor], new NodeCreationListener(timbreSpace))
+
+    val tapAndHoldProcessor = new TapAndHoldProcessor(app, 200)
+    tapAndHoldProcessor.setMaxFingerUpDist(5) 
+    this.canvas.registerInputProcessor(tapAndHoldProcessor)
+    this.canvas.addGestureListener(classOf[TapAndHoldProcessor], new ToolMenuListener(app))
+    	  
     
     //setting up a component input processor on the canvas for unistroke gestures and adding a corresponding listener
     val unistrokeProcessor = new UnistrokeProcessor(app)
-    unistrokeProcessor.addTemplate(UnistrokeUtils.UnistrokeGesture.CIRCLE, UnistrokeUtils.Direction.CLOCKWISE)
-    unistrokeProcessor.addTemplate(UnistrokeUtils.UnistrokeGesture.CIRCLE, UnistrokeUtils.Direction.COUNTERCLOCKWISE)
-    unistrokeProcessor.addTemplate(UnistrokeUtils.UnistrokeGesture.DELETE, UnistrokeUtils.Direction.COUNTERCLOCKWISE)
+    //unistrokeProcessor.addTemplate(UnistrokeUtils.UnistrokeGesture.CIRCLE, UnistrokeUtils.Direction.CLOCKWISE)
+    //unistrokeProcessor.addTemplate(UnistrokeUtils.UnistrokeGesture.CIRCLE, UnistrokeUtils.Direction.COUNTERCLOCKWISE)
+    /*unistrokeProcessor.addTemplate(UnistrokeUtils.UnistrokeGesture.DELETE, UnistrokeUtils.Direction.COUNTERCLOCKWISE)
     unistrokeProcessor.addTemplate(UnistrokeUtils.UnistrokeGesture.DELETE, UnistrokeUtils.Direction.CLOCKWISE)
     unistrokeProcessor.addTemplate(UnistrokeUtils.UnistrokeGesture.TRIANGLE, UnistrokeUtils.Direction.COUNTERCLOCKWISE)
     unistrokeProcessor.addTemplate(UnistrokeUtils.UnistrokeGesture.TRIANGLE, UnistrokeUtils.Direction.CLOCKWISE)
     unistrokeProcessor.addTemplate(UnistrokeUtils.UnistrokeGesture.PIGTAIL, UnistrokeUtils.Direction.COUNTERCLOCKWISE)
-    unistrokeProcessor.addTemplate(UnistrokeUtils.UnistrokeGesture.PIGTAIL, UnistrokeUtils.Direction.CLOCKWISE)
+    unistrokeProcessor.addTemplate(UnistrokeUtils.UnistrokeGesture.PIGTAIL, UnistrokeUtils.Direction.CLOCKWISE) */
     this.canvas.registerInputProcessor(unistrokeProcessor)
-    this.canvas.addGestureListener(classOf[UnistrokeProcessor], new UnistrokeListener())
+    this.canvas.addGestureListener(classOf[UnistrokeProcessor], new UnistrokeListener())    
+    
 	}
 	
 }

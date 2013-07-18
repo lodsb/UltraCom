@@ -16,8 +16,8 @@ object VolumePropertyType extends PropertyType {
   val Width = Ui.width/100 //maximum width of volume property
   val Vicinity = 2 * Width
   val PropertyColor = new MTColor(0, 130, 0)  
-  val ColorAlpha = 50  
-  val ProgressColorAlpha = 100  
+  val ColorAlpha = 80
+  val ProgressColorAlpha = 130 
   val Range = (0.0f, 100.0f) //range of a property bucket
   
   protected val SymbolWidth = Tool.Width/4.0f //width of volume control
@@ -40,11 +40,11 @@ object VolumePropertyType extends PropertyType {
     new MTColor(this.PropertyColor.getR, this.PropertyColor.getG, this.PropertyColor.getB, this.PropertyColor.getAlpha)
   }  
   
-  override def drawSymbol(g: PGraphics, tool:Tool) = { 
-    val (cx, cy) = tool.localSymbolPoint
+  override def drawSymbol(g: PGraphics, center: (Float, Float), color: MTColor) = {
+    val (cx, cy) = center
     g.noFill()
     g.strokeWeight(SymbolWeight)
-    g.stroke(this.color.getR(), this.color.getG(), this.color.getB(), SymbolAlpha)
+    g.stroke(color.getR, color.getG, color.getB, color.getAlpha)
     g.beginShape() //drawing a volume-control-like symbol using bezier curves
     
     //closed, hovering volume symbol

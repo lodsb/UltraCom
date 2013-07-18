@@ -18,8 +18,10 @@ import org.mt4j.types.{Vec3d}
 
 import processing.core.PGraphics
 
+import ui.menus._
 import ui.paths.types._
 import ui._
+import ui.persistence._
 
 object SaveProjectButton {
   
@@ -37,6 +39,12 @@ class SaveProjectButton(app: Application, menu: Menu, center: Vector3D) extends 
     super.drawComponent(g)
   }  
   
-  override def clicked() = {}
+  override def clicked() = {
+    SoundFileWriter.save()
+  }
+  
+  override def up() = {}
+  
+  override def down() = {}  
   
 }

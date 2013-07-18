@@ -56,7 +56,7 @@ object ManipulableBezierConnection {
 
 
 /**
-* This class represents a manipulable connection between two nodes based on a quadratic bezier curve.
+* This class represents a manipulable connection between two nodes on a path based on a quadratic bezier curve.
 * The following manipulations are supported:
 * <ul>
 *   <li> Change of pitch over time </li>
@@ -64,7 +64,7 @@ object ManipulableBezierConnection {
 *   <li> Change of speed over time </li>
 * </ul>
 */
-class ManipulableBezierConnection(app: Application, val startNode: Node, val controlNode: Node, val endNode: Node) extends BezierConnection(app, startNode, controlNode, endNode) {
+class ManipulableBezierConnection(app: Application, startNode: Node, controlNode: Node, endNode: Node) extends BezierConnection(app, startNode, controlNode, endNode) {
   private var properties: Map[PropertyType, ComplexProperty] = Map(
     (VolumePropertyType -> ComplexVolumeProperty(this)),
     (SpeedPropertyType -> ComplexSpeedProperty(this)),
@@ -170,34 +170,37 @@ class ManipulableBezierConnection(app: Application, val startNode: Node, val con
   * Draws this connection.
   */
   override def drawComponent(g: PGraphics) = {
-    this.properties.values.foreach(_.draw(g))
-    
-    import ManipulableBezierConnection._
-    g.stroke(LineColor.getR, LineColor.getG, LineColor.getB, LineColor.getAlpha)
-    g.strokeWeight(LineWeight)
-    val steps = LineNumber - 1 //number of lines used to approximate each bezier curve on the path
-    val p1 = this.nodes(0).position
-    val pc = this.nodes(1).position
-    val p2 = this.nodes(2).position
-    val toCurveParameter = Bezier.toCurveParameter(this.apply)
-    (0 to steps-1).foreach(step => { //iteratively draw the rectangles 
-      val t = toCurveParameter(step / steps.toFloat)
-      val t2 = toCurveParameter((step+1)/steps.toFloat)      
-      val (fromX, fromY) = Bezier.quadraticCurve(p1, pc, p2)(t)
-      val (toX, toY) = Bezier.quadraticCurve(p1, pc, p2)(t2)  
-      g.line(fromX, fromY, toX, toY)
-    }) 
-    
-    //draw dotted line from control node to connection
-    g.stroke(0, 0, 0, LineColor.getAlpha)
-    val closestPoint = this.closestPoint(Vec3d(pc._1, pc._2))
-    val distance = Vector.euclideanDistance(pc, closestPoint)
-    val dots = math.round(distance/Ui.width * MaxDotNumber)
-    val line = Functions.line(pc, closestPoint)_
-    (0 to dots - 1).foreach(dot => {
-      val (x,y) = line(dot/dots.toFloat)
-      g.point(x, y)
-    })
+    val sync = this.associatedPath match {case Some(path) => path case None => this}
+    sync.synchronized {
+      this.properties.values.foreach(_.draw(g))
+      
+      import ManipulableBezierConnection._
+      g.stroke(LineColor.getR, LineColor.getG, LineColor.getB, LineColor.getAlpha)
+      g.strokeWeight(LineWeight)
+      val steps = LineNumber - 1 //number of lines used to approximate each bezier curve on the path
+      val p1 = this.nodes(0).position
+      val pc = this.nodes(1).position
+      val p2 = this.nodes(2).position
+      val toCurveParameter = Bezier.toCurveParameter(this.apply)
+      (0 to steps-1).foreach(step => { //iteratively draw the rectangles 
+        val t = toCurveParameter(step / steps.toFloat)
+        val t2 = toCurveParameter((step+1)/steps.toFloat)      
+        val (fromX, fromY) = Bezier.quadraticCurve(p1, pc, p2)(t)
+        val (toX, toY) = Bezier.quadraticCurve(p1, pc, p2)(t2)  
+        g.line(fromX, fromY, toX, toY)
+      }) 
+      
+      //draw dotted line from control node to connection
+      g.stroke(0, 0, 0, LineColor.getAlpha)
+      val closestPoint = this.closestPoint(Vec3d(pc._1, pc._2))
+      val distance = Vector.euclideanDistance(pc, closestPoint)
+      val dots = math.round(distance/Ui.width * MaxDotNumber)
+      val line = Functions.line(pc, closestPoint)_
+      (0 to dots - 1).foreach(dot => {
+        val (x,y) = line(dot/dots.toFloat)
+        g.point(x, y)
+      })
+    }
   }   
 }
  

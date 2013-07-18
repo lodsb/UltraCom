@@ -16,8 +16,8 @@ object PitchPropertyType extends PropertyType{
   val Width = Ui.width/100
   val Vicinity = 2* Width
   val PropertyColor = new MTColor(0, 50, 130)
-  val ColorAlpha = 50
-  val ProgressColorAlpha = 100
+  val ColorAlpha = 80 //alpha value for non-playing path
+  val ProgressColorAlpha = 130 //alpha value for played back path
   val Range = (-110.372f, 147.330f) //range of a pitch property bucket; in this context, e' to d''
   
   protected val SymbolWidth = Tool.Width/6.5f //width of note
@@ -40,11 +40,11 @@ object PitchPropertyType extends PropertyType{
     new MTColor(this.PropertyColor.getR, this.PropertyColor.getG, this.PropertyColor.getB, this.PropertyColor.getAlpha)
   }    
   
-  override def drawSymbol(g: PGraphics, tool: Tool) = {
-    val (cx, cy) = tool.localSymbolPoint
+  override def drawSymbol(g: PGraphics, center: (Float, Float), color: MTColor) = {
+    val (cx, cy) = center
     g.noFill()
     g.strokeWeight(SymbolWeight)
-    g.stroke(this.color.getR(), this.color.getG(), this.color.getB(), SymbolAlpha)
+    g.stroke(color.getR, color.getG, color.getB, color.getAlpha)
     g.beginShape() //drawing a note-like symbol using bezier curves
     g.vertex(cx + SymbolWidth/2, cy - SymbolHeight/2) //from top right
     g.bezierVertex(cx + SymbolWidth/2, cy, cx + SymbolWidth/2, cy, cx + SymbolWidth/2, cy + SymbolHeight/2 - NoteHeight/2) //to bottom right (induces straight line downwards)

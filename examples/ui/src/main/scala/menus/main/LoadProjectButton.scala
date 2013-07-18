@@ -18,6 +18,7 @@ import org.mt4j.types.{Vec3d}
 
 import processing.core.PGraphics
 
+import ui.menus._
 import ui.paths.types._
 import ui._
 
@@ -38,5 +39,9 @@ class LoadProjectButton(app: Application, menu: Menu, center: Vector3D) extends 
   }  
   
   override def clicked() = {}
+
+  override def up() = {}
+  
+  override def down() = {}
   
 }

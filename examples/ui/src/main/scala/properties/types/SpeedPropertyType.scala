@@ -16,7 +16,7 @@ object SpeedPropertyType extends PropertyType {
   val Width = Ui.width/100
   val Vicinity = 2 * Width
   val PropertyColor = new MTColor(0, 130, 130)  
-  val ColorAlpha = 100 
+  val ColorAlpha = 130 
   val Range = (5.0f, 500.0f) //range of a speed property bucket; in this context, number of milliseconds
   
   protected val SymbolWidth = Tool.Width/6.0f //width of hourglass
@@ -44,11 +44,11 @@ object SpeedPropertyType extends PropertyType {
     new MTColor(this.PropertyColor.getR, this.PropertyColor.getG, this.PropertyColor.getB, this.PropertyColor.getAlpha)
   }
   
-  override def drawSymbol(g: PGraphics, tool: Tool) = { 
-    val (cx, cy) = tool.localSymbolPoint
+  override def drawSymbol(g: PGraphics, center: (Float, Float), color: MTColor) = {
+    val (cx, cy) = center
     g.noFill()
     g.strokeWeight(SymbolWeight)
-    g.stroke(this.color.getR(), this.color.getG(), this.color.getB(), SymbolAlpha)
+    g.stroke(color.getR, color.getG, color.getB, color.getAlpha)
     g.beginShape() //drawing an hourglass-like symbol using bezier curves
     g.vertex(cx + SymbolWidth/2, cy + SymbolHeight/2) //from bottom right
     g.bezierVertex(cx + XConvexityLine, cy + YConvexityLine + SymbolHeight/2, cx - XConvexityLine, cy + YConvexityLine + SymbolHeight/2, cx - SymbolWidth/2, cy + SymbolHeight/2) //to bottom left
@@ -56,24 +56,6 @@ object SpeedPropertyType extends PropertyType {
     g.bezierVertex(cx + XConvexityLine, cy - YConvexityLine - SymbolHeight/2, cx - XConvexityLine, cy - YConvexityLine - SymbolHeight/2, cx - SymbolWidth/2, cy - SymbolHeight/2) //to top left
     g.bezierVertex(cx - XConvexity, cy + YConvexity, cx + XConvexity, cy - YConvexity, cx + SymbolWidth/2, cy + SymbolHeight/2) //back to bottom right
     g.endShape()
-       
-    //g.fill(SymbolColor.getR(),SymbolColor.getG(),SymbolColor.getB(),SymbolColor.getAlpha())           
-    //g.ellipse(cx, cy, r*2,r*2) 
-    /* // hourglass with curveVertex
-    g.noFill()
-    g.strokeWeight(4)
-    g.stroke(0,0,0,150)
-    g.beginShape()
-    g.curveVertex(cx + 10, cy + 20)
-    g.curveVertex(cx + 10, cy + 20)
-    g.curveVertex(cx - 10, cy + 20)
-    g.curveVertex(cx + 10, cy - 20)
-    g.curveVertex(cx - 10, cy - 20)
-    g.curveVertex(cx + 10, cy + 20)
-    g.curveVertex(cx + 10, cy + 20)
-    g.endShape()
-    */
   }  
-  
   
 }

@@ -18,13 +18,14 @@ import ui._
 import ui.tools._
 import ui.paths._
 import ui.util._
+import ui.menus.main._
 
 /**
 * This class realizes a listener for drag actions which aligns the associated tool with the closest path.
 * More precisely, the listener determines the path which minimizes the distance between the user's touch point and itself
 * and subsequently sets the tool's rotation in such a way that the tool's axis is orthogonal to the tangent at the closest point on that path.
 */
-class AligningDragAction(app: Application, tool: Tool) extends DefaultDragAction {
+class AligningDragAction(app: Application, tool: Tool) extends BoundedDragAction(0, 0, Ui.width, Ui.height) {
   protected var alignedTo: (Option[Object], Float) = (None, 0.0f)
   
 	override def processGestureEvent(gestureEvent: MTGestureEvent): Boolean = {  
@@ -40,8 +41,8 @@ class AligningDragAction(app: Application, tool: Tool) extends DefaultDragAction
       }
     }
 		
-		val pathPositionOption = this.closestPath(eventPoint)  
-		val nodeOption = this.closestNode(eventPoint)  
+		val pathPositionOption = Ui.closestPath(eventPoint)  
+		val nodeOption = Ui.closestManipulableNode(eventPoint)  
 	
 	  (pathPositionOption, nodeOption) match {
 	    case (None, None) => {println("none both")} //nothing to align to thus do nothing
@@ -91,53 +92,7 @@ class AligningDragAction(app: Application, tool: Tool) extends DefaultDragAction
     val angle = ((if (atan2 > 0) atan2 else (2*math.Pi + atan2)) * 360 / (2*math.Pi)).toFloat //convert to degrees
     tool.setRotation(angle, point) //set rotation of tool to the calculated angle   	  	
 	}
-	
-	/**
-	* Returns - as an Option - the closest path, the closest connection on that path and the curve parameter yielding the closest point on that connection to the specified point,
-	* or None if there are no paths.
-	*
-	*/
-	def closestPath(point: (Float, Float)): Option[(Path, Connection, Float)] = {
-	  if (Ui.paths.size > 0) {
-      var closestPath = Ui.paths.head /* set first path as initial closest path */
-      var (closestConnection, argminParameter) = closestPath.closestSegment(point._1, point._2)
-      var minDist = Vector.euclideanDistance(closestConnection(argminParameter), point)
-      Ui.paths.tail.foreach(path => { //for all the other paths in the list of paths
-        val (connection, parameter) = path.closestSegment(point._1, point._2) //get the point on the path that is closest to the specified coordinate as well as the segment of the path
-        val dist = Vector.euclideanDistance(connection(parameter), point)
-        if (minDist > dist){ //compare its distance to the current min distance
-          closestPath = path
-          closestConnection = connection
-          argminParameter = parameter
-          minDist = dist //and update if necessary
-        }
-      })	  
-      Some((closestPath, closestConnection, argminParameter))
-    }
-    else None
-	}
-         
-	/**
-	* Returns - as an Option - the node closest to the specified point, or None if there is no node.
-	*
-	* @throws NoSuchElementException if there are no manipulable nodes
-	*/	
-	def closestNode(point: (Float, Float)): Option[Node] = {
-    val manipulableNodes = Ui.nodes.filter(_ match {case node: ManipulableNode => true case otherNode => false})
-	  if (manipulableNodes.size > 0) {	    
-      var closestNode = manipulableNodes.head /* set first node as initial closest node */
-      var minDist = Vector.euclideanDistance(closestNode.position, point)
-      manipulableNodes.tail.foreach(node => { //for all the other nodes in the list of manipulable nodes
-        val dist = Vector.euclideanDistance(node.position, point)
-        if (minDist > dist){ //compare its distance to the current min distance
-          closestNode = node
-          minDist = dist //and update if necessary
-        }
-      })	  
-      Some(closestNode)
-    }
-    else None
-	}
+      
 	
 	
 }

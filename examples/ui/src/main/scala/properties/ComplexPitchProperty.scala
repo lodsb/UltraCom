@@ -28,7 +28,7 @@ object ComplexPitchProperty{
 /**
 * This class represents a complex pitch property.
 */
-class ComplexPitchProperty(connection: ManipulableBezierConnection, numberOfBuckets: Int) extends ComplexProperty {
+class ComplexPitchProperty(connection: ManipulableBezierConnection, numberOfBuckets: Int) extends ComplexProperty(connection, numberOfBuckets) {
  
   /**
   * Draws this property.
@@ -38,18 +38,18 @@ class ComplexPitchProperty(connection: ManipulableBezierConnection, numberOfBuck
   */  
   override def draw(g: PGraphics) = {
     import ComplexVolumeProperty._
-    val (playbackIndex, playbackT) = connection.associatedPath match {case Some(path) => path.playbackPosition case None => (0,0.0f)}
-    val thisIndex = connection.associatedPath match {case Some(path) => path.indexOf(connection) case None => -1}
+    val (playbackIndex, playbackT) = this.connection.associatedPath match {case Some(path) => path.playbackPosition case None => (0,0.0f)}
+    val thisIndex = this.connection.associatedPath match {case Some(path) => path.indexOf(this.connection) case None => -1}
     g.noStroke()
     val steps = (this.buckets - 1) * RectanglesPerBucket //number of rectangles used to approximate each bezier curve on the path
     (0 to steps-1).foreach(step => { //iteratively draw the rectangles
-      val t = connection.toCurveParameter(step / steps.toFloat)
-      val t2 = connection.toCurveParameter((step+1)/steps.toFloat)
+      val t = this.connection.toCurveParameter(step / steps.toFloat)
+      val t2 = this.connection.toCurveParameter((step+1)/steps.toFloat)
       
-      val (fromX, fromY) = connection(t)
-      val (toX, toY) = connection(t2)      
-      val (tFromX, tFromY) = connection.tangent(t)
-      val (tToX, tToY) = connection.tangent(t2)
+      val (fromX, fromY) = this.connection(t)
+      val (toX, toY) = this.connection(t2)      
+      val (tFromX, tFromY) = this.connection.tangent(t)
+      val (tToX, tToY) = this.connection.tangent(t2)
           
       val aFrom = math.atan2(tFromY, tFromX) - HALF_PI
       val aTo = math.atan2(tToY, tToX) - HALF_PI
@@ -68,10 +68,6 @@ class ComplexPitchProperty(connection: ManipulableBezierConnection, numberOfBuck
       g.endShape(CLOSE)
     })    
   }  
-  
-  override def buckets = {
-    numberOfBuckets
-  }
   
   override def range = {
     PitchPropertyType.range

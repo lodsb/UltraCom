@@ -4,13 +4,20 @@ import processing.core.PGraphics
 import org.mt4j.Application
 import org.mt4j.input.ComponentInputProcessorSupport
 import org.mt4j.input.GestureEventSupport
+import org.mt4j.util.Color
 
 import ui._
+import ui.util._
 import ui.paths._
+import ui.usability._
 
 
 object NodeType {
-  val Radius = Ui.width/120
+  protected[paths] val BackgroundColor = Color(255, 255, 255, 80)
+  protected[paths] val ForegroundColor = Color(0, 0, 0, 200)
+  protected[paths] val StrokeColor = Color(0, 0, 0, 100)
+  val StrokeWeight = 1
+  val Radius = Ui.width/110
 }
 
 /**
@@ -28,21 +35,10 @@ abstract class NodeType{
     def setupInteraction(app: Application, node: Node) = {
       node.unregisterAllInputProcessors()
       node.removeAllGestureEventListeners()
-      //node.getInputListeners.foreach(listener => println(listener))
-      //node.getInputListeners.foreach(listener => node.removeInputListener(listener))
-      //val processorSupport = new ComponentInputProcessorSupport(app, node)
-      //val gestureSupport = new GestureEventSupport(app, node)
-      //node.addInputListener(processorSupport)
       this.setupInteractionImpl(app, node)
-      //processorSupport.getInputProcessors.foreach(processor => println(processor))
     }
     
     protected def setupInteractionImpl(app: Application, node: Node)
-
-    /**
-    * Draws a node.
-    */
-    def drawComponent(g: PGraphics, node: Node)
     
     /**
     * Returns the radius of a node.
@@ -52,7 +48,51 @@ abstract class NodeType{
     }
     
     /**
-    * Returns the maximum distance from a node of this type which is still considered vicinity.
+    * Returns the background color of a node.
+    */
+    def backgroundColor = {
+      Color(NodeType.BackgroundColor.getR, NodeType.BackgroundColor.getG, NodeType.BackgroundColor.getB, NodeType.BackgroundColor.getAlpha)
+    }
+    
+    /**
+    * Returns the foreground color of a node.
+    */
+    def foregroundColor = {
+      Color(NodeType.ForegroundColor.getR, NodeType.ForegroundColor.getG, NodeType.ForegroundColor.getB, NodeType.ForegroundColor.getAlpha)
+    }
+    
+    /**
+    * Returns the stroke color of a node.
+    */
+    def strokeColor = {
+      Color(NodeType.StrokeColor.getR, NodeType.StrokeColor.getG, NodeType.StrokeColor.getB, NodeType.StrokeColor.getAlpha)
+    }
+    
+    /**
+    * Returns the stroke weight of a node. 1 by default.
+    */
+    def strokeWeight = {
+      NodeType.StrokeWeight
+    }
+    
+    /**
+    * Returns - as an option - the symbol of a node, or None if the node does not have a symbol (which is the default).
+    */
+    def symbol: Option[Symbol] = {
+      None
+    }
+    
+    /**
+    * Returns the maximum distance from a node of this type which is still considered vicinity. 0 by default.
     */    
-    def vicinity: Float
+    def vicinity: Float = {
+      0.0f
+    }
+    
+    /**
+    * Returns the relative size of a node. 1 by default.
+    */
+    def size: Float = {
+      1.0f
+    }
 }

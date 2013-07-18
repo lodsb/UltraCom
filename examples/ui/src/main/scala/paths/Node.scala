@@ -15,49 +15,59 @@ import org.mt4j.input.inputProcessors.MTGestureEvent
 import org.mt4j.input.gestureAction.DefaultDragAction
 import org.mt4j.input.gestureAction.InertiaDragAction
 
+import org.mt4j.util.MTColor
 import org.mt4j.util.Color
 import org.mt4j.util.math.Vector3D
 import org.mt4j.util.math.Vertex
+import org.mt4j.util.math.Matrix
 import org.mt4j.types.{Vec3d}
 
-import processing.core.PGraphics
+import org.mt4j.util.animation.Animation
+import org.mt4j.util.animation.AnimationEvent
+import org.mt4j.util.animation.IAnimationListener
+import org.mt4j.util.animation.MultiPurposeInterpolator
 
+import processing.core.PGraphics
+import processing.core.PConstants._
+
+import ui._
+import ui.util._
 import ui.paths.types._
+import ui.events._
+import ui.usability._
+import ui.audio._
+
 
 
 object Node {
   
-  def apply(app: Application, nodeType: NodeType, center: (Float, Float)): Node = {
-      new Node(app, nodeType, None, Vec3d(center._1, center._2))
+  def apply(app: Application, typeOfNode: NodeType, associatedPath: Option[Path], center: Vector3D) = {
+    new Node(app, typeOfNode, associatedPath, center)
   }
   
-  def apply(app: Application, nodeType: NodeType, center: Vector3D): Node = {
-      new Node(app, nodeType, None, center)
-  }
-  
-  def apply(app: Application, nodeType: NodeType, associatedPath: Option[Path], center: Vector3D): Node = {
-      new Node(app, nodeType, associatedPath, center)
-  }
-  
-  def apply(app: Application, nodeType: NodeType, associatedPath: Option[Path], center: (Float, Float)): Node = {
-      new Node(app, nodeType, associatedPath, Vec3d(center._1, center._2))
+  def apply(app: Application, typeOfNode: NodeType, associatedPath: Option[Path], center: (Float, Float)) = {
+    new Node(app, typeOfNode, associatedPath, Vec3d(center._1, center._2))
   }  
- 
   
 }
 
 /**
-* This class represents a node.
+* This abstract class represents a node.
 * Each node is associated with a specific node type defining the visual appearance and interactive behaviour of the node, 
 * both of which can be altered at runtime simply by changing the node type.
 *
 */
-class Node(val app: Application, var typeOfNode: NodeType, var associatedPath: Option[Path], center: Vector3D) extends MTEllipse(app, center, NodeType.Radius, NodeType.Radius) {
-    var scaleFactor = 1.0f //the current scale of this node
+class Node(val app: Application, var typeOfNode: NodeType, var associatedPath: Option[Path], center: Vector3D) extends MTEllipse(app, Vec3d(0,0), NodeType.Radius, NodeType.Radius) with NodeFeedback with NodeFeedforward {
+    private var scaleFactor = 1.0f //the current scale of this node
+    private var rotationAngle = 0.0f //the current rotation angle (in degrees) of this node
+    private var currentColor = this.nodeType.backgroundColor
+    
     this.setup()
     
     protected def setup(): Unit = {
+      this.setPositionGlobal(center)
       this.nodeType = typeOfNode //overloaded assignment operator =, sets up interation on this node in the process
+      this.feedforwardNodeType = this.nodeType
     }
     
     /**
@@ -94,6 +104,9 @@ class Node(val app: Application, var typeOfNode: NodeType, var associatedPath: O
     
     /**
     * Returns the distance of the specified coordinate from this node.
+    *
+    * Note that a point on the outline of this node has a distance of 0 and
+    * a point inside the node has a negative distance.
     */
     def distance(x: Float, y: Float): Float = {
       val (cx, cy) = this.position 
@@ -102,7 +115,10 @@ class Node(val app: Application, var typeOfNode: NodeType, var associatedPath: O
  
     /**
     * Returns the distance of the specified coordinate from this node.
-    */    
+    *
+    * Note that a point on the outline of this node has a distance of 0 and
+    * a point inside the node has a negative distance.
+    */  
     def distance(position: Vector3D): Float = {
       this.distance(position.getX, position.getY)
     }
@@ -122,26 +138,142 @@ class Node(val app: Application, var typeOfNode: NodeType, var associatedPath: O
     }
     
     override def drawComponent(g: PGraphics) = {
-      this.nodeType.drawComponent(g, this)
+      //draw basic node appearance
+      val center = this.getCenterPointLocal()
+      val cx = center.getX()
+      val cy = center.getY()
+      val fillColor = this.color
+      val strokeColor = this.nodeType.strokeColor
+      g.fill(fillColor.getR, fillColor.getG, fillColor.getB, fillColor.getAlpha)
+      g.stroke(strokeColor.getR, strokeColor.getG, strokeColor.getB, strokeColor.getAlpha)
+      g.strokeWeight(this.nodeType.strokeWeight)
+      g.ellipse(cx, cy, this.radius*2, this.radius*2)      
+      
+      //optionally draw symbol
+      this.drawSymbol(g)
     }
+    
+    private def drawSymbol(g: PGraphics) = {
+      this.nodeType.symbol match {
+        case Some(symbol) => {
+          val center = this.getCenterPointLocal()
+          val cx = center.getX()
+          val cy = center.getY()
+          val r = 0.50f * this.radius    
+              
+          val feedforwardSymbol = this.feedforwardNodeType.symbol match {
+            case Some(ffSymbol) => {ffSymbol}
+            case None => {symbol}
+          }
+          
+          val symbolColor = this.nodeType.foregroundColor  
+          g.fill(symbolColor.getR(), symbolColor.getG(), symbolColor.getB(), symbolColor.getAlpha())    
+          g.noStroke()
+          g.beginShape()
+          val precision = 128
+          (1 to precision).foreach(value => { 
+            val (x,y) = SymbolInterpolator.interpolate(symbol((cx,cy),r), feedforwardSymbol((cx,cy),r), value.toFloat/precision, this.feedforwardValue)
+            val (rotatedX, rotatedY) = this.transformPoint((x,y))
+            g.vertex(rotatedX, rotatedY)
+          })
+          g.endShape(CLOSE)     
+        }
+        case None => {}
+      }     
+    }
+
     
     def nodeType = {
       this.typeOfNode
-    }
-    
+    }    
+  
     def nodeType_=(newType: NodeType) = {
        this.typeOfNode = newType
        this.nodeType.setupInteraction(app, this)
        this.nodeType
+    }    
+    
+    /**
+    * Applies a coordinate transformation to the specified point.
+    * More precisely, this node's center becomes the center of the coordinate system and the axes correspond to this node's associated paths's tangent,
+    * if there is an associated path. Otherwise, the tangent is set to (0,0).
+    */
+    private def transformPoint(point: (Float, Float)): (Float, Float) = {
+      val center = (this.getCenterPointLocal.getX, this.getCenterPointLocal.getY)
+      val gradient = this.associatedPath match {
+        case Some(path) => path.tangent(this)
+        case None => (0.0f, 0.0f)
+      }  
+      Functions.transform(center, gradient, point)          
     }
     
+
      /**
-    * Sets the scale factor of this node.
+    * Sets the scale factor of this node in local space.
     */
     def setScale(scale: Float): Unit = {
-      this.scale(1/this.scaleFactor, 1/this.scaleFactor, 1/this.scaleFactor, this.getCenterPointLocal(), TransformSpace.LOCAL) //reset scale
-      this.scale(scale, scale, scale, this.getCenterPointLocal(), TransformSpace.LOCAL)
+      this.scale(1/this.scaleFactor, 1/this.scaleFactor, 1/this.scaleFactor, this.getCenterPointLocal, TransformSpace.LOCAL) //reset scale
+      this.scale(scale, scale, scale, this.getCenterPointLocal, TransformSpace.LOCAL)
       this.scaleFactor = scale //update current scale factor
     }   
+
+
+    /**
+    * Sets the rotation angle (in degrees) of this node in local space, with the rotation point being the center of this node.
+    */
+    def setRotation(angle: Float): Unit = {
+      /*this.rotateZ(this.getCenterPointLocal, -this.rotationAngle, TransformSpace.LOCAL) //reset rotation of this node
+      this.rotateZ(this.getCenterPointLocal, angle, TransformSpace.LOCAL) //then apply new rotation
+      this.rotationAngle = angle //finally update current rotation angle */
+    }
+ 
     
+    def updateRotation() = {
+      /*val (tx,ty) = this.associatedPath match {
+        case Some(path) => path.tangent(this) //calculate tangent at node
+        case None => (0f, 0f)
+      }
+      val atan2 = math.atan2(ty,tx).toFloat //get angle for mirrored vector
+      val angle = ((if (atan2 > 0) atan2 else (2*math.Pi + atan2)) * 360 / (2*math.Pi)).toFloat //convert to degrees
+      this.setRotation(angle) //set rotation of node to the calculated angle  // */
+    }
+  
+    
+    /**
+    * Sets the local matrix back to a legal state.
+    *
+    * This is necessary because MT4J simply messes up the local matrix at some point for no apparent reason,
+    * which then produces weird results.
+    * As of now, I have no idea why this is happening, seems like a bug to me...
+    */
+    def resetLocalMatrix() = {
+      val nodeSize = this.scaleFactor  
+      val localMatrix =   Array(nodeSize, 0f,        0f,       0f,
+                              0f,       nodeSize,  0f,       0f,
+                              0f,       0f,        nodeSize, 0f,
+                              this.getCenterPointLocal.getX, this.getCenterPointLocal.getY, 0f, 1f
+                          )   
+      this.setLocalMatrix(new Matrix(localMatrix)) //correcting local matrix, which seems necessary for some unknown reason...      
+    }
+    
+    
+    /**
+    * Returns a deep copy of this node's current color.
+    */
+    def color() = {
+      new MTColor(this.currentColor.getR, this.currentColor.getG, this.currentColor.getB, this.currentColor.getAlpha)
+    }
+    
+    def setColor(col: MTColor) = {
+      this.currentColor = col
+    }
+    
+    /**
+    * Sets the global position of this node after resetting the local matrix.
+    */
+    override def setPositionGlobal(position: Vector3D) = {
+      this.resetLocalMatrix()
+      super.setPositionGlobal(position)
+    }
+
 }

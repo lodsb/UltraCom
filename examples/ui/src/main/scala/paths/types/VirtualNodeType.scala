@@ -37,48 +37,29 @@ import ui.paths._
 */
 object VirtualNodeType extends NodeType{
 
-  val Vicinity = 0
-  protected val StrokeColor = Color(0, 0, 0, 40)
-  val StrokeWeight = 2
-  val Size = 0.5f
+  protected val VirtualBackgroundColor = Color(200, 200, 200, 150)
+  protected val VirtualStrokeColor = Color(0, 0, 0, 0)
+  val Size = 0.7f
   
   protected override def setupInteractionImpl(app: Application, node: Node) = {
     node.setScale(Size)
     node.setPickable(false)
-    //register input processors
-    /*node.registerInputProcessor(new DragProcessor(app))
-    
-    //add input listener
-    node.addInputListener(new IMTInputEventListener[MTFingerInputEvt]() {
-        override def processInputEvent(inputEvent: MTFingerInputEvt): Boolean = {
-            val x = inputEvent.getScreenX
-            val y = inputEvent.getScreenY
-            println(x + " " + y)
-            true
-        }
-    })	
-    
-    //add gesture listeners
-    node.addGestureListener(classOf[DragProcessor], new DefaultDragAction())
-    */
   }    
   
-  override def drawComponent(g: PGraphics, node: Node) = {
-    val center = node.getCenterPointLocal()
-    val cx = center.getX()
-    val cy = center.getY()
-    g.noFill()
-    g.strokeWeight(StrokeWeight)
-    g.stroke(StrokeColor.getR, StrokeColor.getG, StrokeColor.getB, StrokeColor.getAlpha)
-    g.ellipse(cx, cy, this.radius*2, this.radius*2)
-  } 
+  override def toString = {
+   "VirtualNode"
+  }
   
-   override def toString = {
-     "VirtualNode"
-   }
-   
-   override def vicinity = {
-     Vicinity
-   }
+  override def backgroundColor = {
+   this.VirtualBackgroundColor
+  }
+  
+  override def strokeColor = {
+   this.VirtualStrokeColor
+  }
+  
+  override def size = {
+    this.Size
+  }  
 
 }

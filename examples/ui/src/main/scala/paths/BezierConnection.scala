@@ -22,6 +22,7 @@ import org.mt4j.types.Vec3d
 
 import processing.core.PGraphics
 
+import ui._
 import ui.util._
 import ui.paths.types._
 
@@ -37,7 +38,7 @@ object BezierConnection {
     new Vector3D((center1.getX+center2.getX)/2, (center1.getY+center2.getY)/2)
   }
 
-  def createControlNode(app: Application, startNode: Node, endNode: Node, associatedPath: Path): Node = {
+  def createControlNode(app: Application, startNode: Node, endNode: Node, associatedPath: Path) = {
     Node(app, ControlNodeType, Some(associatedPath), center(startNode, endNode))
   }    
   
@@ -48,7 +49,7 @@ object BezierConnection {
   * is implicitly chosen as the control node's path.
   * Note that if both nodes have an associated path, the path of the start node is chosen.
   */
-  def createControlNode(app: Application, startNode: Node, endNode: Node): Node = {
+  def createControlNode(app: Application, startNode: Node, endNode: Node) = {
     if (startNode.associatedPath != None) {
       Node(app, ControlNodeType, startNode.associatedPath, center(startNode, endNode))
     }
@@ -61,11 +62,11 @@ object BezierConnection {
 
 
 /**
-* This class represents a connection between two nodes established by a quadratic bezier curve.
+* This class represents a connection between two nodes on a path, established by a quadratic bezier curve.
 * A connection of this type may be shaped by the user by dragging either the start and end nodes or the control node of the curve.
 */
-abstract class BezierConnection(app: Application, startNode: Node, controlNode: Node, endNode: Node) extends Connection(app, List(startNode, controlNode, endNode)) {
-  this.addChild(controlNode)
+abstract class BezierConnection(app: Application, val startNode: Node, val controlNode: Node, val endNode: Node) extends Connection(app, List(startNode, controlNode, endNode)) {
+  Ui += controlNode
   this.setPickable(true)
   
   
@@ -102,7 +103,7 @@ abstract class BezierConnection(app: Application, startNode: Node, controlNode: 
     val (ax, ay) = (p1x - p0x, p1y - p0y) //(P1-P0)
     val (bx, by) = (p2x - p1x - ax, p2y - p1y - ay) //(P2-P1-A)
     
-    val a = if (bx*bx + by*by == 0) 0.00000001f else bx*bx + by*by  //B^2 //ensuring a non-zero value for 'a' to avoid stupid exception in class Cubic which won't solve a quadratic equation
+    val a = if (bx*bx + by*by == 0) 0.000000000000001f else bx*bx + by*by  //B^2 //ensuring a non-zero value for 'a' to avoid stupid exception in class Cubic which won't solve a quadratic equation
     val b = 3*(ax*bx + ay*by)//3A.B
     val c = 2*(ax*ax + ay*ay) + (m0x*bx + m0y*by)//2A^2+M'.B
     val d = m0x*ax + m0y*ay//M'.A

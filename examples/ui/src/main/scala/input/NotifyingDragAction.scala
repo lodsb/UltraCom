@@ -12,8 +12,10 @@ import scala.actors._
 
 import ui.paths._
 import ui.events._
+import ui.menus.main._
+import ui._
 
-class NotifyingDragAction(node: Node) extends DefaultDragAction {
+class NotifyingDragAction(node: Node) extends BoundedDragAction(Menu.Space, Menu.Space, Ui.width - Menu.Space, Ui.height - Menu.Space) {
   
   	override def processGestureEvent(gestureEvent: MTGestureEvent): Boolean = {  
   	  val returnValue = super.processGestureEvent(gestureEvent)
@@ -21,7 +23,12 @@ class NotifyingDragAction(node: Node) extends DefaultDragAction {
   	    case Some(path) => {
           path ! NodeMoveEvent(node)
   	    }
-  	    case None => {}
+  	    case None => {
+  	      node match {
+  	        case manipulableNode: ManipulableNode => {manipulableNode ! NodeMoveEvent(manipulableNode)} //send move event to self in order to update time connections
+  	        case otherNode => {}
+  	      }
+  	    }
   	  }
   	  returnValue
   	}

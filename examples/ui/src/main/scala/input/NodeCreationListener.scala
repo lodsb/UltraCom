@@ -6,29 +6,57 @@ import org.mt4j.input.inputProcessors.IGestureEventListener
 import org.mt4j.input.inputProcessors.MTGestureEvent
 
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent
-
+import org.mt4j.types.Vec3d
 import org.mt4j.components.ComponentImplicits._
 
 import ui._
 import ui.paths._
 import ui.paths.types._
+import ui.util._
+import ui.events._
 
 /**
-* This class handles the creation of isolated nodes.
+* This class handles the creation of nodes in the specified timbre space.
 */
-class NodeCreationListener extends IGestureEventListener {
+class NodeCreationListener(timbreSpace: TimbreSpace) extends IGestureEventListener {
+  
   override def processGestureEvent(gestureEvent: MTGestureEvent): Boolean = {  
-        gestureEvent match {
-            case tapEvent: TapEvent => {
-                if (tapEvent.getTapID == TapEvent.BUTTON_DOUBLE_CLICKED) {
-                  Ui += Node(Ui, IsolatedNodeType, None, tapEvent.getLocationOnScreen)
-                }
-                true
-            }
-            case someEvent => {
-                println("I can't process this particular event: " + someEvent.toString)
-                false
-            }
-        }
+    gestureEvent match {
+      case tapEvent: TapEvent => {
+          if (tapEvent.getTapID == TapEvent.BUTTON_DOUBLE_CLICKED) {
+            this.evaluateTap(tapEvent) 
+          }
+          true
+      }
+      case someEvent => {
+          println("I can't process this particular event: " + someEvent.toString)
+          false
+      }
+    }
   }
+  
+  
+  private def evaluateTap(tapEvent: TapEvent) = {
+    val position = (tapEvent.getLocationOnScreen.getX, tapEvent.getLocationOnScreen.getY)
+    val closestPathPositionOption = Ui.closestPath(position)
+    closestPathPositionOption match {
+      case Some(closestPathPosition) => {
+        val path = closestPathPosition._1
+        val connection = closestPathPosition._2
+        val parameter = closestPathPosition._3
+        val pathPosition = connection(parameter)
+        if (Vector.euclideanDistance(pathPosition, position) <= 10) {
+          path ! TimeNodeAddEvent(TimeNode(Ui, closestPathPosition))
+        }
+        else {
+          if (timbreSpace.contains(tapEvent.getLocationOnScreen)) Ui += IsolatedNode(Ui, tapEvent.getLocationOnScreen)    
+        }
+      } 
+      case None => {
+        if (timbreSpace.contains(tapEvent.getLocationOnScreen)) Ui += IsolatedNode(Ui, tapEvent.getLocationOnScreen)
+      }       
+    } 
+  }
+  
+  
 }

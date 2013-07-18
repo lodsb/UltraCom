@@ -18,6 +18,7 @@ import org.mt4j.types.{Vec3d}
 
 import processing.core.PGraphics
 
+import ui.menus._
 import ui.paths.types._
 import ui.events._
 import ui._
@@ -39,14 +40,18 @@ class StopButton(app: Application, menu: Menu, center: Vector3D) extends Button(
     val center = this.getCenterPointLocal()
     val cx = center.getX()
     val cy = center.getY()              
-    val r = 0.35f * Button.Radius
+    val r = 0.35f * this.radius
     g.noStroke()
-    g.fill(Button.StrokeColor.getR, Button.StrokeColor.getG, Button.StrokeColor.getB, this.alphaValue)
+    g.fill(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.alphaValue)
     g.rect(cx - r, cy - r, 2*r, 2*r)
   }  
 
   override def clicked() = {
     Ui.paths.foreach(path => path ! UiEvent("STOP_PLAYBACK"))
   }
+  
+  override def up() = {}
+  
+  override def down() = {}  
   
 }

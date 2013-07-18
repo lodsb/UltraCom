@@ -10,9 +10,7 @@ import ui.tools.Tool
 * This abstract class represents a property type.
 */
 abstract class PropertyType {
-  protected val SymbolAlpha = 150
-  protected val SymbolColor = new MTColor(0,0,0,SymbolAlpha)
-  protected val SymbolWeight = 1 //TODO change to Ui-relative value
+  protected val SymbolWeight = 1
   
   def color: MTColor
 
@@ -28,7 +26,7 @@ abstract class PropertyType {
   }
   
   /**
-  * Draws the symbol associated with a property of this type on the specified tool.
+  * Draws the symbol associated with this property type at the specified position using the given color.
   */
-  def drawSymbol(g: PGraphics, tool:Tool)
+  def drawSymbol(g: PGraphics, center: (Float, Float), color: MTColor)
 }

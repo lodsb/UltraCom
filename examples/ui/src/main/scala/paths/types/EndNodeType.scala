@@ -9,6 +9,8 @@ import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProc
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor 
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent
+import org.mt4j.input.inputProcessors.componentProcessors.tapAndHoldProcessor.TapAndHoldProcessor
+import org.mt4j.input.inputProcessors.componentProcessors.tapAndHoldProcessor.TapAndHoldEvent
 import org.mt4j.input.inputProcessors.IGestureEventListener
 import org.mt4j.input.inputProcessors.MTGestureEvent
 import org.mt4j.input.gestureAction.DefaultDragAction
@@ -25,9 +27,9 @@ import ui._
 import ui.paths._
 import ui.input._
 import ui.events._
+import ui.menus.context._
 
 object EndNodeType {
-  protected[types] val SymbolColor = Color(0, 0, 0, 200)  
   val Size = 1.0f
 }
 
@@ -35,7 +37,7 @@ object EndNodeType {
 * This is the end node type trait.
 * A node associated with this type is always the last node in a sequence of nodes.
 */
-trait EndNodeType extends BasicNodeType{
+trait EndNodeType extends NodeType{
   
   protected override def setupInteractionImpl(app: Application, node: Node) = {
     import EndNodeType._
@@ -43,50 +45,18 @@ trait EndNodeType extends BasicNodeType{
     
     //register input processors
     node.registerInputProcessor(new DragProcessor(app))
-    node.registerInputProcessor(new TapProcessor(app))
     
+    val tapAndHoldProcessor = new TapAndHoldProcessor(app, 1000)
+    tapAndHoldProcessor.setMaxFingerUpDist(3) 
+    node.registerInputProcessor(tapAndHoldProcessor)
+        
     //add gesture listeners
-    node.addGestureListener(classOf[DragProcessor], new NotifyingDragAction(node))   
+    node.addGestureListener(classOf[DragProcessor], new NotifyingDragAction(node))
+    node.addGestureListener(classOf[TapAndHoldProcessor], new PlaybackContextMenuListener(node))       
+       
     //node.addGestureListener(classOf[DragProcessor], new InertiaDragAction(200, .95f, 17)) //interesting feature =)         
-    node.addGestureListener(classOf[TapProcessor], new IGestureEventListener() {
-        override def processGestureEvent(gestureEvent: MTGestureEvent): Boolean = {
-              gestureEvent match {
-                  case tapEvent: TapEvent => {
-                      if (tapEvent.getTapID == TapEvent.BUTTON_DOWN) {
-                        println("stop down")
-                      }
-                      else if (tapEvent.getTapID == TapEvent.BUTTON_UP) {
-                        println("stop up")
-                      }
-                      else if (tapEvent.getTapID == TapEvent.BUTTON_CLICKED) {
-                        println("stop clicked")
-                        node.associatedPath match {
-                          case Some(path) => {
-                            path ! UiEvent("STOP_PLAYBACK")
-                          }
-                          case None => {}
-                        }
-                      }
-                      true
-                  }
-                  case someEvent => {
-                      println("I can't process this particular event: " + someEvent.toString)
-                      false
-                  }
-              }
-        }
-    })
   }    
  
-  
-  override def drawComponent(g: PGraphics, node: Node) = {
-    super.drawComponent(g, node)
-    this.drawSymbol(g, node)
-  } 
-  
-  
-  def drawSymbol(g: PGraphics, node: Node)
-
   override def toString = {
     "EndNode"
   }  
@@ -94,5 +64,9 @@ trait EndNodeType extends BasicNodeType{
   override def vicinity = {
     this.radius * 2.0f
   }    
+  
+  override def size = {
+    EndNodeType.Size
+  }  
   
 }

@@ -14,10 +14,6 @@ import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent
 import org.mt4j.input.inputProcessors.IGestureEventListener
 import org.mt4j.input.inputProcessors.MTGestureEvent
 
-import org.mt4j.input.IMTInputEventListener
-import org.mt4j.input.inputData.MTInputEvent
-import org.mt4j.input.inputData.MTFingerInputEvt
-
 import org.mt4j.input.gestureAction.DefaultDragAction
 import org.mt4j.input.gestureAction.InertiaDragAction
 
@@ -38,10 +34,8 @@ import ui.paths._
 */
 object ControlNodeType extends NodeType{
 
-  val Vicinity = 0
-  protected[types] val StrokeColor = Color(0, 0, 0, 80)
-  val StrokeWeight = 1
-  val Size = 0.4f
+  protected[types] val ControlStrokeColor = Color(0, 0, 0, 80)
+  val Size = 0.50f
   
   protected override def setupInteractionImpl(app: Application, node: Node) = {
     node.setScale(Size)
@@ -56,22 +50,16 @@ object ControlNodeType extends NodeType{
     node.addGestureListener(classOf[TapProcessor], new NodeDeletionListener(node))
   }    
   
-  override def drawComponent(g: PGraphics, node: Node) = {
-    val center = node.getCenterPointLocal()
-    val cx = center.getX()
-    val cy = center.getY()
-    g.noFill()
-    g.strokeWeight(StrokeWeight)
-    g.stroke(StrokeColor.getR, StrokeColor.getG, StrokeColor.getB, StrokeColor.getAlpha)
-    g.ellipse(cx, cy, this.radius*2, this.radius*2)
-  } 
-  
    override def toString = {
      "ControlNode"
    }
    
-   override def vicinity = {
-     Vicinity
+   override def strokeColor = {
+     this.ControlStrokeColor
    }
+   
+  override def size = {
+    this.Size
+  }   
 
 }

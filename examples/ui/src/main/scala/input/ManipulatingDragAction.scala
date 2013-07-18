@@ -51,8 +51,8 @@ class ManipulatingDragAction(app: Application, tool: Tool) extends AligningDragA
     }
 
 	  if (tool.isEditing) {	    
-      val pathPositionOption = this.closestPath(tipPoint) //finding closest point on closest path from tip of tool
-      val nodeOption = this.closestNode(tipPoint) //finding closest point on closest node from tip of tool
+      val pathPositionOption = Ui.closestPath(tipPoint) //finding closest point on closest path from tip of tool
+      val nodeOption = Ui.closestManipulableNode(tipPoint) //finding closest point on closest node from tip of tool
       (pathPositionOption, nodeOption) match {
         case (None, None) => {}
         case (Some(pathPosition), None) => {

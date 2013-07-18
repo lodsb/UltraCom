@@ -28,6 +28,7 @@ import ui.paths._
 import ui.input._
 import ui.util._
 import ui.events._
+import ui.menus.context._
 
 
 object StartNodeType {
@@ -39,70 +40,35 @@ object StartNodeType {
 * This is the start node type trait.
 * A node associated with this type is always the first node in a sequence of nodes.
 */
-trait StartNodeType extends BasicNodeType{
+trait StartNodeType extends NodeType{
   
   protected override def setupInteractionImpl(app: Application, node: Node) = {
     import StartNodeType._
     node.setScale(Size)    
     
     //register input processors
-    node.registerInputProcessor(new DragProcessor(app))
+    node.registerInputProcessor(new DragProcessor(app)) 
     
-    val tapProcessor = new TapProcessor(app)
-    tapProcessor.setEnableDoubleTap(true)
-    node.registerInputProcessor(tapProcessor)   
-    
-    val tapAndHoldProcessor = new TapAndHoldProcessor(app, 2000)
-    tapAndHoldProcessor.setMaxFingerUpDist(5) 
+    val tapAndHoldProcessor = new TapAndHoldProcessor(app, 1000)
+    tapAndHoldProcessor.setMaxFingerUpDist(3) 
     node.registerInputProcessor(tapAndHoldProcessor)
-    
     
     //add gesture listeners
     node.addGestureListener(classOf[DragProcessor], new NotifyingDragAction(node))
-    node.addGestureListener(classOf[TapAndHoldProcessor], new IGestureEventListener() {
-      override def processGestureEvent(gestureEvent: MTGestureEvent): Boolean = {
-        gestureEvent match {
-          case tahEvent: TapAndHoldEvent => {
-              if (tahEvent.getId == MTGestureEvent.GESTURE_DETECTED) {
-                println("tap and hold detected")
-              }
-              else if (tahEvent.getId == MTGestureEvent.GESTURE_ENDED) {
-                if (tahEvent.getElapsedTime >= tahEvent.getHoldTime) {
-                  println("tap and hold completed")
-                  
-                }
-                println("tap and hold ended")
-              }
-              //else if (tahEvent.getId == MTGestureEvent.GESTURE_UPDATED) {
-                //println("tap and hold updated")
-              //}
-              true
-          }
-          case someEvent => {
-              println("I can't process this particular event: " + someEvent.toString)
-              false
-          }
-        }
-      }
-    })    
+    node.addGestureListener(classOf[TapAndHoldProcessor], new ChannelContextMenuListener(node))
     //node.addGestureListener(classOf[DragProcessor], new InertiaDragAction(200, .95f, 17)) //interesting feature =)         
   }  
-  
-  
-  override def drawComponent(g: PGraphics, node: Node) = {
-    super.drawComponent(g, node)
-    this.drawSymbol(g, node)
-  }   
-  
-  
-  def drawSymbol(g: PGraphics, node: Node)
-  
+
   override def toString = {
     "StartNode"
   }
   
   override def vicinity = {
     this.radius * 2.0f
+  }  
+  
+  override def size = {
+    StartNodeType.Size
   }  
     
   
