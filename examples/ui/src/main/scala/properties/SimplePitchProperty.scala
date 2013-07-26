@@ -26,6 +26,8 @@ class SimplePitchProperty(node: ManipulableNode) extends SimpleProperty {
   
   override def draw(g: PGraphics) = {
     val playbackT = node.playbackPosition
+    val isHighlighted = node.toolRegistryEntries.exists(entry => entry._1.propertyType == this.propertyType)
+    
     val center = node.getCenterPointLocal
     val (x,y) = (center.getX, center.getY)
     val innerRadius = node.radius
@@ -41,10 +43,19 @@ class SimplePitchProperty(node: ManipulableNode) extends SimpleProperty {
       val (x3, y3) = ((outerRadius*math.cos(math.Pi*(t2+1)) + x).toFloat, (outerRadius*math.sin(math.Pi*(t2+1)) + y).toFloat)
       val (x4, y4) = ((innerRadius*math.cos(math.Pi*(t2+1)) + x).toFloat, (innerRadius*math.sin(math.Pi*(t2+1)) + y).toFloat)     
       
-      val red = PitchPropertyType.PropertyColor.getR
-      val green = PitchPropertyType.PropertyColor.getG
-      val blue = PitchPropertyType.PropertyColor.getB
-      val alpha = if (t < playbackT) PitchPropertyType.ProgressColorAlpha else PitchPropertyType.ColorAlpha     
+      val red = this.propertyType.PropertyColor.getR
+      val green = this.propertyType.PropertyColor.getG
+      val blue = this.propertyType.PropertyColor.getB
+      val alpha = 
+        if (isHighlighted) {
+          if (t < playbackT) this.propertyType.HighlightedColorAlpha
+          else this.propertyType.HighlightedColorAlpha * 0.7f
+        }
+        else {
+          if (t < playbackT) this.propertyType.ProgressColorAlpha 
+          else this.propertyType.ColorAlpha
+        }
+        
       g.fill(red, green, blue, alpha)
       
       g.beginShape() //defines a small rectangle which fits the corresponding segment on the circle
@@ -57,15 +68,19 @@ class SimplePitchProperty(node: ManipulableNode) extends SimpleProperty {
   }    
   
   override def range = {
-    PitchPropertyType.range
+    this.propertyType.range
   }
   
   override def visualWidth = {
-    PitchPropertyType.width
+    this.propertyType.width
   }  
   
   override def maxWidth = {
-    PitchPropertyType.width
+    this.propertyType.width
   }  
+  
+  def propertyType = {
+    PitchPropertyType
+  }    
   
 }

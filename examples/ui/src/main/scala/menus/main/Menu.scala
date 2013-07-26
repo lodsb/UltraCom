@@ -59,6 +59,72 @@ object Menu {
     this.registry.filter(_.rotationAngle == rotationAngle).exists(menu => Vector.euclideanDistance((menu.center.getX, menu.center.getY), (center.getX, center.getY)) < Width)
   }
   
+  /**
+  * Returns for a specified vector and a rotation angle the ecnlosing bounds induced by surrounding menus,
+  * that is, the range around the given vector before the first menu is found.
+  */
+  private def enclosingBounds(vec: Vector3D, rotationAngle: Float) = {
+    val menus = this.registry.filter(_.rotationAngle == rotationAngle)
+    
+    if (rotationAngle == 90f || rotationAngle == 270f) { //left/right
+      val topMenus = menus.filter(_.center.getY <= vec.getY)
+      val bottomMenus = menus.filter(_.center.getY > vec.getY)      
+      val min = if (topMenus.size > 0) topMenus.minBy(menu => vec.getY - menu.center.getY).center.getY + this.Width/2 else this.Space
+      val max = if (bottomMenus.size > 0) bottomMenus.minBy(menu => menu.center.getY - vec.getY).center.getY - this.Width/2 else Ui.height - this.Space      
+      (min, max)
+    }
+    else { //top/bottom
+      val leftMenus = menus.filter(_.center.getX <= vec.getX)
+      val rightMenus = menus.filter(_.center.getX > vec.getX)   
+      val min = if (leftMenus.size > 0) leftMenus.minBy(menu => vec.getX - menu.center.getX).center.getX + this.Width/2 else this.Space
+      val max = if (rightMenus.size > 0) rightMenus.minBy(menu => menu.center.getX - vec.getX).center.getX - this.Width/2 else Ui.width - this.Space      
+      (min, max)
+    }
+   
+  }
+  
+  /**
+  * Returns - as an option - for a specified input vector a nearby position to place a new menu at, or None if the creation of a new menu is not possible at the moment.
+  */
+  def calculateMenuPosition(vec: Vector3D, rotationAngle: Float): Option[Vector3D] = {   
+    val (min, max) = this.enclosingBounds(vec, rotationAngle)
+    val desiredPos = if (rotationAngle == 90f || rotationAngle == 270f) vec.getY else vec.getX
+    
+    if (max - min < this.Width) {
+      None //if there is not enough room, a menu cannot be created; we need at least 1*Width for a menu
+    } 
+    else {
+      if (rotationAngle == 90f || rotationAngle == 270f) {
+        val x = if (rotationAngle == 90f) this.Space/2 else Ui.width - this.Space/2
+        val minDiff = vec.getY - min
+        val maxDiff = max - vec.getY
+        if (minDiff > this.Width/2 && maxDiff > this.Width/2) { //if the desired position is available
+          Some(Vec3d(x, vec.getY)) //we only adjust the x value
+        }
+        else if (minDiff > maxDiff) { //if the desired position is too far to the right
+          Some(Vec3d(x, max - this.Width/2)) //the new menu will be created just width/2 away from the other nearby menu
+        }
+        else { //maxDiff >= minDiff, desired position too far to the left
+          Some(Vec3d(x, min + this.Width/2)) //the new menu will be created just width/2 away from the other nearby menu
+        }
+      }
+      else {
+        val y = if (rotationAngle == 180f) Space/2 else Ui.height - Space/2
+        val minDiff = vec.getX - min
+        val maxDiff = max - vec.getX
+        if (minDiff > this.Width/2 && maxDiff > this.Width/2) { //if the desired position is available
+          Some(Vec3d(vec.getX, y)) //we only adjust the y value
+        }
+        else if (minDiff > maxDiff) { //if the desired position is too far to the bottom
+          Some(Vec3d(max - this.Width/2, y))
+        }
+        else { //maxDiff >= minDiff, desired position too far to the top
+          Some(Vec3d(min + this.Width/2, y))
+        }        
+      }
+    }
+  }
+  
 }
 
 /**

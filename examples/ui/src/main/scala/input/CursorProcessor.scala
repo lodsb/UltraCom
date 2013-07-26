@@ -142,10 +142,12 @@ class CursorProcessor(app: Application) extends AbstractGlobalInputProcessor[MTF
   private def processNodeTarget(targetNode: Node, virtualNode: Node) = {
     val virtualConnection = CursorProcessor.virtualConnectionMap(virtualNode)
     val sourceNode = virtualConnection.firstNode //the source node is always the start node of the virtual connection
-    val connectsToAnchorNode =      sourceNode.nodeType == AnchorNodeType         || targetNode.nodeType == AnchorNodeType
-    val connectsToManipulableNode = sourceNode.nodeType == ManipulableNodeType    || targetNode.nodeType == ManipulableNodeType
-    val connectsToControlNode =     sourceNode.nodeType == ControlNodeType        || targetNode.nodeType == ControlNodeType
-    val connectsToTimeNode =        sourceNode.nodeType == TimeNodeType           || targetNode.nodeType == TimeNodeType
+    val connectsToAnchorNode =                  sourceNode.nodeType == AnchorNodeType                 || targetNode.nodeType == AnchorNodeType
+    val connectsToManipulableNode =             sourceNode.nodeType == ManipulableNodeType            || targetNode.nodeType == ManipulableNodeType
+    val connectsToControlNode =                 sourceNode.nodeType == ControlNodeType                || targetNode.nodeType == ControlNodeType
+    val connectsToTimeNode =                    sourceNode.nodeType == TimeNodeType                   || targetNode.nodeType == TimeNodeType      
+    val connectsToDeleteManipulableNodeType =   sourceNode.nodeType == DeleteManipulableNodeType      || targetNode.nodeType == DeleteManipulableNodeType  
+    
     
     if (connectsToAnchorNode) { //we don't allow for branching of paths
       println("branching is not allowed")
@@ -156,7 +158,7 @@ class CursorProcessor(app: Application) extends AbstractGlobalInputProcessor[MTF
       println("connection to control node not allowed")
       sourceNode.giveFeedback(FeedbackEvent("ILLEGAL NODE INVOLVEMENT"))
       targetNode.giveFeedback(FeedbackEvent("ILLEGAL NODE INVOLVEMENT"))
-    }
+    }   
     else if (connectsToTimeNode) { //this HAS to be placed before connectsToManipulableNode
       this.processTimeConnection(sourceNode, targetNode)
     }    
@@ -164,6 +166,11 @@ class CursorProcessor(app: Application) extends AbstractGlobalInputProcessor[MTF
       println("connection to manipulable node not allowed")
       sourceNode.giveFeedback(FeedbackEvent("ILLEGAL NODE INVOLVEMENT"))
       targetNode.giveFeedback(FeedbackEvent("ILLEGAL NODE INVOLVEMENT"))
+    }
+    else if (connectsToDeleteManipulableNodeType) {
+      println("connection to delete manipulable node not allowed")
+      sourceNode.giveFeedback(FeedbackEvent("ILLEGAL NODE INVOLVEMENT"))
+      targetNode.giveFeedback(FeedbackEvent("ILLEGAL NODE INVOLVEMENT"))      
     }
     else {
       this.processRegularConnection(sourceNode, targetNode)
@@ -202,7 +209,7 @@ class CursorProcessor(app: Application) extends AbstractGlobalInputProcessor[MTF
   }
   
   
-  private def processTimeNodeToNodeConnection(timeNode: TimeNode, node: Node) {
+  private def processTimeNodeToNodeConnection(timeNode: TimeNode, node: Node) = {
     node.nodeType match {
       case _: StartNodeType => {
         (timeNode.associatedPath, node.associatedPath) match {

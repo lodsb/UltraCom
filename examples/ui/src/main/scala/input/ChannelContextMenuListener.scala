@@ -33,7 +33,7 @@ class ChannelContextMenuListener(node: Node) extends IGestureEventListener() {
             if (tahEvent.isHoldComplete && !NodeContextMenu.isMenuVisible(node)) {
               println("tap and hold completed")
               node.associatedPath.foreach(_ ! UiEvent("IGNORE_NEXT_TOGGLE_PLAYBACK")) //ignore next tap
-              node match {case manipulableNode: ManipulableNode => manipulableNode ! UiEvent("IGNORE_NEXT_TOGGLE_PLAYBACK")}
+              node match {case manipulableNode: ManipulableNode => manipulableNode ! UiEvent("IGNORE_NEXT_TOGGLE_PLAYBACK") case otherNode => {}}
               val menu = ChannelContextMenu(Ui, node)
               NodeContextMenu += menu
               node.addChild(menu)

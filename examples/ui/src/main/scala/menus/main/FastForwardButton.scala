@@ -72,7 +72,7 @@ class FastForwardButton(app: Application, menu: Menu, center: Vector3D) extends 
   override def up() = {}
   
   override def down() = {
-    Ui.paths.foreach(_ ! PathFastForwardEvent(50))   
+    Ui.paths.foreach(_ ! PathFastForwardEvent(500))   
   }
   
 }

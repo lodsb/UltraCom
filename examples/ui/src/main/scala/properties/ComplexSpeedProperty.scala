@@ -64,6 +64,10 @@ class ComplexSpeedProperty(connection: ManipulableBezierConnection, numberOfBuck
     SpeedPropertyType.width
   }
   
+  def propertyType = {
+    SpeedPropertyType
+  }
+  
   /**
   * Maps property values to opacity values in the range (0,255), 255 being completely opaque.
   */

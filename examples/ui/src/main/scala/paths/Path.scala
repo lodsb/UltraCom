@@ -25,13 +25,16 @@ import ui.events._
 import ui.audio._
 import ui.properties.types._
 import ui.menus.main._
+import ui.usability._
+import ui.tools._
+import ui.persistence._
 
 
 
 abstract class PlaybackState{}
-object Playing extends PlaybackState{}
-object Paused extends PlaybackState{}
-object Stopped extends PlaybackState{}
+object Playing extends PlaybackState{override def toString = "Playing"}
+object Paused extends PlaybackState{override def toString = "Paused"}
+object Stopped extends PlaybackState{override def toString = "Stopped"}
 
 
 object Path {
@@ -94,7 +97,7 @@ object Path {
 class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node) => ManipulableBezierConnection), var connections: List[ManipulableBezierConnection], 
            playback: PlaybackState, playbackType: NodeType, reversed: Boolean, currentCon: Int, connectionAcc: Float, currentConParam: Float, currentBuck: Int, bucketAcc: Float,
            timeNodesMap: Map[TimeNode, Boolean], timeConnectionsList: List[TimeConnection]) 
-           extends AbstractVisibleComponent(app) with Actor with AudioChannels {
+           extends AbstractVisibleComponent(app) with Actor with AudioChannels with ToolRegistry with Persistability {
  
   private var exists = true
   
@@ -155,7 +158,8 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
          ensure consistent state without synchronization on some datastructure.
       */
       
-      receive {         
+      receive {       
+        
         case event: TimeNodeAddEvent => {
           this.synchronized {
             this.timeNodes = this.timeNodes + (event.node -> false)
@@ -269,36 +273,54 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
             
             val nodeConnectionIndex = this.indexOf(event.node.connection)
             if  (nodeConnectionIndex > this.currentConnection || (nodeConnectionIndex == this.currentConnection && event.node.parameter > this.currentConnectionParameter)) {
-                //if through the movement the time node is now yet to come again
+                //if through the movement the time node is now yet to come (again)
                 this.timeNodes = this.timeNodes.updated(event.node, false) //we reset the trigger mechanism
             }
             this.timeConnections.filter(_.timeNode == event.node).foreach(_.updateConnectionNode()) //more than needed but not costly
           }
         }    
+
+        case event: RegisterToolWithLocationEvent => {
+          this.synchronized {
+            this.registerTool(event.tool, event.connection, event.connectionParameter, event.manipulationRadius)
+          }
+        }
+        
+        case event: UnregisterToolEvent => {
+          this.synchronized {
+            this.unregisterTool(event.tool)
+          }
+        }   
         
         case event: PathManipulationEvent => {
           this.synchronized {
-            event.connection.updateProperty(event.propertyType, event.connectionParameter, event.manipulationRadius, event.value)
-            if (event.propertyType == SpeedPropertyType) { //if the speed property has been changed
+            event.connection.updateProperty(event.tool.propertyType, event.connectionParameter, event.manipulationRadius, event.value)
+            if (event.tool.propertyType == SpeedPropertyType) { //if the speed property has been changed
               this.connectionAccumulator = event.connection.partialPropertySum(SpeedPropertyType, this.currentBucket-1) + this.bucketAccumulator 
               /* then we need to recalculate the connectionAccumulator since we don't want for manipulations to affect the playback position on the arc */
             }
+            this.registerTool(event.tool, event.connection, event.connectionParameter, event.manipulationRadius)
           }
         }     
+       
         
         case event: PathFastForwardEvent => {
           this.synchronized {
-            val time = event.time
-            this.bucketAccumulator = this.bucketAccumulator + time
-            this.connectionAccumulator = this.connectionAccumulator + time
+            if (this.playbackState != Stopped) {
+              val time = event.time
+              this.bucketAccumulator = this.bucketAccumulator + time
+              this.connectionAccumulator = this.connectionAccumulator + time
+            }
           }
         }
         
         case event: PathRewindEvent => {
           this.synchronized {
-            val time = event.time
-            this.bucketAccumulator = this.bucketAccumulator - time
-            this.connectionAccumulator = this.connectionAccumulator - time
+            if (this.playbackState != Stopped) {
+              val time = event.time
+              this.bucketAccumulator = this.bucketAccumulator - time
+              this.connectionAccumulator = this.connectionAccumulator - time
+            }
           }
         }
         
@@ -890,5 +912,16 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
   override def toString = {
     "Path(" + this.connections.map(_ + "").reduce((c1, c2) => c1 + " + " + c2) + ")"
   }
+  
+  
+  override def toXML = {
+    val start = "<path factory = 'ManipulableBezierConnection'>"
+    val connections = "<connections>" + this.connections.map(_.toXML).reduce((c1, c2) => c1 + " " + c2) + "</connections>"
+    val timeNodes = "<timeNodes>" + this.timeNodes.keys.map(_.toXML).reduce((n1, n2) => n1 + " " + n2) + "</timeNodes>"
+    val timeConnections = "<timeConnections>" + this.timeConnections.map(_.toXML).reduce((c1, c2) => c1 + " " + c2) + "</timeConnections>"
+    val end = "</path>"
+    start + connections + timeNodes + timeConnections + end
+  }
+  
   
 }

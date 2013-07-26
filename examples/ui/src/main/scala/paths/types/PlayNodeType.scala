@@ -47,14 +47,17 @@ object PlayNodeType extends StartNodeType{
         gestureEvent match {
           case tapEvent: TapEvent => {
               if (tapEvent.getTapID == TapEvent.BUTTON_DOWN) {
+                node.setTapped(true)
                 println("play down")
               }
               else if (tapEvent.getTapID == TapEvent.BUTTON_UP) {
                 println("play up")
+                node.setTapped(false)
                 node.associatedPath.foreach(_ ! UiEvent("IGNORE_IGNORE_NEXT_TOGGLE_PLAYBACK"))
               }
               else if (tapEvent.getTapID == TapEvent.BUTTON_CLICKED) {
                 println("play clicked")
+                node.setTapped(false)
                 node.associatedPath.foreach(_ ! UiEvent("START_PLAYBACK"))
               }
               true

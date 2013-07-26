@@ -25,13 +25,15 @@ object SimpleVolumeProperty {
 class SimpleVolumeProperty(node: ManipulableNode) extends SimpleProperty {
   
   override def draw(g: PGraphics) = {
-    val playbackT = node.playbackPosition
+    val playbackT = node.playbackPosition   
+    val isHighlighted = node.toolRegistryEntries.exists(entry => entry._1.propertyType == this.propertyType)
+
     val center = node.getCenterPointLocal
     val (x,y) = (center.getX, center.getY)
     val innerRadius = node.radius
     val outerRadius = innerRadius + this.mappedValue
-    g.noStroke()
-
+    g.noStroke()    
+   
     val steps = 100 //number of rectangles to approximate a circle
     (0 to steps-1).foreach(step => { //iteratively draw rectangles 
       val t = step/steps.toFloat
@@ -41,10 +43,19 @@ class SimpleVolumeProperty(node: ManipulableNode) extends SimpleProperty {
       val (x3, y3) = ((outerRadius*math.cos(math.Pi*t2) + x).toFloat, (outerRadius*math.sin(math.Pi*t2) + y).toFloat)
       val (x4, y4) = ((innerRadius*math.cos(math.Pi*t2) + x).toFloat, (innerRadius*math.sin(math.Pi*t2) + y).toFloat) 
       
-      val red = VolumePropertyType.PropertyColor.getR
-      val green = VolumePropertyType.PropertyColor.getG
-      val blue = VolumePropertyType.PropertyColor.getB
-      val alpha = if (t < playbackT) VolumePropertyType.ProgressColorAlpha else VolumePropertyType.ColorAlpha     
+      val red = this.propertyType.PropertyColor.getR
+      val green = this.propertyType.PropertyColor.getG
+      val blue = this.propertyType.PropertyColor.getB    
+      val alpha = 
+        if (isHighlighted) {
+          if (t < playbackT) this.propertyType.HighlightedColorAlpha
+          else this.propertyType.HighlightedColorAlpha * 0.7f
+        }
+        else {
+          if (t < playbackT) this.propertyType.ProgressColorAlpha 
+          else this.propertyType.ColorAlpha
+        }
+         
       g.fill(red, green, blue, alpha)      
       
       g.beginShape() //defines a small rectangle which fits the corresponding segment on the circle
@@ -57,15 +68,19 @@ class SimpleVolumeProperty(node: ManipulableNode) extends SimpleProperty {
   }    
   
   override def range = {
-    VolumePropertyType.range
+    this.propertyType.range
   }
   
   override def visualWidth = {
-    VolumePropertyType.width
+    this.propertyType.width
   }  
   
   override def maxWidth = {
-    VolumePropertyType.width
+    this.propertyType.width
   }  
+  
+  def propertyType = {
+    VolumePropertyType
+  }    
   
 }

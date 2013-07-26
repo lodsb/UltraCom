@@ -22,6 +22,8 @@ import ui.events._
 import ui.audio._
 import ui._
 import ui.util._
+import ui.tools._
+import ui.persistence._
 
 
 object ManipulableNode {
@@ -44,7 +46,7 @@ object ManipulableNode {
 *   <li> Change of volume  </li>
 * </ul>
 */
-class ManipulableNode(app: Application, center: Vector3D) extends Node(app, ManipulableNodeType, None, center) with Actor with AudioChannels {
+class ManipulableNode(app: Application, center: Vector3D) extends Node(app, ManipulableNodeType, None, center) with Actor with AudioChannels with ToolRegistry with Persistability {
   private var exists = true
   private var isPlaying = false
   private var playbackPos = 0.0f
@@ -70,10 +72,23 @@ class ManipulableNode(app: Application, center: Vector3D) extends Node(app, Mani
 
     while (this.exists) {
       receive {
+
+        case event: RegisterToolEvent => {
+          this.synchronized {
+            this.registerTool(event.tool)
+          }
+        }
+        
+        case event: UnregisterToolEvent => {
+          this.synchronized {
+            this.unregisterTool(event.tool)
+          }
+        }         
         
         case event: ManipulationEvent => {
           this.synchronized {
-            this.updateProperty(event.propertyType, event.value) 
+            this.updateProperty(event.tool.propertyType, event.value) 
+            this.registerTool(event.tool)
           }
         }
         
@@ -111,7 +126,13 @@ class ManipulableNode(app: Application, center: Vector3D) extends Node(app, Mani
         case event: UiEvent => { //a 'simple' ui event
           this.synchronized {        
             
-            if (event.name == "IGNORE_NEXT_TOGGLE_PLAYBACK") {
+            if (event.name == "REMOVE_TIME_CONNECTIONS") {
+              this.synchronized {
+                this.removeTimeConnections()
+              }
+            }
+            
+            else if (event.name == "IGNORE_NEXT_TOGGLE_PLAYBACK") {
               ignoreNextTogglePlayback = true
             }
                       
@@ -161,7 +182,7 @@ class ManipulableNode(app: Application, center: Vector3D) extends Node(app, Mani
   /**
   * Updates the specified property.
   */
-  def updateProperty(propertyIdentifier: PropertyType, value: Float) = {
+  private def updateProperty(propertyIdentifier: PropertyType, value: Float) = {
     if (this.properties.contains(propertyIdentifier)) {
       val property = this.properties(propertyIdentifier)
       property.update(this.value(property, value))
@@ -203,91 +224,19 @@ class ManipulableNode(app: Application, center: Vector3D) extends Node(app, Mani
       Ui -= timeConnection
     })      
   }  
-  
-  
-  
-  def setupDeletionNode() = {
+   
+  private def setupDeletionNode() = {
     val deleteCenter = Vec3d(this.getCenterPointLocal.getX + 2.5f*NodeType.Radius, this.getCenterPointLocal.getY)    
-    val deleteNode = new DeleteNode(app, deleteCenter)     
+    val deleteNode = new DeleteNode(app, this, deleteCenter)     
     this.addChild(deleteNode)    
   }
-  
 
 
-  private class DeleteNode(app: Application, center: Vector3D) extends Node(app, DeleteManipulationNodeType, None, center) {   
-    private val manipulableNode = ManipulableNode.this
-    
-    private val DeleteNodeRadius = NodeType.Radius * ControlNodeType.Size.toFloat
-    private val LineColor = Color(0, 130, 130, 150)  
-    private val DotNumber = 15
-      
-    override def drawComponent(g: PGraphics) = {
-      super.drawComponent(g)
-      
-      //draw dotted line from button to node
-      g.stroke(0, 0, 0, LineColor.getAlpha)
-      val deletableNodeVector = this.parentToLocal(manipulableNode.getCenterPointLocal)
-      val deletableNodePosition = (deletableNodeVector.getX, deletableNodeVector.getY)
-      val deleteNodePosition = (this.getCenterPointLocal.getX, this.getCenterPointLocal.getY)
-      val distance = Vector.euclideanDistance(deletableNodePosition, deleteNodePosition)
-      val line = Functions.line(deletableNodePosition, deleteNodePosition)_
-      (0 until this.DotNumber).foreach(dot => {
-        val (x,y) = line(dot/this.DotNumber.toFloat)
-        g.point(x, y)
-      })
-    }   
+  override def toXML = {
+    import scala.collection.mutable.StringBuilder
+    val node = new StringBuilder()
+    node.toString
   }
-  
-  private object DeleteManipulationNodeType extends NodeType {  
-    private val manipulableNode = ManipulableNode.this
-    private val DeleteBackgroundColor = Color(0, 0, 0, 50)
-    private val DeleteStrokeColor = Color(0, 0, 0, 0)
-    val Size = 0.5f
-    
-    protected override def setupInteractionImpl(app: Application, deletionNode: Node) = {
-      deletionNode.setScale(this.size)  
-      
-      val tapProcessor = new TapProcessor(app)
-      tapProcessor.setEnableDoubleTap(true)
-      deletionNode.registerInputProcessor(tapProcessor)      
-        
-      deletionNode.addGestureListener(classOf[TapProcessor], new IGestureEventListener() {
-        override def processGestureEvent(gestureEvent: MTGestureEvent): Boolean = {
-          gestureEvent match {
-            case tapEvent: TapEvent => {
-                if (tapEvent.getTapID == TapEvent.BUTTON_DOUBLE_CLICKED) {
-                  val replacementNode = IsolatedNode(Ui, manipulableNode.position)
-                  manipulableNode.removeTimeConnections()
-                  Ui -= manipulableNode
-                  Ui += replacementNode
-                }
-                true
-            }
-            case someEvent => {
-                println("I can't process this particular event: " + someEvent.toString)
-                false
-            }
-          }
-        }
-      })   
-    }
-
-      
-    override def size = {
-      this.Size
-    }   
-    
-    override def backgroundColor = {
-      this.DeleteBackgroundColor
-    }
-    
-    override def strokeColor = {
-      this.DeleteStrokeColor
-    }
-    
-      
-  }  
-
   
   
 }

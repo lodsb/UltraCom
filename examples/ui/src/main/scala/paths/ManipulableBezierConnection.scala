@@ -202,5 +202,11 @@ class ManipulableBezierConnection(app: Application, startNode: Node, controlNode
       })
     }
   }   
+  
+ 
+  override def toXML = {
+    ""
+  }
+  
 }
  

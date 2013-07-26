@@ -1,6 +1,6 @@
 #Wed Jan 30 04:24:13 CET 2008	
 Frametitle=UI
-ScSynthPath=/usr/local/bin/scsynth
+ScSynthPath=/Applications/SuperCollider/SuperCollider.app/Contents/Resources/scsynth
 #Renderer: OpenGL: 1 P3D: 2
 Renderer=1
 #Fullscreen:'true' or 'false'

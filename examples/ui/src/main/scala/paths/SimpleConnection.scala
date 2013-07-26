@@ -95,4 +95,9 @@ class SimpleConnection(app: Application, node1: Node, node2: Node) extends Conne
     "Connection(" + this.firstNode + " " + this.secondNode + ")"
   }
   
+  
+  override def toXML = {
+    "<SimpleConnection></SimpleConnection>"
+  }  
+  
 }

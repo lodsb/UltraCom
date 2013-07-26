@@ -125,86 +125,148 @@ class FeedforwardProcessor(app: Application) extends AbstractGlobalInputProcesso
     val connectsToControlNode =               sourceNode.nodeType == ControlNodeType                || targetNode.nodeType == ControlNodeType
     val connectsToTimeNode =                  sourceNode.nodeType == TimeNodeType                   || targetNode.nodeType == TimeNodeType 
     val connectsToTimeConnectionNode =        sourceNode.nodeType == TimeConnectionNodeType         || targetNode.nodeType == TimeConnectionNodeType    
+    val connectsToDeleteManipulableNode =     sourceNode.nodeType == DeleteManipulableNodeType      || targetNode.nodeType == DeleteManipulableNodeType            
     
-    if (connectsToAnchorNode || connectsToControlNode || connectsToManipulableNode) {
+    if (connectsToAnchorNode || connectsToControlNode || connectsToTimeConnectionNode || connectsToDeleteManipulableNode) {
       if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("ILLEGAL ACTION", feedforwardValue)))
     }
-    else if (connectsToTimeNode || connectsToTimeConnectionNode) {
-      
+    else if (connectsToTimeNode) { //has to be placed before manipulable nodes...
+      this.processTimeConnection(sourceNode, targetNode, virtualNode, feedforwardValue)
+    }   
+    else if (connectsToManipulableNode) {
+      if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("ILLEGAL ACTION", feedforwardValue)))
     }
     else {
-      if (sourceNode != targetNode) {
-        (sourceNode.associatedPath, targetNode.associatedPath) match {
-          case (None, None) => { //source and target are both isolated nodes
-            if (!this.feedforwardMap.contains(sourceNode) || this.feedforwardMap(sourceNode).value < feedforwardValue) this.feedforwardMap += ((sourceNode, NodeTypeFeedforwardEvent(PlayNodeType, feedforwardValue)))
-            if (!this.feedforwardMap.contains(targetNode) || this.feedforwardMap(targetNode).value < feedforwardValue) this.feedforwardMap += ((targetNode, NodeTypeFeedforwardEvent(StopNodeType, feedforwardValue)))
-            if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("LEGAL ACTION", feedforwardValue)))
-          }
-          case (None, Some(targetPath)) => { //source is an isolated node, target is a manipulable path
-            targetNode.nodeType match {
-              case _: StartNodeType => {
-                if (!this.feedforwardMap.contains(sourceNode) || this.feedforwardMap(sourceNode).value < feedforwardValue) this.feedforwardMap += ((sourceNode, NodeTypeFeedforwardEvent(PlayNodeType, feedforwardValue)))
-                if (!this.feedforwardMap.contains(targetNode) || this.feedforwardMap(targetNode).value < feedforwardValue) this.feedforwardMap += ((targetNode, NodeTypeFeedforwardEvent(AnchorNodeType, feedforwardValue)))
-                if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("LEGAL ACTION", feedforwardValue)))
-              }
-              case _: EndNodeType => {
-                if (!this.feedforwardMap.contains(sourceNode) || this.feedforwardMap(sourceNode).value < feedforwardValue) this.feedforwardMap += ((sourceNode, NodeTypeFeedforwardEvent(StopNodeType, feedforwardValue)))
-                if (!this.feedforwardMap.contains(targetNode) || this.feedforwardMap(targetNode).value < feedforwardValue) this.feedforwardMap += ((targetNode, NodeTypeFeedforwardEvent(AnchorNodeType, feedforwardValue)))
-                if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("LEGAL ACTION", feedforwardValue)))
-              }
-            }  
-          }
-          case (Some(sourcePath), None) => { //source is a manipulable path, target is an isolated node
-            sourceNode.nodeType match {
-              case _: StartNodeType => {
-                if (!this.feedforwardMap.contains(sourceNode) || this.feedforwardMap(sourceNode).value < feedforwardValue) this.feedforwardMap += ((sourceNode, NodeTypeFeedforwardEvent(AnchorNodeType, feedforwardValue)))
-                if (!this.feedforwardMap.contains(targetNode) || this.feedforwardMap(targetNode).value < feedforwardValue) this.feedforwardMap += ((targetNode, NodeTypeFeedforwardEvent(PlayNodeType, feedforwardValue)))
-                if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("LEGAL ACTION", feedforwardValue)))
-              }
-              case _: EndNodeType => {
-                if (!this.feedforwardMap.contains(sourceNode) || this.feedforwardMap(sourceNode).value < feedforwardValue) this.feedforwardMap += ((sourceNode, NodeTypeFeedforwardEvent(AnchorNodeType, feedforwardValue)))
-                if (!this.feedforwardMap.contains(targetNode) || this.feedforwardMap(targetNode).value < feedforwardValue) this.feedforwardMap += ((targetNode, NodeTypeFeedforwardEvent(StopNodeType, feedforwardValue)))
-                if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("LEGAL ACTION", feedforwardValue)))
-              }
-            }   
-          }         
-          case (Some(sourcePath), Some(targetPath)) => { //source and target are both manipulable paths
-            if (sourcePath ne targetPath) { //do not connect start and end of same path
-              (sourceNode.nodeType, targetNode.nodeType) match {
-                case (_: StartNodeType, _: EndNodeType) => {
-                  if (!this.feedforwardMap.contains(sourceNode) || this.feedforwardMap(sourceNode).value < feedforwardValue) this.feedforwardMap += ((sourceNode, NodeTypeFeedforwardEvent(AnchorNodeType, feedforwardValue)))
-                  if (!this.feedforwardMap.contains(targetNode) || this.feedforwardMap(targetNode).value < feedforwardValue) this.feedforwardMap += ((targetNode, NodeTypeFeedforwardEvent(AnchorNodeType, feedforwardValue)))
-                  if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("LEGAL ACTION", feedforwardValue)))
-                }
-                case (_: EndNodeType, _: StartNodeType) => {
-                  if (!this.feedforwardMap.contains(sourceNode) || this.feedforwardMap(sourceNode).value < feedforwardValue) this.feedforwardMap += ((sourceNode, NodeTypeFeedforwardEvent(AnchorNodeType, feedforwardValue)))
-                  if (!this.feedforwardMap.contains(targetNode) || this.feedforwardMap(targetNode).value < feedforwardValue) this.feedforwardMap += ((targetNode, NodeTypeFeedforwardEvent(AnchorNodeType, feedforwardValue)))
-                  if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("LEGAL ACTION", feedforwardValue)))
-                }
-                case somethingElse => {
-                  if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("ILLEGAL ACTION", feedforwardValue)))
-                }
-              }
-            }
-            else {
-              if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("ILLEGAL ACTION", feedforwardValue)))
-            }
-          }
-        }
+      this.processRegularConnection(sourceNode, targetNode, virtualNode, feedforwardValue)
+    } 
+  }    
+ 
+ 
+  private def processTimeConnection(sourceNode: Node, targetNode: Node, virtualNode: Node, feedforwardValue: Float) = {
+    (sourceNode, targetNode) match {
+      case (timeNode: TimeNode, node: ManipulableNode) => {
+        this.processTimeNodeToManipulableNodeConnection(timeNode, node, virtualNode, feedforwardValue)
       }
-      else { //handle self reference sourceNode == targetNode
-        (sourceNode.associatedPath, targetNode.associatedPath) match {
-          case (None, None) => { //source and target are both isolated nodes
-            if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("LEGAL ACTION", feedforwardValue)))
-            if (!this.feedforwardMap.contains(targetNode) || this.feedforwardMap(targetNode).value < feedforwardValue) this.feedforwardMap += ((targetNode, NodeTypeFeedforwardEvent(ManipulableNodeType, feedforwardValue)))
+      case (node: ManipulableNode, timeNode: TimeNode) => {
+        this.processTimeNodeToManipulableNodeConnection(timeNode, node, virtualNode, feedforwardValue)        
+      }
+      case (timeNode: TimeNode, node: Node) => {
+        this.processTimeNodeToNodeConnection(timeNode, node, virtualNode, feedforwardValue)
+      }
+      case (node: Node, timeNode: TimeNode) => {
+        this.processTimeNodeToNodeConnection(timeNode, node, virtualNode, feedforwardValue)
+      }
+      case (firstNode: Node, secondNode: Node) => {
+        if (!this.feedforwardMap.contains(firstNode) || this.feedforwardMap(firstNode).value < feedforwardValue) this.feedforwardMap += ((firstNode, NodeTypeFeedforwardEvent(PlayNodeType, feedforwardValue)))
+        if (!this.feedforwardMap.contains(secondNode) || this.feedforwardMap(secondNode).value < feedforwardValue) this.feedforwardMap += ((secondNode, NodeTypeFeedforwardEvent(StopNodeType, feedforwardValue)))
+        if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("ILLEGAL ACTION", feedforwardValue)))          
+      }
+    }
+  }
+ 
+  
+  private def processTimeNodeToManipulableNodeConnection(timeNode: TimeNode, manipulableNode: ManipulableNode, virtualNode: Node, feedforwardValue: Float) = {
+    if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("LEGAL ACTION", feedforwardValue)))    
+  }
+  
+
+  private def processTimeNodeToNodeConnection(timeNode: TimeNode, node: Node, virtualNode: Node, feedforwardValue: Float) = {
+    node.nodeType match {
+      case _: StartNodeType => {
+        (timeNode.associatedPath, node.associatedPath) match {
+          case (Some(timeNodePath), Some(nodePath)) => { //if the target node is part of a path
+            if (timeNodePath != nodePath) {
+              if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("LEGAL ACTION", feedforwardValue)))               
+            }
+            else { //a path cannot trigger itself
+              if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("ILLEGAL ACTION", feedforwardValue)))               
+            }
           }
           case somethingElse => {
+            if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("ILLEGAL ACTION", feedforwardValue)))                                 
+          }
+        }          
+      }
+      case otherNodeType => {
+          if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("ILLEGAL ACTION", feedforwardValue)))               
+      }
+    }    
+  }  
+  
+  
+  
+  private def processRegularConnection(sourceNode: Node, targetNode: Node, virtualNode: Node, feedforwardValue: Float) = {
+    if (sourceNode != targetNode) {
+      (sourceNode.associatedPath, targetNode.associatedPath) match {
+        case (None, None) => { //source and target are both isolated nodes
+          if (!this.feedforwardMap.contains(sourceNode) || this.feedforwardMap(sourceNode).value < feedforwardValue) this.feedforwardMap += ((sourceNode, NodeTypeFeedforwardEvent(PlayNodeType, feedforwardValue)))
+          if (!this.feedforwardMap.contains(targetNode) || this.feedforwardMap(targetNode).value < feedforwardValue) this.feedforwardMap += ((targetNode, NodeTypeFeedforwardEvent(StopNodeType, feedforwardValue)))
+          if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("LEGAL ACTION", feedforwardValue)))
+        }
+        case (None, Some(targetPath)) => { //source is an isolated node, target is a manipulable path
+          targetNode.nodeType match {
+            case _: StartNodeType => {
+              if (!this.feedforwardMap.contains(sourceNode) || this.feedforwardMap(sourceNode).value < feedforwardValue) this.feedforwardMap += ((sourceNode, NodeTypeFeedforwardEvent(PlayNodeType, feedforwardValue)))
+              if (!this.feedforwardMap.contains(targetNode) || this.feedforwardMap(targetNode).value < feedforwardValue) this.feedforwardMap += ((targetNode, NodeTypeFeedforwardEvent(AnchorNodeType, feedforwardValue)))
+              if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("LEGAL ACTION", feedforwardValue)))
+            }
+            case _: EndNodeType => {
+              if (!this.feedforwardMap.contains(sourceNode) || this.feedforwardMap(sourceNode).value < feedforwardValue) this.feedforwardMap += ((sourceNode, NodeTypeFeedforwardEvent(StopNodeType, feedforwardValue)))
+              if (!this.feedforwardMap.contains(targetNode) || this.feedforwardMap(targetNode).value < feedforwardValue) this.feedforwardMap += ((targetNode, NodeTypeFeedforwardEvent(AnchorNodeType, feedforwardValue)))
+              if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("LEGAL ACTION", feedforwardValue)))
+            }
+          }  
+        }
+        case (Some(sourcePath), None) => { //source is a manipulable path, target is an isolated node
+          sourceNode.nodeType match {
+            case _: StartNodeType => {
+              if (!this.feedforwardMap.contains(sourceNode) || this.feedforwardMap(sourceNode).value < feedforwardValue) this.feedforwardMap += ((sourceNode, NodeTypeFeedforwardEvent(AnchorNodeType, feedforwardValue)))
+              if (!this.feedforwardMap.contains(targetNode) || this.feedforwardMap(targetNode).value < feedforwardValue) this.feedforwardMap += ((targetNode, NodeTypeFeedforwardEvent(PlayNodeType, feedforwardValue)))
+              if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("LEGAL ACTION", feedforwardValue)))
+            }
+            case _: EndNodeType => {
+              if (!this.feedforwardMap.contains(sourceNode) || this.feedforwardMap(sourceNode).value < feedforwardValue) this.feedforwardMap += ((sourceNode, NodeTypeFeedforwardEvent(AnchorNodeType, feedforwardValue)))
+              if (!this.feedforwardMap.contains(targetNode) || this.feedforwardMap(targetNode).value < feedforwardValue) this.feedforwardMap += ((targetNode, NodeTypeFeedforwardEvent(StopNodeType, feedforwardValue)))
+              if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("LEGAL ACTION", feedforwardValue)))
+            }
+          }   
+        }         
+        case (Some(sourcePath), Some(targetPath)) => { //source and target are both manipulable paths
+          if (sourcePath ne targetPath) { //do not connect start and end of same path
+            (sourceNode.nodeType, targetNode.nodeType) match {
+              case (_: StartNodeType, _: EndNodeType) => {
+                if (!this.feedforwardMap.contains(sourceNode) || this.feedforwardMap(sourceNode).value < feedforwardValue) this.feedforwardMap += ((sourceNode, NodeTypeFeedforwardEvent(AnchorNodeType, feedforwardValue)))
+                if (!this.feedforwardMap.contains(targetNode) || this.feedforwardMap(targetNode).value < feedforwardValue) this.feedforwardMap += ((targetNode, NodeTypeFeedforwardEvent(AnchorNodeType, feedforwardValue)))
+                if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("LEGAL ACTION", feedforwardValue)))
+              }
+              case (_: EndNodeType, _: StartNodeType) => {
+                if (!this.feedforwardMap.contains(sourceNode) || this.feedforwardMap(sourceNode).value < feedforwardValue) this.feedforwardMap += ((sourceNode, NodeTypeFeedforwardEvent(AnchorNodeType, feedforwardValue)))
+                if (!this.feedforwardMap.contains(targetNode) || this.feedforwardMap(targetNode).value < feedforwardValue) this.feedforwardMap += ((targetNode, NodeTypeFeedforwardEvent(AnchorNodeType, feedforwardValue)))
+                if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("LEGAL ACTION", feedforwardValue)))
+              }
+              case somethingElse => {
+                if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("ILLEGAL ACTION", feedforwardValue)))
+              }
+            }
+          }
+          else {
             if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("ILLEGAL ACTION", feedforwardValue)))
           }
         }
       }
-    } 
-  }    
+    }
+    else { //handle self reference sourceNode == targetNode
+      (sourceNode.associatedPath, targetNode.associatedPath) match {
+        case (None, None) => { //source and target are both isolated nodes
+          if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("LEGAL ACTION", feedforwardValue)))
+          if (!this.feedforwardMap.contains(targetNode) || this.feedforwardMap(targetNode).value < feedforwardValue) this.feedforwardMap += ((targetNode, NodeTypeFeedforwardEvent(ManipulableNodeType, feedforwardValue)))
+        }
+        case somethingElse => {
+          if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("ILLEGAL ACTION", feedforwardValue)))
+        }
+      }
+    }    
+  }
   
   
   /**

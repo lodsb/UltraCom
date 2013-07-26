@@ -23,13 +23,14 @@ import org.mt4j.types.Vec3d
 import processing.core.PGraphics
 
 import ui.paths.types._
+import ui.persistence._
 
 
 /**
 * This abstract class represents a connection between two (not necessarily distinct) nodes,
 * possibly with further nodes altering the shape and/or behaviour of the connection.
 */
-abstract class Connection(app: Application, val nodes: List[Node]) extends AbstractVisibleComponent(app) {
+abstract class Connection(app: Application, val nodes: List[Node]) extends AbstractVisibleComponent(app) with Persistability {
   
   this.setPickable(false)
   

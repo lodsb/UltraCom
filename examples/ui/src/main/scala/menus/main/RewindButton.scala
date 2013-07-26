@@ -71,7 +71,7 @@ class RewindButton(app: Application, menu: Menu, center: Vector3D) extends Butto
   override def up() = {}
   
   override def down() = {
-    Ui.paths.foreach(_ ! PathRewindEvent(50)) 
+    Ui.paths.foreach(_ ! PathRewindEvent(500)) 
   }  
   
 }

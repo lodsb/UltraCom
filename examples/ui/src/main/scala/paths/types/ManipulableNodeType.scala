@@ -42,13 +42,16 @@ object ManipulableNodeType extends EndNodeType with StartNodeType {
           case tapEvent: TapEvent => {
               if (tapEvent.getTapID == TapEvent.BUTTON_DOWN) {
                 println("play down")
+                node.setTapped(true)
               }
               else if (tapEvent.getTapID == TapEvent.BUTTON_UP) {
                 println("play up")
+                node.setTapped(false)
                 node match {case manipulableNode: ManipulableNode => manipulableNode ! UiEvent("IGNORE_IGNORE_NEXT_TOGGLE_PLAYBACK")}
               }
               else if (tapEvent.getTapID == TapEvent.BUTTON_CLICKED) {
                 println("play clicked")
+                node.setTapped(false)
                 node match {
                   case manipulableNode: ManipulableNode => {
                     manipulableNode ! UiEvent("START_PLAYBACK") 

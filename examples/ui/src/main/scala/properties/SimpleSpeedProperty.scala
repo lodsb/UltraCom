@@ -28,15 +28,19 @@ class SimpleSpeedProperty(node: ManipulableNode) extends SimpleProperty {
   }    
   
   override def range = {
-    SpeedPropertyType.range
+    this.propertyType.range
   }
   
   override def visualWidth = {
-    SpeedPropertyType.width
+    this.propertyType.width
   }  
 
   override def maxWidth = {
-    SpeedPropertyType.width
+    this.propertyType.width
+  }  
+
+  def propertyType = {
+    SpeedPropertyType
   }  
   
 }

@@ -26,11 +26,6 @@ abstract class SimpleProperty extends Property {
     val (min, max) = this.range        
     this.value = math.max(math.min(max, newValue), min)
   }
-
-  /**
-  * Returns the maximum visual width of this property.
-  */
-  def visualWidth: Float
   
   /**
   * Maps the property value to a drawable range, that is, the range [0, visualWidth].

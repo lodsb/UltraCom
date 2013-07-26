@@ -145,4 +145,9 @@ class TimeConnection(app: Application, val timeNode: TimeNode, val connectionNod
     super.destroy()
   }
   
+  
+  override def toXML = {
+    ""
+  }  
+  
 }

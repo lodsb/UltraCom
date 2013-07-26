@@ -22,12 +22,14 @@ abstract class Property {
   def range: (Float, Float)
   
   /**
-  * Returns the maximum visual width of this property.
+  * Returns the visual width of this property, that is, the maximum width with which
+  * this property is visually represented. 
+  * Note that this value may be different from the maximum width returned by method maxWidth.
   */
   def visualWidth: Float
   
   /**
-  * Returns the maximum width of this property, which is used to determine when the property takes its maximum.
+  * Returns the maximum width of this property, which is used to determine the interaction area of this property.
   */
   def maxWidth: Float
 }

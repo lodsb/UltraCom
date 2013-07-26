@@ -1,16 +1,16 @@
 package ui.events
 
 import ui.paths._
-import ui.properties.types._
+import ui.tools._
 
 object ManipulationEvent {
 
-  def apply(propertyType: PropertyType, value: Float) = {
-    new ManipulationEvent(propertyType, value)
+  def apply(tool: Tool, value: Float) = {
+    new ManipulationEvent(tool, value)
   }
 }
 
-class ManipulationEvent(val propertyType: PropertyType, val value: Float) extends UiEvent("MANIPULATED") {
+class ManipulationEvent(val tool: Tool, val value: Float) extends UiEvent("MANIPULATED") {
 }
 
 

@@ -47,12 +47,15 @@ object ReverseNodeType extends EndNodeType{
                   case tapEvent: TapEvent => {
                       if (tapEvent.getTapID == TapEvent.BUTTON_DOWN) {
                         println("stop down")
+                        node.setTapped(true)
                       }
                       else if (tapEvent.getTapID == TapEvent.BUTTON_UP) {
                         println("stop up")
+                        node.setTapped(false)
                       }
                       else if (tapEvent.getTapID == TapEvent.BUTTON_CLICKED) {
                         println("stop clicked")
+                        node.setTapped(false)
                         node.associatedPath.foreach(_ ! UiEvent("STOP_PLAYBACK"))
                       }
                       true

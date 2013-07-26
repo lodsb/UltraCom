@@ -48,13 +48,16 @@ object PauseNodeType extends StartNodeType {
           case tapEvent: TapEvent => {
               if (tapEvent.getTapID == TapEvent.BUTTON_DOWN) {
                 println("pause down")
+                node.setTapped(true)
               }
               else if (tapEvent.getTapID == TapEvent.BUTTON_UP) {
                 println("pause up")
+                node.setTapped(false)
                 node.associatedPath.foreach(_ ! UiEvent("IGNORE_IGNORE_NEXT_TOGGLE_PLAYBACK"))
               }
               else if (tapEvent.getTapID == TapEvent.BUTTON_CLICKED) {
                 println("pause clicked")
+                node.setTapped(false)
                 node.associatedPath.foreach(_ ! UiEvent("PAUSE_PLAYBACK"))
               }
               true

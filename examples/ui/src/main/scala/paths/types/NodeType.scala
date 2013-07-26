@@ -16,6 +16,7 @@ object NodeType {
   protected[paths] val BackgroundColor = Color(255, 255, 255, 80)
   protected[paths] val ForegroundColor = Color(0, 0, 0, 200)
   protected[paths] val StrokeColor = Color(0, 0, 0, 100)
+  protected[paths] val TapColor = Color(0, 0, 0, 40)
   val StrokeWeight = 1
   val Radius = Ui.width/110
 }
@@ -66,6 +67,14 @@ abstract class NodeType{
     */
     def strokeColor = {
       Color(NodeType.StrokeColor.getR, NodeType.StrokeColor.getG, NodeType.StrokeColor.getB, NodeType.StrokeColor.getAlpha)
+    }
+    
+    /**
+    * Returns the tap color of a node.
+    */
+    def tapColor = {
+      Color(NodeType.TapColor.getR, NodeType.TapColor.getG, NodeType.TapColor.getB, NodeType.TapColor.getAlpha)
+    
     }
     
     /**
