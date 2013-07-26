@@ -35,6 +35,8 @@ import org.mt4j.util.math.Vector3D
 import org.mt4j.types.Vec3d
 
 import scala.actors.Actor._
+import scala.actors.Scheduler
+import scala.actors.scheduler.ResizableThreadPoolScheduler
 
 import java.util.ArrayList
 
@@ -190,6 +192,12 @@ class UIScene(app: Application, name: String) extends Scene(app,name){
 	
 	private def setup() = {
 	  System.setProperty("actors.enableForkJoin", "false") //disable default scheduler to avoid starvation when many actors are working
+    Scheduler.impl = {
+      val scheduler = new ResizableThreadPoolScheduler(false)
+      scheduler.start()
+      scheduler
+    }
+	  
 	  this.setClearColor(Color(255,255,255))
 	 
 	  val nodeSpace = NodeSpace(app)
