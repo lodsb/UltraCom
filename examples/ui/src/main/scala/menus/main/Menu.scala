@@ -181,7 +181,7 @@ class Menu(app: Application, val center: Vector3D, val rotationAngle: Float) ext
   
   
   def act() = {
-    
+    println("menu is now acting!")
     var lastTime = System.nanoTime()
     var currentTime = System.nanoTime()  
     var timeDiff = 0.0f

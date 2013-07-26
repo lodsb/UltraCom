@@ -71,11 +71,14 @@ class MenuProcessor(app: Application) extends AbstractGlobalInputProcessor[MTFin
         if (position.getX < Menu.Space) 90f //left
         else if (position.getX > width - Menu.Space) 270f //right
         else if (position.getY < Menu.Space) 180f //top
-        else /*if (position.getY > height - Menu.Space)*/ 0f //bottom
+        else if (position.getY > height - Menu.Space) 0f //bottom
+        else -1f //do not instantiate a menu if the input cursor is not located in the menu space
         
-      Menu.calculateMenuPosition(position, angle).foreach(menuPosition => {
-        this.addMenu(Menu(app, menuPosition, angle), inputCursor)
-      })
+      if (angle != -1f) {  
+        Menu.calculateMenuPosition(position, angle).foreach(menuPosition => {
+          this.addMenu(Menu(app, menuPosition, angle), inputCursor)
+        })
+      }
     }
   }
   
