@@ -81,6 +81,11 @@ class SimplePitchProperty(node: ManipulableNode) extends SimpleProperty {
   
   def propertyType = {
     PitchPropertyType
-  }    
+  }   
+  
+  
+  override def toString = {
+    "SimplePitchProperty"
+  }  
   
 }

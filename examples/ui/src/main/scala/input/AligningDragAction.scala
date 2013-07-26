@@ -26,8 +26,7 @@ import ui.menus.main._
 * and subsequently sets the tool's rotation in such a way that the tool's axis is orthogonal to the tangent at the closest point on that path.
 */
 class AligningDragAction(app: Application, tool: Tool) extends BoundedDragAction(0, 0, Ui.width, Ui.height) {
-  protected var alignedTo: (Option[Object], Float) = (None, 0.0f)
-  
+
 	override def processGestureEvent(gestureEvent: MTGestureEvent): Boolean = {  
 	  import Vector._  
     val returnValue = super.processGestureEvent(gestureEvent)

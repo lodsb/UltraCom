@@ -16,9 +16,9 @@ import ui.util._
 import ui.events._
 
 /**
-* This class handles the creation of nodes in the specified timbre space.
+* This class handles the creation of nodes in the specified node space.
 */
-class NodeCreationListener(timbreSpace: TimbreSpace) extends IGestureEventListener {
+class NodeCreationListener(nodeSpace: NodeSpace) extends IGestureEventListener {
   
   override def processGestureEvent(gestureEvent: MTGestureEvent): Boolean = {  
     gestureEvent match {
@@ -49,11 +49,11 @@ class NodeCreationListener(timbreSpace: TimbreSpace) extends IGestureEventListen
           path ! TimeNodeAddEvent(TimeNode(Ui, closestPathPosition))
         }
         else {
-          if (timbreSpace.contains(tapEvent.getLocationOnScreen)) Ui += IsolatedNode(Ui, tapEvent.getLocationOnScreen)    
+          if (nodeSpace.contains(tapEvent.getLocationOnScreen)) Ui += IsolatedNode(Ui, tapEvent.getLocationOnScreen)    
         }
       } 
       case None => {
-        if (timbreSpace.contains(tapEvent.getLocationOnScreen)) Ui += IsolatedNode(Ui, tapEvent.getLocationOnScreen)
+        if (nodeSpace.contains(tapEvent.getLocationOnScreen)) Ui += IsolatedNode(Ui, tapEvent.getLocationOnScreen)
       }       
     } 
   }

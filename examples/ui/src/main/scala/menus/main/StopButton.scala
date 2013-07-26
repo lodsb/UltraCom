@@ -42,16 +42,21 @@ class StopButton(app: Application, menu: Menu, center: Vector3D) extends Button(
     val cy = center.getY()              
     val r = 0.35f * this.radius
     g.noStroke()
-    g.fill(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.alphaValue)
+    g.fill(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.itemForegroundColor.getAlpha * this.opacity)
     g.rect(cx - r, cy - r, 2*r, 2*r)
   }  
 
   override def clicked() = {
+    super.clicked()
     Ui.paths.foreach(path => path ! UiEvent("STOP_PLAYBACK"))
   }
+
+  override def up() = {
+    super.up()
+  }
   
-  override def up() = {}
-  
-  override def down() = {}  
+  override def down() = {
+    super.down() 
+  }
   
 }

@@ -75,4 +75,10 @@ object PlayNodeType extends StartNodeType{
     Some(this.Symbol)
   }
   
+
+  override def toString = {
+    "PlayNode"
+  }  
+  
+  
 }

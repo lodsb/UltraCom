@@ -87,4 +87,8 @@ class ComplexSpeedProperty(connection: ManipulableBezierConnection, numberOfBuck
     (this.values(index) - min)/(max - min) * 255
   }
   
+  override def toString = {
+    "ComplexSpeedProperty"
+  }  
+  
 }

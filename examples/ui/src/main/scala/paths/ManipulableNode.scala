@@ -145,7 +145,7 @@ class ManipulableNode(app: Application, center: Vector3D) extends Node(app, Mani
               else {   
                 if (!this.isPlaying) {
                   lastTime = System.nanoTime() //init time
-                  Synthesizer ! AudioEvent(this.collectOpenChannels, math.round(this.position._1), math.round(this.position._2), this.properties(PitchPropertyType)(), this.properties(VolumePropertyType)())   
+                  Ui.synthesizer ! AudioEvent(this.collectOpenChannels, math.round(this.position._1), math.round(this.position._2), this.properties(PitchPropertyType)(), this.properties(VolumePropertyType)())   
                   this.isPlaying = true
                   this ! UiEvent("PLAY")
                 }
@@ -230,13 +230,14 @@ class ManipulableNode(app: Application, center: Vector3D) extends Node(app, Mani
     val deleteNode = new DeleteNode(app, this, deleteCenter)     
     this.addChild(deleteNode)    
   }
-
-
+  
+  
   override def toXML = {
-    import scala.collection.mutable.StringBuilder
-    val node = new StringBuilder()
-    node.toString
-  }
+    val (x,y) = this.position
+    val properties = "<properties>" + this.properties.values.map(_.toXML).foldLeft("")((p1, p2) => p1 + " " + p2) + "</properties>"
+    "<node type = '" + this.nodeType.toString + "' x = '" + x + "' y = '" + y + "'>"+ properties + "</node>"
+  }    
+
   
   
 }

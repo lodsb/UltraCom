@@ -26,7 +26,7 @@ import ui._
 
 abstract class MenuItem(app: Application, menu: Actor, center: Vector3D, radius: Float) extends MTEllipse(app, center, radius, radius) {
 
-  protected var alphaValue = 0.0f
+  protected var opacity = 0f
   
   this.setup()
   
@@ -61,8 +61,7 @@ abstract class MenuItem(app: Application, menu: Actor, center: Vector3D, radius:
           }
         }
 			}
-	  })
-    
+	  }) 
   }
   
   def clicked()
@@ -81,8 +80,8 @@ abstract class MenuItem(app: Application, menu: Actor, center: Vector3D, radius:
   
   def itemStrokeWeight: Float
    
-  def setAlpha(alpha: Float) = {
-    this.alphaValue = alpha
+  def setOpacity(newOpacity: Float) = {
+    this.opacity = newOpacity
   }
   
 }

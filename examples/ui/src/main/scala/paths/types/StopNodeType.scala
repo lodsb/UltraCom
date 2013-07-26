@@ -73,5 +73,10 @@ object StopNodeType extends EndNodeType{
   override def symbol = {
     Some(this.Symbol)
   }
+  
+  
+  override def toString = {
+    "StopNode"
+  }  
       
 }

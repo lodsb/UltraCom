@@ -75,4 +75,9 @@ object PauseNodeType extends StartNodeType {
     Some(this.Symbol)
   }  
   
+  
+  override def toString = {
+    "PauseNode"
+  }
+  
 }

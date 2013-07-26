@@ -21,7 +21,6 @@ import ui.util._
 object PlaybackItem {
 
   val Radius = Ui.width/150
-  val MaxAlpha = 180
   val StrokeWeight = 0  
   
   private val StrokeColor = new MTColor(0, 0, 0, 0)
@@ -74,14 +73,14 @@ class PlaybackItem(app: Application, menu: NodeContextMenu, center: Vector3D, va
     val cy = center.getY()    
     val r = this.radius * 0.5f
     
-    g.fill(this.itemBackgroundColor.getR, this.itemBackgroundColor.getG, this.itemBackgroundColor.getB, this.alphaValue/PlaybackItem.MaxAlpha * this.itemBackgroundColor.getAlpha)
+    g.fill(this.itemBackgroundColor.getR, this.itemBackgroundColor.getG, this.itemBackgroundColor.getB, this.opacity * this.itemBackgroundColor.getAlpha)
     g.noStroke()
     g.ellipse(cx, cy, 2*this.radius, 2*this.radius)     
 
     this.nodeType.symbol match {
         case Some(symbol) => {    
           val symbolColor = this.itemForegroundColor  
-          g.fill(symbolColor.getR(), symbolColor.getG(), symbolColor.getB(), this.alphaValue/PlaybackItem.MaxAlpha * symbolColor.getAlpha)    
+          g.fill(symbolColor.getR(), symbolColor.getG(), symbolColor.getB(), this.opacity * symbolColor.getAlpha)    
           g.noStroke()
           g.beginShape()
           val precision = 128
@@ -96,9 +95,5 @@ class PlaybackItem(app: Application, menu: NodeContextMenu, center: Vector3D, va
     }
     
   }    
-  
-  override def setAlpha(alpha: Float) = {
-    this.alphaValue = alpha/255 * PlaybackItem.MaxAlpha
-  }  
   
 }

@@ -56,7 +56,7 @@ class PlayButton(app: Application, menu: Menu, center: Vector3D) extends Button(
     val (p3x, p3y) = (cx + h - segment, cy)   
 
     g.noStroke()
-    g.fill(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.alphaValue)
+    g.fill(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.itemForegroundColor.getAlpha * this.opacity)
     g.triangle( p1x, p1y,
                 p2x, p2y,
                 p3x, p3y)
@@ -80,13 +80,14 @@ class PlayButton(app: Application, menu: Menu, center: Vector3D) extends Button(
     val (q4x, q4y) = (cx + r, cy + r)  
            
     g.noStroke()
-    g.fill(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.alphaValue)
+    g.fill(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.itemForegroundColor.getAlpha * this.opacity)
     g.quad(p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y)
     g.quad(q1x, q1y, q2x, q2y, q3x, q3y, q4x, q4y)
   }
  
   
   override def clicked() = {
+    super.clicked()
     if (!Playback.isPlaying) {
       Ui.paths.foreach(_ ! UiEvent("START_PLAYBACK"))
       Ui.nodes.collect({case m: ManipulableNode => m}).foreach(_ ! UiEvent("START_PLAYBACK"))
@@ -96,9 +97,13 @@ class PlayButton(app: Application, menu: Menu, center: Vector3D) extends Button(
     }
   }
   
-  override def up() = {}
+  override def up() = {
+    super.up()
+  }
   
-  override def down() = {}
+  override def down() = {
+    super.down() 
+  }
   
   
 }

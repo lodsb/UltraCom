@@ -8,6 +8,8 @@ import org.mt4j.components.visibleComponents.shapes.MTEllipse
 
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor 
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent
+import org.mt4j.input.inputProcessors.componentProcessors.tapAndHoldProcessor.TapAndHoldProcessor
+import org.mt4j.input.inputProcessors.componentProcessors.tapAndHoldProcessor.TapAndHoldEvent
 import org.mt4j.input.inputProcessors.IGestureEventListener
 import org.mt4j.input.inputProcessors.MTGestureEvent
 
@@ -57,7 +59,7 @@ class RewindButton(app: Application, menu: Menu, center: Vector3D) extends Butto
     val (p6x, p6y) = (c2x - 2*segment, c2y)     
 
     g.noStroke()
-    g.fill(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.alphaValue)
+    g.fill(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.itemForegroundColor.getAlpha * this.opacity)
     g.triangle( p1x, p1y,
                 p2x, p2y,
                 p3x, p3y)
@@ -66,12 +68,60 @@ class RewindButton(app: Application, menu: Menu, center: Vector3D) extends Butto
                 p6x, p6y)
   }   
   
-  override def clicked() = {}
+  override def clicked() = {
+    super.clicked()
+  }
   
-  override def up() = {}
+  override def up() = {
+    super.up()
+  }
   
   override def down() = {
-    Ui.paths.foreach(_ ! PathRewindEvent(500)) 
+    super.down()
+    Ui.paths.foreach(_ ! PathRewindEvent(50)) 
   }  
+  
+  
+  override def setup() = {  
+    this.unregisterAllInputProcessors()
+    this.removeAllGestureEventListeners()
+    
+    //register input processors
+    val tapAndHoldProcessor = new TapAndHoldProcessor(app, Int.MaxValue) //choosing Int.MaxValue so GESTURE_UPDATED events are sent for a long time to come (approximately 600h, which should be sufficient ;))
+    tapAndHoldProcessor.setMaxFingerUpDist(5) 
+    this.registerInputProcessor(tapAndHoldProcessor)
+    
+    this.addGestureListener(classOf[TapAndHoldProcessor], new IGestureEventListener() {
+    	override def processGestureEvent(gestureEvent: MTGestureEvent): Boolean = {
+    	  gestureEvent match {
+          case tahEvent: TapAndHoldEvent => {
+              if (tahEvent.getId == MTGestureEvent.GESTURE_DETECTED) {
+                println("tap and hold detected")
+                down()
+                menu ! "RESET_TIMER"
+              }
+              else if (tahEvent.getId == MTGestureEvent.GESTURE_UPDATED) {
+                println("tap and hold updated")
+                down()
+                menu ! "RESET_TIMER"
+              }
+              else if (tahEvent.getId == MTGestureEvent.GESTURE_CANCELED) {
+                println("tap and hold canceled")
+                up()                
+              }
+              else if (tahEvent.getId == MTGestureEvent.GESTURE_ENDED) {
+                println("tap and hold ended")
+                up()                
+              }                  
+              true
+          }
+          case someEvent => {
+              println("I can't process this particular event: " + someEvent.toString)
+              false
+          }
+        }
+			}
+	  }) 
+  }   
   
 }

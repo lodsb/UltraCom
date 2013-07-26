@@ -1,8 +1,10 @@
 package ui.audio
 
+import ui._
+
 trait AudioChannels {
 
-  private var audioChannel = new Array[Boolean](Synthesizer.Channels)
+  private var audioChannel = new Array[Boolean](Ui.synthesizer.Channels)
   for (index <- 0 until this.channelNumber) this.setChannel(index, true) //set channels to true 
   
   def toggleChannel(index: Int) = {

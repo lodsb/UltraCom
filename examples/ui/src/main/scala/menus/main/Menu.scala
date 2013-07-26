@@ -161,11 +161,12 @@ class Menu(app: Application, val center: Vector3D, val rotationAngle: Float) ext
         }
     })    
     
-    val (cx, cy) = (center.getX, center.getY)    
+    val (cx, cy) = (center.getX, center.getY)
     this.setNoFill(true)
     this.setNoStroke(true)
     this.addChild(FastForwardButton(app, this, Vec3d(cx + 6 * Button.Radius + 3*Padding, cy)))
     this.addChild(PlayButton(app, this, Vec3d(cx + 4 * Button.Radius + 2*Padding, cy)))
+    //this.addChild(RecordButton(app, this, Vec3d(cx + 4 * Button.Radius + 2*Padding, cy)))    
     this.addChild(StopButton(app, this, Vec3d(cx + 2 * Button.Radius + Padding, cy)))
     this.addChild(RewindButton(app, this, Vec3d(cx, cy)))
     this.addChild(SaveProjectButton(app, this, Vec3d(cx - 2 * Button.Radius - Padding, cy)))
@@ -232,7 +233,7 @@ class Menu(app: Application, val center: Vector3D, val rotationAngle: Float) ext
         me.setFillColor(componentFillColor)
         
         me.getChildren.collect({case item: MenuItem => item}).foreach(item => {
-          item.setAlpha(ae.getValue)
+          item.setOpacity(ae.getValue/255f)
         })
       }
     })
@@ -262,7 +263,7 @@ class Menu(app: Application, val center: Vector3D, val rotationAngle: Float) ext
           me.setFillColor(componentFillColor)
           
           me.getChildren.collect({case item: MenuItem => item}).foreach(item => {
-            item.setAlpha(ae.getValue)
+            item.setOpacity(ae.getValue/255f)
           })
         }
       }

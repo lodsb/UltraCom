@@ -57,7 +57,7 @@ object ManipulableNodeType extends EndNodeType with StartNodeType {
                     manipulableNode ! UiEvent("START_PLAYBACK") 
                   }
                   case otherNode => {
-                    Synthesizer ! AudioEvent(Array(0,1,2,3), math.round(node.position._1), math.round(node.position._2), PitchPropertyType.mean, VolumePropertyType.mean)   
+                    Ui.synthesizer ! AudioEvent(Array(0,1,2,3), math.round(node.position._1), math.round(node.position._2), PitchPropertyType.mean, VolumePropertyType.mean)   
                   }
                 }
               }
@@ -75,7 +75,12 @@ object ManipulableNodeType extends EndNodeType with StartNodeType {
   
   override def symbol = {
     Some(this.Symbol)
-  }    
+  }  
+
+
+  override def toString = {
+    "ManipulableNode"
+  }
   
 }
 

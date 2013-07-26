@@ -21,7 +21,6 @@ object ToolItem {
 
   val Radius = Ui.width/100
   val StrokeWeight = 0 
-  val MaxAlpha = 180
   
   private val StrokeColor = new MTColor(0, 0, 0, 0)
   
@@ -74,16 +73,12 @@ class ToolItem(app: Application, menu: ToolContextMenu, center: Vector3D, val pr
     val center = this.getCenterPointLocal()
     val cx = center.getX()
     val cy = center.getY()    
-    g.fill(this.itemBackgroundColor.getR, this.itemBackgroundColor.getG, this.itemBackgroundColor.getB, this.alphaValue/ToolItem.MaxAlpha * this.itemBackgroundColor.getAlpha)
+    g.fill(this.itemBackgroundColor.getR, this.itemBackgroundColor.getG, this.itemBackgroundColor.getB, this.opacity * this.itemBackgroundColor.getAlpha)
     g.noStroke()
     g.ellipse(cx, cy, 2*this.radius, 2*this.radius)  
     
-    val symbolColor = new MTColor(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.alphaValue/ToolItem.MaxAlpha * this.itemForegroundColor.getAlpha)
+    val symbolColor = new MTColor(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.opacity * this.itemForegroundColor.getAlpha)
     this.propertyType.drawSymbol(g, (cx, cy), symbolColor)
   }    
-  
-  override def setAlpha(alpha: Float) = {
-    this.alphaValue = alpha/255 * ToolItem.MaxAlpha
-  }  
   
 }

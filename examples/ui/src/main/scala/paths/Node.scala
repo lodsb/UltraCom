@@ -66,7 +66,7 @@ class Node(val app: Application, var typeOfNode: NodeType, var associatedPath: O
     this.setup()
     
     protected def setup(): Unit = {
-      this.setPositionGlobal(center)
+      this.globalPosition := center
       this.nodeType = typeOfNode //overloaded assignment operator =, sets up interation on this node in the process
       this.feedforwardNodeType = this.nodeType
     }
@@ -241,11 +241,12 @@ class Node(val app: Application, var typeOfNode: NodeType, var associatedPath: O
   
     
     /**
+    * Not used anymore, threading issues have been dealt with.
+    * 
     * Sets the local matrix back to a legal state.
     *
     * This is necessary because MT4J simply messes up the local matrix at some point for no apparent reason,
     * which then produces weird results.
-    * As of now, I have no idea why this is happening, seems like a bug to me...
     */
     def resetLocalMatrix() = {
       val nodeSize = this.scaleFactor  
@@ -278,13 +279,14 @@ class Node(val app: Application, var typeOfNode: NodeType, var associatedPath: O
     * Sets the global position of this node after resetting the local matrix.
     */
     override def setPositionGlobal(position: Vector3D) = {
-      this.resetLocalMatrix()
+      //this.resetLocalMatrix()
       super.setPositionGlobal(position)
     }
     
     
     override def toXML = {
-      ""
+      val (x,y) = this.position
+      "<node type = '" + this.nodeType.toString + "' x = '" + x + "' y = '" + y + "'/>"
     }    
 
 }

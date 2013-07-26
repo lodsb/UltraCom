@@ -112,7 +112,7 @@ abstract class ContextMenu(app: Application) extends MTComponent(app) with Actor
     animation.addAnimationListener(new IAnimationListener() { 
       def processAnimationEvent(ae: AnimationEvent) {
         me.getChildren.collect({case item: MenuItem => item}).foreach(item => {
-          item.setAlpha(ae.getValue)
+          item.setOpacity(ae.getValue/255f)
         })
       }
     })
@@ -131,9 +131,9 @@ abstract class ContextMenu(app: Application) extends MTComponent(app) with Actor
           me.remove()
         }
         else {
-        me.getChildren.collect({case item: MenuItem => item}).foreach(item => {
-          item.setAlpha(ae.getValue)
-        })
+          me.getChildren.collect({case item: MenuItem => item}).foreach(item => {
+            item.setOpacity(ae.getValue/255f)
+          })
         }
       }
     })

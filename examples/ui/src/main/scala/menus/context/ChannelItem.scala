@@ -26,7 +26,6 @@ object ChannelItem {
   val StrokeWeight = 0  
   
   private val StrokeColor = new MTColor(0, 0, 0, 0)
-  private val BackgroundColor = new MTColor(255, 255, 255)
   private val ForegroundColor = new MTColor(0, 0, 0, 0)
   private val ChannelColor = Array(new MTColor(255, 0, 0, Alpha), new MTColor(0, 255, 0, Alpha), new MTColor(0, 0, 255, Alpha), new MTColor(255, 255, 0, Alpha)) 
   
@@ -99,13 +98,9 @@ class ChannelItem(app: Application, menu: NodeContextMenu, center: Vector3D, val
     val center = this.getCenterPointLocal()
     val cx = center.getX()
     val cy = center.getY()    
-    g.fill(this.itemBackgroundColor.getR * saturationMultiplier + saturationConstant, this.itemBackgroundColor.getG * saturationMultiplier + saturationConstant, this.itemBackgroundColor.getB * saturationMultiplier + saturationConstant, this.alphaValue)
+    g.fill(this.itemBackgroundColor.getR * saturationMultiplier + saturationConstant, this.itemBackgroundColor.getG * saturationMultiplier + saturationConstant, this.itemBackgroundColor.getB * saturationMultiplier + saturationConstant, this.opacity * ChannelItem.Alpha)
     g.noStroke()
     g.ellipse(cx, cy, 2*this.radius, 2*this.radius)  
   }    
-  
-  override def setAlpha(alpha: Float) = {
-    this.alphaValue = alpha/255 * this.itemBackgroundColor.getAlpha
-  }  
   
 }

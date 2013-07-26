@@ -69,5 +69,9 @@ object DeleteManipulableNodeType extends NodeType {
     this.DeleteStrokeColor
   }
   
+  override def toString = {
+    "DeleteManipulableNode"
+  }
+  
     
 }  

@@ -40,11 +40,16 @@ class SaveProjectButton(app: Application, menu: Menu, center: Vector3D) extends 
   }  
   
   override def clicked() = {
-    SoundFileWriter.save()
+    super.clicked()
+    ProjectFileWriter.save()
   }
   
-  override def up() = {}
+  override def up() = {
+    super.up()
+  }
   
-  override def down() = {}  
+  override def down() = {
+    super.down() 
+  }
   
 }

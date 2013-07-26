@@ -43,4 +43,8 @@ class SimpleSpeedProperty(node: ManipulableNode) extends SimpleProperty {
     SpeedPropertyType
   }  
   
+  override def toString = {
+    "SimpleSpeedProperty"
+  }  
+  
 }

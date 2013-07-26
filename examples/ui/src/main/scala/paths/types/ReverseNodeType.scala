@@ -73,5 +73,10 @@ object ReverseNodeType extends EndNodeType{
   override def symbol = {
     Some(this.Symbol)
   }
+  
+  
+  override def toString = {
+    "ReverseNode"
+  }  
       
 }

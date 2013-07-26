@@ -83,4 +83,8 @@ class SimpleVolumeProperty(node: ManipulableNode) extends SimpleProperty {
     VolumePropertyType
   }    
   
+  override def toString = {
+    "SimpleVolumeProperty"
+  }  
+  
 }

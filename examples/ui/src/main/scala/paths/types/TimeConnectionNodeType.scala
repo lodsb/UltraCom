@@ -50,9 +50,6 @@ object TimeConnectionNodeType extends NodeType{
     node.addGestureListener(classOf[TapProcessor], new NodeDeletionListener(node))
   }    
   
-   override def toString = {
-     "TimeConnectionNode"
-   }
 
   override def size = {
     this.Size
@@ -72,6 +69,10 @@ object TimeConnectionNodeType extends NodeType{
   
   override def symbol = {
     Some(this.Symbol)
+  }  
+  
+  override def toString = {
+   "TimeConnectionNode"
   }  
 
 }

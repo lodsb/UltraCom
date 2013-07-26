@@ -38,11 +38,17 @@ class NewProjectButton(app: Application, menu: Menu, center: Vector3D) extends B
     super.drawComponent(g)
   }  
   
-  override def clicked() = {}
+  override def clicked() = {
+    super.clicked()
+  }
   
-  override def up() = {}
+  override def up() = {
+    super.up()
+  }
   
-  override def down() = {}
+  override def down() = {
+    super.down() 
+  }
   
 }
   

@@ -28,14 +28,17 @@ object Button {
   
   val Radius = Ui.width/100
   private val StrokeColor = new MTColor(0, 0, 0, 100)
-  private val BackgroundColor = new MTColor(255, 255, 255)
+  private val BackgroundColor = new MTColor(0, 20, 80, 10)
   private val ForegroundColor = new MTColor(0, 0, 0, 200)
+  private val TapColor = new MTColor(0, 0, 0, 80)
   val StrokeWeight = 1
   
 }
 
 
 abstract class Button(app: Application, menu: Actor, center: Vector3D) extends MenuItem(app, menu, center, Button.Radius) {
+  
+  protected var currentColor = this.itemBackgroundColor
   
   override def radius = {
     Button.Radius
@@ -57,15 +60,35 @@ abstract class Button(app: Application, menu: Actor, center: Vector3D) extends M
     Button.StrokeWeight
   }
   
+  def itemTapColor = {
+    Button.TapColor
+  }
+  
+  override def clicked() = {
+    this.setTapped(false)
+  }
+  
+  override def up() = {
+    this.setTapped(false)
+  }
+  
+  override def down() = {
+    this.setTapped(true) 
+  }  
+  
   override def drawComponent(g: PGraphics) = {
     val center = this.getCenterPointLocal()
     val cx = center.getX()
     val cy = center.getY()    
-    g.fill(this.itemBackgroundColor.getR, this.itemBackgroundColor.getG, this.itemBackgroundColor.getB, this.alphaValue)
-    g.stroke(this.itemStrokeColor.getR, this.itemStrokeColor.getG, this.itemStrokeColor.getB, this.alphaValue)
+    g.fill(this.currentColor.getR, this.currentColor.getG, this.currentColor.getB, this.currentColor.getAlpha * this.opacity)
+    g.stroke(this.itemStrokeColor.getR, this.itemStrokeColor.getG, this.itemStrokeColor.getB, this.itemStrokeColor.getAlpha * this.opacity)
     g.strokeWeight(this.itemStrokeWeight)
     g.ellipse(cx, cy, 2*this.radius, 2*this.radius)  
   }  
+  
+  def setTapped(isTapped: Boolean) = {
+    this.currentColor = if (isTapped) this.itemTapColor else this.itemBackgroundColor
+  }
 
 }
   

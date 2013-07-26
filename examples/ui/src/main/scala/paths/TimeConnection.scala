@@ -120,7 +120,7 @@ class TimeConnection(app: Application, val timeNode: TimeNode, val connectionNod
   
   def updateConnectionNode() = {
     val nodeSize = this.connectionNode.nodeType.size               
-    this.connectionNode.setPositionGlobal(TimeConnection.center(this.timeNode, this.startNode))
+    this.connectionNode.globalPosition := TimeConnection.center(this.timeNode, this.startNode)
     /*
     println("pos global = " + this.connectionNode.getCenterPointGlobal)
     println("pos local = " + this.connectionNode.getCenterPointLocal)

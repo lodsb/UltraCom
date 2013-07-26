@@ -69,7 +69,7 @@ class Tool(app: Application, center: (Float, Float), pType: PropertyType) extend
     this.setupInteraction()
     
     private def setupRepresentation() = {
-      this.setPositionGlobal(Vec3d(center._1, center._2))
+      this.globalPosition := Vec3d(center._1, center._2)
       val color = this.color //deep copy of color
       color.setAlpha(Tool.StrokeAlpha)
       this.setVertices(this.shape)

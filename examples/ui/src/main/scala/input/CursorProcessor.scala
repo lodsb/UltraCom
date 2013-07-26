@@ -83,7 +83,7 @@ class CursorProcessor(app: Application) extends AbstractGlobalInputProcessor[MTF
     val virtualNodeEntry = CursorProcessor.virtualNodeMap.get(inputCursor) //lookup cursor for already existing virtual node
     virtualNodeEntry match {
       case Some(virtualNode) => { //if there is one, update position
-        virtualNode.setPositionGlobal(position)
+        virtualNode.globalPosition := position
       }
       case None => { //if there is none, it might need to be created
         val nearbyNodes = Ui.nodes.filter(node => node.distance(position) > 0 && node.isNearby(position) && !node.isInstanceOf[ManipulableNode]) //get all nodes for which the coordinate (x,y) is in their vicinity, but not inside the component
@@ -312,7 +312,7 @@ class CursorProcessor(app: Application) extends AbstractGlobalInputProcessor[MTF
     val virtualNode = Node(Ui, VirtualNodeType, None, position)
     CursorProcessor.virtualNodeMap += (inputCursor -> virtualNode)
     Ui += virtualNode
-    virtualNode.setPositionGlobal(position)
+    virtualNode.globalPosition := position
     virtualNode    
   }
 

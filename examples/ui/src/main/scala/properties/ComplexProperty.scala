@@ -11,7 +11,7 @@ import ui.paths._
 * A complex property manages a fixed number of 'buckets', each associated with a specific value.
 */
 abstract class ComplexProperty(val connection: ManipulableBezierConnection, val numberOfBuckets: Int) extends Property {
-  var values = new Array[Float](this.buckets)
+  protected var values = new Array[Float](this.buckets)
   val (min, max) = this.range
   this.values = this.values.map(_ + (max - min)/2 + min) //initialize values with mean per default
   
@@ -68,6 +68,10 @@ abstract class ComplexProperty(val connection: ManipulableBezierConnection, val 
   */
   def partialSum(bucket: Int) = {
     this.values.take(bucket+1).foldLeft(0.0f)((a,b) => a+b)
+  }
+  
+  override def toXML = {
+    "<property type = '" + this.toString + "'><buckets>" + this.values.zipWithIndex.map(bucket => {"<bucket index = '" + bucket._2 + "'>" + bucket._1 + "</bucket>"}).foldLeft("")((b1, b2) => b1 + " " + b2) + "</buckets></property>"
   }
   
 }

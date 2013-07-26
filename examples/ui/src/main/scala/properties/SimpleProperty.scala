@@ -35,4 +35,8 @@ abstract class SimpleProperty extends Property {
     ((this.value - min)/(max - min)) * this.visualWidth
   }
   
+  override def toXML = {
+    "<property type = '" + this.toString + "'><buckets><bucket index = '0'>" + this.value + "</bucket></buckets></property>"
+  } 
+  
 }

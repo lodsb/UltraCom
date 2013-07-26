@@ -48,16 +48,23 @@ import ui.menus.main._
 import ui.paths.types._
 import ui.properties._
 import ui.properties.types._
+import ui.persistence._
+import ui.audio._
 
 
 /**
 * This is the sound application.
 * All nodes and paths created by its users are organized by this object.
 */
-object Ui extends Application { 
+object Ui extends Application with Persistability { 
 	// see Settings.txt for basic settings, e.g. application name, resolution, framerate...
 
+	private val synth = SpatialSynthesizer(CustomTimbreSpace)
 
+	def synthesizer = {
+	  this.synth
+	}
+	
   /**
   * Registers the specified component threadsafe.
   */  
@@ -150,6 +157,15 @@ object Ui extends Application {
 	}
   
 	
+	override def toXML = {
+    val start = "<project>"
+    val paths = "<paths>" + this.paths.map(_.toXML).foldLeft("")((c1, c2) => c1 + " " + c2) + "</paths>"
+    val nodes = "<nodes>" + this.nodes.map(_.toXML).foldLeft("")((n1, n2) => n1 + " " + n2) + "</nodes>"
+    val end = "</project>"
+    start + paths + nodes + end
+	}
+	
+	
 	def main(args: Array[String]): Unit = {
 		this.execute(false)
 	}
@@ -176,8 +192,8 @@ class UIScene(app: Application, name: String) extends Scene(app,name){
 	  System.setProperty("actors.enableForkJoin", "false") //disable default scheduler to avoid starvation when many actors are working
 	  this.setClearColor(Color(255,255,255))
 	 
-	  val timbreSpace = TimbreSpace(app)
-    this.canvas += timbreSpace
+	  val nodeSpace = NodeSpace(app)
+    this.canvas += nodeSpace
     //this.canvas += DebugOutput //be sure to add this after the space itself
     
     
@@ -194,7 +210,7 @@ class UIScene(app: Application, name: String) extends Scene(app,name){
     val tapProcessor = new TapProcessor(app)
     tapProcessor.setEnableDoubleTap(true)
     this.canvas.registerInputProcessor(tapProcessor)
-    this.canvas.addGestureListener(classOf[TapProcessor], new NodeCreationListener(timbreSpace))
+    this.canvas.addGestureListener(classOf[TapProcessor], new NodeCreationListener(nodeSpace))
 
     val tapAndHoldProcessor = new TapAndHoldProcessor(app, 200)
     tapAndHoldProcessor.setMaxFingerUpDist(5) 

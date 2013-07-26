@@ -253,7 +253,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
               
             this.timeNodes.keys.foreach(timeNode => { //only then update the time nodes
               val (x,y) = timeNode.connection(timeNode.parameter)
-              timeNode.setPositionGlobal(Vec3d(x,y))
+              timeNode.globalPosition := Vec3d(x,y)
             })
             
             this.timeConnections.foreach(timeConnection => { //and the time connections
@@ -269,7 +269,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
             val (closestX, closestY) = connection(parameter)
             event.node.connection = connection
             event.node.parameter = parameter
-            event.node.setPositionGlobal(Vec3d(closestX, closestY))    
+            event.node.globalPosition := Vec3d(closestX, closestY) 
             
             val nodeConnectionIndex = this.indexOf(event.node.connection)
             if  (nodeConnectionIndex > this.currentConnection || (nodeConnectionIndex == this.currentConnection && event.node.parameter > this.currentConnectionParameter)) {
@@ -306,7 +306,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
         
         case event: PathFastForwardEvent => {
           this.synchronized {
-            if (this.playbackState != Stopped) {
+            if (this.playbackState == Playing) {
               val time = event.time
               this.bucketAccumulator = this.bucketAccumulator + time
               this.connectionAccumulator = this.connectionAccumulator + time
@@ -316,7 +316,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
         
         case event: PathRewindEvent => {
           this.synchronized {
-            if (this.playbackState != Stopped) {
+            if (this.playbackState == Playing) {
               val time = event.time
               this.bucketAccumulator = this.bucketAccumulator - time
               this.connectionAccumulator = this.connectionAccumulator - time
@@ -399,7 +399,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
                   currentX = newX
                   currentY = newY
                   val channels = this.collectOpenChannels
-                  Synthesizer ! AudioEvent(channels, currentX, currentY, con.propertyValue(PitchPropertyType, this.currentBucket), con.propertyValue(VolumePropertyType, this.currentBucket))
+                  Ui.synthesizer ! AudioEvent(channels, currentX, currentY, con.propertyValue(PitchPropertyType, this.currentBucket), con.propertyValue(VolumePropertyType, this.currentBucket))
                 }  
                 /* ################################ */
                 
@@ -910,15 +910,15 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
   
   
   override def toString = {
-    "Path(" + this.connections.map(_ + "").reduce((c1, c2) => c1 + " + " + c2) + ")"
+    "Path(" + this.connections.map(_ + "").foldLeft("")((c1, c2) => c1 + " + " + c2) + ")"
   }
   
   
   override def toXML = {
     val start = "<path factory = 'ManipulableBezierConnection'>"
-    val connections = "<connections>" + this.connections.map(_.toXML).reduce((c1, c2) => c1 + " " + c2) + "</connections>"
-    val timeNodes = "<timeNodes>" + this.timeNodes.keys.map(_.toXML).reduce((n1, n2) => n1 + " " + n2) + "</timeNodes>"
-    val timeConnections = "<timeConnections>" + this.timeConnections.map(_.toXML).reduce((c1, c2) => c1 + " " + c2) + "</timeConnections>"
+    val connections = "<connections>" + this.connections.map(_.toXML).foldLeft("")((c1, c2) => c1 + " " + c2) + "</connections>"
+    val timeNodes = "<timeNodes>" + this.timeNodes.keys.map(_.toXML).foldLeft("")((n1, n2) => n1 + " " + n2) + "</timeNodes>"
+    val timeConnections = "<timeConnections>" + this.timeConnections.map(_.toXML).foldLeft("")((c1, c2) => c1 + " " + c2) + "</timeConnections>"
     val end = "</path>"
     start + connections + timeNodes + timeConnections + end
   }

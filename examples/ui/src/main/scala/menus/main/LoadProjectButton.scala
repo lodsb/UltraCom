@@ -38,10 +38,16 @@ class LoadProjectButton(app: Application, menu: Menu, center: Vector3D) extends 
     super.drawComponent(g)
   }  
   
-  override def clicked() = {}
-
-  override def up() = {}
+  override def clicked() = {
+    super.clicked()
+  }
   
-  override def down() = {}
+  override def up() = {
+    super.up()
+  }
+  
+  override def down() = {
+    super.down() 
+  }
   
 }

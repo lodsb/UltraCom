@@ -23,10 +23,10 @@ class PlayTimbreDragAction(node: Node) extends BoundedDragAction(Menu.Space, Men
   	  val returnValue = super.processGestureEvent(gestureEvent)
   	  node match {
   	    case withChannels: AudioChannels => {
-  	      Synthesizer ! AudioEvent(withChannels.collectOpenChannels, math.round(withChannels.position._1), math.round(withChannels.position._2), PitchPropertyType.mean, VolumePropertyType.mean)   
+  	      Ui.synthesizer ! AudioEvent(withChannels.collectOpenChannels, math.round(withChannels.position._1), math.round(withChannels.position._2), PitchPropertyType.mean, VolumePropertyType.mean)   
         }
         case withoutChannels => {
-          Synthesizer ! AudioEvent(Array(0,1,2,3), math.round(withoutChannels.position._1), math.round(withoutChannels.position._2), PitchPropertyType.mean, VolumePropertyType.mean)   
+          Ui.synthesizer ! AudioEvent(Array(0,1,2,3), math.round(withoutChannels.position._1), math.round(withoutChannels.position._2), PitchPropertyType.mean, VolumePropertyType.mean)   
         }
       }
   	  returnValue

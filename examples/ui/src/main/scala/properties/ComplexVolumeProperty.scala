@@ -120,4 +120,8 @@ class ComplexVolumeProperty(connection: ManipulableBezierConnection, numberOfBuc
     VolumePropertyType
   }
   
+  override def toString = {
+    "ComplexVolumeProperty"
+  }
+  
 }

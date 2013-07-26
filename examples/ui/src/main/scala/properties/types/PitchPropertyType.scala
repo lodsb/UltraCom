@@ -19,7 +19,7 @@ object PitchPropertyType extends PropertyType{
   val ColorAlpha = 80 //alpha value for non-playing path
   val ProgressColorAlpha = 130 //alpha value for played back path
   val HighlightedColorAlpha = 150 //alpha value for path segments wich are highlighted
-  val Range = (-110.372f, 147.330f) //range of a pitch property bucket; in this context, e' to d''
+  val Range = (-1.0f, 1.0f) //range of a pitch property bucket; in this context, e' to d''
   
   protected val SymbolWidth = Tool.Width/6.5f //width of note
   protected val SymbolHeight = Tool.Height/5.0f //height of note

@@ -3,12 +3,14 @@ package ui.properties
 import processing.core.PGraphics
 import org.mt4j.util.MTColor
 
+import ui.persistence._
+
 
 /**
 * This abstract class represents a property.
 * Every property has a value range and can be drawn onto the screen.
 */
-abstract class Property {
+abstract class Property extends Persistability {
 
   /**
   * Draws this property.

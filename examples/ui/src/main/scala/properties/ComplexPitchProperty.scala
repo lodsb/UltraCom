@@ -120,6 +120,11 @@ class ComplexPitchProperty(connection: ManipulableBezierConnection, numberOfBuck
   
   def propertyType = {
     PitchPropertyType
-  }  
+  } 
+
+  override def toString = {
+    "ComplexPitchProperty"
+  }
+  
   
 }

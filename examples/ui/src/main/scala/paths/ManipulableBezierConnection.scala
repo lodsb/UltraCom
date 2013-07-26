@@ -51,6 +51,17 @@ object ManipulableBezierConnection {
   def apply(app: Application, startNode: Node, controlNode: Node, endNode: Node) = {
     new ManipulableBezierConnection(app, startNode, controlNode, endNode)
   }
+  
+  /*
+  def apply(app: Application, startNode: Node, controlNode: Node, endNode: Node, properties: Map[PropertyType, ComplexProperty]) = {
+    val map = Map(
+      (VolumePropertyType -> ComplexVolumeProperty(this)),
+      (SpeedPropertyType -> ComplexSpeedProperty(this)),
+      (PitchPropertyType -> ComplexPitchProperty(this))
+    )    
+    new ManipulableBezierConnection(app, startNode, controlNode, endNode, map)
+  }
+  */
 
 }
 
@@ -205,7 +216,11 @@ class ManipulableBezierConnection(app: Application, startNode: Node, controlNode
   
  
   override def toXML = {
-    ""
+    val start = "<connection type = 'ManipulableBezierConnection'>"
+    val nodes = "<nodes>" + this.nodes.map(_.toXML).foldLeft("")((n1, n2) => n1 + " " + n2) + "</nodes>"
+    val properties = "<properties>" + this.properties.values.map(_.toXML).foldLeft("")((p1, p2) => p1 + " " + p2) + "</properties>"
+    val end = "</connection>"
+    start + nodes + properties + end
   }
   
 }
