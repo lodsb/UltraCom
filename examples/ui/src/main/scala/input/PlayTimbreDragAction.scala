@@ -21,15 +21,36 @@ class PlayTimbreDragAction(node: Node) extends BoundedDragAction(Menu.Space, Men
   
   	override def processGestureEvent(gestureEvent: MTGestureEvent): Boolean = {  
   	  val returnValue = super.processGestureEvent(gestureEvent)
-  	  node match {
-  	    case withChannels: AudioChannels => {
-  	      Ui.synthesizer ! AudioEvent(withChannels.collectOpenChannels, math.round(withChannels.position._1), math.round(withChannels.position._2), PitchPropertyType.mean, VolumePropertyType.mean)   
+  	  println("play timbre drag action")
+      gestureEvent match {
+        case dragEvent: DragEvent => {
+          dragEvent.getId match {
+            case MTGestureEvent.GESTURE_DETECTED => {println("detected"); this.sendPlayAudioEvent()}
+            case MTGestureEvent.GESTURE_RESUMED => {println("resumed"); this.sendPlayAudioEvent()}
+            case MTGestureEvent.GESTURE_UPDATED => {println("updated"); this.sendPlayAudioEvent()}
+            case MTGestureEvent.GESTURE_CANCELED => {println("canceled"); this.sendStopAudioEvent()}
+            case MTGestureEvent.GESTURE_ENDED => {println("ended"); this.sendStopAudioEvent()}
+            case somethingElse => {println("some other gesture event type")}
+          }
         }
-        case withoutChannels => {
-          Ui.synthesizer ! AudioEvent(Array(0,1,2,3), math.round(withoutChannels.position._1), math.round(withoutChannels.position._2), PitchPropertyType.mean, VolumePropertyType.mean)   
-        }
-      }
+      }  	  
   	  returnValue
   	}
+  	
+  	private def sendPlayAudioEvent() = {
+      val channels = node match {
+        case withChannels: AudioChannels => withChannels.collectOpenChannels
+        case withoutChannels => Array(0,1,2,3)
+      } 
+      
+      val (uiX, uiY) =  (node.position._1.toInt, node.position._2.toInt)
+      val (x, y) = (uiX/Ui.width.toFloat, uiY/Ui.height.toFloat)
+      Ui.audioInterface ! PlayAudioEvent(node.id, x, y, PitchPropertyType.mean, VolumePropertyType.mean, channels)
+    }
+    
+    
+    private def sendStopAudioEvent() = {
+      Ui.audioInterface ! StopAudioEvent(node.id)          
+    }
   	
 }

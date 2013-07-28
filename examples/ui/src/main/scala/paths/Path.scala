@@ -97,7 +97,7 @@ object Path {
 class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node) => ManipulableBezierConnection), var connections: List[ManipulableBezierConnection], 
            playback: PlaybackState, playbackType: NodeType, reversed: Boolean, currentCon: Int, connectionAcc: Float, currentConParam: Float, currentBuck: Int, bucketAcc: Float,
            timeNodesMap: Map[TimeNode, Boolean], timeConnectionsList: List[TimeConnection]) 
-           extends AbstractVisibleComponent(app) with Actor with AudioChannels with ToolRegistry with Persistability {
+           extends AbstractVisibleComponent(app) with Actor with AudioChannels with ToolRegistry with Persistability with Identifier {
  
   private var exists = true
   
@@ -105,7 +105,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
   private var isReversedPlayback = reversed //whether the path is played back reversed
   
   private var currentConnection = currentCon //index of the connection currently played 
-  private var currentBucket = currentBuck //index of the current speed bucket
+  private var currentBucket = currentBuck //index of the current _speed_ bucket; use this only in association with the speed property type! 
   private var bucketAccumulator = bucketAcc //accumulate passed time in milliseconds for current bucket
   private var connectionAccumulator = connectionAcc //accumulated passed time in milliseconds for the current connection
   private var currentConnectionParameter = currentConParam //connection parameter indicating the playback progress on the currently played back connection
@@ -141,11 +141,12 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
     var lastTime = System.nanoTime()
     var currentTime = System.nanoTime()
     var timeDiff = 0.0f //passed time in milliseconds
+    var accumulatedTime = 0.0f //accumulated time since last reset of this variable
     
     var currentBucketValue = 0.0f
     var currentConnectionValue = 0.0f
 
-    var (currentX, currentY) = (0,0)
+    var (currentX, currentY) = (0f, 0f)
     
     var ignoreNextTogglePlayback = false //whether the next play/pause playback event is to be ignored
     var ignoreNextStopPlayback = false //whether the next stop playback event is to be ignored
@@ -306,20 +307,32 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
         
         case event: PathFastForwardEvent => {
           this.synchronized {
-            if (this.playbackState == Playing) {
-              val time = event.time
-              this.bucketAccumulator = this.bucketAccumulator + time
-              this.connectionAccumulator = this.connectionAccumulator + time
+            if (this.playbackState != Stopped) {
+              val con = this.connections(this.currentConnection) 
+              currentBucketValue = con.propertyValue(SpeedPropertyType, this.currentBucket)
+              val buckets = con.propertyBuckets(SpeedPropertyType) //get number of buckets  
+              val hasReachedEnd = this.step(event.time, con, currentBucketValue, buckets)
+              if (hasReachedEnd) {
+                this.setPlaybackToEnd() //we set the playback to the end
+                this.triggerConnectedEntities() //then we possibly trigger one last time
+                this.evaluateEndNode() //and then evaluate what should happen next   
+              }
             }
           }
         }
         
         case event: PathRewindEvent => {
           this.synchronized {
-            if (this.playbackState == Playing) {
-              val time = event.time
-              this.bucketAccumulator = this.bucketAccumulator - time
-              this.connectionAccumulator = this.connectionAccumulator - time
+            if (this.playbackState != Stopped) {
+              val con = this.connections(this.currentConnection) 
+              currentBucketValue = con.propertyValue(SpeedPropertyType, this.currentBucket)
+              val buckets = con.propertyBuckets(SpeedPropertyType) //get number of buckets                
+              val hasReachedStart = this.stepReverse(event.time, con, currentBucketValue, buckets) 
+              if (hasReachedStart) {
+                this.setPlaybackToEnd() //we set the playback to the end
+                this.triggerConnectedEntities() //then we possibly trigger one last time
+                this.evaluateEndNode() //and then evaluate what should happen next                
+              }
             }
           }
         }
@@ -363,9 +376,10 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
             else if (event.name == "PAUSE_PLAYBACK") {
               if (ignoreNextTogglePlayback) {ignoreNextTogglePlayback = false}
               else {              
-                if (this.playbackState != Paused) {
+                if (this.playbackState == Playing) {
                   this.connections.head.nodes.head.nodeType = PlayNodeType             
                   this.playbackState = Paused
+                  Ui.audioInterface ! StopAudioEvent(this.id)
                   Playback ! PathPlaybackEvent(this, false)
                 }
               }
@@ -375,6 +389,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
               if (ignoreNextStopPlayback) {ignoreNextStopPlayback = false}
               else {
                 this.resetPlayback()
+                Ui.audioInterface ! StopAudioEvent(this.id)
                 Playback ! PathPlaybackEvent(this, false)
               }
             }
@@ -384,6 +399,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
                 var hasReachedEnd = false
                 currentTime = System.nanoTime()
                 timeDiff = (currentTime - lastTime)/1000000.0f //passed time in milliseconds
+                accumulatedTime = accumulatedTime + timeDiff
                 lastTime = currentTime
                 val con = this.connections(this.currentConnection)
                 val buckets = con.propertyBuckets(SpeedPropertyType) //get number of buckets    
@@ -392,15 +408,26 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
 
                 /* ################################ */
                 //first send new audio event if necessary
-                val (newXFloat, newYFloat) = con(this.currentConnectionParameter)
-                val (newX, newY) = (math.round(newXFloat), math.round(newYFloat))
+                val (uiXFloat, uiYFloat) = con(this.currentConnectionParameter)
+                val (uiX, uiY) = (uiXFloat.toInt, uiYFloat.toInt)
+                val (newX, newY) = (uiX/Ui.width.toFloat, uiY/Ui.height.toFloat)
                   
                 if (newX != currentX || newY != currentY){
                   currentX = newX
                   currentY = newY
                   val channels = this.collectOpenChannels
-                  Ui.synthesizer ! AudioEvent(channels, currentX, currentY, con.propertyValue(PitchPropertyType, this.currentBucket), con.propertyValue(VolumePropertyType, this.currentBucket))
-                }  
+                  val pitchBucket = (this.currentConnectionParameter * con.propertyBuckets(PitchPropertyType)).toInt
+                  val volumeBucket = (this.currentConnectionParameter * con.propertyBuckets(VolumePropertyType)).toInt
+                  Ui.audioInterface ! PlayAudioEvent(this.id, currentX, currentY, con.propertyValue(PitchPropertyType, pitchBucket), con.propertyValue(VolumePropertyType, volumeBucket), channels)
+                }
+                /*if (accumulatedTime > 100f) {
+                  accumulatedTime = 0f
+                  currentX = newX
+                  currentY = newY
+                  val channels = this.collectOpenChannels
+                  Ui.audioInterface.play ! PlayAudioEvent(this.id, currentX, currentY, con.propertyValue(PitchPropertyType, this.currentBucket), con.propertyValue(VolumePropertyType, this.currentBucket), channels)
+                }*/
+                
                 /* ################################ */
                 
                 
@@ -415,46 +442,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
                 
                 /* ################################ */
                 // then progress in time
-                if (!this.isReversedPlayback) { //progress in time
-                  this.bucketAccumulator = this.bucketAccumulator + timeDiff //accumulate passed time for current bucket
-                  this.connectionAccumulator = this.connectionAccumulator + timeDiff //and current connection
-                  
-                  if (this.bucketAccumulator >= currentBucketValue) { //if the time specified by the bucket has been surpassed
-                    this.currentBucket = this.currentBucket + 1 //we process the next current bucket of the current connection //(connectionAccumulator/currentConnectionValue * buckets).toInt //
-                    this.bucketAccumulator = this.bucketAccumulator - currentBucketValue //and set back the bucket accumulator with carry-over 
-                    if (this.currentBucket >= buckets) { //if we processed all buckets of the current connection
-                      this.currentConnection = this.currentConnection + 1 //we process the next connection on the path
-                      this.currentBucket = 0 //and set back the current bucket variable
-                      this.connectionAccumulator = this.bucketAccumulator //as well as the connection accumulator, again accounting for carry-over
-                      if (this.currentConnection >= connections.size) { //if we have processed all connections on the path
-                        hasReachedEnd = true
-                      }
-                    }
-                  } 
-                }
-                else { //reversed playback   
-                  timeDiff = -timeDiff
-                  this.bucketAccumulator = this.bucketAccumulator + timeDiff //accumulate passed time for current bucket
-                  this.connectionAccumulator = this.connectionAccumulator + timeDiff //and current connection
-                  
-                  if (this.bucketAccumulator <= 0) { //if the time specified by the bucket has been undershot
-                    this.currentBucket = this.currentBucket - 1 //we process the previous current bucket of the current connection //(connectionAccumulator/currentConnectionValue * buckets).toInt //
-                    this.bucketAccumulator = con.propertyValue(SpeedPropertyType, this.currentBucket) + this.bucketAccumulator //and set back the bucket accumulator with carry-over 
-                    if (this.currentBucket <= 0) { //if we processed all buckets of the current connection in reverse
-                      this.currentConnection = this.currentConnection - 1 //we process the previous connection on the path
-                      if (this.currentConnection >= 0) {
-                        val newCon = this.connections(this.currentConnection)
-                        this.currentBucket = newCon.propertyBuckets(SpeedPropertyType) - 1//and set back the current bucket variable
-                        this.connectionAccumulator = newCon.propertySum(SpeedPropertyType) + this.bucketAccumulator //as well as the connection accumulator, again accounting for carry-over
-                      }
-                      else if (this.currentConnection < 0) { //if we have processed all connections on the path in reverse
-                        hasReachedEnd = true
-                      }
-                    }
-                  }                   
-                }   
-                
-                this.currentConnectionParameter = con.toCurveParameter(this.currentBucket/buckets.toFloat + (this.bucketAccumulator/currentBucketValue)/buckets)        
+                hasReachedEnd = if (!this.isReversedPlayback) this.step(timeDiff, con, currentBucketValue, buckets) else this.stepReverse(timeDiff, con, currentBucketValue, buckets)                  
                 /* ################################ */
                 
 
@@ -478,6 +466,58 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
     }
   }    
 
+  /**
+  * Steps backwards in time and then returns whether the start of the path has been reached.
+  */
+  private def stepReverse(timeDelta: Float, con: ManipulableBezierConnection, currentBucketValue: Float, buckets: Int): Boolean = {
+    val timeDiff = -timeDelta
+    var hasReachedStart = false
+    this.bucketAccumulator = this.bucketAccumulator + timeDiff //accumulate passed time for current bucket
+    this.connectionAccumulator = this.connectionAccumulator + timeDiff //and current connection
+    
+    if (this.bucketAccumulator <= 0) { //if the time specified by the bucket has been undershot
+      this.currentBucket = this.currentBucket - 1 //we process the previous current bucket of the current connection //(connectionAccumulator/currentConnectionValue * buckets).toInt //
+      this.bucketAccumulator = con.propertyValue(SpeedPropertyType, this.currentBucket) + this.bucketAccumulator //and set back the bucket accumulator with carry-over 
+      if (this.currentBucket <= 0) { //if we processed all buckets of the current connection in reverse
+        this.currentConnection = this.currentConnection - 1 //we process the previous connection on the path
+        if (this.currentConnection >= 0) {
+          val newCon = this.connections(this.currentConnection)
+          this.currentBucket = newCon.propertyBuckets(SpeedPropertyType) - 1//and set back the current bucket variable
+          this.connectionAccumulator = newCon.propertySum(SpeedPropertyType) + this.bucketAccumulator //as well as the connection accumulator, again accounting for carry-over
+        }
+        else if (this.currentConnection < 0) { //if we have processed all connections on the path in reverse
+          hasReachedStart = true
+        }
+      }
+    }    
+    this.currentConnectionParameter = con.toCurveParameter(this.currentBucket/buckets.toFloat + (this.bucketAccumulator/currentBucketValue)/buckets) 
+    hasReachedStart
+  }
+  
+  /**
+  * Steps forward in time and then returns whether the path has been played back.
+  */
+  private def step(timeDiff: Float, con: ManipulableBezierConnection, currentBucketValue: Float, buckets: Int): Boolean = {
+    var hasReachedEnd = false
+    this.bucketAccumulator = this.bucketAccumulator + timeDiff //accumulate passed time for current bucket
+    this.connectionAccumulator = this.connectionAccumulator + timeDiff //and current connection
+    
+    if (this.bucketAccumulator >= currentBucketValue) { //if the time specified by the bucket has been surpassed
+      this.currentBucket = this.currentBucket + 1 //we process the next current bucket of the current connection //(connectionAccumulator/currentConnectionValue * buckets).toInt //
+      this.bucketAccumulator = this.bucketAccumulator - currentBucketValue //and set back the bucket accumulator with carry-over 
+      if (this.currentBucket >= buckets) { //if we processed all buckets of the current connection
+        this.currentConnection = this.currentConnection + 1 //we process the next connection on the path
+        this.currentBucket = 0 //and set back the current bucket variable
+        this.connectionAccumulator = this.bucketAccumulator //as well as the connection accumulator, again accounting for carry-over
+        if (this.currentConnection >= this.connections.size) { //if we have processed all connections on the path
+          hasReachedEnd = true
+        }
+      }
+    } 
+    this.currentConnectionParameter = con.toCurveParameter(this.currentBucket/buckets.toFloat + (this.bucketAccumulator/currentBucketValue)/buckets) 
+    hasReachedEnd
+  }
+  
   
   /**
   * Triggers connected entities - that is, either paths or manipulable nodes - if their associated time node has been reached.
@@ -529,11 +569,13 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
       else {
         this.isReversedPlayback = false
         this.resetPlayback()
+        Ui.audioInterface ! StopAudioEvent(this.id)
         Playback ! PathPlaybackEvent(this, false)
       }
     }
     else { //StopNodeType
       this.resetPlayback()
+      Ui.audioInterface ! StopAudioEvent(this.id)
       Playback ! PathPlaybackEvent(this, false)
     }
   }
@@ -908,6 +950,11 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
     })
   }
   
+  
+  override def destroy() = {
+    Ui.audioInterface ! StopAudioEvent(this.id)
+    super.destroy()
+  }
   
   override def toString = {
     "Path(" + this.connections.map(_ + "").foldLeft("")((c1, c2) => c1 + " + " + c2) + ")"

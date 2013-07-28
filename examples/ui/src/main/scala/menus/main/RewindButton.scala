@@ -78,7 +78,7 @@ class RewindButton(app: Application, menu: Menu, center: Vector3D) extends Butto
   
   override def down() = {
     super.down()
-    Ui.paths.foreach(_ ! PathRewindEvent(50)) 
+    Ui.paths.foreach(_ ! PathRewindEvent(100)) 
   }  
   
   
@@ -88,7 +88,7 @@ class RewindButton(app: Application, menu: Menu, center: Vector3D) extends Butto
     
     //register input processors
     val tapAndHoldProcessor = new TapAndHoldProcessor(app, Int.MaxValue) //choosing Int.MaxValue so GESTURE_UPDATED events are sent for a long time to come (approximately 600h, which should be sufficient ;))
-    tapAndHoldProcessor.setMaxFingerUpDist(5) 
+    tapAndHoldProcessor.setMaxFingerUpDist(this.radius) 
     this.registerInputProcessor(tapAndHoldProcessor)
     
     this.addGestureListener(classOf[TapAndHoldProcessor], new IGestureEventListener() {

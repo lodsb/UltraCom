@@ -36,7 +36,7 @@ class NodeSpace(app: Application) extends MTRectangle(app, Menu.Space, Menu.Spac
     this.setStrokeWeight(NodeSpace.BorderWeight)
     this.setStrokeColor(NodeSpace.BorderColor)
     
-    val visOption = Ui.synthesizer.timbreSpace.visualization
+    val visOption = Ui.audioInterface.timbreSpace.visualRepresentation
     visOption.foreach(visualization => this.setTexture(this.processImage(visualization)))
   }
   

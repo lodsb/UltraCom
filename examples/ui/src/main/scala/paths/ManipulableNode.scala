@@ -145,7 +145,9 @@ class ManipulableNode(app: Application, center: Vector3D) extends Node(app, Mani
               else {   
                 if (!this.isPlaying) {
                   lastTime = System.nanoTime() //init time
-                  Ui.synthesizer ! AudioEvent(this.collectOpenChannels, math.round(this.position._1), math.round(this.position._2), this.properties(PitchPropertyType)(), this.properties(VolumePropertyType)())   
+                  val (uiX, uiY) = (this.position._1, this.position._2)
+                  val (x, y) = (uiX/Ui.width, uiY/Ui.height)
+                  Ui.audioInterface ! PlayAudioEvent(this.id, x, y, this.properties(PitchPropertyType)(), this.properties(VolumePropertyType)(), this.collectOpenChannels)
                   this.isPlaying = true
                   this ! UiEvent("PLAY")
                 }
@@ -161,6 +163,7 @@ class ManipulableNode(app: Application, center: Vector3D) extends Node(app, Mani
                   this ! event
                 }
                 else {
+                  Ui.audioInterface ! StopAudioEvent(this.id)
                   this.isPlaying = false
                   this.playbackPos = 0.0f
                 }
@@ -198,10 +201,11 @@ class ManipulableNode(app: Application, center: Vector3D) extends Node(app, Mani
   }
  
   /**
-  * Destroys this node, which also implies stopping any associated threads.
+  * Destroys this node, which also implies stopping any associated threads as well as its audio output.
   */
   override def destroy() = {
     this.exists = false 
+    Ui.audioInterface ! StopAudioEvent(this.id)
     super.destroy()
   }  
   

@@ -57,7 +57,9 @@ object ManipulableNodeType extends EndNodeType with StartNodeType {
                     manipulableNode ! UiEvent("START_PLAYBACK") 
                   }
                   case otherNode => {
-                    Ui.synthesizer ! AudioEvent(Array(0,1,2,3), math.round(node.position._1), math.round(node.position._2), PitchPropertyType.mean, VolumePropertyType.mean)   
+                    val (uiX, uiY) = (node.position._1, node.position._2)
+                    val (x, y) = (uiX/Ui.width, uiY/Ui.height)                    
+                    Ui.audioInterface ! PlayAudioEvent(otherNode.id, x, y, PitchPropertyType.mean, VolumePropertyType.mean, Array(0,1,2,3))
                   }
                 }
               }

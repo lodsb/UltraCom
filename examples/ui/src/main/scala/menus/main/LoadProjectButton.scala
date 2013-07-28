@@ -5,6 +5,7 @@ import org.mt4j.Application
 import org.mt4j.components.TransformSpace
 import org.mt4j.components.MTComponent
 import org.mt4j.components.visibleComponents.shapes.MTEllipse
+import org.mt4j.util.MT4jSettings
 
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor 
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent
@@ -21,6 +22,7 @@ import processing.core.PGraphics
 import ui.menus._
 import ui.paths.types._
 import ui._
+import ui.persistence._
 
 object LoadProjectButton {
 
@@ -33,6 +35,8 @@ object LoadProjectButton {
 
 
 class LoadProjectButton(app: Application, menu: Menu, center: Vector3D) extends Button(app, menu, center) {
+
+  this.setTexture(Ui.loadImage(MT4jSettings.getInstance.getDefaultImagesPath + "load.png"))
   
   override def drawComponent(g: PGraphics) = {
     super.drawComponent(g)
@@ -40,6 +44,7 @@ class LoadProjectButton(app: Application, menu: Menu, center: Vector3D) extends 
   
   override def clicked() = {
     super.clicked()
+    ProjectFileLoader.load()
   }
   
   override def up() = {

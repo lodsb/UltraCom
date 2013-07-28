@@ -77,6 +77,7 @@ abstract class Button(app: Application, menu: Actor, center: Vector3D) extends M
   }  
   
   override def drawComponent(g: PGraphics) = {
+    super.drawComponent(g)
     val center = this.getCenterPointLocal()
     val cx = center.getX()
     val cy = center.getY()    

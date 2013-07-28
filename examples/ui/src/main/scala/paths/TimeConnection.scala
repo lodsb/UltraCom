@@ -147,7 +147,10 @@ class TimeConnection(app: Application, val timeNode: TimeNode, val connectionNod
   
   
   override def toXML = {
-    ""
+    val start = "<connection type = 'TimeConnection'>"
+    val nodes = "<nodes>" + this.nodes.map(_.toXML).foldLeft("")((n1, n2) => n1 + " " + n2) + "</nodes>"
+    val end = "</connection>"
+    start + nodes + end
   }  
   
 }

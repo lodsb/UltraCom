@@ -33,12 +33,20 @@ import org.mt4j.input.inputData.InputCursor
 import org.mt4j.util.Color
 import org.mt4j.util.math.Vector3D
 import org.mt4j.types.Vec3d
+import org.mt4j.output.audio.AudioServer
 
 import scala.actors.Actor._
 import scala.actors.Scheduler
 import scala.actors.scheduler.ResizableThreadPoolScheduler
 
+import java.awt.event.KeyEvent
+import java.awt.event.KeyEvent._
 import java.util.ArrayList
+
+import de.sciss.synth.{Node => SynthNode, _}
+import ugen._
+import org.mt4j.output.audio.AudioServer
+import org.mt4j.output.audio.AudioServer._
 
 import org.lodsb.reakt.Implicits._
 
@@ -61,10 +69,10 @@ import ui.audio._
 object Ui extends Application with Persistability { 
 	// see Settings.txt for basic settings, e.g. application name, resolution, framerate...
 
-	private val synth = SpatialSynthesizer(CustomTimbreSpace)
+	private val aInterface = AudioInterface(CustomTimbreSpace)
 
-	def synthesizer = {
-	  this.synth
+	def audioInterface = {
+	  this.aInterface
 	}
 	
   /**
@@ -160,11 +168,9 @@ object Ui extends Application with Persistability {
   
 	
 	override def toXML = {
-    val start = "<project>"
     val paths = "<paths>" + this.paths.map(_.toXML).foldLeft("")((c1, c2) => c1 + " " + c2) + "</paths>"
     val nodes = "<nodes>" + this.nodes.map(_.toXML).foldLeft("")((n1, n2) => n1 + " " + n2) + "</nodes>"
-    val end = "</project>"
-    start + paths + nodes + end
+    paths + nodes
 	}
 	
 	
@@ -173,10 +179,25 @@ object Ui extends Application with Persistability {
 	}
 
 	override def startUp() = {
+    AudioServer.start(true)
 		this.addScene(new UIScene(this, "Collaborative Sounddesign"))
 		//getInputManager().registerInputSource(new MacTrackpadSource(this))
 		/* Ctrl+N to set second point, shift to toggle it */
 	}
+	
+  /**
+   * Handles key events.
+   *
+   * @param e The key event
+   */
+  override protected def handleKeyEvent(e: KeyEvent) {
+    if (keyPressed && keyCode == VK_ESCAPE) {
+      AudioServer.quit // quit supercollider server scsynth
+      Runtime.getRuntime.halt(0) // quit java runtime environment
+    }
+    super.handleKeyEvent(e)
+  }	
+	
 	
 }
 
@@ -187,16 +208,19 @@ object Ui extends Application with Persistability {
 class UIScene(app: Application, name: String) extends Scene(app,name){
   
   //this.showTracer(true) //show touches
-  this.setup()
-  
+  this.setup()     
 	
 	private def setup() = {
+	  /* changing scheduler to avoid delay of new actors when max number of threads has already been reached */
 	  System.setProperty("actors.enableForkJoin", "false") //disable default scheduler to avoid starvation when many actors are working
     Scheduler.impl = {
       val scheduler = new ResizableThreadPoolScheduler(false)
       scheduler.start()
       scheduler
     }
+    
+    /* starting the audio server */
+    AudioServer.start() 
 	  
 	  this.setClearColor(Color(255,255,255))
 	 
@@ -205,16 +229,12 @@ class UIScene(app: Application, name: String) extends Scene(app,name){
     //this.canvas += DebugOutput //be sure to add this after the space itself
     
     
-    //registering a global input processor for creating connections between nodes
+    //registering global input processors for path creation, feedforward and menu interaction
     this.registerGlobalInputProcessor(new CursorProcessor(app))
-    
-    //registering a global input processor for feedforward
     this.registerGlobalInputProcessor(new FeedforwardProcessor(app))    
-    
-    //registering a global input processor for showing the main menu at appropriate times
     this.registerGlobalInputProcessor(new MenuProcessor(app))
 	  
-    //setting up a component input processor on the canvas for taps and adding a corresponding listener
+    //setting up interaction on canvas, that is, processors and listeners for tap and tap&hold
     val tapProcessor = new TapProcessor(app)
     tapProcessor.setEnableDoubleTap(true)
     this.canvas.registerInputProcessor(tapProcessor)

@@ -5,6 +5,7 @@ import org.mt4j.Application
 import org.mt4j.components.TransformSpace
 import org.mt4j.components.MTComponent
 import org.mt4j.components.visibleComponents.shapes.MTEllipse
+import org.mt4j.util.MT4jSettings
 
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor 
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent
@@ -34,6 +35,8 @@ object SaveProjectButton {
 
 
 class SaveProjectButton(app: Application, menu: Menu, center: Vector3D) extends Button(app, menu, center) {
+
+  this.setTexture(Ui.loadImage(MT4jSettings.getInstance.getDefaultImagesPath + "save.png"))
   
   override def drawComponent(g: PGraphics) = {
     super.drawComponent(g)

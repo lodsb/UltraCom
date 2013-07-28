@@ -15,6 +15,8 @@ import org.mt4j.util.math.Vector3D
 
 import processing.core.PGraphics
 
+import scala.actors._
+
 import ui._
 import ui.tools._
 import ui.paths._
@@ -33,6 +35,8 @@ object ManipulatingDragAction {
 * This class realizes a listener for manipulations on a path through dragging of a tool.
 */
 class ManipulatingDragAction(app: Application, tool: Tool) extends AligningDragAction(app, tool) {
+  
+  private var lastObjectOption: Option[Actor] = None
   
 	override def processGestureEvent(gestureEvent: MTGestureEvent): Boolean = {
 	  val returnValue = super.processGestureEvent(gestureEvent) //first align with path
@@ -55,23 +59,60 @@ class ManipulatingDragAction(app: Application, tool: Tool) extends AligningDragA
     (pathPositionOption, nodeOption) match {
       case (None, None) => {}
       case (Some(pathPosition), None) => {
+        this.evaluateLastObject(pathPosition._1)
+        this.lastObjectOption = Some(pathPosition._1)
         this.processPathManipulation(pathPosition._1, pathPosition._2, pathPosition._3, tipPoint, tool.isEditing)
       }
       case (None, Some(node)) => { 
-        this.processNodeManipulation(node, tipPoint, tool.isEditing)
+        node match {
+          case manipulableNode: ManipulableNode => {
+            this.evaluateLastObject(manipulableNode) 
+            this.lastObjectOption = Some(manipulableNode)
+            this.processNodeManipulation(manipulableNode, tipPoint, tool.isEditing)
+          }
+          case otherNode => {}
+        }
       }
       case (Some(pathPosition), Some(node)) => {
         val (path, connection, parameter) = (pathPosition._1, pathPosition._2, pathPosition._3)
         val pathDist = Vector.euclideanDistance(connection(parameter), tipPoint)
         val nodeDist = Vector.euclideanDistance(node.position, tipPoint)
-        if (pathDist < nodeDist) this.processPathManipulation(path, connection, parameter, tipPoint, tool.isEditing) else this.processNodeManipulation(node, tipPoint, tool.isEditing)
+        if (pathDist < nodeDist) {
+          this.evaluateLastObject(path)
+          this.lastObjectOption = Some(path)
+          this.processPathManipulation(path, connection, parameter, tipPoint, tool.isEditing) 
+        }
+        else { 
+          node match {
+            case manipulableNode: ManipulableNode => {
+              this.evaluateLastObject(manipulableNode)        
+              this.lastObjectOption = Some(manipulableNode)
+              this.processNodeManipulation(manipulableNode, tipPoint, tool.isEditing)
+            }
+            case otherNode => {}
+          }
+        }
       }
     }
     returnValue
   }
   
+  /**
+  * Evaluates whether the last object has to receive an unregister tool event since it is no longer in focus.
+  */
+  private def evaluateLastObject(newObject: Actor) {
+    //println("evaluating last object")
+    this.lastObjectOption match {
+      case Some(lastObject) => {
+        if (lastObject != newObject) {
+          lastObject ! UnregisterToolEvent(tool)
+        }
+      }
+      case None => {}
+    }    
+  }
   
-  def processPathManipulation(path: Path, connection: Connection, parameter: Float, point: (Float, Float), execute: Boolean) = { 
+  private def processPathManipulation(path: Path, connection: Connection, parameter: Float, point: (Float, Float), execute: Boolean) = { 
     import ManipulatingDragAction._                         
     val manipulatedPoint = connection(parameter) //this is the closest point    
     //DebugOutput.setPoint("1", manipulatedPoint)
@@ -99,24 +140,19 @@ class ManipulatingDragAction(app: Application, tool: Tool) extends AligningDragA
   }
   
   
-  def processNodeManipulation(node: Node, point: (Float, Float), execute: Boolean) = {
+  private def processNodeManipulation(node: ManipulableNode, point: (Float, Float), execute: Boolean) = {
     val distancePointToNode = Vector.euclideanDistance(point, node.position) - node.radius
     val propertyWidth = tool.propertyType.width
     val side = if (point._2 > node.position._2) -1 else 1
     val propertySide = tool.propertyType match {case VolumePropertyType => -1*side case PitchPropertyType => side case otherPropertyType => 0}
-    
-    node match {
-      case manipulableNode: ManipulableNode => {        
-        if (distancePointToNode <= propertyWidth && propertySide >= 0) { //make sure tool is actually close enough to manipulate property and also on the right side
-          if (execute) manipulableNode ! ManipulationEvent(tool, math.min(propertyWidth, distancePointToNode))  
-          else manipulableNode ! RegisterToolEvent(tool)
-        }
-        else {
-          manipulableNode ! UnregisterToolEvent(tool)
-        }
-      }
-      case otherNode => {}
-    }        
+           
+    if (distancePointToNode <= propertyWidth && propertySide >= 0) { //make sure tool is actually close enough to manipulate property and also on the right side
+      if (execute) node ! ManipulationEvent(tool, math.min(propertyWidth, distancePointToNode))  
+      else node ! RegisterToolEvent(tool)
+    }
+    else {
+      node ! UnregisterToolEvent(tool)
+    } 
   }
   
 }

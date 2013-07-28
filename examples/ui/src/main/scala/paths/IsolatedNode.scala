@@ -34,4 +34,13 @@ object IsolatedNode {
 *
 */
 class IsolatedNode(app: Application, center: Vector3D) extends Node(app, IsolatedNodeType, None, center) with AudioChannels {
+  
+  /**
+  * Destroys this node, which also implies stopping any playback.
+  */
+  override def destroy() = {
+    Ui.audioInterface ! StopAudioEvent(this.id)
+    super.destroy()
+  }    
+  
 }
