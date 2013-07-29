@@ -97,6 +97,15 @@ object Ui extends Application with Persistability {
     this.getCurrentScene.getCanvas.getChildren.collect({case path: Path => path})
   }
   
+  def clearAll() = {
+    this.nodes.foreach(node =>
+      this.getCurrentScene.registerPreDrawAction(new DeleteNodeActionThreadSafe(node))
+    )
+    this.paths.foreach(path =>
+      this.getCurrentScene.registerPreDrawAction(new DeleteNodeActionThreadSafe(path))
+    )    
+  }
+  
   
 	/**
 	* Returns - as an Option - the closest path, the closest connection on that path and the curve parameter yielding the closest point on that connection to the specified point,

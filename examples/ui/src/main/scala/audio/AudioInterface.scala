@@ -42,14 +42,13 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
     this.synchronized {
       println("in play")
       if (this.synthMap.contains(event.callerID)) {
+        println("updating synth with caller id " + event.callerID)
         this.updateParameters(this.synthMap(event.callerID), event)
-        println("received update audio event: "+ event)
-        println("playing synth with caller id " + event.callerID)
       }
       else {
         val synthDef = this.timbreSpace.synthDefinition(event.x, event.y, event.pitch, event.volume)
+        println("starting synth with caller id " + event.callerID)
         this.synthMap += (event.callerID -> synthDef.play)
-        println("received audio event: "+ event)
       }    
       println(this.synthMap.toString)
    }
@@ -74,9 +73,11 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
     while (true) {
       receive {
         case event: PlayAudioEvent => {
+          println("received audio event: "+ event)
           this.play(event)
         }
         case event: StopAudioEvent => {
+          println("received audio event: "+ event)
           this.stop(event)
         }
         case otherEvent => {}
