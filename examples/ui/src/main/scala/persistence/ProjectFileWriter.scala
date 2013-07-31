@@ -9,7 +9,7 @@ object ProjectFileWriter {
 
   def save() = {
     val out = new java.io.FileWriter("project.xml")
-    out.write(Ui.toXML)
+    out.write("<?xml version='1.0' encoding='UTF-8'?>" + Ui.toXML)
     out.close    
   }
 

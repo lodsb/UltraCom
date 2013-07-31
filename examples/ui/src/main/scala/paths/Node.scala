@@ -278,10 +278,10 @@ class Node(val app: Application, var typeOfNode: NodeType, var associatedPath: O
     /**
     * Sets the global position of this node after resetting the local matrix.
     */
-    override def setPositionGlobal(position: Vector3D) = {
+    /*override def setPositionGlobal(position: Vector3D) = {
       //this.resetLocalMatrix()
       super.setPositionGlobal(position)
-    }
+    }*/
     
     
     override def toXML = {

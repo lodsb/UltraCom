@@ -71,7 +71,7 @@ abstract class ComplexProperty(val connection: ManipulableBezierConnection, val 
   }
   
   override def toXML = {
-    "<property type = '" + this.toString + "'><buckets>" + this.values.zipWithIndex.map(bucket => {"<bucket index = '" + bucket._2 + "'>" + bucket._1 + "</bucket>"}).foldLeft("")((b1, b2) => b1 + " " + b2) + "</buckets></property>"
+    "<property type = '" + this.toString + "'><buckets number = '" + this.buckets + "'>" + this.values.zipWithIndex.map(bucket => {"<bucket index = '" + bucket._2 + "'>" + bucket._1 + "</bucket>"}).foldLeft("")((b1, b2) => b1 + " " + b2) + "</buckets></property>"
   }
   
 }

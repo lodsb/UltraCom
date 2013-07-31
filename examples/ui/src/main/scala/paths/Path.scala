@@ -254,7 +254,8 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
               
             this.timeNodes.keys.foreach(timeNode => { //only then update the time nodes
               val (x,y) = timeNode.connection(timeNode.parameter)
-              timeNode.globalPosition := Vec3d(x,y)
+              Ui.getCurrentScene.registerPreDrawAction(new RepositionNodeActionThreadSafe(timeNode, Vec3d(x,y)))
+              //timeNode.globalPosition := Vec3d(x,y)
             })
             
             this.timeConnections.foreach(timeConnection => { //and the time connections
@@ -270,7 +271,8 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
             val (closestX, closestY) = connection(parameter)
             event.node.connection = connection
             event.node.parameter = parameter
-            event.node.globalPosition := Vec3d(closestX, closestY) 
+            //event.node.globalPosition := Vec3d(closestX, closestY) 
+            Ui.getCurrentScene.registerPreDrawAction(new RepositionNodeActionThreadSafe(event.node, Vec3d(closestX,closestY)))
             
             val nodeConnectionIndex = this.indexOf(event.node.connection)
             if  (nodeConnectionIndex > this.currentConnection || (nodeConnectionIndex == this.currentConnection && event.node.parameter > this.currentConnectionParameter)) {

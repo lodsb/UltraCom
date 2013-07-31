@@ -31,7 +31,7 @@ abstract class Property extends Persistability {
   def visualWidth: Float
   
   /**
-  * Returns the maximum width of this property, which is used to determine the interaction area of this property.
+  * Returns the maximum width of this property, which is used to determine the interaction area of this property.z
   */
   def maxWidth: Float
 }

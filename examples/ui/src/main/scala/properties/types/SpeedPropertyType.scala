@@ -16,7 +16,9 @@ object SpeedPropertyType extends PropertyType {
   val Width = Ui.width/100
   val Vicinity = 2 * Width
   val PropertyColor = new MTColor(0, 130, 130)  
-  val ColorAlpha = 130 
+  val ColorAlpha = 70
+  val ProgressColorAlpha = 120
+  val HighlightedColorAlpha = 200
   val Range = (5.0f, 500.0f) //range of a speed property bucket; in this context, number of milliseconds
   
   protected val SymbolWidth = Tool.Width/6.0f //width of hourglass

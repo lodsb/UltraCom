@@ -107,10 +107,10 @@ class ComplexVolumeProperty(connection: ManipulableBezierConnection, numberOfBuc
   override def range = {
     VolumePropertyType.range
   }
-  
+
   override def visualWidth = {
-    VolumePropertyType.width
-  }
+    PitchPropertyType.width
+  }  
   
   override def maxWidth = {
     VolumePropertyType.width

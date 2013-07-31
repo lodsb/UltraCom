@@ -179,7 +179,7 @@ object Ui extends Application with Persistability {
 	override def toXML = {
     val paths = "<paths>" + this.paths.map(_.toXML).foldLeft("")((c1, c2) => c1 + " " + c2) + "</paths>"
     val nodes = "<nodes>" + this.nodes.map(_.toXML).foldLeft("")((n1, n2) => n1 + " " + n2) + "</nodes>"
-    paths + nodes
+    "<project>" + paths + nodes + "</project>"
 	}
 	
 	
