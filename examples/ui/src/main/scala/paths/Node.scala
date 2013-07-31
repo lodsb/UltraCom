@@ -65,7 +65,7 @@ class Node(val app: Application, var typeOfNode: NodeType, var associatedPath: O
     
     this.setup()
     
-    protected def setup(): Unit = {
+    protected[paths] def setup(): Unit = {
       this.globalPosition := center
       this.nodeType = typeOfNode //overloaded assignment operator =, sets up interation on this node in the process
       this.feedforwardNodeType = this.nodeType

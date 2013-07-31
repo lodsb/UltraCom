@@ -60,6 +60,10 @@ class ManipulableNode(app: Application, center: Vector3D) extends Node(app, Mani
     (VolumePropertyType -> SimpleVolumeProperty(this)),
     (PitchPropertyType -> SimplePitchProperty(this))
   )  
+  
+ def setProperties(propertyMap: Map[PropertyType,SimpleProperty]) = {
+   this.properties = propertyMap
+ }  
 
   
   def act = {          

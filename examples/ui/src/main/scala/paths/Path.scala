@@ -50,8 +50,8 @@ object Path {
   * Constructs a path with a single connection between the specified nodes.
   */
   def apply(app: Application, defaultConnectionFactory: ((Application, Node, Node) => ManipulableBezierConnection), firstNode: Node, secondNode: Node) = {
-    val startNode = Node(app, StopNodeType, firstNode.associatedPath, firstNode.getCenterPointGlobal)
-    val endNode = Node(app, PlayNodeType, secondNode.associatedPath, secondNode.getCenterPointGlobal)
+    val startNode = Node(app, PlayNodeType, firstNode.associatedPath, firstNode.getCenterPointGlobal)
+    val endNode = Node(app, StopNodeType, secondNode.associatedPath, secondNode.getCenterPointGlobal)
     Ui -= firstNode
     Ui -= secondNode
     Ui += startNode

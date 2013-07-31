@@ -19,7 +19,7 @@ object ProjectFileLoader {
     var paths = Set[Path]()
     var nodes = Set[Node]()
  
-    for (path <- (project \\ "path")) {    
+    for (path <- (project \\ "path")) {
       paths = paths + this.xmlToPath(path)
     }  
     
@@ -29,11 +29,18 @@ object ProjectFileLoader {
     }      
        
     for (path <- paths) {
+      path.connections.foreach(_.nodes.foreach(node => {
+        if (node.nodeType != ControlNodeType) { //control nodes are added to the ui implicitly
+          Ui += node
+        }
+      }))
       Ui += path
     }
     
     for (node <- nodes) {
-      Ui += node
+      if (node.nodeType == IsolatedNodeType || node.nodeType == ManipulableNodeType) { //all the other nodes have already been added above with their associated paths  
+        Ui += node
+      }
     }
     
   }
@@ -92,7 +99,19 @@ object ProjectFileLoader {
     else if (nodeType == "RepeatNode") Node(Ui, RepeatNodeType, None, Vec3d(x,y))        
     else if (nodeType == "AnchorNode") Node(Ui, AnchorNodeType, None, Vec3d(x,y))
     else if (nodeType == "ControlNode") Node(Ui, ControlNodeType, None, Vec3d(x,y))        
-    else if (nodeType == "IsolatedNode") Node(Ui, IsolatedNodeType, None, Vec3d(x,y))          
+    else if (nodeType == "IsolatedNode") Node(Ui, IsolatedNodeType, None, Vec3d(x,y))     
+    else if (nodeType == "ManipulableNode") {
+      val node = ManipulableNode(Ui, Vec3d(x,y))
+      val properties = (xmlNode \\ "property").map {property => this.xmlToSimpleProperty(property, node)}      
+      var propertyMap = Map[PropertyType, SimpleProperty]()
+      properties.foreach(_ match {
+        case volumeProperty: SimpleVolumeProperty => propertyMap += (VolumePropertyType -> volumeProperty)
+        case pitchProperty: SimplePitchProperty => propertyMap += (PitchPropertyType -> pitchProperty)
+        case somethingElse => throw new IllegalArgumentException("This xml file is corrupted.")
+      })
+      node.setProperties(propertyMap)    
+      node
+    }
     else throw new IllegalArgumentException("This xml file is corrupted.")    
   }
   
@@ -120,5 +139,21 @@ object ProjectFileLoader {
       property.update(index => bucketArray(index))
       property
   }
+  
+  /**
+  * Constructs a simple property from xml.
+  * @throws an IllegalArgumentException if the xml is malformed or otherwise corrupted.
+  */
+  private def xmlToSimpleProperty(xmlProperty: scala.xml.Node, node: ManipulableNode): SimpleProperty = {
+    val property = 
+      if ((xmlProperty \ "@type").text == "SimpleVolumeProperty") SimpleVolumeProperty(node)
+      else if ((xmlProperty \ "@type").text == "SimplePitchProperty") SimplePitchProperty(node)
+      else throw new IllegalArgumentException("This xml file is corrupted.")
+    
+      val bucketValue = (xmlProperty \\ "bucket")(0).child.text.toFloat //obtaining the bucket value
+      
+      property.update(bucketValue)
+      property
+  }  
   
 }

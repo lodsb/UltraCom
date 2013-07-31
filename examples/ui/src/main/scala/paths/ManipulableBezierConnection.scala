@@ -42,21 +42,15 @@ object ManipulableBezierConnection {
   * Constructs a new manipulable bezier connection with the control node placed in the middle of the two specified nodes.
   */
   def apply(app: Application, startNode: Node, endNode: Node) = {
-    new ManipulableBezierConnection(app, startNode, BezierConnection.createControlNode(app, startNode, endNode), endNode, Map[PropertyType, ComplexProperty]())
+    new ManipulableBezierConnection(app, startNode, BezierConnection.createControlNode(app, startNode, endNode), endNode)
   }   
   
   /**
   * Constructs a new manipulable bezier connection with the control node already defined by the caller.
   */
   def apply(app: Application, startNode: Node, controlNode: Node, endNode: Node) = {
-    new ManipulableBezierConnection(app, startNode, controlNode, endNode, Map[PropertyType, ComplexProperty]())
-  }
-  
-  
-  def apply(app: Application, startNode: Node, controlNode: Node, endNode: Node, properties: Map[PropertyType, ComplexProperty]) = {  
-    new ManipulableBezierConnection(app, startNode, controlNode, endNode, properties)
-  }
-  
+    new ManipulableBezierConnection(app, startNode, controlNode, endNode)
+  } 
 
 }
 
@@ -70,22 +64,19 @@ object ManipulableBezierConnection {
 *   <li> Change of speed over time </li>
 * </ul>
 */
-class ManipulableBezierConnection(app: Application, startNode: Node, controlNode: Node, endNode: Node, propertyMap: Map[PropertyType, ComplexProperty]) extends BezierConnection(app, startNode, controlNode, endNode) {
+class ManipulableBezierConnection(app: Application, startNode: Node, controlNode: Node, endNode: Node) extends BezierConnection(app, startNode, controlNode, endNode) {
   private var properties: Map[PropertyType, ComplexProperty] =
-    if (propertyMap.isEmpty) {
-      Map(
-        (VolumePropertyType -> ComplexVolumeProperty(this)),
-        (SpeedPropertyType -> ComplexSpeedProperty(this)),
-        (PitchPropertyType -> ComplexPitchProperty(this))
-      )              
-    }
-    else {propertyMap}
+    Map(
+      (VolumePropertyType -> ComplexVolumeProperty(this)),
+      (SpeedPropertyType -> ComplexSpeedProperty(this)),
+      (PitchPropertyType -> ComplexPitchProperty(this))
+    )              
   
   private var curveParameterFunction = Bezier.toCurveParameter(this.apply) //holds a function which returns for each arc length parameter the corresponding (approximated) curve parameter
  
- def setProperties(propertyMap: Map[PropertyType, ComplexProperty]) = {
-   this.properties = propertyMap
- }
+   def setProperties(propertyMap: Map[PropertyType, ComplexProperty]) = {
+     this.properties = propertyMap
+   }
   
   /**
   * Updates the specified property.

@@ -36,7 +36,7 @@ abstract class SimpleProperty extends Property {
   }
   
   override def toXML = {
-    "<property type = '" + this.toString + "'><buckets><bucket index = '0'>" + this.value + "</bucket></buckets></property>"
+    "<property type = '" + this.toString + "'><buckets number = '" + 1 + "'><bucket index = '0'>" + this.value + "</bucket></buckets></property>"
   } 
   
 }
