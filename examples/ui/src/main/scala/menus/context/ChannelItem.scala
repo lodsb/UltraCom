@@ -27,8 +27,6 @@ object ChannelItem {
   
   private val StrokeColor = new MTColor(0, 0, 0, 0)
   private val ForegroundColor = new MTColor(0, 0, 0, 0)
-  private val ChannelColor = Array(new MTColor(255, 0, 0, Alpha), new MTColor(0, 255, 0, Alpha), new MTColor(0, 0, 255, Alpha), new MTColor(255, 255, 0, Alpha)) 
-  
   
   def apply(app: Application, menu: NodeContextMenu, center: Vector3D, channelNumber: Int) = {
       new ChannelItem(app, menu, center, channelNumber)
@@ -67,7 +65,7 @@ class ChannelItem(app: Application, menu: NodeContextMenu, center: Vector3D, val
   }
   
   override def itemBackgroundColor = {
-    ChannelItem.ChannelColor(this.channelNumber)
+    AudioChannels.colorFromIndex(this.channelNumber)
   }
   
   override def itemStrokeColor = {

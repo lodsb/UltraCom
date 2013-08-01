@@ -12,6 +12,7 @@ import org.mt4j.input.inputProcessors.MTGestureEvent
 import org.mt4j.util.Color
 
 import processing.core.PGraphics
+import processing.core.PConstants._
 
 import scala.actors._
 
@@ -220,6 +221,15 @@ class ManipulableNode(app: Application, center: Vector3D) extends Node(app, Mani
     this.synchronized {
       super.drawComponent(g)
       this.properties.values.foreach(_.draw(g))
+      g.noFill()
+      g.strokeWeight(2)      
+      val (x,y) = (this.getCenterPointLocal.getX, this.getCenterPointLocal.getY)
+      val stepSize = 2*PI.toFloat/this.channelNumber
+      (0 until this.channelNumber).foreach(index => {
+        val color = AudioChannels.colorFromIndex(index)
+        if (this.isChannelOpen(index)) g.stroke(color.getR, color.getG, color.getB, 150) else g.stroke(0, 0, 0, 50)
+        g.arc(x, y, 2*this.radius - 2, 2*this.radius - 2, HALF_PI + index*stepSize, HALF_PI + (index+1)*stepSize)
+      })
     }
   }  
   

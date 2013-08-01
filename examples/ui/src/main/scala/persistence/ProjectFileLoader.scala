@@ -10,6 +10,7 @@ import ui.paths._
 import ui.paths.types._
 import ui.properties._
 import ui.properties.types._
+import ui.events._
 
 
 object ProjectFileLoader {
@@ -18,30 +19,40 @@ object ProjectFileLoader {
    val project = scala.xml.XML.loadFile("project.xml")
     var paths = Set[Path]()
     var nodes = Set[Node]()
- 
-    for (path <- (project \\ "path")) {
-      paths = paths + this.xmlToPath(path)
-    }  
-    
+
+    /* ##### nodes ##### */
     val xmlNodes = (project \ "nodes")(0)    
-    for (node <- (xmlNodes \\ "node")) {    
-      nodes = nodes + this.xmlToNode(node)
-    }      
-       
-    for (path <- paths) {
-      path.connections.foreach(_.nodes.foreach(node => {
-        if (node.nodeType != ControlNodeType) { //control nodes are added to the ui implicitly
-          Ui += node
-        }
-      }))
-      Ui += path
-    }
+    for (node <- (xmlNodes \\ "node")) {
+      val nodeType = (node \ "@type").text
+      if (nodeType != "ControlNode" && nodeType != "TimeNode") { //these are added to the ui implicitly
+        nodes = nodes + this.xmlToNode(node)
+      }
+    }       
     
     for (node <- nodes) {
       if (node.nodeType == IsolatedNodeType || node.nodeType == ManipulableNodeType) { //all the other nodes have already been added above with their associated paths  
         Ui += node
       }
+    }    
+    
+    
+    /* ##### paths ##### */
+    for (path <- (project \\ "path")) {
+      paths = paths + this.xmlToPath(path)
+    }  
+     
+       
+    for (path <- paths) {
+      path.connections.foreach(_.nodes.foreach(node => {
+        Ui += node
+      }))
+      Ui += path
     }
+   
+   
+   /* ##### time connections between paths ##### */
+   
+   
     
   }
 
@@ -53,10 +64,22 @@ object ProjectFileLoader {
   private def xmlToPath(xmlPath: scala.xml.Node): Path = {
     if ((xmlPath \ "@factory").text == "ManipulableBezierConnection") {    
       var connectionList = List[ManipulableBezierConnection]()
-      for (connection <- (xmlPath \\ "connection")) {
-        connectionList = connectionList :+ this.xmlToManipulableBezierConnection(connection)
+      var anchorNodeOption: Option[Node] = None
+      for (xmlConnection <- (xmlPath \\ "connection")) {
+        val connection = this.xmlToManipulableBezierConnection(xmlConnection, anchorNodeOption)
+        connectionList = connectionList :+ connection
+        anchorNodeOption = Some(connection.endNode)
       }    
-      Path(Ui, ManipulableBezierConnection.apply, connectionList)    
+      
+      val path = Path(Ui, ManipulableBezierConnection.apply, connectionList)    
+      
+      val xmlTimeNodes = (xmlPath \ "timeNodes")(0)
+      var timeNodeList = List[TimeNode]()
+      for (node <- (xmlTimeNodes \\ "node")) {
+        path ! TimeNodeAddEvent(this.xmlToTimeNode(node, path))
+      } 
+      
+      path
     }
     else throw new IllegalArgumentException("This xml file is corrupted.")
   }
@@ -66,14 +89,15 @@ object ProjectFileLoader {
   * Constructs a manipulable bezier connection rom xml.
   * @throws an IllegalArgumentException if the xml is malformed or otherwise corrupted.
   */  
-  private def xmlToManipulableBezierConnection(xmlConnection: scala.xml.Node): ManipulableBezierConnection = {
+  private def xmlToManipulableBezierConnection(xmlConnection: scala.xml.Node, startNodeOption: Option[Node]): ManipulableBezierConnection = {
     if ((xmlConnection \ "@type").text == "ManipulableBezierConnection") {    
       var nodeList = List[Node]()
-      for (node <- (xmlConnection \\ "node")) {
-        nodeList = nodeList :+ this.xmlToNode(node)
+      for (xmlNode <- (xmlConnection \\ "node")) {
+        nodeList = nodeList :+ this.xmlToNode(xmlNode)
       }
       
-      val connection = ManipulableBezierConnection(Ui, nodeList(0), nodeList(1), nodeList(2))     
+      val startNode = startNodeOption match {case Some(startNode) => startNode case None => nodeList(0)}
+      val connection = ManipulableBezierConnection(Ui, startNode, nodeList(1), nodeList(2))     
       val properties = (xmlConnection \\ "property").map {property => this.xmlToComplexProperty(property, connection)}
       var propertyMap = Map[PropertyType, ComplexProperty]()
       properties.foreach(_ match {
@@ -88,7 +112,11 @@ object ProjectFileLoader {
     else throw new IllegalArgumentException("This xml file is corrupted.")
   }
   
-  
+ 
+  /**
+  * Constructs a node from xml (excluding time nodes, which have to be dealt with in a separate method).
+  * @throws an IllegalArgumentException if the xml is malformed or otherwise corrupted.
+  */  
   private def xmlToNode(xmlNode: scala.xml.Node): Node = {
     val nodeType = (xmlNode \ "@type").text
     val x = (xmlNode \ "@x").text.toFloat
@@ -113,6 +141,22 @@ object ProjectFileLoader {
       node
     }
     else throw new IllegalArgumentException("This xml file is corrupted.")    
+  }
+  
+ 
+  /**
+  * Constructs a time node from xml.
+  * @throws an IllegalArgumentException if the xml is malformed or otherwise corrupted.
+  */
+  private def xmlToTimeNode(xmlNode: scala.xml.Node, path: Path): TimeNode = {
+    val nodeType = (xmlNode \ "@type").text
+    if (nodeType == "TimeNode") {
+      val x = (xmlNode \ "@x").text.toFloat
+      val y = (xmlNode \ "@y").text.toFloat      
+      val (connection, parameter) = path.closestSegment(x, y) //calculate the point on the path; this data could also be stored in the xml file for later retrieval, but for now this approach works just fine
+      TimeNode(Ui, (path, connection, parameter))
+    }    
+    else throw new IllegalArgumentException("This xml file is corrupted.")
   }
   
   

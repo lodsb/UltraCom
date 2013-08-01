@@ -29,5 +29,5 @@ object TimeNode {
 *
 */
 class TimeNode(app: Application, associatedPath: Option[Path], var connection: Connection, var parameter: Float) extends Node(app, TimeNodeType, associatedPath, Vec3d(connection(parameter)._1, connection(parameter)._2)) {
-//adds path, connection and parameter as attributes and can therefore not be realized by a node type
+//adds connection and parameter as attributes and can therefore not be realized by a node type
 }

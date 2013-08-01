@@ -6,6 +6,9 @@ import org.mt4j.util.math.Vector3D
 import org.mt4j.util.math.Vertex
 import org.mt4j.types.{Vec3d}
 
+import processing.core.PGraphics
+import processing.core.PConstants._
+
 import scala.actors._
 
 import ui._
@@ -42,5 +45,20 @@ class IsolatedNode(app: Application, center: Vector3D) extends Node(app, Isolate
     Ui.audioInterface ! StopAudioEvent(this.id)
     super.destroy()
   }    
+  
+  
+  override def drawComponent(g: PGraphics) = {
+    super.drawComponent(g)
+    g.noFill()
+    g.strokeWeight(2)
+    val (x,y) = (this.getCenterPointLocal.getX, this.getCenterPointLocal.getY)
+    val stepSize = 2*PI.toFloat/this.channelNumber
+    (0 until this.channelNumber).foreach(index => {
+      val color = AudioChannels.colorFromIndex(index)
+      if (this.isChannelOpen(index)) g.stroke(color.getR, color.getG, color.getB, 150) else g.stroke(0, 0, 0, 50)
+      g.arc(x, y, 2*this.radius - 2, 2*this.radius - 2, HALF_PI + index*stepSize, HALF_PI + (index+1)*stepSize)
+    })    
+  }
+  
   
 }

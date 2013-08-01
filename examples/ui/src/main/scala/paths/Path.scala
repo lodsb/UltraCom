@@ -15,6 +15,7 @@ import org.mt4j.util.math.Vertex
 import org.mt4j.types.Vec3d
 
 import processing.core.PGraphics
+import processing.core.PConstants._
 
 import scala.actors._
 
@@ -418,8 +419,8 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
                   currentX = newX
                   currentY = newY
                   val channels = this.collectOpenChannels
-                  val pitchBucket = (this.currentConnectionParameter * con.propertyBuckets(PitchPropertyType)).toInt
-                  val volumeBucket = (this.currentConnectionParameter * con.propertyBuckets(VolumePropertyType)).toInt
+                  val pitchBucket = (this.currentConnectionParameter * (con.propertyBuckets(PitchPropertyType) - 1)).toInt
+                  val volumeBucket = (this.currentConnectionParameter * (con.propertyBuckets(VolumePropertyType) - 1)).toInt
                   Ui.audioInterface ! PlayAudioEvent(this.id, currentX, currentY, con.propertyValue(PitchPropertyType, pitchBucket), con.propertyValue(VolumePropertyType, volumeBucket), channels)
                 }
                 /*if (accumulatedTime > 100f) {
@@ -493,6 +494,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
       }
     }    
     this.currentConnectionParameter = con.toCurveParameter(this.currentBucket/buckets.toFloat + (this.bucketAccumulator/currentBucketValue)/buckets) 
+    println("param: " + this.currentConnectionParameter)    
     hasReachedStart
   }
   
@@ -517,6 +519,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
       }
     } 
     this.currentConnectionParameter = con.toCurveParameter(this.currentBucket/buckets.toFloat + (this.bucketAccumulator/currentBucketValue)/buckets) 
+    println("param: " + this.currentConnectionParameter)
     hasReachedEnd
   }
   
@@ -528,7 +531,10 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
     this.timeNodes.foreach(entry => { //for each time node
       val timeNode = entry._1
       val hasBeenTriggered = entry._2
-      if (!hasBeenTriggered && timeNode.connection == this.connections(math.min(this.currentConnection, this.connections.size - 1)) && timeNode.parameter <= this.currentConnectionParameter) {
+      val trigger = 
+        if (!this.isReversedPlayback) (!hasBeenTriggered && timeNode.connection == this.connections(math.min(this.currentConnection, this.connections.size - 1)) && timeNode.parameter <= this.currentConnectionParameter)
+        else (!hasBeenTriggered && timeNode.connection == this.connections(math.min(this.currentConnection, this.connections.size - 1)) && timeNode.parameter >= this.currentConnectionParameter)
+      if (trigger) {
         this.timeNodes = this.timeNodes.updated(timeNode, true)           
         this.timeConnections.filter(_.timeNode == timeNode).foreach(timeConnection => {
           timeConnection.startNode.associatedPath match {
@@ -648,7 +654,19 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
   */
   override def drawComponent(g: PGraphics) = {
     //connections are drawn automatically due to parent-child-relationship
-    //thus this method is only needed if the path is to be decorated in some way - tbd
+    //thus this method is only needed for decorating the path; in this case, with audio channel visualisation
+    this.synchronized {
+      val startNode = this.connections.head.nodes.head
+      val (x,y) = startNode.position
+      g.noFill()
+      g.strokeWeight(2)
+      val stepSize = 2*PI.toFloat/this.channelNumber
+      (0 until this.channelNumber).foreach(index => {
+        val color = AudioChannels.colorFromIndex(index)
+        if (this.isChannelOpen(index)) g.stroke(color.getR, color.getG, color.getB, 150) else g.stroke(0, 0, 0, 50)
+        g.arc(x, y, 2*startNode.radius - 2, 2*startNode.radius - 2, HALF_PI + index*stepSize, HALF_PI + (index+1)*stepSize)
+      })      
+    }
   }   
   
   
@@ -888,8 +906,11 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
           
           val firstTimeNodes = this.timeNodes.filterKeys(timeNode => this.indexOf(timeNode.connection) < index) 
           val secondTimeNodes = this.timeNodes.filterKeys(timeNode => this.indexOf(timeNode.connection) > index) 
+          val deletedTimeNodes = this.timeNodes.filterKeys(timeNode => this.indexOf(timeNode.connection) == index) 
           val firstTimeConnections = this.timeConnections.filter(connection => firstTimeNodes.filterKeys(timeNode => timeNode == connection.timeNode).size > 0)
           val secondTimeConnections = this.timeConnections.filter(connection => secondTimeNodes.filterKeys(timeNode => timeNode == connection.timeNode).size > 0)
+
+          deletedTimeNodes.foreach(entry => this.removeTimeNode(entry._1))
           
           val (firstPath, secondPath) = 
           if (this.currentConnection < index) {
@@ -933,7 +954,9 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
     Ui -= timeNode    
   }
   
-  
+  /**
+  * Removes all time connections of this path which are connected to the given start node.
+  */
   private def removeTimeConnectionsToStartNode(startNode: Node) = {    
     val affectedTimeConnections = this.timeConnections.filter(_.startNode == startNode) //get all connections to the start node
     affectedTimeConnections.foreach(timeConnection => {
