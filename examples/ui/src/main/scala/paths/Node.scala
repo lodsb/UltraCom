@@ -171,7 +171,7 @@ class Node(val app: Application, var typeOfNode: NodeType, var associatedPath: O
           g.fill(symbolColor.getR(), symbolColor.getG(), symbolColor.getB(), symbolColor.getAlpha())    
           g.noStroke()
           g.beginShape()
-          val precision = 128
+          val precision = 256 
           (1 to precision).foreach(value => { 
             val (x,y) = SymbolInterpolator.interpolate(symbol((cx,cy),r), feedforwardSymbol((cx,cy),r), value.toFloat/precision, this.feedforwardValue)
             val (rotatedX, rotatedY) = this.transformPoint((x,y))

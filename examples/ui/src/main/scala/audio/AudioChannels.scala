@@ -21,7 +21,7 @@ object AudioChannels {
 
 trait AudioChannels {
 
-  private var audioChannel = new Array[Boolean](Ui.audioInterface.Channels)
+  protected var audioChannel = new Array[Boolean](Ui.audioInterface.Channels)
   for (index <- 0 until this.channelNumber) this.setChannel(index, true) //set channels to true 
    
   def toggleChannel(index: Int) = {

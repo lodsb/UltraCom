@@ -44,7 +44,9 @@ object Path {
   * Constructs a path with a variable number of connections between nodes.
   */
   def apply(app: Application, defaultConnectionFactory: ((Application, Node, Node) => ManipulableBezierConnection), connections: List[ManipulableBezierConnection]) = {
-    new Path(app, defaultConnectionFactory, connections, Stopped, StopNodeType, false, 0, 0.0f, 0.0f, 0, 0.0f, Map[TimeNode, Boolean](), List[TimeConnection]())
+    var channels = new Array[Boolean](Ui.audioInterface.Channels)
+    for (index <- 0 until channels.size) channels(index) = true //set channels to true 
+    new Path(app, defaultConnectionFactory, connections, Stopped, StopNodeType, false, 0, 0.0f, 0.0f, 0, 0.0f, Map[TimeNode, Boolean](), List[TimeConnection](), channels)
   }
   
   /**
@@ -57,22 +59,24 @@ object Path {
     Ui -= secondNode
     Ui += startNode
     Ui += endNode
-    new Path(app, defaultConnectionFactory, List(defaultConnectionFactory(app, startNode, endNode)), Stopped, StopNodeType, false, 0, 0.0f, 0.0f, 0, 0.0f, Map[TimeNode, Boolean](), List[TimeConnection]())
+    var channels = new Array[Boolean](Ui.audioInterface.Channels)
+    for (index <- 0 until channels.size) channels(index) = true //set channels to true 
+    new Path(app, defaultConnectionFactory, List(defaultConnectionFactory(app, startNode, endNode)), Stopped, StopNodeType, false, 0, 0.0f, 0.0f, 0, 0.0f, Map[TimeNode, Boolean](), List[TimeConnection](), channels)
   }
   
   /**
   * Constructs a path with a variable number of connections between nodes and a given playback position.
   */
-  protected def apply(app: Application, defaultConnectionFactory: ((Application, Node, Node) => ManipulableBezierConnection), connections: List[ManipulableBezierConnection], playback: PlaybackState, playbackType: NodeType, reversed: Boolean, currentCon: Int, connectionAcc: Float, currentConParam: Float, currentBuck: Int, bucketAcc: Float, timeNodesMap: Map[TimeNode, Boolean], timeConnectionsList: List[TimeConnection]) = {
-    new Path(app, defaultConnectionFactory, connections, playback, playbackType, reversed, currentCon, connectionAcc, currentConParam, currentBuck, bucketAcc, timeNodesMap, timeConnectionsList)
+  protected def apply(app: Application, defaultConnectionFactory: ((Application, Node, Node) => ManipulableBezierConnection), connections: List[ManipulableBezierConnection], playback: PlaybackState, playbackType: NodeType, reversed: Boolean, currentCon: Int, connectionAcc: Float, currentConParam: Float, currentBuck: Int, bucketAcc: Float, timeNodesMap: Map[TimeNode, Boolean], timeConnectionsList: List[TimeConnection], channels: Array[Boolean]) = {
+    new Path(app, defaultConnectionFactory, connections, playback, playbackType, reversed, currentCon, connectionAcc, currentConParam, currentBuck, bucketAcc, timeNodesMap, timeConnectionsList, channels)
   }
   
   
   /**
   * Constructs a path with a variable number of connections between nodes.
   */
-  protected def apply(app: Application, defaultConnectionFactory: ((Application, Node, Node) => ManipulableBezierConnection), connections: List[ManipulableBezierConnection], playback: PlaybackState, playbackType: NodeType, timeNodes: Map[TimeNode, Boolean], timeConnections: List[TimeConnection]) = {
-    new Path(app, defaultConnectionFactory, connections, playback, playbackType, false, 0, 0.0f, 0.0f, 0, 0.0f, timeNodes, timeConnections)
+  protected def apply(app: Application, defaultConnectionFactory: ((Application, Node, Node) => ManipulableBezierConnection), connections: List[ManipulableBezierConnection], playback: PlaybackState, playbackType: NodeType, timeNodes: Map[TimeNode, Boolean], timeConnections: List[TimeConnection], channels: Array[Boolean]) = {
+    new Path(app, defaultConnectionFactory, connections, playback, playbackType, false, 0, 0.0f, 0.0f, 0, 0.0f, timeNodes, timeConnections, channels)
   }  
   
   
@@ -97,7 +101,7 @@ object Path {
 */ 
 class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node) => ManipulableBezierConnection), var connections: List[ManipulableBezierConnection], 
            playback: PlaybackState, playbackType: NodeType, reversed: Boolean, currentCon: Int, connectionAcc: Float, currentConParam: Float, currentBuck: Int, bucketAcc: Float,
-           timeNodesMap: Map[TimeNode, Boolean], timeConnectionsList: List[TimeConnection]) 
+           timeNodesMap: Map[TimeNode, Boolean], timeConnectionsList: List[TimeConnection], channels: Array[Boolean]) 
            extends AbstractVisibleComponent(app) with Actor with AudioChannels with ToolRegistry with Persistability with Identifier {
  
   private var exists = true
@@ -126,6 +130,8 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
     
     connections.head.nodes.head.nodeType = if (this.playbackState == Playing) PauseNodeType else PlayNodeType //set start...
     connections.last.nodes.last.nodeType = playbackType //...and end node of this path
+    
+    (0 until channels.size).foreach(index => this.setChannel(index, channels(index)))
     
     connections.foreach(connection => Ui.getCurrentScene.registerPreDrawAction(new AddNodeActionThreadSafe(connection, this))) //add connections as children
     this.start() //start acting
@@ -884,7 +890,11 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
           Ui -= head
           Ui += IsolatedNode(app, head.position)
           Ui -= connection //register connection to be deleted; do NOT destroy the connection directly or you will run into concurrency issues
-          if (this.currentConnection == index) this.resetPlayback() else this.currentConnection = this.currentConnection - 1
+          if (this.currentConnection == index) {
+            Ui.audioInterface ! StopAudioEvent(this.id)
+            this.resetPlayback()
+          } 
+            else this.currentConnection = this.currentConnection - 1
           List(this)           
         }
         else if (index == this.connections.size - 1) { //else if there are other connections but the control node is part of the last connection
@@ -897,7 +907,10 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
           Ui -= last
           Ui += IsolatedNode(app, last.position)
           Ui -= connection //register connection to be deleted; do NOT destroy the connection directly or you will run into concurrency issues
-          if (this.currentConnection == index) this.resetPlayback()
+          if (this.currentConnection == index) {
+            Ui.audioInterface ! StopAudioEvent(this.id)
+            this.resetPlayback()
+          } 
           List(this)             
         } 
         else { //else there is a split into two paths
@@ -914,17 +927,18 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
           
           val (firstPath, secondPath) = 
           if (this.currentConnection < index) {
-            (Path(app, this.defaultConnectionFactory, this.connections.slice(0, index), this.playbackState, StopNodeType, this.isReversedPlayback, this.currentConnection, this.connectionAccumulator, this.currentConnectionParameter, this.currentBucket, this.bucketAccumulator, firstTimeNodes, firstTimeConnections),    
-             Path(app, this.defaultConnectionFactory, this.connections.slice(index+1, this.connections.size), Stopped, this.connections.last.nodes.last.nodeType, secondTimeNodes, secondTimeConnections))
+            (Path(app, this.defaultConnectionFactory, this.connections.slice(0, index), this.playbackState, StopNodeType, this.isReversedPlayback, this.currentConnection, this.connectionAccumulator, this.currentConnectionParameter, this.currentBucket, this.bucketAccumulator, firstTimeNodes, firstTimeConnections, this.audioChannel),    
+             Path(app, this.defaultConnectionFactory, this.connections.slice(index+1, this.connections.size), Stopped, this.connections.last.nodes.last.nodeType, secondTimeNodes, secondTimeConnections, this.audioChannel))
           }
           else if (this.currentConnection > index) {
-            (Path(app, this.defaultConnectionFactory, this.connections.slice(0, index), Stopped, StopNodeType, firstTimeNodes, firstTimeConnections),
-             Path(app, this.defaultConnectionFactory, this.connections.slice(index+1, this.connections.size), this.playbackState, this.connections.last.nodes.last.nodeType, this.isReversedPlayback, this.currentConnection - (index + 1), this.connectionAccumulator, this.currentConnectionParameter, this.currentBucket, this.bucketAccumulator, secondTimeNodes, secondTimeConnections))              
+            (Path(app, this.defaultConnectionFactory, this.connections.slice(0, index), Stopped, StopNodeType, firstTimeNodes, firstTimeConnections, this.audioChannel),
+             Path(app, this.defaultConnectionFactory, this.connections.slice(index+1, this.connections.size), this.playbackState, this.connections.last.nodes.last.nodeType, this.isReversedPlayback, this.currentConnection - (index + 1), this.connectionAccumulator, this.currentConnectionParameter, this.currentBucket, this.bucketAccumulator, secondTimeNodes, secondTimeConnections, this.audioChannel))              
           }
           else {//connection to be deleted is currently played back, stop all playback in this case
+            Ui.audioInterface ! StopAudioEvent(this.id)
             this.resetPlayback()
-            (Path(app, this.defaultConnectionFactory, this.connections.slice(0, index), Stopped, StopNodeType, firstTimeNodes, firstTimeConnections),
-             Path(app, this.defaultConnectionFactory, this.connections.slice(index+1, this.connections.size), Stopped, this.connections.last.nodes.last.nodeType, secondTimeNodes, secondTimeConnections))   
+            (Path(app, this.defaultConnectionFactory, this.connections.slice(0, index), Stopped, StopNodeType, firstTimeNodes, firstTimeConnections, this.audioChannel),
+             Path(app, this.defaultConnectionFactory, this.connections.slice(index+1, this.connections.size), Stopped, this.connections.last.nodes.last.nodeType, secondTimeNodes, secondTimeConnections, this.audioChannel))   
           }
           Ui.getCurrentScene.registerPreDrawAction(new RemoveChildrenActionThreadSafe(this))         
           Ui -= this
