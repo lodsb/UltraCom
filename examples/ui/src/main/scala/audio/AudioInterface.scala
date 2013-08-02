@@ -49,6 +49,13 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
         val synthDef = this.timbreSpace.synthDefinition(event.x, event.y, event.pitch, event.volume)
         println("starting synth with caller id " + event.callerID)
         this.synthMap += (event.callerID -> synthDef.play)
+        Thread.sleep(50)
+        /* 
+        the sleep call is actually a workaround for cases where play and stop are called in rapid succession;
+        apparently, if a synth is freed too quickly after it is instantiated, Super Collider does not have a Node
+        for it yet and thus the free call fails; since the synth is nonetheless removed from the synth map of this class, 
+        there is then no way to stop the synth again, which is highly undesirable behaviour
+        */
       }    
       println(this.synthMap.toString)
    }
@@ -61,7 +68,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
         println("freeing synth with id " + event.callerID)
         val synth = this.synthMap(event.callerID)
         this.synthMap -= event.callerID
-        synth.free
+        synth.free     
       }    
       else {println("synth does not exist")}
       println(this.synthMap.toString)
