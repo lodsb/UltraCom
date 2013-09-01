@@ -91,6 +91,7 @@ class CursorProcessor(app: Application) extends AbstractGlobalInputProcessor[MTF
         if (nearbyNodes.size > 0) {
           val nearestNode = nearbyNodes.minBy(_.distance(position)) //do not minBy on empty set
           if (!CursorProcessor.virtualConnectionMap.values.exists(_.firstNode == nearestNode)) { //and make sure the nearest node is not already interacted upon; note that virtual nodes are always the end node, not the start node
+            println("new virtual node")
             val virtualNode = this.aquireVirtualNode(cursorEvent)
             this.aquireVirtualConnection(nearestNode, virtualNode) //aquire a virtual node and subsequently a virtual connection from the nearest node to the virtual node
           }    

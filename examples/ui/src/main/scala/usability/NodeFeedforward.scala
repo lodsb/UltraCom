@@ -39,12 +39,12 @@ trait NodeFeedforward extends Feedforward {
 	  event match {
 		case nodeTypeEvent: NodeTypeFeedforwardEvent => {
 		  if (this.feedforwardValue > 0) {
-			this.feedforwardNodeType = nodeTypeEvent.nodeType
-			this.setScale(this.feedforwardValue * this.feedforwardNodeType.size + (1 - this.feedforwardValue)*this.nodeType.size)
+		    this.feedforwardNodeType = nodeTypeEvent.nodeType
+			  this.setScale(this.feedforwardValue * this.feedforwardNodeType.size + (1 - this.feedforwardValue)*this.nodeType.size)
 		  }
 		  else {
-			this.feedforwardNodeType = this.nodeType
-			this.setScale(this.feedforwardNodeType.size)
+		    this.feedforwardNodeType = this.nodeType
+		    this.setScale(this.feedforwardNodeType.size)
 		  }
 		}
 		case normalEvent => {
@@ -55,14 +55,16 @@ trait NodeFeedforward extends Feedforward {
 		  val oldAlpha = color.getAlpha
 		  
 		  if (normalEvent.name == "LEGAL ACTION") {
-			val newColor = Color((1-this.feedforwardValue) * oldR, this.feedforwardValue * (255-oldG) + oldG, (1-this.feedforwardValue) * oldB, oldAlpha)
-			this.setColor(newColor)           
-			this.setScale(math.max(this.nodeType.size, 1.5f*this.feedforwardValue))
+		    val factor = if (this.feedforwardValue < 1) this.feedforwardValue/2 else 1 //realizing a visual gap between 1 and any value less than 1
+		    val newColor = Color((1-factor) * oldR, factor * (255-oldG) + oldG, (1-factor) * oldB, oldAlpha)
+		    this.setColor(newColor)           
+		    this.setScale(math.max(this.nodeType.size, 1.3f*this.feedforwardValue))
 		  }
 		  else if (normalEvent.name == "ILLEGAL ACTION") {
-			val newColor = Color(this.feedforwardValue * (255-oldR) + oldR, (1-this.feedforwardValue) * oldG, (1-this.feedforwardValue) * oldB, oldAlpha)
-			this.setColor(newColor)
-			this.setScale(this.nodeType.size)
+		    val factor = if (this.feedforwardValue < 1) this.feedforwardValue/2 else 1 //realizing a visual gap between 1 and any value less than 1   
+		    val newColor = Color(factor * (255-oldR) + oldR, (1-factor) * oldG, (1-factor) * oldB, oldAlpha)
+		    this.setColor(newColor)
+		    this.setScale(this.nodeType.size)
 		  }
 		}
 	  }

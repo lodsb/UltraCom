@@ -49,7 +49,7 @@ trait StartNodeType extends NodeType{
     //register input processors
     node.registerInputProcessor(new DragProcessor(app)) 
     
-    val tapAndHoldProcessor = new TapAndHoldProcessor(app, 1000)
+    val tapAndHoldProcessor = new TapAndHoldProcessor(app, NodeContextMenu.Delay)
     tapAndHoldProcessor.setMaxFingerUpDist(3) 
     node.registerInputProcessor(tapAndHoldProcessor)
     
@@ -64,7 +64,7 @@ trait StartNodeType extends NodeType{
   }
   
   override def vicinity = {
-    this.radius * 2.0f
+    this.radius * 2.5f
   }  
   
   override def size = {

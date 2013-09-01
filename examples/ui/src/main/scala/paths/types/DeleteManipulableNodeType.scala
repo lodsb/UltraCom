@@ -22,7 +22,7 @@ import ui.usability._
 
 
 object DeleteManipulableNodeType extends NodeType {  
-  private val DeleteBackgroundColor = Color(0, 0, 0, 50)
+  private val DeleteBackgroundColor = Color(0, 20, 80, 70)
   private val DeleteStrokeColor = Color(0, 0, 0, 0)
   val Size = 0.5f
   

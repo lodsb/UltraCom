@@ -62,6 +62,7 @@ class Node(val app: Application, var typeOfNode: NodeType, var associatedPath: O
     private var scaleFactor = 1.0f //the current scale of this node
     private var rotationAngle = 0.0f //the current rotation angle (in degrees) of this node
     private var currentColor = this.nodeType.backgroundColor
+    private var clockValue = 0 //the current clock value, which lies between 0 and 360
     
     this.setup()
     
@@ -75,7 +76,7 @@ class Node(val app: Application, var typeOfNode: NodeType, var associatedPath: O
     * Returns whether this node is nearby the specified coordinate. More precisely, returns true iff the specified coordinate is in this node's vicinity.
     */
     def isNearby(x: Float, y: Float): Boolean = {
-      this.distance(x,y) <= this.vicinity
+      this.distance(x,y) <= this.nodeType.size * (this.vicinity - this.radius)
     }
     
     def isNearby(position: Vector3D): Boolean = {
@@ -111,7 +112,7 @@ class Node(val app: Application, var typeOfNode: NodeType, var associatedPath: O
     */
     def distance(x: Float, y: Float): Float = {
       val (cx, cy) = this.position 
-      math.sqrt((x-cx)*(x-cx) + (y-cy)*(y-cy)).toFloat - this.radius
+      math.sqrt((x-cx)*(x-cx) + (y-cy)*(y-cy)).toFloat - this.nodeType.size * this.radius
     }
  
     /**
@@ -138,17 +139,38 @@ class Node(val app: Application, var typeOfNode: NodeType, var associatedPath: O
       this.nodeType.vicinity
     }
     
+    /**
+    * Returns the relative size of this node.
+    */
+    def size: Float = {
+      this.nodeType.size
+    }
+    
     override def drawComponent(g: PGraphics) = {
-      //draw basic node appearance
       val center = this.getCenterPointLocal()
       val cx = center.getX()
       val cy = center.getY()
       val fillColor = this.color
-      val strokeColor = this.nodeType.strokeColor
+      val strokeColor = this.nodeType.strokeColor 
+      
+      //draw vicinity
+      if (this.vicinity > 0) {
+        g.noStroke()
+        g.fill(0, 20, 80, 15)
+        g.ellipse(cy, cy, this.vicinity*2, this.vicinity*2)
+      }      
+      
+      //draw basic node appearance
       g.fill(fillColor.getR, fillColor.getG, fillColor.getB, fillColor.getAlpha)
       g.stroke(strokeColor.getR, strokeColor.getG, strokeColor.getB, strokeColor.getAlpha)
       g.strokeWeight(this.nodeType.strokeWeight)
       g.ellipse(cx, cy, this.radius*2, this.radius*2)      
+      
+      //draw clock
+      g.noFill()
+      g.stroke(0, 0, 0, 150)
+      g.strokeWeight(1)
+      g.arc(cx, cy, this.radius*2 + 20, this.radius*2 + 20, 0, this.clockValue/360f * 2*PI)
       
       //optionally draw symbol
       this.drawSymbol(g)
@@ -217,6 +239,10 @@ class Node(val app: Application, var typeOfNode: NodeType, var associatedPath: O
       this.scale(scale, scale, scale, this.getCenterPointLocal, TransformSpace.LOCAL)
       this.scaleFactor = scale //update current scale factor
     }   
+    
+    def getScaleFactor: Float = {
+      this.scaleFactor
+    }
 
 
     /**
@@ -268,6 +294,10 @@ class Node(val app: Application, var typeOfNode: NodeType, var associatedPath: O
     
     def setColor(col: MTColor) = {
       this.currentColor = col
+    }
+    
+    def setClock(value: Int) = {
+      this.clockValue = value 
     }
     
     

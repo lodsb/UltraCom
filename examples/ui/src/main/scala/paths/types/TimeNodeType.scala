@@ -42,9 +42,9 @@ import ui.properties.types._
 object TimeNodeType extends NodeType{
 
   private val color = SpeedPropertyType.color
-  protected val TimeBackgroundColor = Color(color.getR, color.getG, color.getB, 80)
-  protected val TimeStrokeColor = Color(color.getR, color.getG, color.getB, 100)
-  val Size = 0.40f
+  protected val TimeBackgroundColor = Color(color.getR, color.getG, color.getB, 100)
+  protected val TimeStrokeColor = Color(color.getR, color.getG, color.getB, 120)
+  val Size = 0.4f
   
   protected override def setupInteractionImpl(app: Application, node: Node) = {
     node.setScale(Size)
@@ -65,7 +65,7 @@ object TimeNodeType extends NodeType{
   }    
 
   override def vicinity = {
-    this.radius * 2.0f
+    this.radius * 3f
   } 
   
    override def toString = {

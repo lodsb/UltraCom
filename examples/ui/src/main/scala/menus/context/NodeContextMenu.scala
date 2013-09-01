@@ -15,6 +15,7 @@ import ui.audio._
 
 
 object NodeContextMenu {  
+  val Delay = 1500
   private var registry = Set[NodeContextMenu]()
   
   def +=(menu: NodeContextMenu) = {   

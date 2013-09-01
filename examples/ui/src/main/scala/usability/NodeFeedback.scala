@@ -21,13 +21,58 @@ import ui._
 */
 trait NodeFeedback extends Feedback {
 
+  private var timer: Option[Animation] = None
+  
   def setColor(col: MTColor)
+  
+  def setClock(value: Int)
 
   def color: MTColor
 	
 	override def giveFeedback(event: FeedbackEvent) = {
-	  this.wrongActionAnimation.start()
+	  if (event.name == "START_TIMER") {
+	    this.timer = Some(this.timerAnimation(event.value))
+	    this.timer.foreach(_.start())
+	  }
+	  else if (event.name == "STOP_TIMER") {
+	    this.timer.foreach(_.stop())
+	    this.setClock(0)
+	  }
+	  else {
+	    this.wrongActionAnimation.start()
+	  }
 	}	
+	
+	private def timerAnimation(time: Float) = {
+	  val me = this
+	  val timerDelay = 500
+	  
+	  val interpolator = new MultiPurposeInterpolator(0.0f, 1.0f, timerDelay, 0.0f, 1.0f, 1) //(from, to, duration, accelerationEndTime, decelerationStartTime, loopCount)
+	  val animation = new Animation("TIMER_DELAY", interpolator, this)
+	  animation.addAnimationListener(new IAnimationListener() { 
+		def processAnimationEvent(ae: AnimationEvent) {
+        if(ae.getId() == AnimationEvent.ANIMATION_ENDED) { //if the animation has been played back uninterrupted
+            val interpolator2 = new MultiPurposeInterpolator(0.0f, 1.0f, time - timerDelay, 0.0f, 1.0f, 1) //(from, to, duration, accelerationEndTime, decelerationStartTime, loopCount)
+            val animation2 = new Animation("TIMER", interpolator2, this)
+            animation2.addAnimationListener(new IAnimationListener() { 
+            def processAnimationEvent(ae: AnimationEvent) {
+              if(ae.getId() == AnimationEvent.ANIMATION_ENDED) { //if the animation has been played back uninterrupted
+                println("animation ended")
+                me.setClock(0)
+              }
+              else {
+                me.setClock((ae.getValue * 360).toInt)
+              }
+            }
+            })
+            me.timer = Some(animation2)
+            me.timer.foreach(_.start())
+        }
+		}
+	  })	  
+	  animation	  
+	}
+	
 	
 	private def wrongActionAnimation = {
 	  val color = this.color

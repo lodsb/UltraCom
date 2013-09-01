@@ -21,7 +21,7 @@ class PlayTimbreDragAction(node: Node) extends BoundedDragAction(Menu.Space, Men
   
   	override def processGestureEvent(gestureEvent: MTGestureEvent): Boolean = {  
   	  val returnValue = super.processGestureEvent(gestureEvent)
-  	  println("play timbre drag action")
+  	  //println("play timbre drag action")
       gestureEvent match {
         case dragEvent: DragEvent => {
           dragEvent.getId match {

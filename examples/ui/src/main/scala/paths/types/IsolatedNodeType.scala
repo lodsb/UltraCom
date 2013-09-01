@@ -28,6 +28,7 @@ import ui.util._
 import ui.input._
 import ui.paths._
 import ui.usability._
+import ui.menus.context._
 
 /**
 * This is the isolated node type.
@@ -36,7 +37,7 @@ import ui.usability._
 */
 object IsolatedNodeType extends NodeType{
 
-  val Vicinity = this.radius * 2.0f  
+  val Vicinity = this.radius * 2.5f  
   val Size = 0.8f
   val Symbol = Speaker
   
@@ -50,7 +51,7 @@ object IsolatedNodeType extends NodeType{
     tapProcessor.setEnableDoubleTap(true)
     node.registerInputProcessor(tapProcessor)
     
-    val tapAndHoldProcessor = new TapAndHoldProcessor(app, 1000)
+    val tapAndHoldProcessor = new TapAndHoldProcessor(app, NodeContextMenu.Delay)
     tapAndHoldProcessor.setMaxFingerUpDist(5) 
     node.registerInputProcessor(tapAndHoldProcessor)
     
@@ -60,6 +61,33 @@ object IsolatedNodeType extends NodeType{
     node.addGestureListener(classOf[TapAndHoldProcessor], new ChannelContextMenuListener(node))
     //node.addGestureListener(classOf[DragProcessor], new InertiaDragAction(200, .95f, 17)) //interesting feature =)        
     node.addGestureListener(classOf[TapProcessor], new NodeDeletionListener(node))
+    
+    node.addGestureListener(classOf[TapProcessor], new IGestureEventListener() {
+      override def processGestureEvent(gestureEvent: MTGestureEvent): Boolean = {
+        gestureEvent match {
+          case tapEvent: TapEvent => {
+              if (tapEvent.getTapID == TapEvent.BUTTON_DOWN) {
+                node.setTapped(true)
+                println("play down")
+              }
+              else if (tapEvent.getTapID == TapEvent.BUTTON_UP) {
+                println("play up")
+                node.setTapped(false)
+              }
+              else if (tapEvent.getTapID == TapEvent.BUTTON_CLICKED) {
+                println("play clicked")
+                node.setTapped(false)
+              }
+              true
+          }
+          case someEvent => {
+              println("I can't process this particular event: " + someEvent.toString)
+              false
+          }
+        }
+      }
+    })     
+    
   }    
   
   override def toString = {

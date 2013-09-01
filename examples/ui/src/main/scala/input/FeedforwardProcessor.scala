@@ -118,7 +118,7 @@ class FeedforwardProcessor(app: Application) extends AbstractGlobalInputProcesso
   private def evaluateFeedforward(targetNode: Node, virtualNode: Node) = {
     val virtualConnection = CursorProcessor.virtualConnectionMap(virtualNode)
     val sourceNode = virtualConnection.firstNode //the source node is always the start node of the virtual connection
-    val feedforwardValue = this.feedforwardValue(virtualNode.position, targetNode.position)
+    val feedforwardValue = this.feedforwardValue(targetNode, virtualNode.position) //(virtualNode, targetNode)
     
     val connectsToAnchorNode =                sourceNode.nodeType == AnchorNodeType                 || targetNode.nodeType == AnchorNodeType
     val connectsToManipulableNode =           sourceNode.nodeType == ManipulableNodeType            || targetNode.nodeType == ManipulableNodeType
@@ -278,5 +278,15 @@ class FeedforwardProcessor(app: Application) extends AbstractGlobalInputProcesso
     val distance = Vector.euclideanDistance(firstPosition, secondPosition)
     if (distance <= MinDist) (MinDist - distance)/MinDist else 0
   }
+  
+  /**
+  * Returns a feedforward value between 0 and 1, with 0 implying no feedforward at all and 1 the strongest possible feedforward,
+  * which is elicited if the specified point is inside the given node.
+  */
+  private def feedforwardValue(node: Node, point: (Float, Float)) = {
+    import FeedforwardProcessor._
+    val distance = math.max(0, Vector.euclideanDistance(node.position, point) - node.radius * node.size)
+    if (distance <= MinDist) (MinDist - distance)/MinDist else 0
+  }  
   
 }

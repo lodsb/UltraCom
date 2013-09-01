@@ -60,6 +60,7 @@ import ui.properties._
 import ui.properties.types._
 import ui.persistence._
 import ui.audio._
+import ui.usability._
 
 
 /**
@@ -217,6 +218,7 @@ object Ui extends Application with Persistability {
 class UIScene(app: Application, name: String) extends Scene(app,name){
   
   //this.showTracer(true) //show touches
+  val touchTracer = new TouchTracer(app, this)
   this.setup()     
 	
 	private def setup() = {

@@ -50,7 +50,7 @@ class IsolatedNode(app: Application, center: Vector3D) extends Node(app, Isolate
   override def drawComponent(g: PGraphics) = {
     super.drawComponent(g)
     g.noFill()
-    g.strokeWeight(2)
+    g.strokeWeight(1)
     val (x,y) = (this.getCenterPointLocal.getX, this.getCenterPointLocal.getY)
     val stepSize = 2*PI.toFloat/this.channelNumber
     (0 until this.channelNumber).foreach(index => {

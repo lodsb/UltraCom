@@ -79,6 +79,9 @@ object ManipulableNodeType extends EndNodeType with StartNodeType {
     Some(this.Symbol)
   }  
 
+  override def vicinity = {
+    0f
+  }   
 
   override def toString = {
     "ManipulableNode"

@@ -222,7 +222,7 @@ class ManipulableNode(app: Application, center: Vector3D) extends Node(app, Mani
       super.drawComponent(g)
       this.properties.values.foreach(_.draw(g))
       g.noFill()
-      g.strokeWeight(2)      
+      g.strokeWeight(1)      
       val (x,y) = (this.getCenterPointLocal.getX, this.getCenterPointLocal.getY)
       val stepSize = 2*PI.toFloat/this.channelNumber
       (0 until this.channelNumber).foreach(index => {

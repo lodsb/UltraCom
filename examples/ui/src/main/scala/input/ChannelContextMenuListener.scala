@@ -27,9 +27,13 @@ class ChannelContextMenuListener(node: Node) extends IGestureEventListener() {
       case tahEvent: TapAndHoldEvent => {
           if (tahEvent.getId == MTGestureEvent.GESTURE_DETECTED) {
             println("tap and hold detected")
+            if (!NodeContextMenu.isMenuVisible(node)) {
+              node.giveFeedback(FeedbackEvent("START_TIMER", NodeContextMenu.Delay))
+            }
           }
           else if (tahEvent.getId == MTGestureEvent.GESTURE_ENDED) {
             println("tap and hold ended")
+            node.giveFeedback(FeedbackEvent("STOP_TIMER"))
             if (tahEvent.isHoldComplete && !NodeContextMenu.isMenuVisible(node)) {
               println("tap and hold completed")
               node.associatedPath.foreach(_ ! UiEvent("IGNORE_NEXT_TOGGLE_PLAYBACK")) //ignore next tap
