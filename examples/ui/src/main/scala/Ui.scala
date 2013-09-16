@@ -251,7 +251,7 @@ class UIScene(app: Application, name: String) extends Scene(app,name){
     this.canvas.registerInputProcessor(tapProcessor)
     this.canvas.addGestureListener(classOf[TapProcessor], new NodeCreationListener(nodeSpace))
 
-    val tapAndHoldProcessor = new TapAndHoldProcessor(app, 200)
+    val tapAndHoldProcessor = new TapAndHoldProcessor(app, 300)
     tapAndHoldProcessor.setMaxFingerUpDist(5) 
     this.canvas.registerInputProcessor(tapAndHoldProcessor)
     this.canvas.addGestureListener(classOf[TapAndHoldProcessor], new ToolMenuListener(app))

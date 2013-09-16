@@ -43,7 +43,7 @@ object TimeNodeType extends NodeType{
 
   private val color = SpeedPropertyType.color
   protected val TimeBackgroundColor = Color(color.getR, color.getG, color.getB, 100)
-  protected val TimeStrokeColor = Color(color.getR, color.getG, color.getB, 120)
+  protected val TimeStrokeColor = Color(color.getR, color.getG, color.getB, 150)
   val Size = 0.4f
   
   protected override def setupInteractionImpl(app: Application, node: Node) = {

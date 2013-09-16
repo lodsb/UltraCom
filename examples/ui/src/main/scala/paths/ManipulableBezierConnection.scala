@@ -136,7 +136,7 @@ class ManipulableBezierConnection(app: Application, startNode: Node, controlNode
     val arcLengthParameter = Bezier.quadraticCurveToArcLengthParameter(this.startNode.position, this.controlNode.position, this.endNode.position)(curveParameter)
     var leftEdge = (arcLengthParameter - radius/arcLength) * (property.buckets - 1) //the first bucket in the property which is affected
     var rightEdge = (arcLengthParameter + radius/arcLength) * (property.buckets - 1) //the last bucket in the property which is affected
-    val leftBucket = math.round(leftEdge)    
+    val leftBucket = math.round(leftEdge)
     val rightBucket = math.round(rightEdge)
     if (leftEdge.toInt == rightEdge.toInt) {  //if leftEdge and rightEdge do not encompass a bucket (that is, the bucket is 'inbetween'), expand one of the edges
       if (leftEdge - leftBucket > 0) leftEdge = leftBucket - 1
