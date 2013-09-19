@@ -22,6 +22,7 @@ package org.mt4j.components.visibleComponents.widgets
     >>  Made in Bavaria by fat little elves - since 1983.
  */
 
+/*
 import org.mt4j.components.visibleComponents.shapes.MTRectangle
 import org.mt4j.util.math.Vector3D
 import org.mt4j.input.kinect.{Skeleton, KinectSkeletonSource}
@@ -295,4 +296,4 @@ class KinectSkeletonViewer(applet: PApplet, x: Int, y: Int, width: Int, height: 
 	}
 
 
-}
+}*/

@@ -2,6 +2,10 @@ import de.sciss.synth._
 import sun.rmi.transport.proxy.RMIHttpToPortSocketFactory
 import ugen._
 import org.mt4j.output.audio.{Changed1, AudioServer}
+import de.sciss.synth.Ops
+import de.sciss.synth.Ops._
+import de.sciss.synth._
+import de.sciss.synth
 
 SynthDef("Decimate") {
 
@@ -60,20 +64,22 @@ SynthDef("Decimate") {
 
 
 	// CREATING SOUND -----	
-	var root:GE = (55+(12*scaledRot(rotationZ))).floor
+	var root:GE = ((12*scaledRot(rotationZ))+55).floor
 	var trigger = Changed1.kr(gate)
 	var imp = EnvGen.ar(Env.perc(0.2, 0.5), trigger)
   var imp2 = EnvGen.ar(Env.perc(0.3, 0.7), trigger)
-	var freqs = Seq(root-24,root+7,root+15).midicps
-	var freqs2 = Seq(root,root+12,root+3).midicps
-	var osc = Pulse.ar(freqs, 0.05+SinOsc.ar(0.2*LFNoise0.kr(0.2)).abs)+ Saw.ar(freqs2)+(scaledRot(rotationX)*WhiteNoise.ar);
+	var freqs:GE = Seq(root-24,root+7,root+15)
+	freqs = freqs.midicps
+	var freqs2:GE = Seq(root,root+12,root+3)
+	freqs2 = freqs2.midicps
+	var osc = Pulse.ar(freqs, SinOsc.ar(0.2*LFNoise0.kr(0.2)).abs+0.05)+ Saw.ar(freqs2)+(scaledRot(rotationX)*WhiteNoise.ar);
 
 
   //val fadeIn =  1.0 - EnvGen.ar(Env.perc(0.0, 1.5), fakeGate)
 
 
 
-	var sig:GE = LeakDC.ar(BLowPass.ar(osc, 50+ (imp*(scaledRot(rotationY+90)*10000))));
+	var sig:GE = LeakDC.ar(BLowPass.ar(osc, (imp*(scaledRot(rotationY+90)*10000))+50.0));
   sig = sig * imp;
 //  sig = BHiPass.ar(sig, 50)
 	sig = 0.35*DelayL.ar(sig,0.17,0.17)+sig

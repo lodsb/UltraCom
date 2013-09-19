@@ -1,4 +1,0 @@
-atMillis, eventType, message, object, millisPassed, payload
-10554 | Event | "Created Node" | "center.obj" [main.scala.TreeQuencer.NodeForm@64ff5860] | -1 | null
-10906 | Event | "Created Node" | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@4db5bba0] | -1 | null
-10954 | Event | "Added node to set" | "center.obj" [main.scala.TreeQuencer.NodeForm@64ff5860] | -1 | "angular_something.obj" [main.scala.TreeQuencer.NodeForm@4db5bba0]

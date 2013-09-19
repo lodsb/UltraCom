@@ -23,7 +23,13 @@
 package org.mt4j.output.audio
 
 import org.lodsb.reakt.async.{ValA, VarA}
-import de.sciss.synth.{ControlSetMap, Synth}
+import de.sciss.synth._
+import collection.immutable.{IndexedSeq => Vec}
+//import language.implicitConversions
+import de.sciss.osc
+import de.sciss.synth.Ops
+import de.sciss.synth.Ops._
+
 import org.lodsb.reakt.sync.VarS
 import org.lodsb.reakt.sync.ValS
 
@@ -35,7 +41,8 @@ class Synthesizer(val synth: Synth) {
   var currentAmp = 0.0f;
   var maxAmplitude = 0.0f;
 
-	parameters.observe({ x => synth.set(x); true;})
+	//parameters.observe({ x => synth.set(x); true;})
+	synth.set("freq1" -> 0.1)
 
 	def setAmplitudeUpdateDivisions(divisions: Int) = {
 		synth.set( "__pulseDivision" -> divisions  )

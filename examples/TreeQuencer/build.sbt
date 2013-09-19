@@ -18,7 +18,7 @@ scalacOptions <++= scalaVersion map { version =>
 }
 
 
-libraryDependencies += "org.lodsb" %% "ultracom" % "0.1-SNAPSHOT"
+libraryDependencies += "org.lodsb" %% "ultracom" % "0.2-SNAPSHOT"
 
 resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
 

@@ -92,6 +92,8 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 	textField.globalPosition := Vec3d(app.width / 2f, app.height / 2f);
   textField2.setPositionGlobal(new Vector3D(app.width / 2f, app.height / 2f));
 
+	textField2.globalPosition.observe{{x => println(x); true}}
+
 	// setting and reading Properties
 	textField.text:="foo"
 	textField2.text() ="foo"
@@ -185,9 +187,9 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 		l.startPosition() = Vec3d(rval()*2,rval()*2,rval())
 		l.setStrokeColor( Color(rval(),rval(),rval()) )
 		// connect the end position of each line to the (position of the) textfield
-		l.endPosition <~ textField.globalPosition
+//		l.endPosition <~ textField.globalPosition
     l.endPosition <~ textField2.globalPosition
-    l.endPosition |~ textField.globalPosition
+//    l.endPosition |~ textField.globalPosition
 		l
 	})
 

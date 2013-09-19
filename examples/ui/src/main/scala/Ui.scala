@@ -231,7 +231,7 @@ class UIScene(app: Application, name: String) extends Scene(app,name){
     }
     
     /* starting the audio server */
-    AudioServer.start() 
+//    AudioServer.start() 
 	  
 	  this.setClearColor(Color(255,255,255))
 	 

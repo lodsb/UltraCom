@@ -1,5 +1,9 @@
 import de.sciss.synth._
 import ugen._
+import de.sciss.synth.Ops
+import de.sciss.synth.Ops._
+import de.sciss.synth._
+import de.sciss.synth
 import org.mt4j.output.audio.{Changed1, AudioServer}
 
 SynthDef("tetra") {
@@ -44,7 +48,7 @@ SynthDef("tetra") {
 
   // tone
   val dec = 1.35
-  var bing = volume * SinOsc.ar(rotationToHalftones(rotationZ)*(1+scaledRot(rotationX)*5*Saw.ar(440*scaledRot(rotationY)))).madd(0.5,0) * EnvGen.kr(Env.perc(attack=0.01, release=dec), Changed1.kr(gate), doneAction=1)
+  var bing = volume * SinOsc.ar(rotationToHalftones(rotationZ)*(scaledRot(rotationX)*5*Saw.ar(440.0*scaledRot(rotationY)))+1.0).madd(0.5,0) * EnvGen.kr(Env.perc(attack=0.01, release=dec), Changed1.kr(gate), doneAction=1)
 	bing = Pan2.ar(SplayAz.ar(2, bing/0.325));
 
   // reverb
@@ -62,7 +66,7 @@ SynthDef("tetra") {
    * @return
    */
   def f(x: GE): GE = {
-    1-1/(1+x/200)
+    1-1/((x/200)+1)
   }
 
   bing = FreeVerb.ar(bing, f(rotationX), f(rotationX), f(rotationX))

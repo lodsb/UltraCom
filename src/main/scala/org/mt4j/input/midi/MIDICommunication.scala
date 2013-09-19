@@ -24,8 +24,12 @@ package org.mt4j.input.midi
 
 import org.mt4j.input.{TraitOutputSink, TraitInputSource}
 
-case class MidiMsg(channel: Int)
-case class MidiCtrlMsg(chan: Int, num: Int, data: Float) extends MidiMsg(chan)
+
+abstract class AbstractMidiMsg {
+	def channel: Int
+}
+case class MidiMsg(channel: Int) extends AbstractMidiMsg
+case class MidiCtrlMsg(channel: Int, num: Int, data: Float) extends AbstractMidiMsg
 
 trait TraitMidiInputSource extends TraitInputSource[MidiMsg, Nothing]
 trait TraitMidiOutputSink extends TraitOutputSink[MidiMsg]
@@ -52,7 +56,7 @@ object MidiCommunication {
 	}
 
 	class MidiOutput(private val receiver: Receiver) extends TraitMidiOutputSink {
-		def senderAction(message: MidiMsg): Boolean =  {
+		def senderAction(message: AbstractMidiMsg): Boolean =  {
 			message match {
 				case MidiCtrlMsg(cha, num, v) => {
 					val msg = new ShortMessage
