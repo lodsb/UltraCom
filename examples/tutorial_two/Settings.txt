@@ -1,6 +1,6 @@
 #Wed Jan 30 04:24:13 CET 2008	
 Frametitle=Tutorial Two
-ScSynthPath=C:/Program Files (x86)/SuperCollider-3.6.2/scsynth.exe
+ScSynthPath=/usr/local/bin/scsynth
 #Renderer: OpenGL: 1 P3D: 2
 Renderer=1
 #Fullscreen:'true' or 'false'

@@ -37,7 +37,6 @@ class Scope(applet: PApplet, x: Int, y: Int, width: Int, height: Int, noSigPoint
 
 	plot.observe({
 		x => signalPoints(currentArrayIndex) = x;
-		System.err.println("scope "+x)
 		currentArrayIndex = (currentArrayIndex + 1) % noSigPoints;
 		true;
 	})

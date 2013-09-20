@@ -35,15 +35,15 @@ object VPDSynth {
 
     var e00: GE = 0.0;
     var e01: GE = 1.0;
-    var e1 = EnvGen.kr(Env.perc(0.001, 0.3, 1, curveShape(-4)), gate);
-   	var e2 = EnvGen.kr(Env.perc(0.01, 0.8, 1, curveShape(-4)), gate);
-   	var e3 = EnvGen.kr(Env.perc(0.2, 1.2, 1,  curveShape(-4)), gate);
-   	var e4 = EnvGen.kr(Env.perc(0.5, 1.5, 1, curveShape(-4)), gate);
-   	var e5 = EnvGen.kr(Env.perc(0.8, 2.5, 1, curveShape(-2)), gate);
-   	var e6 = EnvGen.kr(Env.perc(1.6, 2.0, 1, curveShape(0)), gate);
-   	var e7 = EnvGen.kr(Env.perc(2, 2.0, 1, curveShape(2)), gate);
-   	var e8 = EnvGen.kr(Env.perc(2,2, 1 ,curveShape(4)), gate);
-   	var e9 = EnvGen.kr(Env.perc(2,2, 1 ,curveShape(8)), gate);
+    var e1 = EnvGen.kr(Env.perc(0.001, 0.3, 1, Curve.parametric(-4)), gate);
+   	var e2 = EnvGen.kr(Env.perc(0.01, 0.8, 1, Curve.parametric(-4)), gate);
+   	var e3 = EnvGen.kr(Env.perc(0.2, 1.2, 1,  Curve.parametric(-4)), gate);
+   	var e4 = EnvGen.kr(Env.perc(0.5, 1.5, 1, Curve.parametric(-4)), gate);
+   	var e5 = EnvGen.kr(Env.perc(0.8, 2.5, 1, Curve.parametric(-2)), gate);
+   	var e6 = EnvGen.kr(Env.perc(1.6, 2.0, 1, Curve.parametric(0)), gate);
+   	var e7 = EnvGen.kr(Env.perc(2, 2.0, 1, Curve.parametric(2)), gate);
+   	var e8 = EnvGen.kr(Env.perc(2,2, 1 ,Curve.parametric(4)), gate);
+   	var e9 = EnvGen.kr(Env.perc(2,2, 1 ,Curve.parametric(8)), gate);
 
 
     var envs = Seq(e00, e01, e1, e2, e3, e4, e5, e6, e7,

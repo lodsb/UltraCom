@@ -41,8 +41,7 @@ class Synthesizer(val synth: Synth) {
   var currentAmp = 0.0f;
   var maxAmplitude = 0.0f;
 
-	//parameters.observe({ x => synth.set(x); true;})
-	synth.set("freq1" -> 0.1)
+	parameters.observe({ x => synth.set(x); true;})
 
 	def setAmplitudeUpdateDivisions(divisions: Int) = {
 		synth.set( "__pulseDivision" -> divisions  )
