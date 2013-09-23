@@ -30,7 +30,7 @@ object ProjectFileLoader {
     }       
     
     for (node <- nodes) {
-      if (node.nodeType == IsolatedNodeType || node.nodeType == ManipulableNodeType) { //all the other nodes have already been added above with their associated paths  
+      if (node.nodeType == IsolatedNodeType || node.nodeType == ManipulableNodeType || node.nodeType == SingleNodeType) { //all the other nodes have already been added above with their associated paths  
         Ui += node
       }
     }    
@@ -127,9 +127,9 @@ object ProjectFileLoader {
     else if (nodeType == "RepeatNode") Node(Ui, RepeatNodeType, None, Vec3d(x,y))        
     else if (nodeType == "AnchorNode") Node(Ui, AnchorNodeType, None, Vec3d(x,y))
     else if (nodeType == "ControlNode") Node(Ui, ControlNodeType, None, Vec3d(x,y))        
-    else if (nodeType == "IsolatedNode") Node(Ui, IsolatedNodeType, None, Vec3d(x,y))     
-    else if (nodeType == "ManipulableNode") {
-      val node = ManipulableNode(Ui, Vec3d(x,y))
+    //else if (nodeType == "IsolatedNode") Node(Ui, IsolatedNodeType, None, Vec3d(x,y))     
+    else if (nodeType == "SingleNode") {
+      val node = SingleNode(Ui, Vec3d(x,y))
       val properties = (xmlNode \\ "property").map {property => this.xmlToSimpleProperty(property, node)}      
       var propertyMap = Map[PropertyType, SimpleProperty]()
       properties.foreach(_ match {

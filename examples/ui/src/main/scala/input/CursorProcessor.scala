@@ -37,6 +37,11 @@ object CursorProcessor {
   def isCursorInUse(cursor: InputCursor) = {
     this.virtualNodeMap.contains(cursor)
   }
+  
+  def isCursorInUse(cursorId: Long) = {
+    this.virtualNodeMap.exists(_._1.getId == cursorId)
+  }  
+  
 }
 
 /**
@@ -87,7 +92,7 @@ class CursorProcessor(app: Application) extends AbstractGlobalInputProcessor[MTF
         Ui.getCurrentScene.registerPreDrawAction(new RepositionNodeActionThreadSafe(virtualNode, position))
       }
       case None => { //if there is none, it might need to be created
-        val nearbyNodes = Ui.nodes.filter(node => node.distance(position) > 0 && node.isNearby(position) && !node.isInstanceOf[ManipulableNode]) //get all nodes for which the coordinate (x,y) is in their vicinity, but not inside the component
+        val nearbyNodes = Ui.nodes.filter(node => node.distance(position) > 0 && node.isNearby(position)) //&& !node.isInstanceOf[ManipulableNode]) //get all nodes for which the coordinate (x,y) is in their vicinity, but not inside the component
         if (nearbyNodes.size > 0) {
           val nearestNode = nearbyNodes.minBy(_.distance(position)) //do not minBy on empty set
           if (!CursorProcessor.virtualConnectionMap.values.exists(_.firstNode == nearestNode)) { //and make sure the nearest node is not already interacted upon; note that virtual nodes are always the end node, not the start node
@@ -145,10 +150,10 @@ class CursorProcessor(app: Application) extends AbstractGlobalInputProcessor[MTF
     val virtualConnection = CursorProcessor.virtualConnectionMap(virtualNode)
     val sourceNode = virtualConnection.firstNode //the source node is always the start node of the virtual connection
     val connectsToAnchorNode =                  sourceNode.nodeType == AnchorNodeType                 || targetNode.nodeType == AnchorNodeType
-    val connectsToManipulableNode =             sourceNode.nodeType == ManipulableNodeType            || targetNode.nodeType == ManipulableNodeType
+    //val connectsToManipulableNode =             sourceNode.nodeType == ManipulableNodeType            || targetNode.nodeType == ManipulableNodeType
     val connectsToControlNode =                 sourceNode.nodeType == ControlNodeType                || targetNode.nodeType == ControlNodeType
     val connectsToTimeNode =                    sourceNode.nodeType == TimeNodeType                   || targetNode.nodeType == TimeNodeType      
-    val connectsToDeleteManipulableNodeType =   sourceNode.nodeType == DeleteManipulableNodeType      || targetNode.nodeType == DeleteManipulableNodeType  
+    //val connectsToDeleteManipulableNodeType =   sourceNode.nodeType == DeleteManipulableNodeType      || targetNode.nodeType == DeleteManipulableNodeType  
     
     
     if (connectsToAnchorNode) { //we don't allow for branching of paths
@@ -164,16 +169,16 @@ class CursorProcessor(app: Application) extends AbstractGlobalInputProcessor[MTF
     else if (connectsToTimeNode) { //this HAS to be placed before connectsToManipulableNode
       this.processTimeConnection(sourceNode, targetNode)
     }    
-    else if (connectsToManipulableNode) { //we don't allow for connections to manipulable nodes with the exception of time nodes
+    /*else if (connectsToManipulableNode) { //we don't allow for connections to manipulable nodes with the exception of time nodes
       println("connection to manipulable node not allowed")
       sourceNode.giveFeedback(FeedbackEvent("ILLEGAL NODE INVOLVEMENT"))
       targetNode.giveFeedback(FeedbackEvent("ILLEGAL NODE INVOLVEMENT"))
-    }
-    else if (connectsToDeleteManipulableNodeType) {
+    }*/
+    /*else if (connectsToDeleteManipulableNodeType) {
       println("connection to delete manipulable node not allowed")
       sourceNode.giveFeedback(FeedbackEvent("ILLEGAL NODE INVOLVEMENT"))
       targetNode.giveFeedback(FeedbackEvent("ILLEGAL NODE INVOLVEMENT"))      
-    }
+    }*/
     else {
       this.processRegularConnection(sourceNode, targetNode)
     }     
@@ -290,7 +295,7 @@ class CursorProcessor(app: Application) extends AbstractGlobalInputProcessor[MTF
       }
     }
     else { //handle self reference sourceNode == targetNode
-      (sourceNode.associatedPath, targetNode.associatedPath) match {
+      /*(sourceNode.associatedPath, targetNode.associatedPath) match {
         case (None, None) => { //source and target are both isolated nodes
           println("(None, None)")
           val position = sourceNode.position
@@ -301,7 +306,8 @@ class CursorProcessor(app: Application) extends AbstractGlobalInputProcessor[MTF
           println("a self-reference can only be applied to an isolated node")
           targetNode.giveFeedback(FeedbackEvent("ILLEGAL SELF-REFERENCE"))
         }
-      }
+      }*/
+      targetNode.giveFeedback(FeedbackEvent("ILLEGAL SELF-REFERENCE"))
     }
   }
   

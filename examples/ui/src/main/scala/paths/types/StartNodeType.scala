@@ -44,7 +44,7 @@ trait StartNodeType extends NodeType{
   
   protected override def setupInteractionImpl(app: Application, node: Node) = {
     import StartNodeType._
-    node.setScale(Size)    
+    node.setScale(this.size)    
     
     //register input processors
     node.registerInputProcessor(new DragProcessor(app)) 

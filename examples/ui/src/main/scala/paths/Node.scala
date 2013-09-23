@@ -168,7 +168,7 @@ class Node(val app: Application, var typeOfNode: NodeType, var associatedPath: O
       
       //draw clock
       g.noFill()
-      g.stroke(0, 0, 0, 150)
+      g.stroke(0, 0, 0, 100)
       g.strokeWeight(1)
       g.arc(cx, cy, this.radius*2 + 20, this.radius*2 + 20, 0, this.clockValue/360f * 2*PI)
       

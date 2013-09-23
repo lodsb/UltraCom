@@ -879,8 +879,8 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
           println("single connection")
           val head = connection.nodes.head
           val last = connection.nodes.last
-          Ui += IsolatedNode(app, head.position)
-          Ui += IsolatedNode(app, last.position)
+          Ui += SingleNode(app, head.position)
+          Ui += SingleNode(app, last.position)
           this.removeTimeNodesOnConnection(connection)
           this.removeTimeConnectionsToStartNode(connection.startNode)
           Ui -= head
@@ -898,7 +898,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
           this.removeTimeNodesOnConnection(connection)
           this.removeTimeConnectionsToStartNode(connection.startNode)
           Ui -= head
-          Ui += IsolatedNode(app, head.position)
+          Ui += SingleNode(app, head.position)
           Ui -= connection //register connection to be deleted; do NOT destroy the connection directly or you will run into concurrency issues
           if (this.currentConnection == index) {
             Ui.audioInterface ! StopAudioEvent(this.id)
@@ -915,7 +915,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
           this.connections.last.nodes.last.nodeType = previousEndNodeType //new end node (previously anchor) gets corresponding node type
           this.removeTimeNodesOnConnection(connection)
           Ui -= last
-          Ui += IsolatedNode(app, last.position)
+          Ui += SingleNode(app, last.position)
           Ui -= connection //register connection to be deleted; do NOT destroy the connection directly or you will run into concurrency issues
           if (this.currentConnection == index) {
             Ui.audioInterface ! StopAudioEvent(this.id)
