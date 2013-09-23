@@ -54,9 +54,9 @@ SynthDef("icono") {
     // pass xZero for a linear function, which is a line through the point (xZero,0)
     // pass yZero for a linear function, which is a line through the point (0,yZero)
     if (xZero != Float.MinValue) {
-      channel = 1 - (z-360)/(xZero-360)
+      channel = ((z-360)/(xZero-360))+1
     } else {
-      channel = 1 + (1-yZero)*(z/360-1)
+      channel = ((1-yZero)*(z/360-1))+1
     }
 
     // output out should match the following conditions:

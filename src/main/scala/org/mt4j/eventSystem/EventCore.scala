@@ -66,9 +66,9 @@ class EventHandler {
   private def _register[EVT <: MTEvent](handler: Any, fun: EVT => Boolean) (implicit m: scala.reflect.Manifest[EVT]) = {
     val f = listeners.get(m.erasure);
     if(f == null) {
-      listeners.put(m.erasure, (new ListBuffer)+new Tuple2(handler, fun));
+      listeners.put(m.erasure, (new ListBuffer) :+ new Tuple2(handler, fun));
     } else {
-      listeners.put(m.erasure, f+ new Tuple2(handler,fun))
+      listeners.put(m.erasure, f :+ new Tuple2(handler,fun))
     }
 
   }

@@ -21,7 +21,7 @@ package org.mt4j.input.osc
   +4>>
     >>  Made in Bavaria by fat little elves - since 1983.
  */
-
+/*
 import java.nio.channels.DatagramChannel
 import java.net.{SocketAddress, InetSocketAddress}
 import de.sciss.osc.{Channel, Packet, Message => OSCMessage, UDP => OSCviaUDP, TCP => OSCviaTCP, Transport => OSCTransport, Transmitter, PacketCodec => OSCPacketCodec}
@@ -85,4 +85,4 @@ object OSCCommunication {
 	}
 
 
-}
+}*/

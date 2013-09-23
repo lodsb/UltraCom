@@ -1,11 +1,11 @@
 Wed Jan 30 04:24:13 CET 2008	
 Frametitle=TreeQuencer
 DefaultAudioDevice=ASIO4ALL
-ScSynthPath=C:/Program Files (x86)/SuperCollider/scsynth.exe
+ScSynthPath=/usr/local/bin/scsynth
 #Renderer: OpenGL: 1 P3D: 2
 Renderer=1
 #Fullscreen:'true' or 'false'
-Fullscreen=true
+Fullscreen=false
 #Switch for using fullscreen exclusive mode 
 #(if not exclusive, mt4j just uses an undecorated window, other windows can overlap it)
 FullscreenExclusive=false
@@ -22,7 +22,7 @@ Vertical_sync=true
 MultiMiceEnabled=false
 #Anti aliasing multisampling - '0' disables it - 2,4,8 determines the quality of the a.a.
 OpenGLAntialiasing=1
-DefaultSessionLogName=logs/TreeQuencerSession43
+DefaultSessionLogName=logs/TESTING
 EnableLogging=true
 
 

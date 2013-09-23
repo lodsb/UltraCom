@@ -32,6 +32,7 @@ import org.mt4j.components.visibleComponents.widgets.{Scope, Slider}
 import org.mt4j.components.visibleComponents.shapes.Ellipse
 import org.mt4j.types.Vec3d
 import de.sciss.synth._
+import de.sciss.synth.Ops._ 
 import org.mt4j.components.ComponentImplicits._
 import org.mt4j.util.Color
 
@@ -72,7 +73,7 @@ class TutorialTwoScene(app: Application, name: String) extends Scene(app,name) {
 		// use a repeating envelope to create a rhythmic effect
 		// the impulse (2Hz = 120 BPM) triggers the envelope
 		val imp = Impulse.kr(2);
-		val envelope = EnvGen.ar(Env.perc(0.1, 0.6, 1.0, curveShape(-4)),imp );
+		val envelope = EnvGen.ar(Env.perc(0.1, 0.6, 1.0, Curve.parametric(-4)),imp );
 
 		// the modulator has a fixed frequency, the amplitude of the modulator is scaled
 		// by the envelope and the amount of coupling
@@ -108,11 +109,12 @@ class TutorialTwoScene(app: Application, name: String) extends Scene(app,name) {
 	// The function given as startargument is executed once the server did this.
 	AudioServer.start({
 		//create an actual instance of the synthesizer defined before
-		val mySynth = mySynthDef.play
+		val mySynth = mySynthDef.play()
 
 		// to update the parameters of a synth, send tuples
 		// these muse be formated as ("parametername", value); the shorthand writing is "parametername"->value
 		mySynth.parameters <~ couplingSlider.value.map { x => ( "oscfreq" -> x ) }
+		mySynth.parameters.observe({x => println(x); true})
 
 		freqmodEllipse.globalPosition.observe {
 			pos =>{ mySynth.parameters() = ("modfreq" -> pos.x);

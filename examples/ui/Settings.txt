@@ -1,10 +1,10 @@
 #Wed Jan 30 04:24:13 CET 2008	
 Frametitle=UI
-ScSynthPath=/Applications/SuperCollider/SuperCollider.app/Contents/Resources/scsynth
+ScSynthPath=/usr/local/bin/scsynth
 #Renderer: OpenGL: 1 P3D: 2
 Renderer=1
 #Fullscreen:'true' or 'false'
-Fullscreen=false
+Fullscreen=true
 #Switch for using fullscreen exclusive mode 
 #(if not exclusive, mt4j just uses an undecorated window, other windows can overlap it)
 FullscreenExclusive=true
@@ -14,7 +14,7 @@ DisplayHeight=1080
 #DisplayWidth=960
 #DisplayHeight=540
 #Which display to use for fullscreen
-Display=1
+Display=2
 #Framerate maximum
 MaximumFrameRate=60
 #Vertical_sync:'true' or 'false'

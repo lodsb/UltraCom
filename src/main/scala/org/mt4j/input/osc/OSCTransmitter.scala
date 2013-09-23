@@ -26,4 +26,4 @@ import de.sciss.osc.{Packet, Transmitter, Channel}
 
 
 // ducktaping class, since DirectedImpl for Transmitter is private final in ScalaOsc
-class OSCTransmitter(val transmitter: Transmitter ) extends TraitTransmitOSCComm
+//class OSCTransmitter(val transmitter: Transmitter ) extends TraitTransmitOSCComm

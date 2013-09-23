@@ -52,6 +52,7 @@ import processing.core.PGraphics3D;
 import processing.opengl.PGraphicsOpenGL;
 
 import javax.media.opengl.GL;
+import java.lang.System;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -431,7 +432,7 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
                 _glblPosHlpr.getter()
         );
 
-        relativePositionToParent = new Property<Vector3D>(this, "relativePositionToParent",
+        this.relativePositionToParent = new Property<Vector3D>(this, "relativePositionToParent",
                 new Vector3D(0f, 0f, 0f),
                 _relPosParHlpr.setter(),
                 _relPosParHlpr.getter()
@@ -946,7 +947,7 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
         this.setMatricesDirty(true);
 
         if(this.triggerPropertyUpdate) {
-            this.globalPosition.emit(this.getCenterPointGlobal());
+            this.emitGlobalPosition();
             this.relativePositionToParent.emit(this.getCenterPointRelativeToParent());
         }
 
@@ -1383,6 +1384,19 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
     }
 
 
+    // force children to emit their position as well
+    private void updateChildrenGlobalPosition() {
+        for(MTComponent child: this.childComponents) {
+            child.emitGlobalPosition();
+        }
+    }
+
+    protected void emitGlobalPosition() {
+        this.globalPosition.emit(this.getCenterPointGlobal());
+        this.updateChildrenGlobalPosition();
+    }
+
+
     /**
      * Translate. Move the component in the direction of the specified vector.
      * The transformspace specifies the space, which the translation should be relative
@@ -1391,25 +1405,24 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
      * @param dirVect        the dir vect
      * @param transformSpace the transform space
      */
+
     public void translate(Vector3D dirVect, TransformSpace transformSpace) {
 
         Vector3D globalPos = null;
         Vector3D relaPos = null;
 
-        if(this.triggerPropertyUpdate) {
-            globalPos = this.getCenterPointGlobal();
-            relaPos = this.getCenterPointRelativeToParent();
-        }
-
         switch (transformSpace) {
             case LOCAL:
                 dirVect.transformDirectionVector(this.getLocalMatrix());
+
                 break;
             case RELATIVE_TO_PARENT:
+
                 //default
                 break;
             case GLOBAL:
                 if (this.getParent() != null) {
+
                     //Transform direction vector from world space to this objs parent space
                     dirVect.transformDirectionVector(this.getParent().getGlobalInverseMatrix());
                 }
@@ -1417,7 +1430,26 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
             default:
                 break;
         }
-        this.translate(dirVect);
+        this._translate(dirVect);
+
+
+        if(this.triggerPropertyUpdate){
+
+            switch (transformSpace) {
+
+                case RELATIVE_TO_PARENT:
+                    relaPos = this.getCenterPointRelativeToParent();
+                    this.relativePositionToParent.emit(relaPos);
+                    break;
+
+                default:
+                    break;
+            }
+
+
+            this.emitGlobalPosition();
+        }
+
 
     }
 
@@ -1426,7 +1458,19 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
           * @see org.mt4j.components.interfaces.IMTComponent#translateGlobal(org.mt4j.util.math.Vector3D)
           */
     public void translateGlobal(Vector3D dirVect) {
+        this.triggerPropertyUpdate = true;
+
         this.translate(dirVect, TransformSpace.GLOBAL);
+
+        this.triggerPropertyUpdate = false;
+    }
+
+    public void translate(Vector3D dirVect) {
+        this.triggerPropertyUpdate = true;
+
+        this.translate(dirVect, TransformSpace.RELATIVE_TO_PARENT);
+
+        this.triggerPropertyUpdate = false;
     }
 
 
@@ -1435,7 +1479,7 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
      *
      * @param dirVect the dir vect
      */
-    public void translate(Vector3D dirVect) {
+    private void _translate(Vector3D dirVect) {
 
 //		Matrix[] ms = Matrix.getTranslationMatrixAndInverse(dirVect.getX(), dirVect.getY(), dirVect.getZ());
         Matrix[] ms = _translationComputation; //use existing object to avoid object creation
@@ -1451,6 +1495,18 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
             e.printStackTrace();
         }
 
+    }
+
+    public void rotateX(Vector3D rotationPoint, float degree) {
+        this.rotateX(rotationPoint, degree, TransformSpace.RELATIVE_TO_PARENT);
+    }
+
+    public void rotateY(Vector3D rotationPoint, float degree) {
+        this.rotateY(rotationPoint, degree, TransformSpace.RELATIVE_TO_PARENT);
+    }
+
+    public void rotateZ(Vector3D rotationPoint, float degree) {
+        this.rotateZ(rotationPoint, degree, TransformSpace.RELATIVE_TO_PARENT);
     }
 
 
@@ -1530,7 +1586,7 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
                 break;
         }
 
-        this.rotateX(rotationPoint, degree);
+        this._rotateX(rotationPoint, degree);
 
         if(this.triggerPropertyUpdate){
             switch (transformSpace) {
@@ -1552,7 +1608,6 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
         }
     }
 
-
     /* (non-Javadoc)
           * @see org.mt4j.components.interfaces.IMTComponent3D#rotateXGlobal(org.mt4j.util.math.Vector3D, float)
           */
@@ -1567,7 +1622,7 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
      * @param rotationPoint the rotation point
      * @param degree        the degree
      */
-    public void rotateX(Vector3D rotationPoint, float degree) {
+    private void _rotateX(Vector3D rotationPoint, float degree) {
 
 //		Matrix[] ms = Matrix.getXRotationMatrixAndInverse(rotationPoint, degree);
         Matrix[] ms = _xRotationComputation;
@@ -1622,7 +1677,7 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
             default:
                 break;
         }
-        this.rotateY(rotationPoint, degree);
+        this._rotateY(rotationPoint, degree);
 
         if(this.triggerPropertyUpdate){
             switch (transformSpace) {
@@ -1659,7 +1714,7 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
      * @param rotationPoint the rotation point
      * @param degree        the degree
      */
-    public void rotateY(Vector3D rotationPoint, float degree) {
+    private void _rotateY(Vector3D rotationPoint, float degree) {
 //		Matrix[] ms = Matrix.getYRotationMatrixAndInverse(rotationPoint, degree);
         Matrix[] ms = _yRotationComputation;
         Matrix.toYRotationMatrixAndInverse(ms[0], ms[1], rotationPoint, degree);
@@ -1713,7 +1768,7 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
             default:
                 break;
         }
-        this.rotateZ(rotationPoint, degree);
+        this._rotateZ(rotationPoint, degree);
 
         if(this.triggerPropertyUpdate){
             switch (transformSpace) {
@@ -1751,7 +1806,7 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
      * @param rotationPoint the rotation point
      * @param degree        the degree
      */
-    public void rotateZ(Vector3D rotationPoint, float degree) {
+    private void _rotateZ(Vector3D rotationPoint, float degree) {
 //		Matrix[] ms = Matrix.getZRotationMatrixAndInverse(rotationPoint, degree);
         Matrix[] ms = _zRotationComputation;
         Matrix.toZRotationMatrixAndInverse(ms[0], ms[1], rotationPoint, degree);
@@ -3448,9 +3503,12 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
      */
 
     public void setPositionGlobal(Vector3D pos) {
+        this.triggerPropertyUpdate = true;
         this.translateGlobal(pos.getSubtracted(this.getCenterPointGlobal()));
+        this.triggerPropertyUpdate = false;
     }
     public void setPositionGlobalNoUpdateTrigger(Vector3D pos) {
+
         this.triggerPropertyUpdate = false;
         this.setPositionGlobal(pos);
         this.triggerPropertyUpdate = true;

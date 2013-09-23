@@ -23,7 +23,13 @@
 package org.mt4j.output.audio
 
 import org.lodsb.reakt.async.{ValA, VarA}
-import de.sciss.synth.{ControlSetMap, Synth}
+import de.sciss.synth._
+import collection.immutable.{IndexedSeq => Vec}
+//import language.implicitConversions
+import de.sciss.osc
+import de.sciss.synth.Ops
+import de.sciss.synth.Ops._
+
 import org.lodsb.reakt.sync.VarS
 import org.lodsb.reakt.sync.ValS
 

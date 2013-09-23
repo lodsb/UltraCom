@@ -117,7 +117,7 @@ import org.mt4j.util.opengl.GLMaterial
   }
 
   def cacheSynth(file: File): Synth = {
-    cacheSynthDef(file).play
+    cacheSynthDef(file).play()
   }
 
   def cacheGLMaterial(file: File): NodeMaterial = {

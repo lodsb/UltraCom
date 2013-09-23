@@ -1,10 +1,10 @@
 name := "UltraCom"
 
-scalaVersion := "2.9.2"
+scalaVersion := "2.10.1"
 
 organization := "org.lodsb"
 
-version := "0.1-SNAPSHOT"
+version := "0.2-SNAPSHOT"
 
 
 
@@ -20,11 +20,11 @@ scalacOptions <++= scalaVersion map { version =>
 }
 
 
-//libraryDependencies += "de.sciss" %% "scalacollider" % "1.3.+"
+libraryDependencies += "de.sciss" %% "scalacollider" % "1.10.+"
 
-//libraryDependencies += "de.sciss" %% "scalaosc" % "1.1.+"
+libraryDependencies += "de.sciss" %% "scalaosc" % "1.1.+"
 
-libraryDependencies += "org.lodsb" %% "reakt" % "0.1-SNAPSHOT"
+libraryDependencies += "org.lodsb" %% "reakt" % "0.2-SNAPSHOT"
 
 unmanagedClasspath in Compile += Attributed.blank(new java.io.File("doesnotexist"))
 
@@ -34,7 +34,7 @@ resolvers += "sbt-idea-repo" at "http://mpeltonen.github.com/maven/"
 
 resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
 
-addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "1.5.0-SNAPSHOT")
+//addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "1.5.0-SNAPSHOT")
 
 resolvers += "Twitter repo" at "http://maven.twttr.com/"
 

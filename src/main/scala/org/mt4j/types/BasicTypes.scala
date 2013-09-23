@@ -24,10 +24,19 @@ package org.mt4j.types
 
 import org.mt4j.util.math.Vector3D
 
+abstract class AbstractRotation {
+	def rotationPos: Vector3D
+	def degreeX: Float
+	def degreeY: Float
+	def degreeZ: Float
+}
 
 case class Rotation(rotationPos: Vector3D = Vector3D.ZERO_VECTOR,
-					degreeX: Float = 0, degreeY: Float = 0, degreeZ: Float = 0)
-case object ZeroRotation extends Rotation(Vector3D.ZERO_VECTOR,0,0,0);
+		degreeX: Float = 0, 
+		degreeY: Float = 0, 
+		degreeZ: Float = 0) extends AbstractRotation
+
+//case object ZeroRotation(Vector3D.ZERO_VECTOR,0,0,0) extends AbstractRotation
 
 object Vec3d {
 

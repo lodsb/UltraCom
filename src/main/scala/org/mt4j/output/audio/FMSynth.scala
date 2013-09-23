@@ -24,7 +24,7 @@ import de.sciss.synth._
 import de.sciss.osc.Message
 import scala.collection.mutable.Map
 import de.sciss.synth.NodeManager.NodeEnd
-import de.sciss.synth.osc._
+
 
 object FMSynth {
 	//1:1 1:2 4:9 3:7 2:5 3:8 1:3 2:7 1:4 2:9 1:5 1:6 1:7 1:8 1:9

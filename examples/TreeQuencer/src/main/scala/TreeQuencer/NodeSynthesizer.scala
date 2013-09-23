@@ -5,7 +5,10 @@ import org.mt4j.output.audio.AudioServer._
 import org.lodsb.reakt.async.VarA
 import org.lodsb.reakt.sync.VarS
 import de.sciss.synth.Synth
-
+import de.sciss.synth._
+import ugen._
+import de.sciss.synth.Ops
+import de.sciss.synth.Ops._
 
 /**
  * This source code is licensed as GPLv3 if not stated otherwise.
@@ -39,7 +42,7 @@ class NodeSynthesizer(val node: main.scala.TreeQuencer.Node, val file: File) {
   def play() {
     if(synthesizer != null) {
       synthesizer.parameters() = ("gate",switch)
-      synthesizer.run
+      synthesizer.run()
     }
   }
 

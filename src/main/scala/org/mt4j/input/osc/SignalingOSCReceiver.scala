@@ -49,7 +49,7 @@ import de.sciss.osc._
 import java.net.SocketAddress
 
 // ducktaping class, since DirectedImpl for Receiver is private final in ScalaOsc
-class SignalingOSCReceiver(val receiver: Receiver) extends TraitReceiveOSCComm
+//class SignalingOSCReceiver(val receiver: Receiver) extends TraitReceiveOSCComm
 
 
 

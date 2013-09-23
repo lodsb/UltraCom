@@ -92,11 +92,16 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 	textField.globalPosition := Vec3d(app.width / 2f, app.height / 2f);
   textField2.setPositionGlobal(new Vector3D(app.width / 2f, app.height / 2f));
 
+	textField2.globalPosition.observe{{x => println("ROTOTOTO "+x); true}}
+
+	
 	// setting and reading Properties
 	textField.text:="foo"
 	textField2.text() ="foo"
 	val foo = textField.text();
 	slider.globalPosition() = Vec3d(100,200);
+
+	textField2.rotateX(Vec3d(100,0,0), 123.0f)
 
 	/*
 		other component properties are
@@ -185,9 +190,9 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 		l.startPosition() = Vec3d(rval()*2,rval()*2,rval())
 		l.setStrokeColor( Color(rval(),rval(),rval()) )
 		// connect the end position of each line to the (position of the) textfield
-		l.endPosition <~ textField.globalPosition
+//		l.endPosition <~ textField.globalPosition
     l.endPosition <~ textField2.globalPosition
-    l.endPosition |~ textField.globalPosition
+//    l.endPosition |~ textField.globalPosition
 		l
 	})
 
