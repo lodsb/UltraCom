@@ -22,6 +22,10 @@ libraryDependencies += "org.lodsb" %% "ultracom" % "0.2-SNAPSHOT"
 
 resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
 
+resolvers += "Sonatype OSS Releases" at "http://oss.sonatype.org/content/repositories/releases/"
+
+libraryDependencies += "com.thesamet" %% "kdtree" % "1.0.1"
+
 unmanagedClasspath in Compile += Attributed.blank(new java.io.File("doesnotexist"))
 
 unmanagedBase <<= baseDirectory { base => base / "../../libraries/misc" }
