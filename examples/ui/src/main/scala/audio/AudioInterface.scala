@@ -4,10 +4,12 @@ import org.mt4j.util.Color
 
 import scala.actors._
 
-import de.sciss.synth._
-import ugen._
+//import ugen._
 import org.mt4j.output.audio.AudioServer
 import org.mt4j.output.audio.AudioServer._
+import de.sciss.synth._
+import de.sciss.synth.ugen._
+import de.sciss.synth.Ops._
 
 
 object AudioInterface {
@@ -48,7 +50,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
       else {
         val synthDef = this.timbreSpace.synthDefinition(event.x, event.y, event.pitch, event.volume)
         //println("starting synth with caller id " + event.callerID)
-        this.synthMap += (event.callerID -> synthDef.play)
+        this.synthMap += (event.callerID -> synthDef.play())
         Thread.sleep(50)
         /* 
         the sleep call is actually a workaround for cases where play and stop are called in rapid succession;
@@ -68,7 +70,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
         //println("freeing synth with id " + event.callerID)
         val synth = this.synthMap(event.callerID)
         this.synthMap -= event.callerID
-        synth.free     
+        synth.free 
       }    
       else {println("synth does not exist")}
       println(this.synthMap.toString)
