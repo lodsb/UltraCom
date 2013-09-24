@@ -4,35 +4,47 @@ import org.mt4j.components.visibleComponents.widgets.MTImage
 import org.mt4j.MTApplication
 import org.mt4j.util.math.Vector3D
 import processing.core.PImage
+import scala.util.Random
 
-class PresetBank(csvFilename: String) {
+class PresetBank(csvFilename: String, mappingJitter:Float = 0.0f) {
   private var minX = Float.MaxValue
   private var minY = Float.MaxValue
 
   private var maxX = Float.MinValue
   private var maxY = Float.MinValue
 
-  private val data = parseCSVMap(csvFilename);
-  private val kdmap : KDTreeMap[(Float, Float), Array[Float]] = KDTreeMap.fromSeq( data )
+  private val random = new Random()
 
-  private def parseCSVMap(filename: String) : Seq[((Float,Float),Array[Float])] = {
+  private val data = parseCSVMap(csvFilename, mappingJitter);
+  private val kdmap : KDTreeMap[(Float, Float), (Array[Float],Int)] = KDTreeMap.fromSeq( data )
+
+  private def generateJitter(variance: Float) = {
+    val r = random.nextGaussian().toFloat - 0.5f;
+
+    r*variance;
+  }
+
+  private def parseCSVMap(filename: String, jitter:Float = 0.0f) : Seq[((Float,Float),(Array[Float],Int))] = {
 
     val src = Source.fromFile(filename)
 
     val lines = src.getLines()
 
-    val seq: Iterator[((Float, Float), Array[Float])] = lines.map({
+    val seq:Iterator[((Float, Float), (Array[Float], Int))] = lines.map({
       l =>
         val values = l.split(",").map(_.toFloat)
-        val xy = (values(0), values(1))
+        val xy = ( scala.math.max(values(0)+generateJitter(jitter),-1.0f)
+          , scala.math.max(values(1) + generateJitter(jitter),-1.0f) )
 
         updateMinMax(values(0), values(1))
 
-        val parameters = values.slice(2, values.size)
+        val cluster = values(2).toInt
 
-        println("PARSED "+unwrapParameterString(parameters)+" @ "+values(0)+","+values(1))
+        val parameters = values.slice(3, values.size)
 
-        (xy, parameters)
+        println("PARSED "+unwrapParameterString(parameters)+" @ "+values(0)+","+values(1)+" cl "+values(2))
+
+        (xy, (parameters, cluster))
     })
 
     seq.toSeq
@@ -83,7 +95,11 @@ class PresetBank(csvFilename: String) {
       x =>
         val xyAbs = relToAbs(x._1._1, x._1._2, app);
 
-        pixels(xyAbs._1 + app.width*xyAbs._2) = 0xffaabbcc;
+        val r = ((x._2._2 * 2123) % 255).toByte;
+        val g = ((x._2._2 * 931) % 255).toByte;
+        val b = ((x._2._2 * 1137) % 255).toByte;
+
+        pixels(xyAbs._1 + app.width*xyAbs._2) = 0xff000000 | r << 16 | g << 8 | b;
 
     })
     pimage.updatePixels()
@@ -118,6 +134,6 @@ class PresetBank(csvFilename: String) {
   def parameterRelCoord(x: Float, y: Float) : ((Float,Float),Array[Float]) = {
     val seq = kdmap.findNearest( (x,y), 1 )
 
-    seq(0)
+    (seq(0)._1,seq(0)._2._1)
   }
 }

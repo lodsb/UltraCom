@@ -1,5 +1,5 @@
 Wed Jan 30 04:24:13 CET 2008	
-Frametitle=TreeQuencer
+Frametitle=VPDSynthScene
 DefaultAudioDevice=ASIO4ALL
 ScSynthPath=/usr/local/bin/scsynth
 #Renderer: OpenGL: 1 P3D: 2
@@ -10,8 +10,8 @@ Fullscreen=false
 #(if not exclusive, mt4j just uses an undecorated window, other windows can overlap it)
 FullscreenExclusive=false
 #Resolution
-DisplayWidth=1900
-DisplayHeight=900
+DisplayWidth=1200
+DisplayHeight=1000
 #Which display to use for fullscreen
 Display=1
 #Framerate maximum

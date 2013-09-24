@@ -116,7 +116,7 @@ class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
 
   showTracer(true)
 
-  val presetBank = new PresetBank("gtm_result_20_01.csv")
+  val presetBank = new PresetBank("gtm_result_preset_clustered.csv", mappingJitter = 0.02f)
 
   val image = presetBank.generateMappingImage(app)
   image.setPickable(false)
