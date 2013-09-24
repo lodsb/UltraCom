@@ -30,11 +30,20 @@ class PresetBank(csvFilename: String) {
 
         val parameters = values.slice(2, values.size)
 
+        println("PARSED "+unwrapParameterString(parameters)+" @ "+values(0)+","+values(1))
+
         (xy, parameters)
     })
 
     seq.toSeq
   }
+
+  private def unwrapParameterString(parms: Array[Float]) : String = {
+     val s: String = parms.foldLeft("")((x,y) => x+" , "+(y+""))
+
+     s
+   }
+
 
   private def updateMinMax(x:Float, y:Float) = {
     if (x < minX) {

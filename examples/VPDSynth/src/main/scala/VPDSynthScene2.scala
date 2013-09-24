@@ -60,10 +60,9 @@ object VPDSynthApp2 extends Application {
 class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
 
   val parameterMapping = Seq[(String, (Float, Float))](
-    "gateRate" -> (0.01f, 2.0f),
+    "frequency"-> (2.0f,1000.0f),
     "cleanFmRingmod" -> (-0.25f, 1.0f),
     "modFreqMult" -> (0.0f,1.0f),
-    "frequency"-> (2.0f,1000.0f),
     "ampEnvType"-> (0.0f,1.0f),
     "carrierVPSYType"-> (0.0f,1.0f),
     "modulatorVPSYType"-> (0.0f,1.0f),
@@ -73,8 +72,8 @@ class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
     "modulatorVPSYWeight"-> (0.0f,20.0f),
     "carrierVPSXWeight"-> (0.0f,20.0f),
     "modulatorVPSXWeight"-> (0.0f,20.0f),
-    "fmModType"-> (0.0f,1.0f),
     "fmModIdx" -> (0.0f,1000.0f),
+    "fmModType"-> (0.0f,1.0f),
     "noiseAmount"-> (0.0f,1.0f),
     "fxRouteType"-> (0.0f,1.0f)
   );
@@ -150,7 +149,6 @@ class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
   canvas() += gateSlider
 
   mySynth.parameters <~ gateSlider.value.map({ x => ("gateRate" -> x)})
-  gateSlider.value.observe({x => println("G "+x); true})
 
 
 
@@ -164,11 +162,15 @@ class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
     mySynthParameters.text() = unwrapParameterString(params)
     val ellipsePos = Vec3d(coordsAndParms._1._1, coordsAndParms._1._2)
 
+    println(">>>>")
+    println("params "+unwrapParameterString(params))
+    println("<<<<")
+
     ellipse.setPositionGlobal(ellipsePos)
 
     params.zipWithIndex.foreach( {
       x =>
-      mySynth.parameters() = (parameterMapping(x._2 + 1)._1 -> x._1)
+      mySynth.parameters() = (parameterMapping(x._2)._1 -> x._1)
 
     })
 
