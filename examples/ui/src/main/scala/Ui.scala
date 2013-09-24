@@ -230,9 +230,6 @@ class UIScene(app: Application, name: String) extends Scene(app,name){
       scheduler
     }
     
-    /* starting the audio server */
-//    AudioServer.start() 
-	  
 	  this.setClearColor(Color(255,255,255))
 	 
 	  val nodeSpace = NodeSpace(app)
@@ -245,20 +242,15 @@ class UIScene(app: Application, name: String) extends Scene(app,name){
     this.registerGlobalInputProcessor(new FeedforwardProcessor(app))    
     this.registerGlobalInputProcessor(new MenuProcessor(app))
 	  
-    //setting up interaction on canvas, that is, processors and listeners for tap and tap&hold
-    val tapProcessor = new TapProcessor(app)
-    tapProcessor.setEnableDoubleTap(true)
-    this.canvas.registerInputProcessor(tapProcessor)
-    this.canvas.addGestureListener(classOf[TapProcessor], new NodeCreationListener(nodeSpace))
+    //setting up interaction on canvas, that is, global processors for tap and tap&hold
+    this.registerGlobalInputProcessor(new NodeCreationListener(nodeSpace))
 
-    val tapAndHoldProcessor = new TapAndHoldProcessor(app, 300)
-    tapAndHoldProcessor.setMaxFingerUpDist(5) 
-    this.canvas.registerInputProcessor(tapAndHoldProcessor)
-    this.canvas.addGestureListener(classOf[TapAndHoldProcessor], new ToolMenuListener(app))
+    //val tapAndHoldProcessor = new TapAndHoldProcessor(app, 300)
+    this.registerGlobalInputProcessor(new ToolMenuListener(app))
     	  
     
     //setting up a component input processor on the canvas for unistroke gestures and adding a corresponding listener
-    val unistrokeProcessor = new UnistrokeProcessor(app)
+    //val unistrokeProcessor = new UnistrokeProcessor(app)
     //unistrokeProcessor.addTemplate(UnistrokeUtils.UnistrokeGesture.CIRCLE, UnistrokeUtils.Direction.CLOCKWISE)
     //unistrokeProcessor.addTemplate(UnistrokeUtils.UnistrokeGesture.CIRCLE, UnistrokeUtils.Direction.COUNTERCLOCKWISE)
     /*unistrokeProcessor.addTemplate(UnistrokeUtils.UnistrokeGesture.DELETE, UnistrokeUtils.Direction.COUNTERCLOCKWISE)
@@ -267,8 +259,8 @@ class UIScene(app: Application, name: String) extends Scene(app,name){
     unistrokeProcessor.addTemplate(UnistrokeUtils.UnistrokeGesture.TRIANGLE, UnistrokeUtils.Direction.CLOCKWISE)
     unistrokeProcessor.addTemplate(UnistrokeUtils.UnistrokeGesture.PIGTAIL, UnistrokeUtils.Direction.COUNTERCLOCKWISE)
     unistrokeProcessor.addTemplate(UnistrokeUtils.UnistrokeGesture.PIGTAIL, UnistrokeUtils.Direction.CLOCKWISE) */
-    this.canvas.registerInputProcessor(unistrokeProcessor)
-    this.canvas.addGestureListener(classOf[UnistrokeProcessor], new UnistrokeListener())    
+    //this.canvas.registerInputProcessor(unistrokeProcessor)
+    //this.canvas.addGestureListener(classOf[UnistrokeProcessor], new UnistrokeListener())    
     
 	}
 	

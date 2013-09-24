@@ -121,21 +121,21 @@ class FeedforwardProcessor(app: Application) extends AbstractGlobalInputProcesso
     val feedforwardValue = this.feedforwardValue(targetNode, virtualNode.position) //(virtualNode, targetNode)
     
     val connectsToAnchorNode =                sourceNode.nodeType == AnchorNodeType                 || targetNode.nodeType == AnchorNodeType
-    val connectsToManipulableNode =           sourceNode.nodeType == ManipulableNodeType            || targetNode.nodeType == ManipulableNodeType
+    //val connectsToManipulableNode =           sourceNode.nodeType == ManipulableNodeType            || targetNode.nodeType == ManipulableNodeType
     val connectsToControlNode =               sourceNode.nodeType == ControlNodeType                || targetNode.nodeType == ControlNodeType
     val connectsToTimeNode =                  sourceNode.nodeType == TimeNodeType                   || targetNode.nodeType == TimeNodeType 
     val connectsToTimeConnectionNode =        sourceNode.nodeType == TimeConnectionNodeType         || targetNode.nodeType == TimeConnectionNodeType    
-    val connectsToDeleteManipulableNode =     sourceNode.nodeType == DeleteManipulableNodeType      || targetNode.nodeType == DeleteManipulableNodeType            
+    //val connectsToDeleteManipulableNode =     sourceNode.nodeType == DeleteManipulableNodeType      || targetNode.nodeType == DeleteManipulableNodeType            
     
-    if (connectsToAnchorNode || connectsToControlNode || connectsToTimeConnectionNode || connectsToDeleteManipulableNode) {
+    if (connectsToAnchorNode || connectsToControlNode || connectsToTimeConnectionNode) {//|| connectsToDeleteManipulableNode) {
       if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("ILLEGAL ACTION", feedforwardValue)))
     }
-    else if (connectsToTimeNode) { //has to be placed before manipulable nodes...
+    else if (connectsToTimeNode) { //has to be placed before manipulable nodes... 
       this.processTimeConnection(sourceNode, targetNode, virtualNode, feedforwardValue)
     }   
-    else if (connectsToManipulableNode) {
+    /*else if (connectsToManipulableNode) {
       if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("ILLEGAL ACTION", feedforwardValue)))
-    }
+    }*/
     else {
       this.processRegularConnection(sourceNode, targetNode, virtualNode, feedforwardValue)
     } 
@@ -256,7 +256,7 @@ class FeedforwardProcessor(app: Application) extends AbstractGlobalInputProcesso
       }
     }
     else { //handle self reference sourceNode == targetNode
-      (sourceNode.associatedPath, targetNode.associatedPath) match {
+      /*(sourceNode.associatedPath, targetNode.associatedPath) match {
         case (None, None) => { //source and target are both isolated nodes
           if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("LEGAL ACTION", feedforwardValue)))
           if (!this.feedforwardMap.contains(targetNode) || this.feedforwardMap(targetNode).value < feedforwardValue) this.feedforwardMap += ((targetNode, NodeTypeFeedforwardEvent(ManipulableNodeType, feedforwardValue)))
@@ -264,7 +264,8 @@ class FeedforwardProcessor(app: Application) extends AbstractGlobalInputProcesso
         case somethingElse => {
           if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("ILLEGAL ACTION", feedforwardValue)))
         }
-      }
+      }*/
+      if (!this.feedforwardMap.contains(virtualNode) || this.feedforwardMap(virtualNode).value < feedforwardValue) this.feedforwardMap += ((virtualNode, FeedforwardEvent("ILLEGAL ACTION", feedforwardValue)))
     }    
   }
   

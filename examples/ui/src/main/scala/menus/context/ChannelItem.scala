@@ -45,7 +45,7 @@ class ChannelItem(app: Application, menu: NodeContextMenu, center: Vector3D, val
       case None => {
         menu.node match {
           case manipulableNode: ManipulableNode => manipulableNode ! ToggleChannelEvent(channelNumber)
-          case isolatedNode: IsolatedNode => isolatedNode.toggleChannel(channelNumber)
+          //case isolatedNode: IsolatedNode => isolatedNode.toggleChannel(channelNumber)
           case otherNode => {}
         }
       }

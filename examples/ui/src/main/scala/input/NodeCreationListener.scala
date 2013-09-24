@@ -2,6 +2,16 @@ package ui.input
 
 import org.mt4j.{Application, Scene}
 
+import org.mt4j.input.inputProcessors.globalProcessors.AbstractGlobalInputProcessor
+import org.mt4j.input.inputProcessors.globalProcessors.RawFingerProcessor
+import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor 
+import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor 
+
+import org.mt4j.input.inputData.MTInputEvent
+import org.mt4j.input.inputData.MTFingerInputEvt
+import org.mt4j.input.inputData.AbstractCursorInputEvt
+import org.mt4j.input.inputData.InputCursor
+
 import org.mt4j.input.inputProcessors.IGestureEventListener
 import org.mt4j.input.inputProcessors.MTGestureEvent
 
@@ -18,26 +28,47 @@ import ui.events._
 /**
 * This class handles the creation of nodes in the specified node space.
 */
-class NodeCreationListener(nodeSpace: NodeSpace) extends IGestureEventListener {
+class NodeCreationListener(nodeSpace: NodeSpace) extends AbstractGlobalInputProcessor[MTFingerInputEvt] {
+
+  private var tapList = List[CustomTapEvent]() //list for keeping track of touch events, that is, their position and the time at which they occurred
+  private val DoubleTapMaxDist = 5 //maximum distance between the two taps of a double tap
+  private val DoubleTapMaxTime = 300 //maximum time in milliseconds between the two taps of a double tap
   
-  override def processGestureEvent(gestureEvent: MTGestureEvent): Boolean = {  
-    gestureEvent match {
-      case tapEvent: TapEvent => {
-          if (tapEvent.getTapID == TapEvent.BUTTON_DOUBLE_CLICKED) {
-            this.evaluateTap(tapEvent) 
+	def processInputEvtImpl(inputEvent: MTFingerInputEvt) {
+	  if (inputEvent.getTarget == Ui.getCurrentScene.getCanvas){ //only process event if the user is not interacting with another component, i.e. only the canvas is touched
+      inputEvent match {
+        case cursorEvent: AbstractCursorInputEvt => {
+          if (cursorEvent.getId == AbstractCursorInputEvt.INPUT_DETECTED) { //DETECTED is officially deprecated and should read STARTED but local MT4J code does not correspond with online API, that is, there is no INPUT_STARTED         
+          }
+          else if (cursorEvent.getId == AbstractCursorInputEvt.INPUT_UPDATED) {
+          }
+          else if (cursorEvent.getId == AbstractCursorInputEvt.INPUT_ENDED) {
+            val id = cursorEvent.getCursor.getId
+            val x = cursorEvent.getPosition.getX
+            val y = cursorEvent.getPosition.getY
+            val time = System.nanoTime()
+            val eventOption = this.tapList.find(event => Vector.euclideanDistance((event.x, event.y), (x,y)) < DoubleTapMaxDist && (System.nanoTime() - event.time)/1000000.0f < DoubleTapMaxTime)
+            eventOption match {
+              case Some(event) => this.evaluateDoubleTap(x,y)
+              case None => this.tapList = CustomTapEvent(id,x,y,time,CustomTapEvent.Ended) :: this.tapList
+            }
+            this.tapList = this.tapList.filter(event => (System.nanoTime() - event.time)/1000000.0f <= DoubleTapMaxTime) //get rid of 'old' events
           }
           true
-      }
-      case someEvent => {
+        }
+        case someEvent => {
           println("I can't process this particular event: " + someEvent.toString)
           false
+        }
       }
     }
   }
   
   
-  private def evaluateTap(tapEvent: TapEvent) = {
-    val position = (tapEvent.getLocationOnScreen.getX, tapEvent.getLocationOnScreen.getY)
+  private def evaluateDoubleTap(x: Float, y: Float) = {
+    //println("double tap is being evaluated")
+    val position = (x,y)
+    val posVec = Vec3d(x,y)
     val closestPathPositionOption = Ui.closestPath(position)
     closestPathPositionOption match {
       case Some(closestPathPosition) => {
@@ -49,11 +80,11 @@ class NodeCreationListener(nodeSpace: NodeSpace) extends IGestureEventListener {
           path ! TimeNodeAddEvent(TimeNode(Ui, closestPathPosition))
         }
         else {
-          if (nodeSpace.contains(tapEvent.getLocationOnScreen)) Ui += IsolatedNode(Ui, tapEvent.getLocationOnScreen)    
+          if (nodeSpace.contains(posVec)) Ui += SingleNode(Ui, posVec)    
         }
       } 
       case None => {
-        if (nodeSpace.contains(tapEvent.getLocationOnScreen)) Ui += IsolatedNode(Ui, tapEvent.getLocationOnScreen)
+        if (nodeSpace.contains(posVec)) Ui += SingleNode(Ui, posVec)
       }       
     } 
   }

@@ -30,11 +30,15 @@ import ui.persistence._
 object ManipulableNode {
   
   def apply(app: Application, center: (Float, Float)) = {
-      new ManipulableNode(app, Vec3d(center._1, center._2))
+      new ManipulableNode(app, ManipulableNodeType, Vec3d(center._1, center._2))
   }
   
   def apply(app: Application, center: Vector3D) = {
-      new ManipulableNode(app, center)
+      new ManipulableNode(app, ManipulableNodeType, center)
+  }
+  
+  protected def apply(app: Application, center: Vector3D, nodeType: NodeType) = {
+      new ManipulableNode(app, nodeType, center)
   }
 
 }
@@ -47,14 +51,14 @@ object ManipulableNode {
 *   <li> Change of volume  </li>
 * </ul>
 */
-class ManipulableNode(app: Application, center: Vector3D) extends Node(app, ManipulableNodeType, None, center) with Actor with AudioChannels with ToolRegistry with Persistability {
+class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) extends Node(app, nodeType, None, center) with Actor with AudioChannels with ToolRegistry with Persistability {
   private var exists = true
   private var isPlaying = false
   private var playbackPos = 0.0f
 
   private var timeConnections = List[TimeConnection]()
   
-  this.setupDeletionNode()
+  //this.setupDeletionNode()
   this.start() //note: do not put this in an override setup method, it won't work...
   
   private var properties = Map(
@@ -62,9 +66,16 @@ class ManipulableNode(app: Application, center: Vector3D) extends Node(app, Mani
     (PitchPropertyType -> SimplePitchProperty(this))
   )  
   
- def setProperties(propertyMap: Map[PropertyType,SimpleProperty]) = {
-   this.properties = propertyMap
- }  
+   def setProperties(propertyMap: Map[PropertyType,SimpleProperty]) = {
+     this.properties = propertyMap
+   }  
+   
+   /**
+   * Returns for the given property type the current value.
+   */
+   def getPropertyValue(propertyType: PropertyType) = {
+     this.properties(propertyType)()
+   }
 
   
   def act = {          
