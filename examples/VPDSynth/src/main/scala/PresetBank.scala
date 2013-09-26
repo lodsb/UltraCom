@@ -89,7 +89,7 @@ class PresetBank(csvFilename: String, mappingJitter:Float = 0.0f) {
     val pixels = pimage.pixels
 
     // black bg
-    (0 to pixels.size-1).foreach({x => pixels(x) = 0xff000000;})
+    (0 to pixels.size-1).foreach({x => pixels(x) = 0xff222222;})
 
     data.foreach({
       x =>
@@ -135,5 +135,64 @@ class PresetBank(csvFilename: String, mappingJitter:Float = 0.0f) {
     val seq = kdmap.findNearest( (x,y), 1 )
 
     (seq(0)._1,seq(0)._2._1)
+  }
+
+  private def distance(x1: Float, y1: Float, x2: Float, y2: Float, pow: Double = 1.0 ) = {
+    scala.math.pow(scala.math.sqrt( ( (x1-x2)*(x1-x2) )+ ( (y1-y2) * (y1-y2) ) ), pow )
+  }
+
+  def parameterAppCoordInterp(vector: Vector3D, app: MTApplication, neighbors: Int) : (Seq[(Int,Int)],Array[Float]) = {
+    val xAbs = vector.x
+    val yAbs = vector.y
+
+    val xRel = 2.0f*((xAbs / app.width.toFloat) - 0.5f)
+    val yRel = 2.0f*((yAbs / app.height.toFloat) - 0.5f)
+
+    val ret = parameterRelCoordInterp(xRel,yRel, neighbors)
+
+    val coords = ret._1.map( xy => relToAbs(xy._1, xy._2, app))
+
+    (coords, ret._2)
+
+  }
+
+  def parameterRelCoordInterp(x: Float, y: Float, neighbors: Int) : (Seq[(Float,Float)],Array[Float]) = {
+    val seq = kdmap.findNearest( (x,y), neighbors )
+
+    println(">>interpol")
+    seq.foreach( s => println(unwrapParameterString(s._2._1)))
+    println("<<interpol")
+
+    val weights = seq.map { n => 1f / distance(x,y, n._1._1, n._1._2) }
+
+    println(weights)
+
+    val weightSum = weights.sum
+
+    val normalizedWeights = weights.map( w => w/weightSum)
+
+    println(">>n")
+      normalizedWeights.foreach( s => println(s))
+      println("<<n")
+
+    val parmSequences = normalizedWeights.zipWithIndex.map( {
+      wIdx =>
+        val w = wIdx._1
+        val idx=wIdx._2
+
+        val wSeq = seq(idx)._2._1.map( parameter => parameter*w)
+
+        wSeq
+    })
+
+    val parametersDouble = parmSequences.foldLeft(new Array[Double](seq(0)._2._1.size)){
+      (ps1, ps2) =>  (0 to (ps1.size-1)).map( i => ps1(i) + ps2(i)).toArray
+    }
+
+    val parameters = parametersDouble.map( p => p.toFloat)
+
+    val coordinates = seq.map( s => s._1)
+
+    (coordinates, parameters)
   }
 }

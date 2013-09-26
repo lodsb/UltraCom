@@ -18,6 +18,8 @@
 >>  Made in Bavaria by fat little elves - since 1983.
 */
 
+import collection.immutable.IndexedSeq
+import org.mt4j.components.MTComponent
 import org.mt4j.components.visibleComponents.shapes.Ellipse
 import org.mt4j.components.visibleComponents.widgets.{TextField, Slider, TextArea}
 import org.mt4j.util.Color
@@ -25,6 +27,8 @@ import org.mt4j.{Scene, Application}
 import org.mt4j.types.{Vec3d}
 import org.mt4j.components.ComponentImplicits._
 import org.lodsb.reakt.Implicits._
+
+import org.mt4j.components.visibleComponents.shapes.{Line, MTLine}
 
 import org.mt4j.output.audio.AudioServer._
 
@@ -35,6 +39,7 @@ import org.mt4j.output.audio.AudioServer
 import de.sciss.synth._
 import de.sciss.synth.ugen._
 import de.sciss.synth.Ops._
+import scala.util.Random
 
 
 object VPDSynthApp2 extends Application {
@@ -80,7 +85,7 @@ class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
 
 
   def unwrapParameterString(parms: Array[Float]) : String = {
-    val s: String = parms.foldLeft("")((x,y) => x+" , "+(y+""))
+    val s: String = parms.foldLeft("")((x,y) => x+" , "+(y+"\n"))
 
     s
   }
@@ -113,7 +118,6 @@ class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
     }
 
 
-
   showTracer(true)
 
   val presetBank = new PresetBank("gtm_result_preset_clustered.csv", mappingJitter = 0.02f)
@@ -129,6 +133,7 @@ class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
   canvas += ellipse
 
 
+
   val mySynthParameters = TextArea()
   mySynthParameters.setStrokeColor(Color.RED)
   canvas += mySynthParameters
@@ -136,6 +141,17 @@ class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
   val mySynthTracer = TextArea()
   mySynthTracer.setStrokeColor(Color.RED)
   mySynthTracer.text() = "synth"
+
+
+  val lines = (0 to 6).map({ xIdx =>
+    val l = Line()
+    l.setPickable(false)
+    l.setStrokeColor(Color(150,150,150,50))
+    l.endPosition <~ mySynthTracer.globalPosition
+    l
+  })
+
+  var linesDisplay = Array.fill(lines.size){false}
 
   canvas += mySynthTracer
 
@@ -146,7 +162,14 @@ class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
 
   val gateSlider = Slider(0.25f, 2.0f)
   gateSlider.setPositionGlobal(Vec3d(200,200))
+  gateSlider.setFillColor(Color(103,20,20))
   canvas() += gateSlider
+
+
+  val neighborSlider = Slider(1.1f, lines.size.toFloat)
+  neighborSlider.setPositionGlobal(Vec3d(200,250))
+  neighborSlider.setFillColor(Color(20,20,123))
+  canvas() += neighborSlider
 
   mySynth.parameters <~ gateSlider.value.map({ x => ("gateRate" -> x)})
 
@@ -155,16 +178,41 @@ class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
   mySynthTracer.globalPosition.observe( {
     x =>
 
-    val coordsAndParms = presetBank.parameterAppCoord(x, app)
+    val coordsAndParms = presetBank.parameterAppCoordInterp(x, app, neighborSlider.value().toInt)
 
     val params = coordsAndParms._2
+    val coords = coordsAndParms._1
+
+    val currentDisplayLines = linesDisplay.clone()
+
+    linesDisplay = Array.fill(linesDisplay.size){false}
 
     mySynthParameters.text() = unwrapParameterString(params)
-    val ellipsePos = Vec3d(coordsAndParms._1._1, coordsAndParms._1._2)
+    val ellipsePos = Vec3d(coords(0)._1, coords(0)._2)
 
-    println(">>>>")
-    println("params "+unwrapParameterString(params))
-    println("<<<<")
+    coords.zipWithIndex.foreach({
+      cIdx =>
+        val l = lines(cIdx._2)
+        val v = Vec3d(cIdx._1._1, cIdx._1._2);
+
+        linesDisplay(cIdx._2) = true;
+
+        l.startPosition() = v
+
+    })
+
+    currentDisplayLines.zipWithIndex.foreach({
+      disp =>
+        val dispIdx = disp._2
+        if(disp._1 != linesDisplay(dispIdx)) {
+          if(linesDisplay(dispIdx)) {
+            canvas += lines(dispIdx)
+          } else {
+            canvas -= lines(dispIdx)
+          }
+        }
+    })
+
 
     ellipse.setPositionGlobal(ellipsePos)
 
