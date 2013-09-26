@@ -49,12 +49,12 @@ object VPDBW1 {
 
 
     val sa1 = anti(x, psx, psy, px, py)
-    val sa2 = anti(x, px, py, pex, pey)
+    val sa2 = anti(x, pex, pey, px, py)
 
-    var siganti: GE = Select.ar(0.0f, Seq(sa1,sa2))
-    //var out = Select.ar(CheckBadValues.ar(siganti, 0, 0), Seq(siganti, DC.ar(0), DC.ar(0), siganti))
+    var siganti: GE = Select.ar(larger, Seq(sa1,sa2))
+    var out = Select.ar(CheckBadValues.ar(siganti, 0, 0), Seq(siganti, DC.ar(0), DC.ar(0), siganti))
 
-    var out = siganti;
+    //var out = siganti;
     out
 
   }

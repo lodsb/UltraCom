@@ -83,6 +83,7 @@ object VPDSynth {
 
     var ampOut = 0.5*oscMix*ampEnv;
 
+
     	// flanger
     var flangeSig = AllpassC.ar(ampOut + (local*0.00), 0.3,
                     ((LFPar.kr(0.6, 0.0)*0.008) + 0.003*0.04).abs, 0.001);
