@@ -26,6 +26,8 @@ scalacOptions <++= scalaVersion map { version =>
 
 libraryDependencies += "org.lodsb" %% "ultracom" % "0.2-SNAPSHOT"
 
+libraryDependencies += "org.lodsb" %% "vpdsynth" % "0.1-SNAPSHOT"
+
 //libraryDependencies += "com.assembla.scala-incubator" % "graph-core_2.9.2" % "1.5.1"
 
 resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"

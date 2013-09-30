@@ -1,5 +1,6 @@
 package ui
 
+import audio._
 import org.mt4j.{Scene, Application}
 import org.mt4j.components.MTComponent
 import org.mt4j.components.ComponentImplicits._
@@ -70,7 +71,7 @@ import ui.usability._
 object Ui extends Application with Persistability { 
 	// see Settings.txt for basic settings, e.g. application name, resolution, framerate...
 
-	private val aInterface = AudioInterface(CustomTimbreSpace)
+	private val aInterface = AudioInterface(new VPDTimbreSpace())
 
 	def audioInterface = {
 	  this.aInterface

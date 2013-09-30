@@ -4,7 +4,7 @@ import org.mt4j.util.MT4jSettings
 
 import de.sciss.synth._
 import ugen._
-import org.mt4j.output.audio.AudioServer
+import org.mt4j.output.audio.{Synthesizer, AudioServer}
 import org.mt4j.output.audio.AudioServer._
 
 import ui._
@@ -57,5 +57,9 @@ object CustomTimbreSpace extends TimbreSpace {
   override def visualRepresentation = {
     Some(Ui.loadImage(MT4jSettings.getInstance.getDefaultImagesPath + "customTimbreSpace.jpg"))  
   }
-  
+
+  /**
+   * Returns the synth definition of this timbre space with the given parameter values as default.
+   */
+  def updateParameters(synth: Synthesizer, x: Float, y: Float, pitch: Float, volume: Float) = {}
 }

@@ -1,3 +1,5 @@
+
+package org.lodsb.VPDSynth
 import com.thesamet.spatial.KDTreeMap
 import io.Source
 import org.mt4j.components.visibleComponents.widgets.MTImage
@@ -5,6 +7,7 @@ import org.mt4j.MTApplication
 import org.mt4j.util.math.Vector3D
 import processing.core.PImage
 import scala.util.Random
+
 
 class PresetBank(csvFilename: String, mappingJitter:Float = 0.0f) {
   private var minX = Float.MaxValue
@@ -80,8 +83,12 @@ class PresetBank(csvFilename: String, mappingJitter:Float = 0.0f) {
     ((minX, minY), (maxX, maxY))
   }
 
-  def generateMappingImage(app: MTApplication) : MTImage = {
-    val pimage = new PImage(app.width, app.height)
+  def generateMappingImage(app: MTApplication): MTImage = {
+    new MTImage(app, generateMappingPImage(app.width,app.height, 0xff222222))
+  }
+
+  def generateMappingPImage(width: Int, height: Int, fillColor: Int) : PImage = {
+    val pimage = new PImage(width, height)
 
 
     pimage.loadPixels()
@@ -89,32 +96,36 @@ class PresetBank(csvFilename: String, mappingJitter:Float = 0.0f) {
     val pixels = pimage.pixels
 
     // black bg
-    (0 to pixels.size-1).foreach({x => pixels(x) = 0xff222222;})
+    (0 to pixels.size-1).foreach({x => pixels(x) = fillColor;})
 
     data.foreach({
       x =>
-        val xyAbs = relToAbs(x._1._1, x._1._2, app);
+        val xyAbs = relToAbs(x._1._1, x._1._2, width, height);
 
         val r = ((x._2._2 * 2123) % 255).toByte;
         val g = ((x._2._2 * 931) % 255).toByte;
         val b = ((x._2._2 * 1137) % 255).toByte;
 
-        pixels(xyAbs._1 + app.width*xyAbs._2) = 0xff000000 | r << 16 | g << 8 | b;
+        pixels(xyAbs._1 + width*xyAbs._2) = 0xff000000 | r << 16 | g << 8 | b;
 
     })
     pimage.updatePixels()
 
 
 
-    new MTImage(app, pimage)
+    pimage
 
   }
 
-  def relToAbs(x: Float , y:Float,app: MTApplication): (Int, Int) = {
-    val xAbs: Int = ( ( (x + 1.0f)*0.5f ) * (app.width-1)).round
-    val yAbs: Int = ( ( (y + 1.0f)*0.5f ) * (app.height-1)).round
+  def relToAbs(x: Float , y:Float, width: Int, height: Int): (Int, Int) = {
+    val xAbs: Int = ( ( (x + 1.0f)*0.5f ) * (width-1)).round
+    val yAbs: Int = ( ( (y + 1.0f)*0.5f ) * (height-1)).round
 
     (xAbs, yAbs)
+  }
+
+  def relToAbs(x: Float , y:Float,app: MTApplication): (Int, Int) = {
+    relToAbs(x,y,app.width, app.height)
   }
 
 

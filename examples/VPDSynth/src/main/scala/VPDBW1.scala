@@ -1,3 +1,5 @@
+package org.lodsb.VPDSynth
+
 import de.sciss.synth._
 import de.sciss.synth.ugen._
 import org.mt4j.output.audio.AudioServer

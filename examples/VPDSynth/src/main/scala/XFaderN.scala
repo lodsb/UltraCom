@@ -1,3 +1,4 @@
+package org.lodsb.VPDSynth
 import de.sciss.synth._
 import de.sciss.synth.ugen._
 

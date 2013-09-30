@@ -33,6 +33,7 @@ import org.mt4j.output.audio.AudioServer
 import de.sciss.synth._
 import de.sciss.synth.ugen._
 import de.sciss.synth.Ops._
+import org.lodsb.VPDSynth._
 
 
 object VPDSynthApp extends Application {

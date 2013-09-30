@@ -49,7 +49,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
       }
       else {
         val synthDef = this.timbreSpace.synthDefinition(event.x, event.y, event.pitch, event.volume)
-        //println("starting synth with caller id " + event.callerID)
+        println("starting synth with caller id " + event)
         this.synthMap += (event.callerID -> synthDef.play())
         Thread.sleep(50)
         /* 
@@ -96,10 +96,12 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
   
   
   def updateParameters(synth: Synth, event: PlayAudioEvent) = {
+    this.timbreSpace.updateParameters(synth, event.x, event.y, event.pitch, event.volume)
+    /*
     synth.parameters() = ("x" -> event.x);
     synth.parameters() = ("y" -> event.y); 
     synth.parameters() = ("parameterizedPitch" -> event.pitch);
-    synth.parameters() = ("parameterizedVolume" -> event.volume);
+    synth.parameters() = ("parameterizedVolume" -> event.volume);*/
   }
                                                
 }

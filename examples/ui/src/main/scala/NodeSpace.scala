@@ -64,7 +64,8 @@ class NodeSpace(app: Application) extends MTRectangle(app, Menu.Space, Menu.Spac
     //println("max is " + max + ", min is " + min)
     
     val resizedImage = this.resizeImage(image)
-    
+
+    /*
     for (x <- 0 until resizedImage.width) {
       for (y <- 0 until resizedImage.height) {
         val argb = resizedImage.get(x,y)
@@ -75,7 +76,7 @@ class NodeSpace(app: Application) extends MTRectangle(app, Menu.Space, Menu.Spac
         }
         else resizedImage.set(x, y, this.colorToArgb(new MTColor(255, 255, 255)))
       }
-    }
+    }  */
     resizedImage
   }
   

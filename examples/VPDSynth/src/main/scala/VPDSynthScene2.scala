@@ -18,6 +18,7 @@
 >>  Made in Bavaria by fat little elves - since 1983.
 */
 
+
 import collection.immutable.IndexedSeq
 import org.mt4j.components.MTComponent
 import org.mt4j.components.visibleComponents.shapes.Ellipse
@@ -33,6 +34,7 @@ import org.mt4j.components.visibleComponents.shapes.{Line, MTLine}
 import org.mt4j.output.audio.AudioServer._
 
 
+import org.lodsb.VPDSynth._
 import de.sciss.synth._
 import de.sciss.synth.ugen.{MouseY, SinOsc, MouseX, Impulse}
 import org.mt4j.output.audio.AudioServer
@@ -85,7 +87,7 @@ class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
 
 
   def unwrapParameterString(parms: Array[Float]) : String = {
-    val s: String = parms.foldLeft("")((x,y) => x+" , "+(y+"\n"))
+    val s: String = parms.foldLeft("")((x,y) => x+",\n"+(y+""))
 
     s
   }
@@ -120,7 +122,7 @@ class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
 
   showTracer(true)
 
-  val presetBank = new PresetBank("gtm_result_preset_clustered.csv", mappingJitter = 0.02f)
+  val presetBank = new PresetBank("gtm_result_preset_extended_extracted.csv", mappingJitter = 0.02f)
 
   val image = presetBank.generateMappingImage(app)
   image.setPickable(false)
@@ -143,7 +145,7 @@ class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
   mySynthTracer.text() = "synth"
 
 
-  val lines = (0 to 6).map({ xIdx =>
+  val lines = (0 to 20).map({ xIdx =>
     val l = Line()
     l.setPickable(false)
     l.setStrokeColor(Color(150,150,150,50))
