@@ -358,6 +358,14 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
               ignoreNextStopPlayback = false
             }                          
             
+            else if (event.name == "START_GLOBAL_PLAYBACK") {
+              val startNode = this.connections.head.nodes.head
+              this.timeConnections.find(_.startNode == startNode) match { //start playback of this path only if it is not triggered by another path
+                case Some(connection) => {}
+                case None => this ! UiEvent("START_PLAYBACK")
+              }
+            }
+            
             else if (event.name == "START_PLAYBACK") {
               if (ignoreNextTogglePlayback) {ignoreNextTogglePlayback = false}
               else {

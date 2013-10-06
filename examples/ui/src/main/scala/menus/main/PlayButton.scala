@@ -89,8 +89,8 @@ class PlayButton(app: Application, menu: Menu, center: Vector3D) extends Button(
   override def clicked() = {
     super.clicked()
     if (!Playback.isPlaying) {
-      Ui.paths.foreach(_ ! UiEvent("START_PLAYBACK"))
-      Ui.nodes.collect({case m: ManipulableNode => m}).foreach(_ ! UiEvent("START_PLAYBACK"))
+      Ui.paths.foreach(_ ! UiEvent("START_GLOBAL_PLAYBACK"))
+      Ui.nodes.collect({case m: ManipulableNode => m}).foreach(_ ! UiEvent("START_GLOBAL_PLAYBACK"))
     }
     else {
       Ui.paths.foreach(_ ! UiEvent("PAUSE_PLAYBACK"))

@@ -155,6 +155,13 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
             else if (event.name == "IGNORE_IGNORE_NEXT_TOGGLE_PLAYBACK") {
               ignoreNextTogglePlayback = false
             }                       
+
+            else if (event.name == "START_GLOBAL_PLAYBACK") {
+              this.timeConnections.find(_.startNode == this) match { //start playback of this node only if it is not triggered by another path
+                case Some(connection) => {}
+                case None => this ! UiEvent("START_PLAYBACK")
+              }
+            }
             
             else if (event.name == "START_PLAYBACK") {
               if (ignoreNextTogglePlayback) ignoreNextTogglePlayback = false

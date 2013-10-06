@@ -59,7 +59,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
         there is then no way to stop the synth again, which is highly undesirable behaviour
         */
       }    
-      println(this.synthMap.toString)
+      //println(this.synthMap.toString)
    }
   }
   
@@ -73,7 +73,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
         synth.free 
       }    
       else {println("synth does not exist")}
-      println(this.synthMap.toString)
+      //println(this.synthMap.toString)
     }
   }
   
