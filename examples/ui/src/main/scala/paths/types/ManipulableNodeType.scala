@@ -54,7 +54,7 @@ object ManipulableNodeType extends EndNodeType with StartNodeType {
                 node.setTapped(false)
                 node match {
                   case manipulableNode: ManipulableNode => {
-                    manipulableNode ! UiEvent("START_PLAYBACK") 
+                    manipulableNode ! UiEvent("TOGGLE_PLAYBACK") 
                   }
                   case otherNode => {
                     val (uiX, uiY) = (node.position._1, node.position._2)

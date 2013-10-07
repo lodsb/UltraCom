@@ -44,6 +44,8 @@ object SingleNodeType extends EndNodeType with StartNodeType {
     tapProcessor.setEnableDoubleTap(true)
     node.registerInputProcessor(tapProcessor)    
     
+    node.addGestureListener(classOf[TapProcessor], new NodeDeletionListener(node))
+    
     node.addGestureListener(classOf[TapProcessor], new IGestureEventListener() {
       override def processGestureEvent(gestureEvent: MTGestureEvent): Boolean = {
         gestureEvent match {
@@ -62,7 +64,7 @@ object SingleNodeType extends EndNodeType with StartNodeType {
                 node.setTapped(false)
                 node match {
                   case singleNode: SingleNode => {
-                    singleNode ! UiEvent("START_PLAYBACK") 
+                    singleNode ! UiEvent("TOGGLE_PLAYBACK") 
                   }
                   case otherNode => {
                     val (uiX, uiY) = (node.position._1, node.position._2)

@@ -567,7 +567,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
             }
             case None => { 
               timeConnection.startNode match {
-                case manipulableNode: ManipulableNode => {manipulableNode ! UiEvent("START_PLAYBACK")}
+                case manipulableNode: ManipulableNode => {manipulableNode ! UiEvent("TOGGLE_PLAYBACK")}
                 case otherNode => {}
               }
             }
