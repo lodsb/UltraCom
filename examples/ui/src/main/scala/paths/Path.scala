@@ -394,6 +394,10 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
                 }
               }
             }
+
+            else if (event.name == "STOP_GLOBAL_PLAYBACK") {
+              this ! UiEvent("STOP_PLAYBACK")
+            }
             
             else if (event.name == "STOP_PLAYBACK") {
               if (ignoreNextStopPlayback) {ignoreNextStopPlayback = false}

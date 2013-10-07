@@ -168,23 +168,36 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
               }
             }
             
+            else if (event.name == "STOP_GLOBAL_PLAYBACK") {
+              this.isPlaying = true
+              this ! UiEvent("STOP_PLAYBACK")
+            }            
+            
             else if (event.name == "TOGGLE_PLAYBACK") {
               if (ignoreNextTogglePlayback) ignoreNextTogglePlayback = false
               else {   
                 if (!this.isPlaying) {
-                  lastTime = System.nanoTime() //init time
-                  val (uiX, uiY) = (this.position._1, this.position._2)
-                  val (x, y) = (uiX/Ui.width, uiY/Ui.height)
-                  Ui.audioInterface ! PlayAudioEvent(this.id, x, y, this.properties(PitchPropertyType)(), this.properties(VolumePropertyType)(), this.collectOpenChannels)
-                  this.isPlaying = true
-                  this ! UiEvent("PLAY")
+                  this ! UiEvent("START_PLAYBACK")
                 }
                 else {
-                  Ui.audioInterface ! StopAudioEvent(this.id)
-                  this.isPlaying = false
-                  this.playbackPos = 0.0f                 
+                  this ! UiEvent("STOP_PLAYBACK")               
                 }
               }
+            }
+            
+            else if (event.name == "START_PLAYBACK") {
+              lastTime = System.nanoTime() //init time
+              val (uiX, uiY) = (this.position._1, this.position._2)
+              val (x, y) = (uiX/Ui.width, uiY/Ui.height)
+              Ui.audioInterface ! PlayAudioEvent(this.id, x, y, this.properties(PitchPropertyType)(), this.properties(VolumePropertyType)(), this.collectOpenChannels)
+              this.isPlaying = true
+              this ! UiEvent("PLAY")              
+            }
+              
+            else if (event.name == "STOP_PLAYBACK") {
+                Ui.audioInterface ! StopAudioEvent(this.id)
+                this.isPlaying = false
+                this.playbackPos = 0.0f               
             }
             
             else if (event.name == "PLAY") {

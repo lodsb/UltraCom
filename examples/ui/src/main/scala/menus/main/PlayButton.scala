@@ -94,6 +94,7 @@ class PlayButton(app: Application, menu: Menu, center: Vector3D) extends Button(
     }
     else {
       Ui.paths.foreach(_ ! UiEvent("PAUSE_PLAYBACK"))
+      Ui.nodes.collect({case m: ManipulableNode => m}).foreach(_ ! UiEvent("STOP_GLOBAL_PLAYBACK"))
     }
   }
   
