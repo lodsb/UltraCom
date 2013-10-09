@@ -20,6 +20,8 @@
 
 
 import collection.immutable.IndexedSeq
+import java.awt.event.{KeyEvent, KeyListener}
+import org.lodsb.reakt.sync.ValS
 import org.mt4j.components.MTComponent
 import org.mt4j.components.visibleComponents.shapes.Ellipse
 import org.mt4j.components.visibleComponents.widgets.{TextField, Slider, TextArea}
@@ -41,7 +43,6 @@ import org.mt4j.output.audio.AudioServer
 import de.sciss.synth._
 import de.sciss.synth.ugen._
 import de.sciss.synth.Ops._
-import scala.util.Random
 
 
 object VPDSynthApp2 extends Application {
@@ -92,27 +93,29 @@ class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
     s
   }
 
-  def buildSynth() : SynthDef = SynthDef("VPDTestSynth"){
+  def buildSynth() : SynthDef = SynthDef("VPDTestSynthGated"){
 
-      val gr    = "gateRate".kr
-      val cfm   = "cleanFmRingmod".kr
-      val mfm   = "modFreqMult".kr
-      val freq  = "frequency".kr
-      val aEt   = "ampEnvType".kr
-      val cvpY  = "carrierVPSYType".kr
-      val mvpY  = "modulatorVPSYType".kr
-      val cvpX  = "carrierVPSXType".kr
-      val mvpX  = "modulatorVPSXType".kr
-      val cvpYW = "carrierVPSYWeight".kr
-      val mvpYW = "modulatorVPSYWeight".kr
-      val cvpXW = "carrierVPSXWeight".kr
-      val mvpXW = "modulatorVPSXWeight".kr
-      val fmT   = "fmModType".kr
-      val fmIdx = "fmModIdx".kr
-      val nA    = "noiseAmount".kr
-      val fxRT  = "fxRouteType".kr
+      val clag  = "cLag".kr
+      val gr    = Lag.kr("gate".kr, clag)
+      val pwidth= Lag.kr("pulseWidth".kr, clag)
+      val cfm   = Lag.kr("cleanFmRingmod".kr, clag)
+      val mfm   = Lag.kr("modFreqMult".kr, clag)
+      val freq  = Lag.kr("frequency".kr, clag)
+      val aEt   = Lag.kr("ampEnvType".kr, clag)
+      val cvpY  = Lag.kr("carrierVPSYType".kr, clag)
+      val mvpY  = Lag.kr("modulatorVPSYType".kr, clag)
+      val cvpX  = Lag.kr("carrierVPSXType".kr, clag)
+      val mvpX  = Lag.kr("modulatorVPSXType".kr, clag)
+      val cvpYW = Lag.kr("carrierVPSYWeight".kr, clag)
+      val mvpYW = Lag.kr("modulatorVPSYWeight".kr, clag)
+      val cvpXW = Lag.kr("carrierVPSXWeight".kr, clag)
+      val mvpXW = Lag.kr("modulatorVPSXWeight".kr, clag)
+      val fmT   = Lag.kr("fmModType".kr, clag)
+      val fmIdx = Lag.kr("fmModIdx".kr, clag)
+      val nA    = Lag.kr("noiseAmount".kr, clag)
+      val fxRT  = Lag.kr("fxRouteType".kr, clag)
 
-      val out = VPDSynth.ar(Impulse.kr(gr),
+      val out = VPDSynthGated.ar(gr,
         cfm, mfm, freq, aEt, cvpY, mvpY, cvpX, mvpX, cvpYW, mvpYW, cvpXW, mvpXW, fmT, fmIdx, nA, fxRT
       )
 
@@ -122,7 +125,7 @@ class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
 
   showTracer(true)
 
-  val presetBank = new PresetBank("gtm_result_preset_extended_extracted.csv", mappingJitter = 0.02f)
+  val presetBank = new PresetBank("gtm_preset_nozscore_2.csv", mappingJitter = 0.02f)
 
   val image = presetBank.generateMappingImage(app)
   image.setPickable(false)
@@ -148,7 +151,7 @@ class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
   val lines = (0 to 20).map({ xIdx =>
     val l = Line()
     l.setPickable(false)
-    l.setStrokeColor(Color(150,150,150,50))
+    l.setStrokeColor(Color(150,150,150,150))
     l.endPosition <~ mySynthTracer.globalPosition
     l
   })
@@ -160,20 +163,34 @@ class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
   val mySynthDef = buildSynth()
   val mySynth = mySynthDef.play()
 
-
-
+  /*
   val gateSlider = Slider(0.25f, 2.0f)
   gateSlider.setPositionGlobal(Vec3d(200,200))
   gateSlider.setFillColor(Color(103,20,20))
   canvas() += gateSlider
 
-
+*/
   val neighborSlider = Slider(1.1f, lines.size.toFloat)
   neighborSlider.setPositionGlobal(Vec3d(200,250))
   neighborSlider.setFillColor(Color(20,20,123))
   canvas() += neighborSlider
 
+  /*
+  val pwSlider = Slider(0.01f, 1.0f)
+  pwSlider.setPositionGlobal(Vec3d(200,300))
+  pwSlider.setFillColor(Color(0,123,20))
+  canvas() += pwSlider
+   */
+  val lagSlider = Slider(0.01f, 1.0f)
+  lagSlider.setPositionGlobal(Vec3d(200,300))
+  lagSlider.setFillColor(Color(0,123,20))
+  canvas() += lagSlider
+
+  /*
   mySynth.parameters <~ gateSlider.value.map({ x => ("gateRate" -> x)})
+  mySynth.parameters <~ pwSlider.value.map({ x => ("pulseWidth" -> x)})
+  */
+  mySynth.parameters <~ lagSlider.value.map({ x => ("cLag" -> x)})
 
 
 
@@ -231,6 +248,68 @@ class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
   })
 
   mySynth.parameters.observe({x => println("Change -> "+x); true})
+
+
+  val keysUp = new ValS[KeyEvent](null)
+  val keysDown = new ValS[KeyEvent](null)
+
+  this.app.addKeyListener( new KeyListener {
+    def keyTyped(p1: KeyEvent) {
+    }
+
+    def keyPressed(p1: KeyEvent) {
+      keysDown.emit(p1)
+      println("KEY PRESSED"+p1.getKeyCode)
+      println("KEY PRESSED"+p1.getKeyChar)
+    }
+
+    def keyReleased(p1: KeyEvent) {
+      p1.getKeyCode
+      keysUp.emit(p1)
+    }
+  });
+
+  val note2FreqMap = Map[Char, Float](
+    'y' -> 1,
+    's' -> 2,
+    'x' -> 3,
+    'd' -> 4,
+    'c' -> 5,
+    'v' -> 6,
+    'b' -> 7,
+    'h' -> 8,
+    'n' -> 9,
+    'j' -> 10,
+    'm' -> 11,
+    'k' -> 12,
+    ',' -> 13
+  )
+
+  var octavemult = 1;
+
+  keysDown.observe {x =>
+    if(x.getKeyChar == '-')
+          {octavemult = octavemult - 1}
+    else if (x.getKeyChar == '+')
+          {octavemult = octavemult + 1};
+
+
+    val m = note2FreqMap.get(x.getKeyChar);
+    if(!m.isEmpty) {
+      val frequency = (m.get+(12*octavemult)).midicps
+
+      mySynth.parameters() = ("frequency" -> frequency)
+    }
+
+
+    true}
+
+
+  mySynth.parameters <~ keysDown.map({ x => ("gate" -> 1.0)})
+  mySynth.parameters <~ keysUp.map({ x => ("gate" -> 0.0)})
+
+
+
 
 
 }

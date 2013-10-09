@@ -100,7 +100,7 @@ class VPDTimbreSpace extends TimbreSpace {
   /**
    * Returns - as an Option - a two-dimensional visual representation of this timbre space, or None if it is not defined.
    */
-  def visualRepresentation: Option[PImage] = Some(presetBank.generateMappingPImage(1000,1000, 0xffAAAAAA))
+  def visualRepresentation: Option[PImage] = Some(presetBank.generateMappingPImage(1000,1000, 0xffCCCCCC))
 
   /**
    * Returns the synth definition of this timbre space with the given parameter values as default.

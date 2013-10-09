@@ -106,7 +106,11 @@ class PresetBank(csvFilename: String, mappingJitter:Float = 0.0f) {
         val g = ((x._2._2 * 931) % 255).toByte;
         val b = ((x._2._2 * 1137) % 255).toByte;
 
+        try {
         pixels(xyAbs._1 + width*xyAbs._2) = 0xff000000 | r << 16 | g << 8 | b;
+        } catch {
+          case _ => println("VOO")
+        }
 
     })
     pimage.updatePixels()
