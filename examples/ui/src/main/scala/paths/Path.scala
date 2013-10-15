@@ -358,6 +358,14 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
               ignoreNextStopPlayback = false
             }                          
             
+            else if (event.name == "START_GLOBAL_PLAYBACK") {
+              val startNode = this.connections.head.nodes.head
+              this.timeConnections.find(_.startNode == startNode) match { //start playback of this path only if it is not triggered by another path
+                case Some(connection) => {}
+                case None => this ! UiEvent("START_PLAYBACK")
+              }
+            }
+            
             else if (event.name == "START_PLAYBACK") {
               if (ignoreNextTogglePlayback) {ignoreNextTogglePlayback = false}
               else {
@@ -385,6 +393,10 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
                   Playback ! PathPlaybackEvent(this, false)
                 }
               }
+            }
+
+            else if (event.name == "STOP_GLOBAL_PLAYBACK") {
+              this ! UiEvent("STOP_PLAYBACK")
             }
             
             else if (event.name == "STOP_PLAYBACK") {
@@ -559,7 +571,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
             }
             case None => { 
               timeConnection.startNode match {
-                case manipulableNode: ManipulableNode => {manipulableNode ! UiEvent("START_PLAYBACK")}
+                case manipulableNode: ManipulableNode => {manipulableNode ! UiEvent("TOGGLE_PLAYBACK")}
                 case otherNode => {}
               }
             }

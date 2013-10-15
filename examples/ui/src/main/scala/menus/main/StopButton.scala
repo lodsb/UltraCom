@@ -19,6 +19,7 @@ import org.mt4j.types.{Vec3d}
 import processing.core.PGraphics
 
 import ui.menus._
+import ui.paths._
 import ui.paths.types._
 import ui.events._
 import ui._
@@ -48,7 +49,11 @@ class StopButton(app: Application, menu: Menu, center: Vector3D) extends Button(
 
   override def clicked() = {
     super.clicked()
-    Ui.paths.foreach(path => path ! UiEvent("STOP_PLAYBACK"))
+    Ui.paths.foreach(path => path ! UiEvent("STOP_GLOBAL_PLAYBACK"))
+    Ui.nodes.foreach(_ match {
+      case manipulableNode: ManipulableNode => manipulableNode ! UiEvent("STOP_GLOBAL_PLAYBACK")
+      case otherNode => {}
+    })
   }
 
   override def up() = {

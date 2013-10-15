@@ -33,10 +33,12 @@ trait NodeFeedback extends Feedback {
 	  if (event.name == "START_TIMER") {
 	    this.timer = Some(this.timerAnimation(event.value))
 	    this.timer.foreach(_.start())
+	    println("timer started")
 	  }
 	  else if (event.name == "STOP_TIMER") {
 	    this.timer.foreach(_.stop())
 	    this.setClock(0)
+	    println("timer stopped") 
 	  }
 	  else {
 	    this.wrongActionAnimation.start()

@@ -45,7 +45,7 @@ class PresetBank(csvFilename: String, mappingJitter:Float = 0.0f) {
 
         val parameters = values.slice(3, values.size)
 
-        println("PARSED "+unwrapParameterString(parameters)+" @ "+values(0)+","+values(1)+" cl "+values(2))
+        //println("PARSED "+unwrapParameterString(parameters)+" @ "+values(0)+","+values(1)+" cl "+values(2))
 
         (xy, (parameters, cluster))
     })
@@ -174,21 +174,21 @@ class PresetBank(csvFilename: String, mappingJitter:Float = 0.0f) {
   def parameterRelCoordInterp(x: Float, y: Float, neighbors: Int) : (Seq[(Float,Float)],Array[Float]) = {
     val seq = kdmap.findNearest( (x,y), neighbors )
 
-    println(">>interpol")
-    seq.foreach( s => println(unwrapParameterString(s._2._1)))
-    println("<<interpol")
+    //println(">>interpol")
+    //seq.foreach( s => println(unwrapParameterString(s._2._1)))
+    //println("<<interpol")
 
     val weights = seq.map { n => 1f / distance(x,y, n._1._1, n._1._2) }
 
-    println(weights)
+    //println(weights)
 
     val weightSum = weights.sum
 
     val normalizedWeights = weights.map( w => w/weightSum)
 
-    println(">>n")
+    /*println(">>n")
       normalizedWeights.foreach( s => println(s))
-      println("<<n")
+      println("<<n")*/
 
     val parmSequences = normalizedWeights.zipWithIndex.map( {
       wIdx =>
