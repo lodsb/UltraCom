@@ -10,7 +10,7 @@ reakt (https://github.com/lodsb/reakt), you have to build reakt first.
 
 1. check out reakt from github 
 
-	git clone http://www.scala-sbt.org/
+	git clone https://github.com/lodsb/reakt.git
 
 2. build it
 
