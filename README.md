@@ -33,7 +33,7 @@ There is not much more to do:
 
 3. publish it (so you can build the examples)
 
-	sbt publish local
+	sbt publish-local
 
 ## Example Projects
 In examples/ are small project files, you can build/execute them by running sbt compile/run in the corresponding directory
