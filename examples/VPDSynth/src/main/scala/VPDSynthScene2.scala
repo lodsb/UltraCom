@@ -67,6 +67,9 @@ object VPDSynthApp2 extends Application {
 
 class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
 
+  var currentOctave: Int = 0;
+  var isPercussive = false;
+
   val parameterMapping = Seq[(String, (Float, Float))](
     "frequency"-> (2.0f,1000.0f),
     "cleanFmRingmod" -> (-0.25f, 1.0f),
@@ -125,7 +128,7 @@ class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
 
   showTracer(true)
 
-  val presetBank = new PresetBank("gtm_result_62k_presets_lat22500_rbf256_beta0.200000.csv_extracted.csv", mappingJitter = 0.002f)
+  val presetBank = new PresetBank("gtm_result_withfreqs_62k_presets_lat22500_rbf100_beta0.200000.csv_extracted.csv", mappingJitter = 0.002f)
 
   val image = presetBank.generateMappingImage(app)
   image.setPickable(false)
@@ -235,13 +238,17 @@ class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
 
     ellipse.setPositionGlobal(ellipsePos)
 
-    params.zipWithIndex.foreach( {
+    params.slice(0,15).zipWithIndex.foreach( {
       x =>
       mySynth.parameters() = (parameterMapping(x._2)._1 -> x._1)
 
     })
 
 
+    currentOctave = params(17).toInt
+    println(currentOctave+" CURRENT OCTAVE")
+    isPercussive = params(18).toInt == 1
+    println(isPercussive+" IS PERCUSSIVE")
 
     true;
 
@@ -285,18 +292,19 @@ class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
     ',' -> 13
   )
 
-  var octavemult = 1;
+  //var octavemult = 1;
 
   keysDown.observe {x =>
+    /*
     if(x.getKeyChar == '-')
           {octavemult = octavemult - 1}
     else if (x.getKeyChar == '+')
           {octavemult = octavemult + 1};
 
-
+    */
     val m = note2FreqMap.get(x.getKeyChar);
-    if(!m.isEmpty) {
-      val frequency = (m.get+(12*octavemult)).midicps
+    if(!m.isEmpty && !isPercussive) { // transpose only if the sound is not percussive
+      val frequency = (m.get+(12*currentOctave)+60).midicps // middle C + octave + offset via keyboard
 
       mySynth.parameters() = ("frequency" -> frequency)
     }

@@ -186,9 +186,6 @@ class PresetBank(csvFilename: String, mappingJitter:Float = 0.0f) {
 
     val normalizedWeights = weights.map( w => w/weightSum)
 
-    /*println(">>n")
-      normalizedWeights.foreach( s => println(s))
-      println("<<n")*/
 
     val parmSequences = normalizedWeights.zipWithIndex.map( {
       wIdx =>
