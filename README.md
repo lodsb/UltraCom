@@ -10,7 +10,7 @@ reakt (https://github.com/lodsb/reakt), you have to build reakt first.
 
 1. check out reakt from github 
 
-	git clone http://www.scala-sbt.org/
+	git clone https://github.com/lodsb/reakt.git
 
 2. build it
 
@@ -33,7 +33,7 @@ There is not much more to do:
 
 3. publish it (so you can build the examples)
 
-	sbt publish local
+	sbt publish-local
 
 ## Example Projects
 In examples/ are small project files, you can build/execute them by running sbt compile/run in the corresponding directory
