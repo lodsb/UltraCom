@@ -10,7 +10,7 @@ import org.mt4j.input.inputProcessors.{MTGestureEvent, IGestureEventListener}
  */
 class Controller(var widthValue: Float, var heightValue: Float) extends MTRectangle(app, widthValue, heightValue) with IGestureEventListener {
 
-  setStrokeColor(GREEN)
+  setStrokeColor(WHITE)
   setFillColor(app.TRANSPARENT)
 
   removeAllGestureEventListeners()
@@ -25,10 +25,14 @@ class Controller(var widthValue: Float, var heightValue: Float) extends MTRectan
    */
   override def processGestureEvent(ge: MTGestureEvent): Boolean = {
     val drag = ge.asInstanceOf[DragEvent]
-    if(getParent.containsPointGlobal(drag.getTo) || this.containsPointGlobal(drag.getTo)) {
-      height() = getHeightXYGlobal+drag.getTranslationVect().y
+    if(parent.containsPointGlobal(drag.getTo) || this.containsPointGlobal(drag.getTo)) {
+      height() = parent.getNewHeight(drag.getTo)
+    } else {
+      parent.parent.processGestureEvent(ge)
     }
     true
   }
+
+  def parent = getParent.asInstanceOf[ControllerContainer]
 
 }

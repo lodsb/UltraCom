@@ -45,6 +45,7 @@ object app extends Application {
 
   var scene = null.asInstanceOf[Scene]
   val TRANSPARENT = new MTColor(0,0,0,0)
+  def center = Vec3d(width,height)
 
 	def main(args: Array[String]): Unit = {
 		this.execute(false)
@@ -63,7 +64,7 @@ class TutorialTwoScene extends Scene(app, "PitchIt Scene") {
 	showTracer(true)
 
   // add a ControllerCanvas, which contains the sound-controller
-  val controllerCanvas = new ControllerCanvas(200f, 100f, 4)
+  val controllerCanvas = new ControllerCanvas(300f, 100f, 8)
   app.scene.canvas() += controllerCanvas
   controllerCanvas.setPositionGlobal(Vec3d(app.width/2f, app.height/2f))
 }

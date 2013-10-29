@@ -5,11 +5,14 @@ import org.mt4j.components.visibleComponents.shapes.{MTLine, MTRectangle}
 import org.mt4j.types.Vec3d
 import org.mt4j.util.MTColor._
 import org.mt4j.util.math.Vertex
+import org.mt4j.input.inputProcessors.{MTGestureEvent, IGestureEventListener}
+import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent
 
 /**
  * This is the class, which contains the pitch-controllers
  */
-class ControllerCanvas(val widthValue: Float, val heightValue: Float, val howMany: Int) extends MTRectangle(app, widthValue, heightValue) {
+class ControllerCanvas(val widthValue: Float, val heightValue: Float, val howMany: Int)
+  extends MTRectangle(app, widthValue, heightValue) with IGestureEventListener {
 
 
   setStrokeColor(BLUE)
@@ -48,6 +51,18 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, val howMan
     baseline.setStrokeColor(YELLOW)
     baseline.removeAllGestureEventListeners()
     addChild(baseline)
+  }
+
+  override def processGestureEvent(ge: MTGestureEvent): Boolean = {
+    val drag = ge.asInstanceOf[DragEvent]
+    if(containsPointGlobal(drag.getTo)) {
+      getChildren.foreach( child => {
+        if(child.containsPointGlobal(drag.getTo)) {
+          child.asInstanceOf[ControllerContainer].processGestureEvent(drag)
+        }
+      })
+    }
+    true
   }
 
 }
