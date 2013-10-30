@@ -22,8 +22,8 @@ abstract class TimbreSpace {
   def synthDefinition(x: Float, y: Float, pitch: Float, volume: Float): SynthDef
 
   /**
-  * Updates synth in timbre space to the given parameter values as default.
-  */
+   * Updates the parameters of the synthesizer associated with this timbre space.
+   */
   def updateParameters(synth: Synthesizer ,x: Float, y: Float, pitch: Float, volume: Float) : Unit
  
   /**

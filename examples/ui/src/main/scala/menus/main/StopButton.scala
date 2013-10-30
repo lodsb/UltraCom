@@ -50,10 +50,7 @@ class StopButton(app: Application, menu: Menu, center: Vector3D) extends Button(
   override def clicked() = {
     super.clicked()
     Ui.paths.foreach(path => path ! UiEvent("STOP_GLOBAL_PLAYBACK"))
-    Ui.nodes.foreach(_ match {
-      case manipulableNode: ManipulableNode => manipulableNode ! UiEvent("STOP_GLOBAL_PLAYBACK")
-      case otherNode => {}
-    })
+    Ui.nodes.collect({case m: ManipulableNode => m}).foreach(_ ! UiEvent("STOP_GLOBAL_PLAYBACK"))
   }
 
   override def up() = {

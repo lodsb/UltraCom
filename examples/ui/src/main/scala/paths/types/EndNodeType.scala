@@ -52,6 +52,7 @@ trait EndNodeType extends NodeType{
         
     //add gesture listeners
     node.addGestureListener(classOf[DragProcessor], new NotifyingDragAction(node))
+    node.addGestureListener(classOf[DragProcessor], new PlayTimbreDragAction(node))
     node.addGestureListener(classOf[TapAndHoldProcessor], new PlaybackContextMenuListener(node))       
        
     //node.addGestureListener(classOf[DragProcessor], new InertiaDragAction(200, .95f, 17)) //interesting feature =)         

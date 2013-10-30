@@ -27,7 +27,7 @@ class PlayTimbreDragAction(node: Node) extends BoundedDragAction(Menu.Space, Men
           dragEvent.getId match {
             case MTGestureEvent.GESTURE_DETECTED => {println("detected"); this.sendPlayAudioEvent()}
             case MTGestureEvent.GESTURE_RESUMED => {println("resumed"); this.sendPlayAudioEvent()}
-            case MTGestureEvent.GESTURE_UPDATED => {println("updated"); this.sendPlayAudioEvent()}
+            case MTGestureEvent.GESTURE_UPDATED => {/*println("updated");*/ this.sendPlayAudioEvent()}
             case MTGestureEvent.GESTURE_CANCELED => {println("canceled"); this.sendStopAudioEvent()}
             case MTGestureEvent.GESTURE_ENDED => {println("ended"); this.sendStopAudioEvent()}
             case somethingElse => {println("some other gesture event type")}

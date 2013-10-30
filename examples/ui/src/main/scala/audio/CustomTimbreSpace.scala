@@ -59,7 +59,7 @@ object CustomTimbreSpace extends TimbreSpace {
   }
 
   /**
-   * Returns the synth definition of this timbre space with the given parameter values as default.
+   * Updates the parameters of the synthesizer associated with this timbre space.
    */
   def updateParameters(synth: Synthesizer, x: Float, y: Float, pitch: Float, volume: Float) = {}
 }

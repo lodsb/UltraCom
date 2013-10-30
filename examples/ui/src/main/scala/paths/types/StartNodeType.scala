@@ -49,13 +49,15 @@ trait StartNodeType extends NodeType{
     //register input processors
     node.registerInputProcessor(new DragProcessor(app)) 
     
-    val tapAndHoldProcessor = new TapAndHoldProcessor(app, NodeContextMenu.Delay)
+    
+    /*val tapAndHoldProcessor = new TapAndHoldProcessor(app, NodeContextMenu.Delay)
     tapAndHoldProcessor.setMaxFingerUpDist(3) 
-    node.registerInputProcessor(tapAndHoldProcessor)
+    node.registerInputProcessor(tapAndHoldProcessor)*/
     
     //add gesture listeners
     node.addGestureListener(classOf[DragProcessor], new NotifyingDragAction(node))
-    node.addGestureListener(classOf[TapAndHoldProcessor], new ChannelContextMenuListener(node))
+    node.addGestureListener(classOf[DragProcessor], new PlayTimbreDragAction(node))
+    node.addGestureListener(classOf[TapProcessor], new ChannelContextMenuListener(node))
     //node.addGestureListener(classOf[DragProcessor], new InertiaDragAction(200, .95f, 17)) //interesting feature =)         
   }  
 
