@@ -14,6 +14,8 @@ import de.sciss.synth._
 import de.sciss.synth.ugen._
 import de.sciss.synth.Ops._
 
+import org.mt4j.util.MTColor
+
 
 class VPDTimbreSpace extends TimbreSpace {
 
@@ -100,7 +102,30 @@ class VPDTimbreSpace extends TimbreSpace {
   /**
    * Returns - as an Option - a two-dimensional visual representation of this timbre space, or None if it is not defined.
    */
-  def visualRepresentation: Option[PImage] = Some(presetBank.generateMappingPImage(1000,1000, 0xffffffff))
+  def visualRepresentation: Option[PImage] = {
+    val image = presetBank.generateMappingPImage(1920,1080,0xffffffff)
+    val newImage = new PImage(image.width, image.height)
+    
+    //set background to white
+    for(x <- 0 until newImage.width) {
+      for(y <- 0 until newImage.height) {
+        newImage.set(x,y,0xffffffff)
+      }
+    }    
+    
+    //draw points in space
+    for(x <- 0 until newImage.width) {
+      for(y <- 0 until newImage.height) {
+        val argb = image.get(x,y)
+        if (argb != 0xffffffff) {
+          val color = this.argbToColor(argb)
+          val radius = 7
+          this.drawCircle(newImage, x, y, color, radius)
+        }
+      }
+    }
+    Some(newImage)
+  }
 
   /**
    * Updates the parameters of the synthesizer associated with this timbre space.
@@ -117,6 +142,36 @@ class VPDTimbreSpace extends TimbreSpace {
       synth.parameters() = (parameterMapping(x._2)._1 -> x._1)
 
     })
-
   }
+  
+  /**
+  * Draws a circle on the specified image at the specified coordinates, with the given color and radius.
+  */
+  private def drawCircle(image: PImage, xCoord: Int, yCoord: Int, color: MTColor, radius: Int) = {
+    for(x <- xCoord - radius to xCoord + radius) {
+      for(y <- yCoord - radius to yCoord + radius) {
+        val xDiff = x - xCoord
+        val yDiff = y - yCoord
+        if (xDiff*xDiff + yDiff*yDiff <= radius*radius) {
+          val argb = this.colorToArgb(color)
+          image.set(x,y,argb)
+        }
+      }
+    }    
+    image.updatePixels()
+  }
+  
+  private def argbToColor(argb: Int): MTColor = {
+    val a = (argb >> 24) & 0xFF
+    val r = (argb >> 16) & 0xFF
+    val g = (argb >> 8) & 0xFF
+    val b = argb & 0xFF
+    new MTColor(r,g,b,a)
+  }  
+
+  
+  private def colorToArgb(color: MTColor): Int = {
+    (color.getAlpha.toInt << 24) | (color.getR.toInt << 16) | (color.getG.toInt << 8) | color.getB.toInt
+  }    
+  
 }
