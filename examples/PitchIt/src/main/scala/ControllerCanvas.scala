@@ -7,6 +7,7 @@ import org.mt4j.util.MTColor._
 import org.mt4j.util.math.Vertex
 import org.mt4j.input.inputProcessors.{MTGestureEvent, IGestureEventListener}
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent
+import scala.collection.mutable.ArrayBuffer
 
 /**
  * This is the class, which contains the pitch-controllers
@@ -14,18 +15,21 @@ import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEven
 class ControllerCanvas(val widthValue: Float, val heightValue: Float, val howMany: Int)
   extends MTRectangle(app, widthValue, heightValue) with IGestureEventListener {
 
-
   setStrokeColor(BLUE)
   setFillColor(app.TRANSPARENT)
-  initializeControllers(howMany)
+
+  // containers are all ControllerContainers. Needed for their sequential ordering
+  val containers = initializeControllers(howMany)
+  var activeController = null.asInstanceOf[Controller]
   initializeBaseline
 
 
   /**
-   * Adds some controllers to this canvas. Everyone with equal width.
+   * Adds some controllers to this canvas. Every with equal width.
    * @param howMany Int How many controllers should be initialized
    */
-  def initializeControllers(howMany: Int) {
+  def initializeControllers(howMany: Int): ArrayBuffer[ControllerContainer] = {
+    val controllerContainers = new ArrayBuffer[ControllerContainer]
     removeAllChildren()
     for(i <- 1 to howMany) {
 
@@ -40,9 +44,14 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, val howMan
 
       // add the controller to the ControllerCanvas
       addChild(container)
+      controllerContainers += container
     }
+    controllerContainers
   }
 
+  /**
+   * Only draws the line in the middle of the ControllerCanvas
+   */
   def initializeBaseline {
     // initialize baseline
     val lineStart = new Vertex(Vec3d(0f, heightValue/2f))
@@ -53,16 +62,52 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, val howMan
     addChild(baseline)
   }
 
+  /**
+   * This methods gets passed GestureEvents from controllers,
+   * which don't want to process their DragEvents, because
+   * the drag happens outside of them. In this case the
+   * ControllerCanvas looks if there is another suitable
+   * controller within itself. If not -> throw it away.
+   * @param ge The GestureEvent. Handled like a DragEvent
+   **/
   override def processGestureEvent(ge: MTGestureEvent): Boolean = {
     val drag = ge.asInstanceOf[DragEvent]
     if(containsPointGlobal(drag.getTo)) {
       getChildren.foreach( child => {
         if(child.containsPointGlobal(drag.getTo)) {
-          child.asInstanceOf[ControllerContainer].processGestureEvent(drag)
+          child match {
+            case container: ControllerContainer => {
+              container.processGestureEvent(drag)
+            }
+            case controller: Controller => {
+              controller.processGestureEvent(drag)
+            }
+            case _ =>
+          }
         }
       })
     }
     true
+  }
+
+  /**
+   * Activates the right controller (i.e. switches its color)
+   * for a passed step.
+   * @param step The step number to be activated
+   * @return The height of the controller to be activated
+   */
+  def setStep(step: Int): Float = {
+    val stepLength = Metronome.totalSteps/containers.length
+    var i = 1
+    while (i*stepLength < step) {
+      i += 1
+    }
+    if(activeController != null) {
+      activeController.triggerActive
+    }
+    activeController = containers(i-1).controller
+    activeController.triggerActive
+    activeController.height()
   }
 
 }

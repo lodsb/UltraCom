@@ -23,48 +23,55 @@
 package PitchIt
 
 import org.mt4j.{Scene, Application}
-import de.sciss.synth._
-
-import ugen._
-import org.mt4j.output.audio.AudioServer
-import org.mt4j.output.audio.AudioServer._
-import org.mt4j.components.visibleComponents.widgets.{Scope, Slider}
-import org.mt4j.components.visibleComponents.shapes.Ellipse
 import org.mt4j.types.Vec3d
-import de.sciss.synth._
-import de.sciss.synth.Ops._ 
 import org.mt4j.components.ComponentImplicits._
-import org.mt4j.util.{MTColor, Color}
-import org.mt4j.sceneManagement.Iscene
+import org.mt4j.util.MTColor
+import scala.collection.mutable.ArrayBuffer
 
 
 object app extends Application {
-	/*
-			Settings, such as <b>the application name<b>, display properties, etc are set in Settings.txt
-	 */
 
+  // some global variables
   var scene = null.asInstanceOf[Scene]
   val TRANSPARENT = new MTColor(0,0,0,0)
   def center = Vec3d(width,height)
+
+  // get all ControllerCanvas in an ArrayBuffer
+  def allControllerCanvas = {
+    val children = app.scene.canvas().getChildren
+    val canvas = new ArrayBuffer[ControllerCanvas]()
+    children.foreach {
+      case c: ControllerCanvas => canvas += c
+      case _ =>
+    }
+    canvas
+  }
 
 	def main(args: Array[String]): Unit = {
 		this.execute(false)
 	}
 
 	override def startUp() = {
-		addScene(new TutorialTwoScene)
+		addScene(new PitchItScene)
 	}
 
 }
 
 
-class TutorialTwoScene extends Scene(app, "PitchIt Scene") {
+class PitchItScene extends Scene(app, "PitchIt Scene") {
+
+  // setting scene for global access
   app.scene = this
+
 	// Show touches
-	showTracer(true)
+	showTracer(show = true)
 
   // add a ControllerCanvas, which contains the sound-controller
-  val controllerCanvas = new ControllerCanvas(300f, 100f, 8)
+  val controllerCanvas = new ControllerCanvas(300f, 100f, 16)
   app.scene.canvas() += controllerCanvas
   controllerCanvas.setPositionGlobal(Vec3d(app.width/2f, app.height/2f))
+
+  // start Metronome
+  Metronome() ! "start"
+
 }

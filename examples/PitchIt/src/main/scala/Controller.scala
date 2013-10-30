@@ -10,7 +10,14 @@ import org.mt4j.input.inputProcessors.{MTGestureEvent, IGestureEventListener}
  */
 class Controller(var widthValue: Float, var heightValue: Float) extends MTRectangle(app, widthValue, heightValue) with IGestureEventListener {
 
-  setStrokeColor(WHITE)
+  var active = false
+  def triggerActive {
+    active = !active
+    setStrokeColor(color)
+  }
+  def color = if (active) WHITE else GREY
+
+  setStrokeColor(color)
   setFillColor(app.TRANSPARENT)
 
   removeAllGestureEventListeners()
