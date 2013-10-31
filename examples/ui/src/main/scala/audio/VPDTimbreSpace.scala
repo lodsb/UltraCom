@@ -153,7 +153,11 @@ class VPDTimbreSpace extends TimbreSpace {
         val xDiff = x - xCoord
         val yDiff = y - yCoord
         if (xDiff*xDiff + yDiff*yDiff <= radius*radius) {
-          val argb = this.colorToArgb(color)
+          val imgColor = this.argbToColor(image.get(x,y))
+          val r = (imgColor.getR + color.getR)/2
+          val g = (imgColor.getG + color.getG)/2
+          val b = (imgColor.getB + color.getB)/2
+          val argb = this.colorToArgb(new MTColor(r,g,b))
           image.set(x,y,argb)
         }
       }
