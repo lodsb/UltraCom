@@ -117,9 +117,10 @@ class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
       val fmIdx = Lag.kr("fmModIdx".kr, clag)
       val nA    = Lag.kr("noiseAmount".kr, clag)
       val fxRT  = Lag.kr("fxRouteType".kr, clag)
+      val vol   = Lag.kr("volume".kr, clag)
 
       val out = VPDSynthGated.ar(gr,
-        cfm, mfm, freq, aEt, cvpY, mvpY, cvpX, mvpX, cvpYW, mvpYW, cvpXW, mvpXW, fmT, fmIdx, nA, fxRT
+        cfm, mfm, freq, aEt, cvpY, mvpY, cvpX, mvpX, cvpYW, mvpYW, cvpXW, mvpXW, fmT, fmIdx, nA, fxRT, vol
       )
 
       AudioServer attach out

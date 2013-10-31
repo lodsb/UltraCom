@@ -23,7 +23,8 @@ object VPDSynthGated {
          fmModType: GE = 0,
          fmModIdx: GE = 0,
          noiseAmount: GE = 0,
-         fxRouteType: GE = 0): GE = {
+         fxRouteType: GE = 0,
+	 volume: GE = 1.0) : GE = {
 
 
     var modFreqArr = Seq(1.0 / 9, 1.0 / 8, 1.0 / 7, 1.0 / 5, 1.0 / 4, 1.0 / 3,
@@ -120,7 +121,7 @@ object VPDSynthGated {
 
 
 
-    out = Limiter.ar(out);
+    out = Limiter.ar(out)*volume;
 
     //var out = Limiter.ar(ampOut);
 
