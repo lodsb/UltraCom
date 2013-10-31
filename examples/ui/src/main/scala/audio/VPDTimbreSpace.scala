@@ -38,7 +38,7 @@ class VPDTimbreSpace extends TimbreSpace {
     "fxRouteType"-> (0.0f,1.0f)
   );
 
-  private val presetBank = new PresetBank("gtm_result_preset_clustered.csv", mappingJitter = 0.02f)
+  private val presetBank = new PresetBank("gtm_result_withfreqs_62k_presets_lat22500_rbf100_beta0.200000.csv_extracted.csv", mappingJitter = 0.02f)
 
 
 
@@ -50,32 +50,33 @@ class VPDTimbreSpace extends TimbreSpace {
   def buildSynth(cfmp: Float, mfmp: Float, freqp: Float,
                   aetp: Float, cvpyp: Float, mvpyp: Float, cvpxp: Float,
                   mvpxp: Float, cvpywp: Float, mvpywp: Float, cvpxwp: Float,mvpxwp: Float, fmtp: Float,
-                fmidxp: Float, nap: Float, fxrtp: Float): SynthDef = SynthDef("VPDTimbreSynth"){
+                fmidxp: Float, nap: Float, fxrtp: Float): SynthDef = SynthDef("VPDTestSynthGated"){
+    val clag  = "cLag".kr
+    val gr    = Lag.kr("gate".kr, clag)
+    val pwidth= Lag.kr("pulseWidth".kr, clag)
+    val cfm   = Lag.kr("cleanFmRingmod".kr, clag)
+    val mfm   = Lag.kr("modFreqMult".kr, clag)
+    val freq  = Lag.kr("frequency".kr, clag)
+    val aEt   = Lag.kr("ampEnvType".kr, clag)
+    val cvpY  = Lag.kr("carrierVPSYType".kr, clag)
+    val mvpY  = Lag.kr("modulatorVPSYType".kr, clag)
+    val cvpX  = Lag.kr("carrierVPSXType".kr, clag)
+    val mvpX  = Lag.kr("modulatorVPSXType".kr, clag)
+    val cvpYW = Lag.kr("carrierVPSYWeight".kr, clag)
+    val mvpYW = Lag.kr("modulatorVPSYWeight".kr, clag)
+    val cvpXW = Lag.kr("carrierVPSXWeight".kr, clag)
+    val mvpXW = Lag.kr("modulatorVPSXWeight".kr, clag)
+    val fmT   = Lag.kr("fmModType".kr, clag)
+    val fmIdx = Lag.kr("fmModIdx".kr, clag)
+    val nA    = Lag.kr("noiseAmount".kr, clag)
+    val fxRT  = Lag.kr("fxRouteType".kr, clag)
 
-        val gr    = "gateRate".kr(1.0)
-        val cfm   = "cleanFmRingmod".kr(cfmp)
-        val mfm   = "modFreqMult".kr(mfmp)
-        val freq  = "frequency".kr(freqp)
-        val aEt   = "ampEnvType".kr(aetp)
-        val cvpY  = "carrierVPSYType".kr(cvpyp)
-        val mvpY  = "modulatorVPSYType".kr(mvpyp)
-        val cvpX  = "carrierVPSXType".kr(cvpxp)
-        val mvpX  = "modulatorVPSXType".kr(mvpxp)
-        val cvpYW = "carrierVPSYWeight".kr(cvpywp)
-        val mvpYW = "modulatorVPSYWeight".kr(mvpywp)
-        val cvpXW = "carrierVPSXWeight".kr(cvpxwp)
-        val mvpXW = "modulatorVPSXWeight".kr(mvpxwp)
-        val fmT   = "fmModType".kr(fmtp)
-        val fmIdx = "fmModIdx".kr(fmidxp)
-        val nA    = "noiseAmount".kr(nap)
-        val fxRT  = "fxRouteType".kr(fxrtp)
+    val out = VPDSynthGated.ar(gr,
+      cfm, mfm, freq, aEt, cvpY, mvpY, cvpX, mvpX, cvpYW, mvpYW, cvpXW, mvpXW, fmT, fmIdx, nA, fxRT
+    )
 
-        val out = VPDSynth.ar(Impulse.kr(gr),
-          cfm, mfm, freq, aEt, cvpY, mvpY, cvpX, mvpX, cvpYW, mvpYW, cvpXW, mvpXW, fmT, fmIdx, nA, fxRT
-        )
-
-        AudioServer attach out
-      }
+    AudioServer attach out
+  }
 
 
   private def convertCoords(x: Float, y:Float) : (Float, Float) = {
@@ -132,16 +133,13 @@ class VPDTimbreSpace extends TimbreSpace {
    */
   def updateParameters(synth: Synthesizer, x: Float, y: Float, pitch: Float, volume: Float) {
     val xy = convertCoords(x,y)
-
     val coordsAndParms = presetBank.parameterRelCoordInterp(xy._1,xy._2,8);
-
-       val params = coordsAndParms._2
-
-    params.zipWithIndex.foreach( {
+    val params = coordsAndParms._2
+    
+    params.slice(0,15).zipWithIndex.foreach( {
       x =>
       synth.parameters() = (parameterMapping(x._2)._1 -> x._1)
-
-    })
+    })    
   }
   
   /**
@@ -162,7 +160,6 @@ class VPDTimbreSpace extends TimbreSpace {
         }
       }
     }    
-    image.updatePixels()
   }
   
   private def argbToColor(argb: Int): MTColor = {
