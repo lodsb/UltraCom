@@ -39,7 +39,7 @@ class PlayTimbreDragAction(node: Node) extends BoundedDragAction(Menu.Space, Men
   	
   	private def sendPlayAudioEvent() = {
       val channels = node match {
-        case withChannels: AudioChannels => withChannels.collectOpenChannels
+        case withChannels: AudioOutputChannels => withChannels.collectOpenOutputChannels
         case withoutChannels => Array(0,1,2,3)
       } 
       

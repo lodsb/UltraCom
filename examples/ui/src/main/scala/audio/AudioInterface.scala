@@ -63,17 +63,34 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
    }
   }
   
+  def pause(event: PauseAudioEvent) = {
+    this.synchronized {
+      if (this.synthMap.contains(event.callerID)) {
+        val synth = this.synthMap(event.callerID)
+        synth.parameters() = ("gate" -> 0);
+      }    
+      else {println("synth does not exist")}
+    }    
+  }
+  
+  def resume(event: ResumeAudioEvent) = {
+    this.synchronized {
+      if (this.synthMap.contains(event.callerID)) {
+        val synth = this.synthMap(event.callerID)
+        synth.parameters() = ("gate" -> 1);
+      }    
+      else {println("synth does not exist")}
+    }    
+  }  
+  
   def stop(event: StopAudioEvent) = {
     this.synchronized {
-      //println("in stop")
       if (this.synthMap.contains(event.callerID)) {
-        //println("freeing synth with id " + event.callerID)
         val synth = this.synthMap(event.callerID)
         this.synthMap -= event.callerID
         synth.free 
       }    
       else {println("synth does not exist")}
-      //println(this.synthMap.toString)
     }
   }
   
@@ -81,14 +98,19 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
   def act() { 
     while (true) {
       receive {
+        //println("received audio event: "+ event)
         case event: PlayAudioEvent => {
-          //println("received audio event: "+ event)
           this.play(event)
         }
         case event: StopAudioEvent => {
-          //println("received audio event: "+ event)
           this.stop(event)
         }
+        case event: PauseAudioEvent => {
+          this.pause(event)
+        }
+        case event: ResumeAudioEvent => {
+          this.resume(event)
+        }        
         case otherEvent => {}
       }
     }
@@ -97,11 +119,6 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
   
   def updateParameters(synth: Synth, event: PlayAudioEvent) = {
     this.timbreSpace.updateParameters(synth, event.x, event.y, event.pitch, event.volume)
-    /*
-    synth.parameters() = ("x" -> event.x);
-    synth.parameters() = ("y" -> event.y); 
-    synth.parameters() = ("parameterizedPitch" -> event.pitch);
-    synth.parameters() = ("parameterizedVolume" -> event.volume);*/
   }
                                                
 }

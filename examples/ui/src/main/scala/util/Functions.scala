@@ -86,4 +86,98 @@ object Functions {
     angle
   }
   
+  
+  
+   /** Converts an HSL color value to RGB. Conversion formula
+   * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+   * Assumes h, s, and l are contained in the set [0, 1] and
+   * returns r, g, and b in the set [0, 255].
+   *
+   * Code adapted from http://stackoverflow.com/questions/2353211/hsl-to-rgb-color-conversion
+   *
+   * @param h       The hue
+   * @param s       The saturation
+   * @param l       The lightness
+   * @return        the RGB representation
+   */
+   def hslToRgb(h: Float, s: Float, l: Float): (Int, Int, Int) = {
+      var r: Float = 0f
+      var g: Float = 0f
+      var b: Float = 0f
+  
+      if(s == 0) {
+          r = l
+          g = l
+          b = l // achromatic
+      }
+      else {
+          def hue2rgb(p: Float, q: Float, valT: Float) = {
+              var t = valT
+              if (t < 0) t = t + 1
+              if (t > 1) t = t - 1
+              if (t < 1/6) p + (q - p) * 6 * t
+              if (t < 1/2) q
+              if (t < 2/3) p + (q - p) * (2/3 - t) * 6
+              p
+          }
+  
+          var q = if (l < 0.5) l * (1 + s) else l + s - l * s
+          var p = 2 * l - q
+          r = hue2rgb(p, q, h + 1/3)
+          g = hue2rgb(p, q, h)
+          b = hue2rgb(p, q, h - 1/3)
+      }
+  
+      return ((r * 255).toInt, (g * 255).toInt, (b * 255).toInt)
+  }
+  
+  
+  
+  
+   /**
+   * Converts an RGB color value to HSL. Conversion formula
+   * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+   * Assumes r, g, and b are contained in the set [0, 255] and
+   * returns h, s, and l in the set [0, 1].
+   *
+   * Code adapted from http://stackoverflow.com/questions/2353211/hsl-to-rgb-color-conversion
+   *
+   * @param   r       The red color value
+   * @param   g       The green color value
+   * @param   b       The blue color value
+   * @return          The HSL representation
+   */
+  def rgbToHsl(valR: Int, valG: Int, valB: Int) = {
+      var r: Float = valR/255.0f
+      var g: Float = valG/255.0f
+      var b: Float = valB/255.0f
+      var max = math.max(math.max(r, g), b)
+      var min = math.min(math.min(r, g), b)
+      var h = (max + min) / 2
+      var s = (max + min) / 2
+      var l = (max + min) / 2
+  
+      if (max == min) {
+          h = 0
+          s = 0 // achromatic
+      }
+      else {
+          var d = max - min
+          s = if (l > 0.5) d / (2 - max - min) else d / (max + min)
+            
+          if (max == r) {
+            h = (g - b) / d + (if (g < b) 6 else 0)
+          }
+          else if (max == g) {
+            h = (b - r) / d + 2
+          }
+          else if (max == b) {
+            (r - g) / d + 4
+          }
+          h = h / 6
+      } 
+      (h, s, l)
+  }
+  
+  
 }

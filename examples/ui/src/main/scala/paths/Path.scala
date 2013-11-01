@@ -102,7 +102,7 @@ object Path {
 class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node) => ManipulableBezierConnection), var connections: List[ManipulableBezierConnection], 
            playback: PlaybackState, playbackType: NodeType, reversed: Boolean, currentCon: Int, connectionAcc: Float, currentConParam: Float, currentBuck: Int, bucketAcc: Float,
            timeNodesMap: Map[TimeNode, Boolean], timeConnectionsList: List[TimeConnection], channels: Array[Boolean]) 
-           extends AbstractVisibleComponent(app) with Actor with AudioChannels with ToolRegistry with Persistability with Identifier {
+           extends AbstractVisibleComponent(app) with Actor with AudioOutputChannels with MIDIInputChannels with ToolRegistry with Persistability with Identifier {
  
   private var exists = true
   
@@ -131,7 +131,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
     connections.head.nodes.head.nodeType = if (this.playbackState == Playing) PauseNodeType else PlayNodeType //set start...
     connections.last.nodes.last.nodeType = playbackType //...and end node of this path
     
-    (0 until channels.size).foreach(index => this.setChannel(index, channels(index)))
+    (0 until channels.size).foreach(index => this.setOutputChannel(index, channels(index)))
     
     connections.foreach(connection => Ui.getCurrentScene.registerPreDrawAction(new AddNodeActionThreadSafe(connection, this))) //add connections as children
     this.start() //start acting
@@ -192,11 +192,17 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
           }
         }
         
-        case event: ToggleChannelEvent => {
+        case event: ToggleOutputChannelEvent => {
           this.synchronized {
-            this.toggleChannel(event.channel)
+            this.toggleOutputChannel(event.channel)
           }
         }
+        
+        case event: ToggleInputChannelEvent => {
+          this.synchronized {
+            this.toggleInputChannel(event.channel)
+          }
+        }        
         
         case event: NodeDeletionEvent => {
           this.synchronized {
@@ -389,7 +395,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
                 if (this.playbackState == Playing) {
                   this.connections.head.nodes.head.nodeType = PlayNodeType             
                   this.playbackState = Paused
-                  Ui.audioInterface ! StopAudioEvent(this.id)
+                  Ui.audioInterface ! PauseAudioEvent(this.id)
                   Playback ! PathPlaybackEvent(this, false)
                 }
               }
@@ -428,7 +434,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
                 if (newX != currentX || newY != currentY){
                   currentX = newX
                   currentY = newY
-                  val channels = this.collectOpenChannels
+                  val channels = this.collectOpenOutputChannels
                   val arcParameter = this.currentBucket/buckets.toFloat + (this.bucketAccumulator/currentBucketValue)/buckets
                   val pitchBucket = (arcParameter * (con.propertyBuckets(PitchPropertyType) - 1)).toInt
                   val volumeBucket = (arcParameter * (con.propertyBuckets(VolumePropertyType) - 1)).toInt
@@ -688,10 +694,10 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
       val (x,y) = startNode.position
       g.noFill()
       g.strokeWeight(1)
-      val stepSize = 2*PI.toFloat/this.channelNumber
-      (0 until this.channelNumber).foreach(index => {
-        val color = AudioChannels.colorFromIndex(index)
-        if (this.isChannelOpen(index)) g.stroke(color.getR, color.getG, color.getB, 150) else g.stroke(0, 0, 0, 50)
+      val stepSize = 2*PI.toFloat/this.outputChannelNumber
+      (0 until this.outputChannelNumber).foreach(index => {
+        val color = AudioOutputChannels.colorFromIndex(index)
+        if (this.isOutputChannelOpen(index)) g.stroke(color.getR, color.getG, color.getB, 150) else g.stroke(0, 0, 0, 50)
         g.arc(x, y, 2*startNode.radius*startNode.getScaleFactor - 2, 2*startNode.radius*startNode.getScaleFactor - 2, HALF_PI + index*stepSize, HALF_PI + (index+1)*stepSize)
       })      
     }

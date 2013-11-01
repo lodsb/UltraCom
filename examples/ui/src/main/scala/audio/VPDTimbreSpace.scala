@@ -140,6 +140,10 @@ class VPDTimbreSpace extends TimbreSpace {
       x =>
       synth.parameters() = (parameterMapping(x._2)._1 -> x._1)
     })    
+    
+    synth.parameters() = ("frequency" -> pitch)
+    synth.parameters() = ("volume" -> volume)
+    
   }
   
   /**

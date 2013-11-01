@@ -51,7 +51,7 @@ object ManipulableNode {
 *   <li> Change of volume  </li>
 * </ul>
 */
-class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) extends Node(app, nodeType, None, center) with Actor with AudioChannels with ToolRegistry with Persistability {
+class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) extends Node(app, nodeType, None, center) with Actor with AudioOutputChannels with MIDIInputChannels with ToolRegistry with Persistability {
   private var exists = true
   private var isPlaying = false
   private var playbackPos = 0.0f
@@ -108,11 +108,17 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
           }
         }
         
-        case event: ToggleChannelEvent => {
+        case event: ToggleOutputChannelEvent => {
           this.synchronized {
-            this.toggleChannel(event.channel)
+            this.toggleOutputChannel(event.channel)
           }
-        }    
+        } 
+        
+        case event: ToggleInputChannelEvent => {
+          this.synchronized {
+            this.toggleInputChannel(event.channel)
+          }
+        }        
   
         case event: TimeConnectionAddEvent => {
           this.synchronized {
@@ -161,7 +167,7 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
                 case Some(connection) => {}
                 case None => {
                   Ui.audioInterface ! StopAudioEvent(this.id)
-                  this.isPlaying = false
+                  this.isPlaying = false //reset so that toggling will start playback
                   this.playbackPos = 0.0f
                   this ! UiEvent("TOGGLE_PLAYBACK")
                 }
@@ -189,7 +195,7 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
               lastTime = System.nanoTime() //init time
               val (uiX, uiY) = (this.position._1, this.position._2)
               val (x, y) = (uiX/Ui.width, uiY/Ui.height)
-              Ui.audioInterface ! PlayAudioEvent(this.id, x, y, this.properties(PitchPropertyType)(), this.properties(VolumePropertyType)(), this.collectOpenChannels)
+              Ui.audioInterface ! PlayAudioEvent(this.id, x, y, this.properties(PitchPropertyType)(), this.properties(VolumePropertyType)(), this.collectOpenOutputChannels)
               this.isPlaying = true
               this ! UiEvent("PLAY")              
             }
@@ -207,7 +213,7 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
                 this.playbackPos = if (passedTime%2000 < 1000) (passedTime%1000)/1000 else 1f - (passedTime%1000)/1000
                 val (uiX, uiY) = (this.position._1, this.position._2)
                 val (x, y) = (uiX/Ui.width, uiY/Ui.height)
-                Ui.audioInterface ! PlayAudioEvent(this.id, x, y, this.properties(PitchPropertyType)(), this.properties(VolumePropertyType)(), this.collectOpenChannels)
+                Ui.audioInterface ! PlayAudioEvent(this.id, x, y, this.properties(PitchPropertyType)(), this.properties(VolumePropertyType)(), this.collectOpenOutputChannels)
                 this ! event
               }              
             }
@@ -261,10 +267,10 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
       g.noFill()
       g.strokeWeight(1)      
       val (x,y) = (this.getCenterPointLocal.getX, this.getCenterPointLocal.getY)
-      val stepSize = 2*PI.toFloat/this.channelNumber
-      (0 until this.channelNumber).foreach(index => {
-        val color = AudioChannels.colorFromIndex(index)
-        if (this.isChannelOpen(index)) g.stroke(color.getR, color.getG, color.getB, 150) else g.stroke(0, 0, 0, 50)
+      val stepSize = 2*PI.toFloat/this.outputChannelNumber
+      (0 until this.outputChannelNumber).foreach(index => {
+        val color = AudioOutputChannels.colorFromIndex(index)
+        if (this.isOutputChannelOpen(index)) g.stroke(color.getR, color.getG, color.getB, 150) else g.stroke(0, 0, 0, 50)
         g.arc(x, y, 2*this.radius - 2, 2*this.radius - 2, HALF_PI + index*stepSize, HALF_PI + (index+1)*stepSize)
       })
     }

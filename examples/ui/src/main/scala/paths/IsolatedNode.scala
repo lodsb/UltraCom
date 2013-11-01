@@ -36,7 +36,7 @@ object IsolatedNode {
 * Furthermore, an isolated node features audio channels, allowing a user to interactively specify who can listen to generated audio events.
 *
 */
-class IsolatedNode(app: Application, center: Vector3D) extends Node(app, IsolatedNodeType, None, center) with AudioChannels {
+class IsolatedNode(app: Application, center: Vector3D) extends Node(app, IsolatedNodeType, None, center) with AudioOutputChannels {
   
   /**
   * Destroys this node, which also implies stopping any playback.
@@ -52,10 +52,10 @@ class IsolatedNode(app: Application, center: Vector3D) extends Node(app, Isolate
     g.noFill()
     g.strokeWeight(1)
     val (x,y) = (this.getCenterPointLocal.getX, this.getCenterPointLocal.getY)
-    val stepSize = 2*PI.toFloat/this.channelNumber
-    (0 until this.channelNumber).foreach(index => {
-      val color = AudioChannels.colorFromIndex(index)
-      if (this.isChannelOpen(index)) g.stroke(color.getR, color.getG, color.getB, 150) else g.stroke(0, 0, 0, 50)
+    val stepSize = 2*PI.toFloat/this.outputChannelNumber
+    (0 until this.outputChannelNumber).foreach(index => {
+      val color = AudioOutputChannels.colorFromIndex(index)
+      if (this.isOutputChannelOpen(index)) g.stroke(color.getR, color.getG, color.getB, 150) else g.stroke(0, 0, 0, 50)
       g.arc(x, y, 2*this.radius - 2, 2*this.radius - 2, HALF_PI + index*stepSize, HALF_PI + (index+1)*stepSize)
     })    
   }
