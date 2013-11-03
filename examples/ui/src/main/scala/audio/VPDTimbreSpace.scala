@@ -16,6 +16,8 @@ import de.sciss.synth.Ops._
 
 import org.mt4j.util.MTColor
 
+import ui.util.Functions
+
 
 class VPDTimbreSpace extends TimbreSpace {
 
@@ -104,28 +106,27 @@ class VPDTimbreSpace extends TimbreSpace {
    * Returns - as an Option - a two-dimensional visual representation of this timbre space, or None if it is not defined.
    */
   def visualRepresentation: Option[PImage] = {
-    val image = presetBank.generateMappingPImage(1920,1080,0xffffffff)
-    val newImage = new PImage(image.width, image.height)
+    val data = presetBank.getFormattedData(1920,1080) //a two-dimensional array (for x and y values) with tuples of the form (ClusterID, Octave, isPercussive)
+    val image = new PImage(data.size, data(0).size)
     
     //set background to white
-    for(x <- 0 until newImage.width) {
-      for(y <- 0 until newImage.height) {
-        newImage.set(x,y,0xffffffff)
+    for(x <- 0 until image.width) {
+      for(y <- 0 until image.height) {
+        image.set(x,y,0xffffffff)
       }
     }    
     
     //draw points in space
-    for(x <- 0 until newImage.width) {
-      for(y <- 0 until newImage.height) {
-        val argb = image.get(x,y)
-        if (argb != 0xffffffff) {
-          val color = this.argbToColor(argb)
+    for(x <- 0 until image.width) {
+      for(y <- 0 until image.height) {
+        if (data(x)(y)._1 != -1) { //-1 means there is no associated cluster and thus no point at this position
+          val color = this.colorFromData(data, x, y)
           val radius = 7
-          this.drawCircle(newImage, x, y, color, radius)
+          if (data(x)(y)._3) this.drawDiamond(image, x, y, color, radius) else this.drawCircle(image, x, y, color, radius) //diamond if percussive, circle if synth
         }
       }
     }
-    Some(newImage)
+    Some(image)
   }
 
   /**
@@ -141,7 +142,11 @@ class VPDTimbreSpace extends TimbreSpace {
       synth.parameters() = (parameterMapping(x._2)._1 -> x._1)
     })    
     
-    synth.parameters() = ("frequency" -> pitch)
+    val octave = params(17).toInt
+    
+    val note = pitch * 10
+    val frequency = (note+(12*octave)+60).midicps // middle C + octave + offset via keyboard
+    synth.parameters() = ("frequency" -> frequency)
     synth.parameters() = ("volume" -> volume)
     
   }
@@ -159,12 +164,46 @@ class VPDTimbreSpace extends TimbreSpace {
           val r = (imgColor.getR + color.getR)/2
           val g = (imgColor.getG + color.getG)/2
           val b = (imgColor.getB + color.getB)/2
+          val a = (imgColor.getAlpha + color.getAlpha)/2
+          val argb = this.colorToArgb(new MTColor(r,g,b,a))
+          image.set(x,y,argb)
+        }
+      }
+    }
+  }
+  
+  
+     /**
+  * Draws a diamond on the specified image at the specified coordinates, with the given color and radius.
+  */
+  private def drawDiamond(image: PImage, xCoord: Int, yCoord: Int, color: MTColor, radius: Int) = {
+    for(x <- xCoord - radius to xCoord + radius) {
+      for(y <- yCoord - radius to yCoord + radius) {
+        val dist = math.abs(x - xCoord) + math.abs(y - yCoord)
+        if (dist <= radius) {
+          val imgColor = this.argbToColor(image.get(x,y))
+          val r = (imgColor.getR + color.getR)/2
+          val g = (imgColor.getG + color.getG)/2
+          val b = (imgColor.getB + color.getB)/2
           val argb = this.colorToArgb(new MTColor(r,g,b))
           image.set(x,y,argb)
         }
       }
     }    
   }
+  
+  
+  private def colorFromData(data: Array[Array[(Int, Int, Boolean)]], x: Int, y: Int) = { //data: (ClusterID, Octave, isPercussive)
+    val clusters = 100f //too lazy to count clusters algorithmically; 100 seems correct :P
+    val octaves = 6 //again determined by manual examination of data
+    val h = data(x)(y)._1/clusters
+    val s = 0.6f
+    val l = 1 - (0.8f*(octaves + data(x)(y)._2)/6f + 0.2f) //luminance between 0.2 and 1.0 depending on the octave, with higher octaves being lighter
+    val (r,g,b) = Functions.hslToRgb(h,s,l)
+    val a = 150
+    new MTColor(r,g,b,a)    
+  }
+  
   
   private def argbToColor(argb: Int): MTColor = {
     val a = (argb >> 24) & 0xFF

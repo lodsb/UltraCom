@@ -108,8 +108,9 @@ class PresetBank(csvFilename: String, mappingJitter:Float = 0.0f) {
 
         try {
         pixels(xyAbs._1 + width*xyAbs._2) = 0xff000000 | r << 16 | g << 8 | b;
-        } catch {
-          case _ => println("VOO")
+        } 
+        catch {
+          case exception => println(exception)
         }
 
     })
@@ -120,6 +121,27 @@ class PresetBank(csvFilename: String, mappingJitter:Float = 0.0f) {
     pimage
 
   }
+  
+  /**
+  * Returns a formatted version of the preset bank data, that is,
+  * a two-dimensional array (for x and y values) with tuples of the form (ClusterID, Octave, isPercussive).
+  * 
+  */
+  def getFormattedData(width: Int, height: Int): Array[Array[(Int, Int, Boolean)]] = {
+    val formattedData = Array.fill[(Int, Int, Boolean)](width,height) {(-1, 0, false)}
+    
+    data.foreach({
+      entry =>
+        val (x,y) = relToAbs(entry._1._1, entry._1._2, width, height)
+        val clusterID = entry._2._2
+        val parameters = entry._2._1          
+        formattedData(x)(y) = (entry._2._2, parameters(parameters.size-2).toInt, if (parameters(parameters.size-1) < 1f) false else true) 
+    })
+    
+    formattedData
+  }
+  
+  
 
   def relToAbs(x: Float , y:Float, width: Int, height: Int): (Int, Int) = {
     val xAbs: Int = ( ( (x + 1.0f)*0.5f ) * (width-1)).round

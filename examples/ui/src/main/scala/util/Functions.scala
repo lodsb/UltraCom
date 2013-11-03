@@ -147,7 +147,7 @@ object Functions {
    * @param   b       The blue color value
    * @return          The HSL representation
    */
-  def rgbToHsl(valR: Int, valG: Int, valB: Int) = {
+  def rgbToHsl(valR: Int, valG: Int, valB: Int): (Float, Float, Float) = {
       var r: Float = valR/255.0f
       var g: Float = valG/255.0f
       var b: Float = valB/255.0f
