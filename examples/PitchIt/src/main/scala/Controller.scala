@@ -8,21 +8,31 @@ import org.mt4j.input.inputProcessors.{MTGestureEvent, IGestureEventListener}
 /**
  * The Controller, which controls and visualizes the pitch of tones.
  */
-class Controller(var widthValue: Float, var heightValue: Float) extends MTRectangle(app, widthValue, heightValue) with IGestureEventListener {
+class Controller(var widthValue: Float, var heightValue: Float)
+  extends MTRectangle(app, widthValue, heightValue) with IGestureEventListener {
 
   var active = false
+
+  setStrokeColor(color)
+  setFillColor(app.TRANSPARENT)
+  removeAllGestureEventListeners()
+  addGestureListener(classOf[DragProcessor], this)
+
+
+  /**
+   * for triggering the active-status (on/off)
+   */
   def triggerActive {
     active = !active
     setStrokeColor(color)
   }
+
+  /**
+   * returns the color for the current status
+   * @return an MTColor object
+   */
   def color = if (active) WHITE else GREY
 
-  setStrokeColor(color)
-  setFillColor(app.TRANSPARENT)
-
-  removeAllGestureEventListeners()
-
-  addGestureListener(classOf[DragProcessor], this)
 
   /**
    * Process gesture event.

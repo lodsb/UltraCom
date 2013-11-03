@@ -12,15 +12,17 @@ import scala.collection.mutable.ArrayBuffer
 /**
  * This is the class, which contains the pitch-controllers
  */
-class ControllerCanvas(val widthValue: Float, val heightValue: Float, val howMany: Int)
+class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: Int)
   extends MTRectangle(app, widthValue, heightValue) with IGestureEventListener {
 
   setStrokeColor(BLUE)
   setFillColor(app.TRANSPARENT)
 
   // containers are all ControllerContainers. Needed for their sequential ordering
-  val containers = initializeControllers(howMany)
+  var containers = null.asInstanceOf[ArrayBuffer[ControllerContainer]]
   var activeController = null.asInstanceOf[Controller]
+
+  initializeControllers(howMany)
   initializeBaseline
 
 
@@ -28,9 +30,27 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, val howMan
    * Adds some controllers to this canvas. Every with equal width.
    * @param howMany Int How many controllers should be initialized
    */
-  def initializeControllers(howMany: Int): ArrayBuffer[ControllerContainer] = {
-    val controllerContainers = new ArrayBuffer[ControllerContainer]
+  def initializeControllers(howMany: Int) {
+    if (containers != null && containers.length == howMany) {
+      return
+    }
+
+    // save the heights from the first and middle controller for re-use later
+    var height1 = null.asInstanceOf[Float]
+    var height2 = null.asInstanceOf[Float]
+
+    if (containers != null) {
+      height1 = containers(0).controller.height()
+      height2 = containers(containers.length/2).controller.height()
+      // remove all children / old controllers
+      containers.foreach( container =>
+        container.removeFromParent()
+      )
+    }
     removeAllChildren()
+
+    // create new controllers and add them
+    val tmpContainers = new ArrayBuffer[ControllerContainer]
     for(i <- 1 to howMany) {
 
       // create a container for a controller
@@ -44,9 +64,14 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, val howMan
 
       // add the controller to the ControllerCanvas
       addChild(container)
-      controllerContainers += container
+      tmpContainers += container
     }
-    controllerContainers
+    containers = tmpContainers
+
+    if (height1 != null) { println("height1="+height1)
+      containers(0).controller.height() = height1
+      containers(containers.length/2).controller.height() = height2
+    }
   }
 
   /**
@@ -97,7 +122,10 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, val howMan
    * @return The height of the controller to be activated
    */
   def setStep(step: Int): Float = {
-    val stepLength = Metronome.totalSteps/containers.length
+    var stepLength = null.asInstanceOf[Int]
+    containers.synchronized {
+      stepLength = Metronome.totalSteps/containers.length
+    }
     var i = 1
     while (i*stepLength < step) {
       i += 1

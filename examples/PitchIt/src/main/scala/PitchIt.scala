@@ -27,6 +27,7 @@ import org.mt4j.types.Vec3d
 import org.mt4j.components.ComponentImplicits._
 import org.mt4j.util.MTColor
 import scala.collection.mutable.ArrayBuffer
+import org.mt4j.components.visibleComponents.widgets.Slider
 
 
 object app extends Application {
@@ -34,7 +35,7 @@ object app extends Application {
   // some global variables
   var scene = null.asInstanceOf[Scene]
   val TRANSPARENT = new MTColor(0,0,0,0)
-  def center = Vec3d(width,height)
+  def center = Vec3d(width/2f,height/2f)
 
   // get all ControllerCanvas in an ArrayBuffer
   def allControllerCanvas = {
@@ -70,6 +71,16 @@ class PitchItScene extends Scene(app, "PitchIt Scene") {
   val controllerCanvas = new ControllerCanvas(300f, 100f, 16)
   app.scene.canvas() += controllerCanvas
   controllerCanvas.setPositionGlobal(Vec3d(app.width/2f, app.height/2f))
+
+  val slider = Slider(2f, 16f, height=20f)
+  slider.value.map { x =>
+    val z = math.round(x)
+    if (z==2 || z==4 || z==8 || z==16) {
+      controllerCanvas.initializeControllers(z)
+    }
+  }
+  app.scene.canvas() += slider
+  slider.globalPosition() = app.center.getAdded(Vec3d(0f,80f))
 
   // start Metronome
   Metronome() ! "start"
