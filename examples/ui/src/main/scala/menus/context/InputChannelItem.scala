@@ -16,6 +16,7 @@ import ui.menus._
 import ui.paths._
 import ui.paths.types._
 import ui.events._
+import ui.util._
 import ui._
 
 object InputChannelItem {
@@ -98,6 +99,23 @@ class InputChannelItem(app: Application, menu: NodeContextMenu, center: Vector3D
     g.fill(this.itemBackgroundColor.getR * saturationMultiplier + saturationConstant, this.itemBackgroundColor.getG * saturationMultiplier + saturationConstant, this.itemBackgroundColor.getB * saturationMultiplier + saturationConstant, this.opacity * InputChannelItem.Alpha)
     g.noStroke()
     g.ellipse(cx, cy, 2*this.radius, 2*this.radius)  
+    
+    (1 to channelNumber).foreach(item => {
+      val (x,y) = this.positionOnCircle(cx, cy, this.radius, 2*math.Pi.toFloat, item, 4) //4 input channels
+      g.ellipse(x, y, 4, 4)
+    })
+    
+    
   }    
+
+  /**
+  * Returns for a given item (starting with 0) out of a fixed number of items the position on an arc segment with specified center, radius and length (in radians),
+  * with the premise that the items are equidistantly distributed on the arc segment.
+  * Use (2 * math.Pi) if you are aiming for a whole circle.
+  */
+  protected def positionOnCircle(x:Float, y: Float, radius: Float, arc: Float, item: Int, items: Int) = {
+    Functions.circle((x,y), radius)(math.Pi.toFloat/2 + arc * ((2*item+1).toFloat/(2*items)))
+  }
+
   
 }
