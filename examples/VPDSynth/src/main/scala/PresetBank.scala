@@ -124,18 +124,16 @@ class PresetBank(csvFilename: String, mappingJitter:Float = 0.0f) {
   
   /**
   * Returns a formatted version of the preset bank data, that is,
-  * a two-dimensional array (for x and y values) with tuples of the form (ClusterID, Octave, isPercussive).
+  * a sequence of tuples of (x,y) value pairs and associated tuples of the form (ClusterID, Octave, isPercussive).
   * 
   */
-  def getFormattedData(width: Int, height: Int): Array[Array[(Int, Int, Boolean)]] = {
-    val formattedData = Array.fill[(Int, Int, Boolean)](width,height) {(-1, 0, false)}
-    
-    data.foreach({
+  def getFormattedData(width: Int, height: Int): Seq[((Int, Int), (Int, Int, Boolean))] = {    
+    val formattedData:Seq[((Int, Int), (Int, Int, Boolean))] = data.map({
       entry =>
         val (x,y) = relToAbs(entry._1._1, entry._1._2, width, height)
         val clusterID = entry._2._2
         val parameters = entry._2._1          
-        formattedData(x)(y) = (entry._2._2, parameters(parameters.size-2).toInt, if (parameters(parameters.size-1) < 1f) false else true) 
+        ((x,y), (entry._2._2, parameters(parameters.size-2).toInt, if (parameters(parameters.size-1) < 1f) false else true))          
     })
     
     formattedData

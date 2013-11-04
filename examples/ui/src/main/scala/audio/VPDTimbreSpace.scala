@@ -108,8 +108,8 @@ class VPDTimbreSpace extends TimbreSpace {
    * Returns - as an Option - a two-dimensional visual representation of this timbre space, or None if it is not defined.
    */
   def visualRepresentation: Option[PImage] = {
-    val data = presetBank.getFormattedData(1920,1080) //a two-dimensional array (for x and y values) with tuples of the form (ClusterID, Octave, isPercussive)
-    val image = new PImage(data.size, data(0).size)
+    val data = presetBank.getFormattedData(1920,1080) //a sequence of tuples of (x,y) value pairs and associated tuples of the form (ClusterID, Octave, isPercussive).
+    val image = new PImage(1920, 1080)
     
     //set background to white
     for(x <- 0 until image.width) {
@@ -119,15 +119,14 @@ class VPDTimbreSpace extends TimbreSpace {
     }    
     
     //draw points in space
-    for(x <- 0 until image.width) {
-      for(y <- 0 until image.height) {
-        if (data(x)(y)._1 != -1) { //-1 means there is no associated cluster and thus no point at this position
-          val color = this.colorFromData(data, x, y)
-          val radius = 7
-          if (data(x)(y)._3) this.drawDiamond(image, x, y, color, radius) else this.drawCircle(image, x, y, color, radius) //diamond if percussive, circle if synth
-        }
-      }
-    }
+    data.foreach(entry => {
+      val x = entry._1._1
+      val y = entry._1._2
+      val isPercussive = entry._2._3
+      val color = this.colorFromData(entry._2)
+      val radius = 7
+      if (isPercussive) this.drawDiamond(image, x, y, color, radius) else this.drawCircle(image, x, y, color, radius) //diamond if percussive, circle if synth
+    })
     Some(image)
   }
 
@@ -231,12 +230,12 @@ class VPDTimbreSpace extends TimbreSpace {
   }
   
   
-  private def colorFromData(data: Array[Array[(Int, Int, Boolean)]], x: Int, y: Int) = { //data: (ClusterID, Octave, isPercussive)
+  private def colorFromData(data: (Int, Int, Boolean)) = { //data: (ClusterID, Octave, isPercussive)
     val clusters = 100f //too lazy to count clusters algorithmically; 100 seems correct :P
     val octaves = 6 //again determined by manual examination of data
-    val h = data(x)(y)._1/clusters
+    val h = data._1/clusters
     val s = 0.6f
-    val l = 1 - (0.8f*(octaves + data(x)(y)._2)/6f + 0.2f) //luminance between 0.2 and 1.0 depending on the octave, with higher octaves being lighter
+    val l = 1 - (0.8f*(octaves + data._2)/6f + 0.2f) //luminance between 0.2 and 1.0 depending on the octave, with higher octaves being lighter
     val (r,g,b) = Functions.hslToRgb(h,s,l)
     val a = 150
     new MTColor(r,g,b,a)    
