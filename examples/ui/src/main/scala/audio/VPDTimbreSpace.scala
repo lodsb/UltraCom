@@ -21,6 +21,8 @@ import ui.util.Functions
 
 class VPDTimbreSpace extends TimbreSpace {
 
+  private val pentatonic = List(2,2,3,2,3) //e.g. C -> D -> E -> G -> A -> C
+  
   private val parameterMapping = Seq[(String, (Float, Float))](
     "frequency"-> (2.0f,1000.0f),
     "cleanFmRingmod" -> (-0.25f, 1.0f),
@@ -144,11 +146,47 @@ class VPDTimbreSpace extends TimbreSpace {
     
     val octave = params(17).toInt
     
-    val note = pitch * 10
-    val frequency = (note+(12*octave)+60).midicps // middle C + octave + offset via keyboard
+    val relativeNote = this.relativeNoteFromRelativePitch(this.pentatonic, 6, pitch) //at max 3 halftones down and 3 halftones up
+    val frequency = (relativeNote+(12*octave)+60).midicps // middle C + octave + offset via keyboard
     synth.parameters() = ("frequency" -> frequency)
     synth.parameters() = ("volume" -> volume)
     
+  }
+  
+  /**
+  * Returns for a relative pitch value between 0 and 1 the corresponding relative note in halftones,
+  * that is, the number of halftones that is to be added or subtracted.
+  * The obtained note, in this regard, lies on the specified scale where 0.5 is the tonic keynote, 
+  * and [0,1] is mapped to [-range/2, range/2] both discretely and non-linearly.
+  */
+  def relativeNoteFromRelativePitch(scale: List[Int], range: Int, pitch: Float) = {
+    //0 -> -range/2, 0.5 -> 0, 1 -> range/2
+    this.nearestScaleValue(scale, pitch*range - range/2)
+  }
+  
+  /**
+  * Returns for a specified musical scale and a continuous value a corresponding scale value.
+  * For instance, if a pentatonic scale is given and the continuous value is -3.2, the returned scale value is -3 (or, put in other words, 
+  * exactly 3 halftones below the tonic keynote since this note is part of the pentatonic scale).
+  */
+  def nearestScaleValue(scale: List[Int], value: Float) = {
+    var halftones = 0
+    var index = 0
+    if (value >= scale.head) {
+      while (halftones < value) {
+        halftones = halftones + scale(index)
+        index = (index + 1) % scale.size
+      }
+      halftones
+    }
+    else if (math.abs(value) >= scale.last) {
+      while (halftones < value) {
+        halftones = halftones + scale(scale.size - 1 - index)
+        index = (index + 1) % scale.size
+      }   
+      halftones
+    }
+    else 0
   }
   
   /**
