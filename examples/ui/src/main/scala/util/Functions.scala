@@ -112,12 +112,12 @@ object Functions {
       }
       else {
           def hue2rgb(p: Float, q: Float, valT: Float) = {
-              var t = valT
+              var t: Float = valT
               if (t < 0) t = t + 1
               if (t > 1) t = t - 1
-              if (t < 1/6f) p + (q - p) * 6 * t
+              if (t < 1/6f) p + (q - p) * 6f * t
               if (t < 1/2f) q
-              if (t < 2/3f) p + (q - p) * (2/3f - t) * 6
+              if (t < 2/3f) p + (q - p) * (2/3f - t) * 6f
               p
           }
   
@@ -128,6 +128,7 @@ object Functions {
           b = hue2rgb(p, q, h - 1/3f)
       }
   
+      println("r: " + r + " g: " + g + " b: " + b)
       return ((r * 255).toInt, (g * 255).toInt, (b * 255).toInt)
   }
   
