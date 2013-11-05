@@ -22,6 +22,9 @@ import ui.util.Functions
 class VPDTimbreSpace extends TimbreSpace {
 
   private val pentatonic = List(2,2,3,2,3) //e.g. C -> D -> E -> G -> A -> C
+  private val aeolic = List(2,1,2,2,1,2,2)  
+  private val ionic = List(2,2,1,2,2,2,1)
+  
   
   private val parameterMapping = Seq[(String, (Float, Float))](
     "frequency"-> (2.0f,1000.0f),
@@ -55,6 +58,7 @@ class VPDTimbreSpace extends TimbreSpace {
                   aetp: Float, cvpyp: Float, mvpyp: Float, cvpxp: Float,
                   mvpxp: Float, cvpywp: Float, mvpywp: Float, cvpxwp: Float,mvpxwp: Float, fmtp: Float,
                 fmidxp: Float, nap: Float, fxrtp: Float): SynthDef = SynthDef("VPDTestSynthGated"){
+
     val clag  = "cLag".kr
     val gr    = Lag.kr("gate".kr, clag)
     val pwidth= Lag.kr("pulseWidth".kr, clag)
@@ -74,9 +78,10 @@ class VPDTimbreSpace extends TimbreSpace {
     val fmIdx = Lag.kr("fmModIdx".kr, clag)
     val nA    = Lag.kr("noiseAmount".kr, clag)
     val fxRT  = Lag.kr("fxRouteType".kr, clag)
+    val vol   = Lag.kr("volume".kr, clag)
 
     val out = VPDSynthGated.ar(gr,
-      cfm, mfm, freq, aEt, cvpY, mvpY, cvpX, mvpX, cvpYW, mvpYW, cvpXW, mvpXW, fmT, fmIdx, nA, fxRT
+      cfm, mfm, freq, aEt, cvpY, mvpY, cvpX, mvpX, cvpYW, mvpYW, cvpXW, mvpXW, fmT, fmIdx, nA, fxRT, vol
     )
 
     AudioServer attach out
