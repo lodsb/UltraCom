@@ -45,7 +45,9 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
       //println("in play")
       if (this.synthMap.contains(event.callerID)) {
         //println("updating synth with caller id " + event.callerID)
-        this.updateParameters(this.synthMap(event.callerID), event)
+        val synth = this.synthMap(event.callerID)
+        synth.parameters() = ("gate" -> 1);
+        this.updateParameters(synth, event)
       }
       else {
         val synthDef = this.timbreSpace.synthDefinition(event.x, event.y, event.pitch, event.volume)
