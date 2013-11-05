@@ -100,7 +100,7 @@ class InputChannelItem(app: Application, menu: NodeContextMenu, center: Vector3D
     g.noStroke()
     g.ellipse(cx, cy, 2*this.radius, 2*this.radius)  
     
-    (1 to channelNumber).foreach(item => {
+    (1 to channelNumber + 1).foreach(item => {
       val (x,y) = this.positionOnCircle(cx, cy, 0.6f * this.radius, 2*math.Pi.toFloat, item, 4) //4 input channels
       g.ellipse(x, y, 4, 4)
     })
