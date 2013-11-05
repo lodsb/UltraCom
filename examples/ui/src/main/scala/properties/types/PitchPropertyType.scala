@@ -16,9 +16,9 @@ object PitchPropertyType extends PropertyType{
   val Width = Ui.width/100
   val Vicinity = 2* Width
   val PropertyColor = new MTColor(0, 50, 130)
-  val ColorAlpha = 80 //alpha value for non-playing path
+  val ColorAlpha = 100 //alpha value for non-playing path
   val ProgressColorAlpha = 130 //alpha value for played back path
-  val HighlightedColorAlpha = 150 //alpha value for path segments wich are highlighted
+  val HighlightedColorAlpha = 160 //alpha value for path segments wich are highlighted
   val Range = (0.0f, 1.0f) //range of a pitch property bucket; 
   
   protected val SymbolWidth = Tool.Width/6.5f //width of note

@@ -173,9 +173,9 @@ class Tool(app: Application, center: (Float, Float), pType: PropertyType) extend
       val (x, y) = (centerPos.getX, centerPos.getY)
       Array(
           new Vertex(x, y - Height/2, 0, color.getR(), color.getG(), color.getB(), 0), //top
-          new Vertex(x - Width/2, y + Height/2 - BottomHeight, 0, color.getR(), color.getG(), color.getB(), 130), //left point
-          new Vertex(x, y + Height/2, 0, color.getR(), color.getG(), color.getB(), 180), //bottom
-          new Vertex(x + Width/2, y + Height/2 - BottomHeight, 0, color.getR(), color.getG(), color.getB(), 130), //right point
+          new Vertex(x - Width/2, y + Height/2 - BottomHeight, 0, color.getR(), color.getG(), color.getB(), 150), //left point
+          new Vertex(x, y + Height/2, 0, color.getR(), color.getG(), color.getB(), 200), //bottom
+          new Vertex(x + Width/2, y + Height/2 - BottomHeight, 0, color.getR(), color.getG(), color.getB(), 150), //right point
           new Vertex(x, y - Height/2, 0, color.getR(), color.getG(), color.getB(), 0) //back to top
       )
    }   
