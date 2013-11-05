@@ -120,6 +120,7 @@ object Ui extends Application with Persistability {
       var closestPath = paths.head /* set first path as initial closest path */
       var (closestConnection, argminParameter) = closestPath.closestSegment(point._1, point._2)
       var minDist = Vector.euclideanDistance(closestConnection(argminParameter), point)
+      println("tail: " + paths.tail.toString)
       /*paths.tail.foreach(path => { //for all the other paths in the list of paths
         val (connection, parameter) = path.closestSegment(point._1, point._2) //get the point on the path that is closest to the specified coordinate as well as the segment of the path
         val dist = Vector.euclideanDistance(connection(parameter), point)
