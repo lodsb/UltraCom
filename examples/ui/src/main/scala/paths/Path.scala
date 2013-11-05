@@ -409,7 +409,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
               if (ignoreNextStopPlayback) {ignoreNextStopPlayback = false}
               else {
                 this.resetPlayback()
-                Ui.audioInterface ! StopAudioEvent(this.id)
+                Ui.audioInterface ! PauseAudioEvent(this.id)
                 Playback ! PathPlaybackEvent(this, false)
               }
             }
