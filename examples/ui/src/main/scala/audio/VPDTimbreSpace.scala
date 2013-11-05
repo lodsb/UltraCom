@@ -198,11 +198,11 @@ class VPDTimbreSpace extends TimbreSpace {
         val xDiff = x - xCoord
         val yDiff = y - yCoord
         if (xDiff*xDiff + yDiff*yDiff <= radius*radius) {
-          val imgColor = this.argbToColor(image.get(x,y))
-          val r = (imgColor.getR + color.getR)/2
-          val g = (imgColor.getG + color.getG)/2
-          val b = (imgColor.getB + color.getB)/2
-          val a = (alpha + color.getAlpha)/2
+          //val imgColor = this.argbToColor(image.get(x,y))
+          //val r = (imgColor.getR + color.getR)/2
+          //val g = (imgColor.getG + color.getG)/2
+          //val b = (imgColor.getB + color.getB)/2
+          //val a = (alpha + color.getAlpha)/2
           val argb = this.colorToArgb(new MTColor(r,g,b,a))
           image.set(x,y,argb)
         }
@@ -221,11 +221,11 @@ class VPDTimbreSpace extends TimbreSpace {
       for(y <- yCoord - radius to yCoord + radius) {
         val dist = math.abs(x - xCoord) + math.abs(y - yCoord)
         if (dist <= floatRadius) {
-          val imgColor = this.argbToColor(image.get(x,y))
-          val r = (imgColor.getR + color.getR)/2
-          val g = (imgColor.getG + color.getG)/2
-          val b = (imgColor.getB + color.getB)/2
-          val a = (alpha + color.getAlpha)/2
+          //al imgColor = this.argbToColor(image.get(x,y))
+          //val r = (imgColor.getR + color.getR)/2
+          //val g = (imgColor.getG + color.getG)/2
+          //val b = (imgColor.getB + color.getB)/2
+          //val a = (alpha + color.getAlpha)/2
           val argb = this.colorToArgb(new MTColor(r,g,b,a))
           image.set(x,y,argb)
         }
