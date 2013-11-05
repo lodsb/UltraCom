@@ -38,7 +38,7 @@ class PlayTimbreDragAction(node: Node) extends BoundedDragAction(Menu.Space, Men
   	}
   	
   	private def sendPlayAudioEvent() = {
-      val channels = node match {
+      /*val channels = node match {
         case withChannels: AudioOutputChannels => withChannels.collectOpenOutputChannels
         case withoutChannels => Array(0,1,2,3)
       } 
@@ -49,16 +49,16 @@ class PlayTimbreDragAction(node: Node) extends BoundedDragAction(Menu.Space, Men
       node match {
         case singleNode: SingleNode => Ui.audioInterface ! PlayAudioEvent(node.id, x, y, singleNode.getPropertyValue(PitchPropertyType), singleNode.getPropertyValue(VolumePropertyType), channels)
         case otherNode => Ui.audioInterface ! PlayAudioEvent(node.id, x, y, PitchPropertyType.mean, VolumePropertyType.mean, channels)
-      }
+      }*/
     }
     
     
     private def sendStopAudioEvent() = {
-      Ui.audioInterface ! StopAudioEvent(node.id)       
+      //Ui.audioInterface ! StopAudioEvent(node.id)       
     }
     
     private def sendPauseAudioEvent() = {
-      Ui.audioInterface ! PauseAudioEvent(node.id)     
+      //Ui.audioInterface ! PauseAudioEvent(node.id)     
     }
   	
 }

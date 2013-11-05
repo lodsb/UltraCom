@@ -46,7 +46,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
       if (this.synthMap.contains(event.callerID)) {
         //println("updating synth with caller id " + event.callerID)
         val synth = this.synthMap(event.callerID)
-        synth.parameters() = ("gate" -> 1);
+        synth.parameters() = ("gate" -> 1)
         this.updateParameters(synth, event)
       }
       else {
@@ -71,7 +71,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
     this.synchronized {
       if (this.synthMap.contains(event.callerID)) {
         val synth = this.synthMap(event.callerID)
-        synth.parameters() = ("gate" -> 0);
+        synth.parameters() = ("gate" -> 0)
       }    
       else {println("synth does not exist")}
     }    
@@ -81,7 +81,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
     this.synchronized {
       if (this.synthMap.contains(event.callerID)) {
         val synth = this.synthMap(event.callerID)
-        synth.parameters() = ("gate" -> 1);
+        synth.parameters() = ("gate" -> 1)
       }    
       else {println("synth does not exist")}
     }    

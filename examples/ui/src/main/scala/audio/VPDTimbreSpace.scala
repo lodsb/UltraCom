@@ -135,7 +135,7 @@ class VPDTimbreSpace extends TimbreSpace {
    */
   def updateParameters(synth: Synthesizer, x: Float, y: Float, pitch: Float, volume: Float) {
     val xy = convertCoords(x,y)
-    val coordsAndParms = presetBank.parameterRelCoordInterp(xy._1,xy._2,8);
+    val coordsAndParms = presetBank.parameterRelCoordInterp(xy._1,xy._2,8)
     val params = coordsAndParms._2
     
     params.slice(0,15).zipWithIndex.foreach( {
