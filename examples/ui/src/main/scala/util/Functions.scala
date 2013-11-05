@@ -115,9 +115,9 @@ object Functions {
               var t: Float = valT
               if (t < 0) t = t + 1
               if (t > 1) t = t - 1
-              if (t < 1/6f) p + (q - p) * 6f * t
-              if (t < 1/2f) q
-              if (t < 2/3f) p + (q - p) * (2/3f - t) * 6f
+              if (t < 1/6f) return p + (q - p) * 6f * t
+              if (t < 1/2f) return q
+              if (t < 2/3f) return p + (q - p) * (2/3f - t) * 6f
               p
           }
   
