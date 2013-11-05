@@ -10,6 +10,7 @@ import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent
 import org.mt4j.components.ComponentImplicits._
 
 import ui._
+import ui.audio._
 import ui.paths._
 import ui.events._
 import ui.paths.types._
@@ -28,7 +29,7 @@ class NodeDeletionListener(node: Node) extends IGestureEventListener {
                 path ! NodeDeletionEvent(node) //remove node from path (Ui will automatically be updated with possible new paths)
               }
               case None => {
-                //if (node.nodeType == DeleteManipulableNodeType) {
+                //if (node.nodeType == DeleteManipulableNodeType) {         
                 Ui -= node
                 println("handling deletion of isolated node")
               }

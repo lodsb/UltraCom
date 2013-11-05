@@ -28,8 +28,8 @@ class PlayTimbreDragAction(node: Node) extends BoundedDragAction(Menu.Space, Men
             case MTGestureEvent.GESTURE_DETECTED => {println("detected"); this.sendPlayAudioEvent()}
             case MTGestureEvent.GESTURE_RESUMED => {println("resumed"); this.sendPlayAudioEvent()}
             case MTGestureEvent.GESTURE_UPDATED => {/*println("updated");*/ this.sendPlayAudioEvent()}
-            case MTGestureEvent.GESTURE_CANCELED => {println("canceled"); this.sendStopAudioEvent()}
-            case MTGestureEvent.GESTURE_ENDED => {println("ended"); this.sendStopAudioEvent()}
+            case MTGestureEvent.GESTURE_CANCELED => {println("canceled"); this.sendPauseAudioEvent()}
+            case MTGestureEvent.GESTURE_ENDED => {println("ended"); this.sendPauseAudioEvent()}
             case somethingElse => {println("some other gesture event type")}
           }
         }
@@ -54,7 +54,11 @@ class PlayTimbreDragAction(node: Node) extends BoundedDragAction(Menu.Space, Men
     
     
     private def sendStopAudioEvent() = {
-      Ui.audioInterface ! StopAudioEvent(node.id)          
+      Ui.audioInterface ! StopAudioEvent(node.id)       
+    }
+    
+    private def sendPauseAudioEvent() = {
+      Ui.audioInterface ! PauseAudioEvent(node.id)     
     }
   	
 }
