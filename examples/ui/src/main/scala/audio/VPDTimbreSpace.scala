@@ -201,9 +201,6 @@ class VPDTimbreSpace extends TimbreSpace {
           val r = (imgColor.getR + color.getR)/2
           val g = (imgColor.getG + color.getG)/2
           val b = (imgColor.getB + color.getB)/2
-          if (r > 255 || g > 255 || b > 255) {
-            println("drawCircle: r: " + r + " g: " + g + " b: " + b)
-          }
           val a = (imgColor.getAlpha + color.getAlpha)/2
           val argb = this.colorToArgb(new MTColor(r,g,b,a))
           image.set(x,y,argb)
@@ -242,6 +239,7 @@ class VPDTimbreSpace extends TimbreSpace {
     val l = (0.8f*(octaves + data._2)/6f) + 0.2f //luminance between 0.2 and 1.0 depending on the octave, with higher octaves being lighter
     val (r,g,b) = Functions.hslToRgb(h,s,l)
     if (r > 255 || g > 255 || b > 255) {
+      println("colorFromData: h: " + h + " s: " + s + " l: " + l)
       println("colorFromData: r: " + r + " g: " + g + " b: " + b)
     }
     val a = 50
