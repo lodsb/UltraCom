@@ -223,7 +223,8 @@ class VPDTimbreSpace extends TimbreSpace {
           val r = (imgColor.getR + color.getR)/2
           val g = (imgColor.getG + color.getG)/2
           val b = (imgColor.getB + color.getB)/2
-          val argb = this.colorToArgb(new MTColor(r,g,b))
+          val a = (imgColor.getAlpha + color.getAlpha)/2
+          val argb = this.colorToArgb(new MTColor(r,g,b,a)
           image.set(x,y,argb)
         }
       }
@@ -242,7 +243,7 @@ class VPDTimbreSpace extends TimbreSpace {
       println("colorFromData: h: " + h + " s: " + s + " l: " + l)
       println("colorFromData: r: " + r + " g: " + g + " b: " + b)
     }*/
-    val a = 50
+    val a = 30
     new MTColor(r,g,b,a)    
   }
   
