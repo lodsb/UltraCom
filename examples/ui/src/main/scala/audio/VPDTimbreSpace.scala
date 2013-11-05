@@ -237,9 +237,7 @@ class VPDTimbreSpace extends TimbreSpace {
     val h = data._1/clusters
     val s = 0.5f
     val l = (0.8f*(octaves + data._2)/octaves) + 0.2f //luminance between 0.2 and 1.0 depending on the octave, with higher octaves being lighter
-    if (l > 1) {
-      println("octave is:" + data._2)
-    }
+    println("octave is:" + data._2)
     val (r,g,b) = Functions.hslToRgb(h,s,l)
     /*if (r > 255 || g > 255 || b > 255) {
       println("colorFromData: h: " + h + " s: " + s + " l: " + l)
