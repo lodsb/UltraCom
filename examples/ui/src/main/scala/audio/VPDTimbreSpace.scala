@@ -238,6 +238,8 @@ class VPDTimbreSpace extends TimbreSpace {
     val l = 1 - (0.8f*(octaves + data._2)/6f + 0.2f) //luminance between 0.2 and 1.0 depending on the octave, with higher octaves being lighter
     val (r,g,b) = Functions.hslToRgb(h,s,l)
     val a = 150
+    println("h: " + h + " s: " + s + " l: " + l)
+    println("r: " + r + " g: " + g + " b: " + b)
     new MTColor(r,g,b,a)    
   }
   
