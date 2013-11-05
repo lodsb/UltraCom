@@ -125,7 +125,7 @@ class VPDTimbreSpace extends TimbreSpace {
       val isPercussive = entry._2._3
       val color = this.colorFromData(entry._2)
       val radius = 7
-      if (isPercussive) this.drawDiamond(image, x, y, color, 2*radius) else this.drawCircle(image, x, y, color, radius) //diamond if percussive, circle if synth
+      if (isPercussive) this.drawDiamond(image, x, y, color, 1.5f*radius) else this.drawCircle(image, x, y, color, radius) //diamond if percussive, circle if synth
     })
     Some(image)
   }
@@ -201,7 +201,9 @@ class VPDTimbreSpace extends TimbreSpace {
           val r = (imgColor.getR + color.getR)/2
           val g = (imgColor.getG + color.getG)/2
           val b = (imgColor.getB + color.getB)/2
-          println("r: " + r + " g: " + g + " b: " + b)
+          if (r > 255 || g > 255 || b > 255) {
+            println("drawCircle: r: " + r + " g: " + g + " b: " + b)
+          }
           val a = (imgColor.getAlpha + color.getAlpha)/2
           val argb = this.colorToArgb(new MTColor(r,g,b,a))
           image.set(x,y,argb)
@@ -214,11 +216,12 @@ class VPDTimbreSpace extends TimbreSpace {
      /**
   * Draws a diamond on the specified image at the specified coordinates, with the given color and radius.
   */
-  private def drawDiamond(image: PImage, xCoord: Int, yCoord: Int, color: MTColor, radius: Int) = {
+  private def drawDiamond(image: PImage, xCoord: Int, yCoord: Int, color: MTColor, floatRadius: Float) = {
+    val radius: Int = floatRadius.toInt
     for(x <- xCoord - radius to xCoord + radius) {
       for(y <- yCoord - radius to yCoord + radius) {
         val dist = math.abs(x - xCoord) + math.abs(y - yCoord)
-        if (dist <= radius) {
+        if (dist <= floatRadius) {
           val imgColor = this.argbToColor(image.get(x,y))
           val r = (imgColor.getR + color.getR)/2
           val g = (imgColor.getG + color.getG)/2
@@ -232,12 +235,15 @@ class VPDTimbreSpace extends TimbreSpace {
   
   
   private def colorFromData(data: (Int, Int, Boolean)) = { //data: (ClusterID, Octave, isPercussive)
-    val clusters = 100f //too lazy to count clusters algorithmically; 100 seems correct :P
+    val clusters = 99f //too lazy to count clusters algorithmically; 100 seems correct :P
     val octaves = 6 //again determined by manual examination of data
     val h = data._1/clusters
     val s = 0.5f
     val l = (0.8f*(octaves + data._2)/6f) + 0.2f //luminance between 0.2 and 1.0 depending on the octave, with higher octaves being lighter
     val (r,g,b) = Functions.hslToRgb(h,s,l)
+    if (r > 255 || g > 255 || b > 255) {
+      println("colorFromData: r: " + r + " g: " + g + " b: " + b)
+    }
     val a = 50
     new MTColor(r,g,b,a)    
   }
