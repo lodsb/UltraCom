@@ -644,6 +644,14 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
     this.currentConnectionParameter = 1.0f
   }
   
+  
+  /**
+  * Whether this path is currently playing.
+  */
+  def isPlaying = {
+    this.playbackState == Playing
+  }
+  
   /**
   * Returns the current playback position of this path, that is, 
   * the index of the currently played back connection and the curve parameter yielding the current playback point on that connection.
