@@ -233,15 +233,18 @@ class VPDTimbreSpace extends TimbreSpace {
   
   private def colorFromData(data: (Int, Int, Boolean)) = { //data: (ClusterID, Octave, isPercussive)
     val clusters = 99f //too lazy to count clusters algorithmically; 100 seems correct :P
-    val octaves = 6 //again determined by manual examination of data
+    val octaves = 6f //again determined by manual examination of data
     val h = data._1/clusters
     val s = 0.5f
-    val l = (0.8f*(octaves + data._2)/6f) + 0.2f //luminance between 0.2 and 1.0 depending on the octave, with higher octaves being lighter
+    val l = (0.8f*(octaves + data._2)/octaves) + 0.2f //luminance between 0.2 and 1.0 depending on the octave, with higher octaves being lighter
+    if (l > 1) {
+      println("octave is:" + data._2)
+    }
     val (r,g,b) = Functions.hslToRgb(h,s,l)
-    if (r > 255 || g > 255 || b > 255) {
+    /*if (r > 255 || g > 255 || b > 255) {
       println("colorFromData: h: " + h + " s: " + s + " l: " + l)
       println("colorFromData: r: " + r + " g: " + g + " b: " + b)
-    }
+    }*/
     val a = 50
     new MTColor(r,g,b,a)    
   }

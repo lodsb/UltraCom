@@ -129,7 +129,7 @@ object Functions {
       }
   
       if (r > 1 || g > 1 || b > 1) {
-        println("colorFromData: r: " + r + " g: " + g + " b: " + b)
+        println("hslToRbg: r: " + r + " g: " + g + " b: " + b)
       }      
       return ((r * 255).toInt, (g * 255).toInt, (b * 255).toInt)
   }
