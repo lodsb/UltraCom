@@ -22,11 +22,11 @@ import ui._
 object InputChannelItem {
 
   val Radius = Ui.width/150
-  val Alpha = 50
+  val Alpha = 100
   val StrokeWeight = 0  
   
   private val StrokeColor = new MTColor(0, 0, 0, 0)
-  private val BackgroundColor = new MTColor(0, 0, 0, 50)
+  private val BackgroundColor = new MTColor(0, 20, 80, 50)
   private val ForegroundColor = new MTColor(0, 0, 0, 150)
   
   def apply(app: Application, menu: NodeContextMenu, center: Vector3D, channelNumber: Int) = {
@@ -98,13 +98,17 @@ class InputChannelItem(app: Application, menu: NodeContextMenu, center: Vector3D
     val cy = center.getY()    
     g.fill(this.itemBackgroundColor.getR * saturationMultiplier + saturationConstant, this.itemBackgroundColor.getG * saturationMultiplier + saturationConstant, this.itemBackgroundColor.getB * saturationMultiplier + saturationConstant, this.opacity * InputChannelItem.Alpha)
     g.noStroke()
-    g.ellipse(cx, cy, 2*this.radius, 2*this.radius)  
+    g.ellipse(cx, cy, 2*this.radius, 2*this.radius)
     
-    (1 to channelNumber + 1).foreach(item => {
-      val (x,y) = this.positionOnCircle(cx, cy, 0.6f * this.radius, 2*math.Pi.toFloat, item, channelNumber + 1)
-      g.ellipse(x, y, 4, 4)
-    })
-    
+    if (channelNumber == 0) {
+      g.ellipse(cx, cy, 5, 5)
+    }
+    else {
+      (1 to channelNumber + 1).foreach(item => {
+        val (x,y) = this.positionOnCircle(cx, cy, 0.6f * this.radius, 2*math.Pi.toFloat, item, channelNumber + 1)
+        g.ellipse(x, y, 5, 5)
+      })
+    }
     
   }    
 

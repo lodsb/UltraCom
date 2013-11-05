@@ -21,10 +21,10 @@ import ui.util._
 object PlaybackItem {
 
   val Radius = Ui.width/150
-  val StrokeWeight = 0  
+  val StrokeWeight = 0
   
   private val StrokeColor = new MTColor(0, 0, 0, 0)
-  private val BackgroundColor = new MTColor(0, 0, 0, 50)
+  private val BackgroundColor = new MTColor(0, 20, 80, 50)
   private val ForegroundColor = new MTColor(0, 0, 0, 150)
   
   def apply(app: Application, menu: NodeContextMenu, center: Vector3D, nodeType: EndNodeType) = {
