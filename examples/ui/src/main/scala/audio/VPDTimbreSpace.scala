@@ -125,7 +125,7 @@ class VPDTimbreSpace extends TimbreSpace {
       val isPercussive = entry._2._3
       val color = this.colorFromData(entry._2)
       val radius = 7
-      if (isPercussive) this.drawDiamond(image, x, y, color, radius) else this.drawCircle(image, x, y, color, radius) //diamond if percussive, circle if synth
+      if (isPercussive) this.drawDiamond(image, x, y, color, 1.5*radius) else this.drawCircle(image, x, y, color, radius) //diamond if percussive, circle if synth
     })
     Some(image)
   }
@@ -238,8 +238,6 @@ class VPDTimbreSpace extends TimbreSpace {
     val l = (0.8f*(octaves + data._2)/6f) + 0.2f //luminance between 0.2 and 1.0 depending on the octave, with higher octaves being lighter
     val (r,g,b) = Functions.hslToRgb(h,s,l)
     val a = 50
-    println("h: " + h + " s: " + s + " l: " + l)
-    println("r: " + r + " g: " + g + " b: " + b)
     new MTColor(r,g,b,a)    
   }
   
