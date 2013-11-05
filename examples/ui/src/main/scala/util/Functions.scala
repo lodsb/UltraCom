@@ -105,7 +105,7 @@ object Functions {
       var g: Float = 0f
       var b: Float = 0f
   
-      if(s == 0) {
+      if(s == 0f) {
           r = l
           g = l
           b = l // achromatic
@@ -115,17 +115,17 @@ object Functions {
               var t = valT
               if (t < 0) t = t + 1
               if (t > 1) t = t - 1
-              if (t < 1/6) p + (q - p) * 6 * t
-              if (t < 1/2) q
-              if (t < 2/3) p + (q - p) * (2/3 - t) * 6
+              if (t < 1/6f) p + (q - p) * 6 * t
+              if (t < 1/2f) q
+              if (t < 2/3f) p + (q - p) * (2/3f - t) * 6
               p
           }
   
           var q = if (l < 0.5) l * (1 + s) else l + s - l * s
           var p = 2 * l - q
-          r = hue2rgb(p, q, h + 1/3)
+          r = hue2rgb(p, q, h + 1/3f)
           g = hue2rgb(p, q, h)
-          b = hue2rgb(p, q, h - 1/3)
+          b = hue2rgb(p, q, h - 1/3f)
       }
   
       return ((r * 255).toInt, (g * 255).toInt, (b * 255).toInt)
@@ -166,15 +166,15 @@ object Functions {
           s = if (l > 0.5) d / (2 - max - min) else d / (max + min)
             
           if (max == r) {
-            h = (g - b) / d + (if (g < b) 6 else 0)
+            h = (g - b) / d + (if (g < b) 6f else 0)
           }
           else if (max == g) {
-            h = (b - r) / d + 2
+            h = (b - r) / d + 2f
           }
           else if (max == b) {
-            (r - g) / d + 4
+            (r - g) / d + 4f
           }
-          h = h / 6
+          h = h / 6f
       } 
       (h, s, l)
   }
