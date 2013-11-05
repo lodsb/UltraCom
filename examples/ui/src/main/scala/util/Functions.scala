@@ -111,7 +111,7 @@ object Functions {
           b = l // achromatic
       }
       else {
-          def hue2rgb(p: Float, q: Float, valT: Float) = {
+          def hue2rgb(p: Float, q: Float, valT: Float): Float = {
               var t: Float = valT
               if (t < 0) t = t + 1
               if (t > 1) t = t - 1
