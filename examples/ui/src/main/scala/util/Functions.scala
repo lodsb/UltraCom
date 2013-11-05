@@ -128,7 +128,7 @@ object Functions {
           b = hue2rgb(p, q, h - 1/3f)
       }
   
-      println("r: " + r + " g: " + g + " b: " + b)
+      //println("r: " + r + " g: " + g + " b: " + b)
       return ((r * 255).toInt, (g * 255).toInt, (b * 255).toInt)
   }
   
