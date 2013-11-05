@@ -60,11 +60,30 @@ class PlayTimbreDragAction(node: Node) extends BoundedDragAction(Menu.Space, Men
     
     
     private def sendStopAudioEvent() = {
-      Ui.audioInterface ! StopAudioEvent(node.id)       
+      node match {
+        case singleNode: SingleNode => Ui.audioInterface ! StopAudioEvent(node.id)
+        case otherNode => {
+          otherNode.associatedPath.foreach(path => {
+            if (!path.isPlaying) {
+              Ui.audioInterface ! StopAudioEvent(path.id)
+            }
+          })
+        }
+      }         
     }
     
+    
     private def sendPauseAudioEvent() = {
-      Ui.audioInterface ! PauseAudioEvent(node.id)     
+      node match {
+        case singleNode: SingleNode => Ui.audioInterface ! PauseAudioEvent(node.id)
+        case otherNode => {
+          otherNode.associatedPath.foreach(path => {
+            if (!path.isPlaying) {
+              Ui.audioInterface ! PauseAudioEvent(path.id)
+            }
+          })
+        }
+      }      
     }
   	
 }

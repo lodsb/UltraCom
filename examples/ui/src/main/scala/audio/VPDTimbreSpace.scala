@@ -192,6 +192,7 @@ class VPDTimbreSpace extends TimbreSpace {
   * Draws a circle on the specified image at the specified coordinates, with the given color and radius.
   */
   private def drawCircle(image: PImage, xCoord: Int, yCoord: Int, color: MTColor, radius: Int) = {
+    val alpha = 50
     for(x <- xCoord - radius to xCoord + radius) {
       for(y <- yCoord - radius to yCoord + radius) {
         val xDiff = x - xCoord
@@ -201,7 +202,7 @@ class VPDTimbreSpace extends TimbreSpace {
           val r = (imgColor.getR + color.getR)/2
           val g = (imgColor.getG + color.getG)/2
           val b = (imgColor.getB + color.getB)/2
-          val a = (imgColor.getAlpha + color.getAlpha)/2
+          val a = (alpha + color.getAlpha)/2
           val argb = this.colorToArgb(new MTColor(r,g,b,a))
           image.set(x,y,argb)
         }
@@ -214,6 +215,7 @@ class VPDTimbreSpace extends TimbreSpace {
   * Draws a diamond on the specified image at the specified coordinates, with the given color and radius.
   */
   private def drawDiamond(image: PImage, xCoord: Int, yCoord: Int, color: MTColor, floatRadius: Float) = {
+    val alpha = 50
     val radius: Int = floatRadius.toInt
     for(x <- xCoord - radius to xCoord + radius) {
       for(y <- yCoord - radius to yCoord + radius) {
@@ -223,7 +225,7 @@ class VPDTimbreSpace extends TimbreSpace {
           val r = (imgColor.getR + color.getR)/2
           val g = (imgColor.getG + color.getG)/2
           val b = (imgColor.getB + color.getB)/2
-          val a = (imgColor.getAlpha + color.getAlpha)/2
+          val a = (alpha + color.getAlpha)/2
           val argb = this.colorToArgb(new MTColor(r,g,b,a))
           image.set(x,y,argb)
         }
@@ -243,7 +245,7 @@ class VPDTimbreSpace extends TimbreSpace {
       println("colorFromData: h: " + h + " s: " + s + " l: " + l)
       println("colorFromData: r: " + r + " g: " + g + " b: " + b)
     }*/
-    val a = 30
+    val a = 50
     new MTColor(r,g,b,a)    
   }
   
