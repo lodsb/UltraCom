@@ -15,7 +15,7 @@ trait MIDIInputChannels {
    
   def activateInputChannel(index: Int) = {
     for (index <- 0 until this.inputChannelNumber) this.setInputChannel(index, false) //set all channels to false
-    this.midiChannel(index) = true //then activate specified channel
+    this.setInputChannel(index, true) //then activate specified channel
   }
   
   def setInputChannel(index: Int, isActive: Boolean) = {
