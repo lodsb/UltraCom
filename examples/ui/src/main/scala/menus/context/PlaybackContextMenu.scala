@@ -27,7 +27,7 @@ class PlaybackContextMenu(app: Application, node: Node) extends NodeContextMenu(
   //since this is a node context menu and thus a child of the node, we have to calculate positions in local node space
   val nodeVector = node.getCenterPointLocal
   for (index <- 0 until playbackType.size) {
-    val (x,y) = this.positionOnCircle(nodeVector, 2.5f*node.radius, 2*math.Pi.toFloat, index, playbackType.size) //get position around node in local space
+    val (x,y) =  Functions.positionOnCircle(nodeVector.getX, nodeVector.getY, 2.5f*node.radius, 2*math.Pi.toFloat, index, playbackType.size) //get position around node in local space
     //val (x,y) = Functions.transform(node.position, (localTangent.getY, -localTangent.getX), position) //transformation using orhtogonal vector wrt global tangent
     this.addChild(PlaybackItem(app, this, Vec3d(x,y), playbackType(index)))
   } 

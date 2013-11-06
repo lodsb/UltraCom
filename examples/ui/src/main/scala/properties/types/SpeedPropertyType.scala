@@ -17,7 +17,7 @@ object SpeedPropertyType extends PropertyType {
   val Vicinity = 2 * Width
   val PropertyColor = new MTColor(0, 130, 130)  
   val ColorAlpha = 100
-  val ProgressColorAlpha = 130
+  val ProgressColorAlpha = 150
   val HighlightedColorAlpha = 200
   val Range = (5.0f, 500.0f) //range of a speed property bucket; in this context, number of milliseconds
   

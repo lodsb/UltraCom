@@ -92,16 +92,6 @@ abstract class ContextMenu(app: Application) extends MTComponent(app) with Actor
     }
   }
   
- 
-  
-  /**
-  * Returns for a given item (starting with 0) out of a fixed number of items the position on an arc segment with specified center, radius and length (in radians),
-  * with the premise that the items are equidistantly distributed on the arc segment.
-  * Use (2 * math.Pi) if you are aiming for a whole circle.
-  */
-  protected def positionOnCircle(center: Vector3D, radius: Float, arc: Float, item: Int, items: Int) = {
-    Functions.circle((center.getX, center.getY), radius)(math.Pi.toFloat/2 + arc * ((2*item+1).toFloat/(2*items)))
-  }
 
   
   

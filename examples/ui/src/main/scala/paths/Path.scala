@@ -701,13 +701,20 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
       val startNode = this.connections.head.nodes.head
       val (x,y) = startNode.position
       g.noFill()
-      g.strokeWeight(1)
+      g.strokeWeight(2)
       val stepSize = 2*PI.toFloat/this.outputChannelNumber
       (0 until this.outputChannelNumber).foreach(index => {
         val color = AudioOutputChannels.colorFromIndex(index)
         if (this.isOutputChannelOpen(index)) g.stroke(color.getR, color.getG, color.getB, 150) else g.stroke(0, 0, 0, 50)
         g.arc(x, y, 2*startNode.radius*startNode.getScaleFactor - 2, 2*startNode.radius*startNode.getScaleFactor - 2, HALF_PI + index*stepSize, HALF_PI + (index+1)*stepSize)
       })      
+      
+      g.fill(0,20,80,150)
+      g.noStroke()
+      (0 to this.activeInputChannel).foreach(item => {
+        val (px,py) = Functions.positionOnCircle(x, y, startNode.radius*startNode.getScaleFactor, 2*math.Pi.toFloat, item, this.activeInputChannel + 1)
+        g.ellipse(px, py, 7, 7)
+      })
     }
   }   
   
