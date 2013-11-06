@@ -59,7 +59,7 @@ class VPDTimbreSpace extends TimbreSpace {
                   mvpxp: Float, cvpywp: Float, mvpywp: Float, cvpxwp: Float,mvpxwp: Float, fmtp: Float,
                 fmidxp: Float, nap: Float, fxrtp: Float): SynthDef = SynthDef("VPDTestSynthGated"){
 
-    val clag  = "cLag".kr
+    val clag  = "cLag".kr(0.01)
     val gr    = Lag.kr("gate".kr, clag)
     val pwidth= Lag.kr("pulseWidth".kr, clag)
     val cfm   = Lag.kr("cleanFmRingmod".kr, clag)
@@ -140,7 +140,7 @@ class VPDTimbreSpace extends TimbreSpace {
    */
   def updateParameters(synth: Synthesizer, x: Float, y: Float, midiNote: Int,  pitch: Float, volume: Float) : Int =  {
     val xy = convertCoords(x,y)
-    val coordsAndParms = presetBank.parameterRelCoordInterp(xy._1,xy._2,8)
+    val coordsAndParms = presetBank.parameterRelCoordInterp(xy._1,xy._2,1)
     val params = coordsAndParms._2
     
     params.slice(0,16).zipWithIndex.foreach( {
