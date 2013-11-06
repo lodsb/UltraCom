@@ -98,7 +98,7 @@ class InputChannelItem(app: Application, menu: NodeContextMenu, center: Vector3D
     val cy = center.getY()    
     g.fill(this.itemBackgroundColor.getR * saturationMultiplier + saturationConstant, this.itemBackgroundColor.getG * saturationMultiplier + saturationConstant, this.itemBackgroundColor.getB * saturationMultiplier + saturationConstant, this.opacity * InputChannelItem.Alpha)
     g.noStroke()
-    g.rect(cx, cy, 2*this.radius, 2*this.radius, 7)
+    g.rect(cx, cy, 2*this.radius, 2*this.radius, 7f, 7f, 7f, 7f)
     
     if (channelNumber == 0) {
       g.ellipse(cx, cy, 5, 5)
