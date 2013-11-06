@@ -104,6 +104,7 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
         case event: ManipulationEvent => {
           this.synchronized {
             this.updateProperty(event.tool.propertyType, event.value) 
+            if (this.isPlaying) Ui.audioInterface ! PlayAudioEvent(this.id, x, y, this.properties(PitchPropertyType)(), this.properties(VolumePropertyType)(), this.activeInputChannel, this.collectOpenOutputChannels)              
             this.registerTool(event.tool)
           }
         }
@@ -111,12 +112,14 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
         case event: ToggleOutputChannelEvent => {
           this.synchronized {
             this.toggleOutputChannel(event.channel)
+            if (this.isPlaying) Ui.audioInterface ! PlayAudioEvent(this.id, x, y, this.properties(PitchPropertyType)(), this.properties(VolumePropertyType)(), this.activeInputChannel, this.collectOpenOutputChannels)             
           }
         } 
         
         case event: ToggleInputChannelEvent => {
           this.synchronized {
             this.activateInputChannel(event.channel)
+            if (this.isPlaying) Ui.audioInterface ! PlayAudioEvent(this.id, x, y, this.properties(PitchPropertyType)(), this.properties(VolumePropertyType)(), this.activeInputChannel, this.collectOpenOutputChannels)              
           }
         }        
   
@@ -141,6 +144,7 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
           this.synchronized {
             this.timeConnections.foreach(timeConnection => {
               timeConnection.updateConnectionNode()
+              if (this.isPlaying) Ui.audioInterface ! PlayAudioEvent(this.id, x, y, this.properties(PitchPropertyType)(), this.properties(VolumePropertyType)(), this.activeInputChannel, this.collectOpenOutputChannels)              
             })
           }
         }
@@ -197,7 +201,7 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
               val (x, y) = (uiX/Ui.width, uiY/Ui.height)
               Ui.audioInterface ! PlayAudioEvent(this.id, x, y, this.properties(PitchPropertyType)(), this.properties(VolumePropertyType)(), this.activeInputChannel, this.collectOpenOutputChannels)
               this.isPlaying = true
-              this ! UiEvent("PLAY")              
+              this ! UiEvent("PLAY") 
             }
               
             else if (event.name == "STOP_PLAYBACK") {
