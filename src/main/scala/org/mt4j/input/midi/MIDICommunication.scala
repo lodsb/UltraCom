@@ -28,9 +28,15 @@ import org.mt4j.input.{TraitOutputSink, TraitInputSource}
 abstract class AbstractMidiMsg {
 	def channel: Int
 }
+
+abstract class AbstractNoteMsg extends AbstractMidiMsg{
+	def note: Int
+}
+
 case class MidiMsg(channel: Int) extends AbstractMidiMsg
 case class MidiCtrlMsg(channel: Int, num: Int, data: Float) extends AbstractMidiMsg
-case class MidiNoteMsg(channel: Int, note: Int, velocity: Float) extends AbstractMidiMsg
+case class MidiNoteOnMsg(channel: Int, note: Int, velocity: Float) extends AbstractNoteMsg
+case class MidiNoteOffMsg(channel: Int, note: Int) extends AbstractNoteMsg
 
 trait TraitMidiInputSource extends TraitInputSource[MidiMsg, Nothing]
 trait TraitMidiOutputSink extends TraitOutputSink[MidiMsg]
@@ -59,8 +65,16 @@ object MidiCommunication {
 					val note = sm.getData1()
 					val velocity = (sm.getData2().floatValue) / 127.0f
 
-					this.receipt.emit(MidiNoteMsg(ch, note, velocity))
+					this.receipt.emit(MidiNoteOnMsg(ch, note, velocity))
 				}
+
+				case sm: ShortMessage if (sm.getCommand() == ShortMessage.NOTE_OFF) => {
+					val ch = sm.getChannel()
+					val note = sm.getData1()
+
+					this.receipt.emit(MidiNoteOffMsg(ch, note, velocity))
+				}
+	
 			}
 		}
 	}

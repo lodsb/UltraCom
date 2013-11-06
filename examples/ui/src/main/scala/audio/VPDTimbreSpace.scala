@@ -161,7 +161,7 @@ class VPDTimbreSpace extends TimbreSpace {
 
   }
 
-  def noteOff(synth: Synth, midiNote: Int) {
+  def noteOff(synth: Synth) {
 
   }
 

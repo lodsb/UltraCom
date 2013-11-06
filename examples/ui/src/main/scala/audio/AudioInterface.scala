@@ -3,6 +3,7 @@ package ui.audio
 import org.mt4j.util.Color
 
 import scala.actors._
+import org.mt4j.input.midi.MidiCommunication
 
 //import ugen._
 import org.mt4j.output.audio.AudioServer
@@ -28,14 +29,45 @@ object AudioInterface {
 */
 class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
 
+  //////////
+  // MIDI handling
+  /////////
+
+
+  abstract class UINoteEvent
+
+  case class NoteOn(midiChannel: Int, note: Int, velocity: Float) extends UINoteEvent
+  case class NoteOff(midiChannel: Int, note: Int) extends UINoteEvent
+
   /**
    * midi device name
    */
   val midiDeviceName = "foo"
 
+
+  val midiInput = MidiCommunication.createMidiInput(midiDeviceName)
+  if(midiInput.isDefined) {
+
+    midiInput.get.receipt.observe( { x => println(x)
+
+      x match {
+        case MidiNoteOnMsg(ch, note, vel) => this ! NoteOn(ch,note,vel)
+        case MidiNoteOffMsg(ch, note) => this ! NoteOff(ch,note)
+      }
+
+      true;
+    })
+
+  }
+
+
+
+
+
+
+
+
   case class SynthInfo(synth: Synth, midiChan: Int, currentPitch: Int,  relativePitch: Float)
-
-
 
   
   /**
@@ -60,7 +92,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
         val synth = synthInfo.synth
 
         //TODO: also update current frequency @ midihandling
-        val updatedInfo = SynthInfo(synthInfo.synth, synthInfo.midiChan, synthInfo.currentPitch, synthInfo.relativePitch)
+        val updatedInfo = SynthInfo(synthInfo.synth, event.midiChan, synthInfo.currentPitch, synthInfo.relativePitch)
         this.synthMap += (event.callerID -> updatedInfo)
 
         synth.parameters() = ("gate" -> 1)
@@ -135,7 +167,14 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
         }
         case event: ResumeAudioEvent => {
           this.resume(event)
-        }        
+        }
+        case NoteOn(ch, note, velocity) => {
+          this.noteOn(ch, note)
+        }
+        case NoteOff(ch, note) => {
+          this.noteOff(ch, note)
+        }
+
         case otherEvent => {}
       }
     }
@@ -157,7 +196,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
   def noteOff(midiChan: Int, midiNote: Int) {
     synthMap.values.foreach({ x =>
       if(midiChan == x.midiChan) {
-        this.timbreSpace.noteOff(x.synth, midiNote)
+        this.timbreSpace.noteOff(x.synth)
       }
     })
   }

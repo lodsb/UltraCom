@@ -33,6 +33,6 @@ abstract class TimbreSpace {
 
   def noteOn(synth: Synth, note: Int, relativePitch: Float)
 
-  def noteOff(synth: Synth, note: Int)
+  def noteOff(synth: Synth)
   
 }
