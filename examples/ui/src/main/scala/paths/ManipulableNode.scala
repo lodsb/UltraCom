@@ -197,8 +197,8 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
             
             else if (event.name == "START_PLAYBACK") {
               lastTime = System.nanoTime() //init time
-              this.sendPlayEvent()
               this.isPlaying = true
+              this.sendPlayEvent()
               this ! UiEvent("PLAY") 
             }
               
