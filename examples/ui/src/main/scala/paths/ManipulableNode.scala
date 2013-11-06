@@ -166,7 +166,7 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
               this.timeConnections.find(_.startNode == this) match { //start playback of this node only if it is not triggered by another path
                 case Some(connection) => {}
                 case None => {
-                  Ui.audioInterface ! StopAudioEvent(this.id)
+                  Ui.audioInterface ! PauseAudioEvent(this.id)
                   this.isPlaying = false //reset so that toggling will start playback
                   this.playbackPos = 0.0f
                   this ! UiEvent("TOGGLE_PLAYBACK")
@@ -213,7 +213,7 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
                 this.playbackPos = if (passedTime%2000 < 1000) (passedTime%1000)/1000 else 1f - (passedTime%1000)/1000
                 val (uiX, uiY) = (this.position._1, this.position._2)
                 val (x, y) = (uiX/Ui.width, uiY/Ui.height)
-                Ui.audioInterface ! PlayAudioEvent(this.id, x, y, this.properties(PitchPropertyType)(), this.properties(VolumePropertyType)(),this.activeInputChannel, this.collectOpenOutputChannels)
+                //Ui.audioInterface ! PlayAudioEvent(this.id, x, y, this.properties(PitchPropertyType)(), this.properties(VolumePropertyType)(),this.activeInputChannel, this.collectOpenOutputChannels)
                 this ! event
               }              
             }
