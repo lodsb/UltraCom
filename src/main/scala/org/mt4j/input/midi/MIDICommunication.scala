@@ -46,12 +46,21 @@ object MidiCommunication {
 
 		def send(m: MidiMessage, time: Long) {
 			m match {
-				case sm: ShortMessage if (sm.getCommand() == ShortMessage.CONTROL_CHANGE) =>
+				case sm: ShortMessage if (sm.getCommand() == ShortMessage.CONTROL_CHANGE) => {
 					val ch = sm.getChannel()
 					val num = sm.getData1()
 					val v = (sm.getData2().floatValue)/127.0f
 
 					this.receipt.emit(MidiCtrlMsg(ch,num,v))
+				}
+				
+				case sm: ShortMessage if (sm.getCommand() == ShortMessage.NOTE_ON) => {
+					val ch = sm.getChannel()
+					val note = sm.getData1()
+					val velocity = (sm.getData2().floatValue) / 127.0f
+
+					this.receipt.emit(MidiNoteMsg(ch, note, velocity))
+				}
 			}
 		}
 	}
