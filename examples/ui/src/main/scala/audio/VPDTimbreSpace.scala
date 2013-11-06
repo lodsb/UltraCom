@@ -59,12 +59,11 @@ class VPDTimbreSpace extends TimbreSpace {
                   mvpxp: Float, cvpywp: Float, mvpywp: Float, cvpxwp: Float,mvpxwp: Float, fmtp: Float,
                 fmidxp: Float, nap: Float, fxrtp: Float): SynthDef = SynthDef("VPDTestSynthGated"){
 
-    val clag  = "cLag".kr(0.01)
-    val gr    = Lag.kr("gate".kr, clag)
-    val pwidth= Lag.kr("pulseWidth".kr, clag)
+    val clag  = "cLag".kr(5.01)
+    val gr    = "gate".kr
     val cfm   = Lag.kr("cleanFmRingmod".kr, clag)
     val mfm   = Lag.kr("modFreqMult".kr, clag)
-    val freq  = Lag.kr("frequency".kr, clag)
+    val freq  = "frequency".kr
     val aEt   = Lag.kr("ampEnvType".kr, clag)
     val cvpY  = Lag.kr("carrierVPSYType".kr, clag)
     val mvpY  = Lag.kr("modulatorVPSYType".kr, clag)
@@ -78,7 +77,7 @@ class VPDTimbreSpace extends TimbreSpace {
     val fmIdx = Lag.kr("fmModIdx".kr, clag)
     val nA    = Lag.kr("noiseAmount".kr, clag)
     val fxRT  = Lag.kr("fxRouteType".kr, clag)
-    val vol   = Lag.kr("volume".kr, clag)
+    val vol   = "volume".kr
 
     val out = VPDSynthGated.ar(gr,
       cfm, mfm, freq, aEt, cvpY, mvpY, cvpX, mvpX, cvpYW, mvpYW, cvpXW, mvpXW, fmT, fmIdx, nA, fxRT, vol
