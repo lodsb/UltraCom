@@ -47,7 +47,11 @@ class PlayTimbreDragAction(node: Node) extends BoundedDragAction(Menu.Space, Men
       val (x, y) = (uiX/Ui.width.toFloat, uiY/Ui.height.toFloat)
       
       node match {
-        case singleNode: SingleNode => Ui.audioInterface ! PlayAudioEvent(node.id, x, y, singleNode.getPropertyValue(PitchPropertyType), singleNode.getPropertyValue(VolumePropertyType), singleNode.activeInputChannel, channels)
+        case singleNode: SingleNode => {
+          if (!singleNode.isPlaying) {
+            Ui.audioInterface ! PlayAudioEvent(node.id, x, y, singleNode.getPropertyValue(PitchPropertyType), singleNode.getPropertyValue(VolumePropertyType), singleNode.activeInputChannel, channels)
+          }
+        }
         case otherNode => {
           otherNode.associatedPath.foreach(path => {
             if (!path.isPlaying) {
@@ -61,7 +65,11 @@ class PlayTimbreDragAction(node: Node) extends BoundedDragAction(Menu.Space, Men
     
     private def sendStopAudioEvent() = {
       node match {
-        case singleNode: SingleNode => Ui.audioInterface ! StopAudioEvent(node.id)
+        case singleNode: SingleNode => {
+          if (!singleNode.isPlaying) {
+            Ui.audioInterface ! PauseAudioEvent(node.id)
+          }
+        }
         case otherNode => {
           otherNode.associatedPath.foreach(path => {
             if (!path.isPlaying) {
@@ -75,7 +83,11 @@ class PlayTimbreDragAction(node: Node) extends BoundedDragAction(Menu.Space, Men
     
     private def sendPauseAudioEvent() = {
       node match {
-        case singleNode: SingleNode => Ui.audioInterface ! PauseAudioEvent(node.id)
+        case singleNode: SingleNode => {
+          if (!singleNode.isPlaying) {
+            Ui.audioInterface ! PauseAudioEvent(node.id)
+          }
+        }
         case otherNode => {
           otherNode.associatedPath.foreach(path => {
             if (!path.isPlaying) {

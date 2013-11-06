@@ -53,7 +53,7 @@ object ManipulableNode {
 */
 class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) extends Node(app, nodeType, None, center) with Actor with AudioOutputChannels with MIDIInputChannels with ToolRegistry with Persistability {
   private var exists = true
-  private var isPlaying = false
+  protected var isNodePlaying = false
   private var playbackPos = 0.0f
 
   private var timeConnections = List[TimeConnection]()
@@ -171,7 +171,7 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
                 case Some(connection) => {}
                 case None => {
                   Ui.audioInterface ! PauseAudioEvent(this.id)
-                  this.isPlaying = false //reset so that toggling will start playback
+                  this.isNodePlaying = false //reset so that toggling will start playback
                   this.playbackPos = 0.0f
                   this ! UiEvent("TOGGLE_PLAYBACK")
                 }
@@ -179,14 +179,14 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
             }
             
             else if (event.name == "STOP_GLOBAL_PLAYBACK") {
-              this.isPlaying = true
+              this.isNodePlaying = true
               this ! UiEvent("STOP_PLAYBACK")
             }            
             
             else if (event.name == "TOGGLE_PLAYBACK") {
               if (ignoreNextTogglePlayback) ignoreNextTogglePlayback = false
               else {   
-                if (!this.isPlaying) {
+                if (!this.isNodePlaying) {
                   this ! UiEvent("START_PLAYBACK")
                 }
                 else {
@@ -197,19 +197,19 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
             
             else if (event.name == "START_PLAYBACK") {
               lastTime = System.nanoTime() //init time
-              this.isPlaying = true
+              this.isNodePlaying = true
               this.sendPlayEvent()
               this ! UiEvent("PLAY") 
             }
               
             else if (event.name == "STOP_PLAYBACK") {
                 Ui.audioInterface ! PauseAudioEvent(this.id)
-                this.isPlaying = false
+                this.isNodePlaying = false
                 this.playbackPos = 0.0f               
             }
             
             else if (event.name == "PLAY") {
-              if (this.isPlaying) {
+              if (this.isNodePlaying) {
                 currentTime = System.nanoTime()
                 val passedTime = (currentTime - lastTime)/1000000.0f
                 this.playbackPos = if (passedTime%2000 < 1000) (passedTime%1000)/1000 else 1f - (passedTime%1000)/1000
@@ -241,6 +241,14 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
   def playbackPosition: Float = {
     this.playbackPos
   }
+  
+  /**
+  * Whether this node is currently playing.
+  */
+  def isPlaying = {
+    this.isNodePlaying
+  }
+    
   
   /**
   * Updates the specified property.
