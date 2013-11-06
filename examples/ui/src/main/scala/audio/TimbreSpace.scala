@@ -23,15 +23,16 @@ abstract class TimbreSpace {
 
   /**
    * Updates the parameters of the synthesizer associated with this timbre space.
+   * Return Octave
    */
-  def updateParameters(synth: Synthesizer ,x: Float, y: Float, pitch: Float, volume: Float) : Unit
+  def updateParameters(synth: Synthesizer, x: Float, y: Float, midiNote: Int,  pitch: Float, volume: Float) : Int
  
   /**
   * Returns - as an Option - a two-dimensional visual representation of this timbre space, or None if it is not defined.
   */
   def visualRepresentation: Option[PImage]
 
-  def noteOn(synth: Synth, note: Int, relativePitch: Float)
+  def noteOn(synth: Synth, octave: Int, note: Int, relativePitch: Float)
 
   def noteOff(synth: Synth)
   

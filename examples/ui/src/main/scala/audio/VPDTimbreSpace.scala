@@ -138,7 +138,7 @@ class VPDTimbreSpace extends TimbreSpace {
   /**
    * Updates the parameters of the synthesizer associated with this timbre space.
    */
-  def updateParameters(synth: Synthesizer, x: Float, y: Float, pitch: Float, volume: Float) {
+  def updateParameters(synth: Synthesizer, x: Float, y: Float, midiNote: Int,  pitch: Float, volume: Float) : Int =  {
     val xy = convertCoords(x,y)
     val coordsAndParms = presetBank.parameterRelCoordInterp(xy._1,xy._2,8)
     val params = coordsAndParms._2
@@ -151,18 +151,25 @@ class VPDTimbreSpace extends TimbreSpace {
     val octave = params(17).toInt
     
     val relativeNote = this.relativeNoteFromRelativePitch(this.pentatonic, 6, pitch) //at max 3 halftones down and 3 halftones up
-    val frequency = (relativeNote+(12*octave)+60).midicps // middle C + octave + offset via keyboard
-    synth.parameters() = ("frequency" -> frequency)
+    val frequency = (relativeNote+(12*octave)+( midiNote % 12 ) + 60).midicps// middle C + octave + offset via keyboard
+    //synth.parameters() = ("frequency" -> frequency)
     synth.parameters() = ("volume" -> volume)
-    
+
+    octave
   }
 
-  def noteOn(synth: Synth, midiNote: Int, relativePitch: Float) {
+  def noteOn(synth: Synth, octave: Int, midiNote: Int, relativePitch: Float) {
+    val relativeNote = this.relativeNoteFromRelativePitch(this.pentatonic, 6, relativePitch) //at max 3 halftones down and 3 halftones up
 
+    // TODO: midi material based on C5 = 60
+
+    val frequency = (relativeNote+(12*octave)+( midiNote % 12 ) + 60).midicps // middle C + octave + offset via keyboard
+    synth.parameters() = ("frequency" -> frequency)
+    synth.parameters() = ("gate" -> 1.0)
   }
 
   def noteOff(synth: Synth) {
-
+    synth.parameters() = ("gate" -> 0.0)
   }
 
 

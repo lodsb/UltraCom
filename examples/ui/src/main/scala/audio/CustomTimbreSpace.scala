@@ -61,5 +61,9 @@ object CustomTimbreSpace extends TimbreSpace {
   /**
    * Updates the parameters of the synthesizer associated with this timbre space.
    */
-  def updateParameters(synth: Synthesizer, x: Float, y: Float, pitch: Float, volume: Float) = {}
+  def updateParameters(synth: Synthesizer, x: Float, y: Float, midiNote: Int,  pitch: Float, volume: Float)  = { Int.MaxValue}
+
+  def noteOn(synth: Synth, octave: Int, midiNote: Int, relativePitch: Float) {}
+
+  def noteOff(synth: Synth) {}
 }

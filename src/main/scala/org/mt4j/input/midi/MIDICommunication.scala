@@ -33,13 +33,13 @@ abstract class AbstractNoteMsg extends AbstractMidiMsg{
 	def note: Int
 }
 
-case class MidiMsg(channel: Int) extends AbstractMidiMsg
+//case class MidiMsg(channel: Int) extends AbstractMidiMsg
 case class MidiCtrlMsg(channel: Int, num: Int, data: Float) extends AbstractMidiMsg
-case class MidiNoteOnMsg(channel: Int, note: Int, velocity: Float) extends AbstractNoteMsg
-case class MidiNoteOffMsg(channel: Int, note: Int) extends AbstractNoteMsg
+case class MidiNoteOnMsg(channel: Int, note: Int, velocity: Float) extends AbstractMidiMsg
+case class MidiNoteOffMsg(channel: Int, note: Int) extends AbstractMidiMsg
 
-trait TraitMidiInputSource extends TraitInputSource[MidiMsg, Nothing]
-trait TraitMidiOutputSink extends TraitOutputSink[MidiMsg]
+trait TraitMidiInputSource extends TraitInputSource[AbstractMidiMsg, Nothing]
+trait TraitMidiOutputSink extends TraitOutputSink[AbstractMidiMsg]
 
 import javax.sound.midi._
 
@@ -60,6 +60,13 @@ object MidiCommunication {
 					this.receipt.emit(MidiCtrlMsg(ch,num,v))
 				}
 				
+				case sm: ShortMessage if (sm.getCommand() == ShortMessage.NOTE_OFF || (sm.getCommand() == ShortMessage.NOTE_ON &&sm.getData1() == 0)) => {
+					val ch = sm.getChannel()
+					val note = sm.getData1()
+
+					this.receipt.emit(MidiNoteOffMsg(ch, note))
+				}
+
 				case sm: ShortMessage if (sm.getCommand() == ShortMessage.NOTE_ON) => {
 					val ch = sm.getChannel()
 					val note = sm.getData1()
@@ -67,14 +74,6 @@ object MidiCommunication {
 
 					this.receipt.emit(MidiNoteOnMsg(ch, note, velocity))
 				}
-
-				case sm: ShortMessage if (sm.getCommand() == ShortMessage.NOTE_OFF) => {
-					val ch = sm.getChannel()
-					val note = sm.getData1()
-
-					this.receipt.emit(MidiNoteOffMsg(ch, note, velocity))
-				}
-	
 			}
 		}
 	}

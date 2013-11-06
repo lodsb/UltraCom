@@ -438,7 +438,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
                   val arcParameter = this.currentBucket/buckets.toFloat + (this.bucketAccumulator/currentBucketValue)/buckets
                   val pitchBucket = (arcParameter * (con.propertyBuckets(PitchPropertyType) - 1)).toInt
                   val volumeBucket = (arcParameter * (con.propertyBuckets(VolumePropertyType) - 1)).toInt
-                  Ui.audioInterface ! PlayAudioEvent(this.id, currentX, currentY, con.propertyValue(PitchPropertyType, pitchBucket), con.propertyValue(VolumePropertyType, volumeBucket), channels)
+                  Ui.audioInterface ! PlayAudioEvent(this.id, currentX, currentY, con.propertyValue(PitchPropertyType, pitchBucket), con.propertyValue(VolumePropertyType, volumeBucket), activeInputChannel, channels)
                 }
                 /* ################################ */
                 

@@ -47,11 +47,11 @@ class PlayTimbreDragAction(node: Node) extends BoundedDragAction(Menu.Space, Men
       val (x, y) = (uiX/Ui.width.toFloat, uiY/Ui.height.toFloat)
       
       node match {
-        case singleNode: SingleNode => Ui.audioInterface ! PlayAudioEvent(node.id, x, y, singleNode.getPropertyValue(PitchPropertyType), singleNode.getPropertyValue(VolumePropertyType), channels)
+        case singleNode: SingleNode => Ui.audioInterface ! PlayAudioEvent(node.id, x, y, singleNode.getPropertyValue(PitchPropertyType), singleNode.getPropertyValue(VolumePropertyType), singleNode.activeInputChannel, channels)
         case otherNode => {
           otherNode.associatedPath.foreach(path => {
             if (!path.isPlaying) {
-              Ui.audioInterface ! PlayAudioEvent(path.id, x, y, PitchPropertyType.mean, VolumePropertyType.mean, channels)
+              Ui.audioInterface ! PlayAudioEvent(path.id, x, y, PitchPropertyType.mean, VolumePropertyType.mean, path.activeInputChannel, channels)
             }
           })
         }

@@ -68,8 +68,11 @@ object SingleNodeType extends EndNodeType with StartNodeType {
                   }
                   case otherNode => {
                     val (uiX, uiY) = (node.position._1, node.position._2)
-                    val (x, y) = (uiX/Ui.width, uiY/Ui.height)                    
-                    Ui.audioInterface ! PlayAudioEvent(otherNode.id, x, y, PitchPropertyType.mean, VolumePropertyType.mean, Array(0,1,2,3))
+                    val (x, y) = (uiX/Ui.width, uiY/Ui.height)
+
+                    println("!!!!! FALLBACK singlenodetype othernode !!!!!!")
+
+                    //Ui.audioInterface ! PlayAudioEvent(otherNode.id, x, y, PitchPropertyType.mean, VolumePropertyType.mean, Array(0,1,2,3))
                   }
                 }
               }
