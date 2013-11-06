@@ -144,9 +144,8 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
           this.synchronized {
             this.timeConnections.foreach(timeConnection => {
               timeConnection.updateConnectionNode()
-              this.sendPlayEvent()
-              println("moving node")
             })
+            this.sendPlayEvent()
           }
         }
                      

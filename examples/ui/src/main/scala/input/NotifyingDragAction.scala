@@ -25,8 +25,8 @@ class NotifyingDragAction(node: Node) extends BoundedDragAction(Menu.Space, Menu
   	    }
   	    case None => {
   	      node match {
-  	        case singleNode: SingleNode => {println("yes"); singleNode ! NodeMoveEvent(singleNode)} //send move event to self in order to update time connections
-  	        case otherNode => {println("fuck")}
+  	        case singleNode: SingleNode => {singleNode ! NodeMoveEvent(singleNode)} //send move event to self in order to update time connections
+  	        case otherNode => {}
   	      }
   	    }
   	  }
