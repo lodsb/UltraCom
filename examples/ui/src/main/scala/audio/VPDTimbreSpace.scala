@@ -129,7 +129,7 @@ class VPDTimbreSpace extends TimbreSpace {
       val isPercussive = entry._2._3
       val color = this.colorFromData(entry._2)
       val radius = 7
-      if (isPercussive) this.drawDiamond(image, x, y, color, 2*radius) else this.drawCircle(image, x, y, color, radius) //diamond if percussive, circle if synth
+      if (isPercussive) this.drawDiamond(image, x, y, color, 1.5*radius) else this.drawCircle(image, x, y, color, radius) //diamond if percussive, circle if synth
     })
     Some(image)
   }

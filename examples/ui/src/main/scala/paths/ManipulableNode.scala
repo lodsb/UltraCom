@@ -233,7 +233,6 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
     if (this.isPlaying) {
       val (uiX, uiY) = (this.position._1, this.position._2)
       val (x, y) = (uiX/Ui.width, uiY/Ui.height)
-      println("sending play event with x=" + x + ", y=" + y)
       Ui.audioInterface ! PlayAudioEvent(this.id, x, y, this.properties(PitchPropertyType)(), this.properties(VolumePropertyType)(), this.activeInputChannel, this.collectOpenOutputChannels)          
     }
   }
