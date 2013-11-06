@@ -48,7 +48,7 @@ class ToolContextMenu(app: Application, val position: Vector3D) extends ContextM
   
   val propertyType = Array(SpeedPropertyType, VolumePropertyType, PitchPropertyType)
   for (index <- 0 until propertyType.size) { //for each property type
-    val (x,y) = this.positionOnCircle(position, Radius, 2*math.Pi.toFloat, index, propertyType.size) //get position around center in local space
+    val (x,y) = Functions.positionOnCircle(position.getX, position.getY, Radius, 2*math.Pi.toFloat, index, propertyType.size) //get position around center in local space
     val (tx,ty) = Functions.gradient((position.getX, position.getY), (x,y))
     val angle = Functions.gradientToDegrees((ty,tx))
     val toolItem = ToolItem(app, this, Vec3d(x,y), propertyType(index))

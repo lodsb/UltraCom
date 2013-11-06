@@ -56,7 +56,16 @@ object Functions {
   */
   def circle(center: (Float, Float), radius: Float)(radAngle: Float) = {
     (radius*math.cos(radAngle).toFloat + center._1, radius*math.sin(radAngle).toFloat + center._2)
-  }
+  }  
+  
+  /**
+  * Returns for a given item (starting with 0) out of a fixed number of items the position on an arc segment with specified center, radius and length (in radians),
+  * with the premise that the items are equidistantly distributed on the arc segment.
+  * Use (2 * math.Pi) if you are aiming for a whole circle.
+  */
+  def positionOnCircle(x:Float, y: Float, radius: Float, arc: Float, item: Int, items: Int) = {
+    this.circle((x,y), radius)(math.Pi.toFloat/2 + arc * ((2*item+1).toFloat/(2*items)))
+  }  
   
   /**
   * Applies a coordinate transformation to the specified point using a given center and gradient.

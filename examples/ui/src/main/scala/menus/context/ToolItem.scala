@@ -53,12 +53,12 @@ class ToolItem(app: Application, menu: ToolContextMenu, center: Vector3D, val pr
   
   override def itemForegroundColor = {
     val color = this.propertyType.color
-    new MTColor(color.getR, color.getG, color.getB, 150)
+    new MTColor(color.getR, color.getG, color.getB, 200)
   }
   
   override def itemBackgroundColor = {
     val color = this.propertyType.color
-    new MTColor(color.getR, color.getG, color.getB, 50)
+    new MTColor(color.getR, color.getG, color.getB, 100)
   }
   
   override def itemStrokeColor = {

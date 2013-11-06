@@ -265,7 +265,7 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
       super.drawComponent(g)
       this.properties.values.foreach(_.draw(g))
       g.noFill()
-      g.strokeWeight(1)      
+      g.strokeWeight(2)      
       val (x,y) = (this.getCenterPointLocal.getX, this.getCenterPointLocal.getY)
       
       val stepSize = 2*PI.toFloat/this.outputChannelNumber
@@ -274,6 +274,14 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
         if (this.isOutputChannelOpen(index)) g.stroke(color.getR, color.getG, color.getB, 150) else g.stroke(0, 0, 0, 50)
         g.arc(x, y, 2*this.radius - 2, 2*this.radius - 2, HALF_PI + index*stepSize, HALF_PI + (index+1)*stepSize)
       })
+      
+      g.fill(0,20,80,150)
+      g.noStroke()
+      (0 to this.activeInputChannel).foreach(item => {
+        val (px,py) = Functions.positionOnCircle(x, y, this.radius, 2*math.Pi.toFloat, item, this.activeInputChannel + 1)
+        g.ellipse(px, py, 7, 7)
+      })
+      
       
     }
   }  

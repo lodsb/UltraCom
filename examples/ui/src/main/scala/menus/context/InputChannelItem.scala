@@ -6,6 +6,8 @@ import org.mt4j.util.MTColor
 import org.mt4j.util.math.Vector3D
 import org.mt4j.util.math.Vertex
 import org.mt4j.types.{Vec3d}
+import org.mt4j.components.bounds.BoundsZPlaneRectangle
+import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle
 
 import processing.core.PGraphics
 
@@ -22,7 +24,7 @@ import ui._
 object InputChannelItem {
 
   val Radius = Ui.width/150
-  val Alpha = 100
+  val Alpha = 130
   val StrokeWeight = 0  
   
   private val StrokeColor = new MTColor(0, 0, 0, 0)
@@ -38,6 +40,10 @@ object InputChannelItem {
 
 class InputChannelItem(app: Application, menu: NodeContextMenu, center: Vector3D, val channelNumber: Int) extends MenuItem(app, menu, center, InputChannelItem.Radius) {
 
+  this.setBounds(new BoundsZPlaneRectangle(
+    new MTRoundRectangle(app, center.getX - InputChannelItem.Radius, center.getY - InputChannelItem.Radius, 0, 2*InputChannelItem.Radius, 2*InputChannelItem.Radius, 5, 5)
+  ))
+  
   override def clicked() = {
     menu.node.associatedPath match {
       case Some(path) => {
@@ -98,28 +104,19 @@ class InputChannelItem(app: Application, menu: NodeContextMenu, center: Vector3D
     val cy = center.getY()    
     g.fill(this.itemBackgroundColor.getR * saturationMultiplier + saturationConstant, this.itemBackgroundColor.getG * saturationMultiplier + saturationConstant, this.itemBackgroundColor.getB * saturationMultiplier + saturationConstant, this.opacity * InputChannelItem.Alpha)
     g.noStroke()
-    g.rect(cx - this.radius, cy - this.radius, 2*this.radius, 2*this.radius, 7f, 7f, 7f, 7f)
+    g.rect(cx - this.radius, cy  - this.radius, 2*this.radius, 2*this.radius, 7f, 7f, 7f, 7f)
     
     if (channelNumber == 0) {
       g.ellipse(cx, cy, 5, 5)
     }
     else {
       (1 to channelNumber + 1).foreach(item => {
-        val (x,y) = this.positionOnCircle(cx, cy, 0.6f * this.radius, 2*math.Pi.toFloat, item, channelNumber + 1)
+        val (x,y) = Functions.positionOnCircle(cx, cy, 0.6f * this.radius, 2*math.Pi.toFloat, item, channelNumber + 1)
         g.ellipse(x, y, 5, 5)
       })
     }
-    
-  }    
 
-  /**
-  * Returns for a given item (starting with 0) out of a fixed number of items the position on an arc segment with specified center, radius and length (in radians),
-  * with the premise that the items are equidistantly distributed on the arc segment.
-  * Use (2 * math.Pi) if you are aiming for a whole circle.
-  */
-  protected def positionOnCircle(x:Float, y: Float, radius: Float, arc: Float, item: Int, items: Int) = {
-    Functions.circle((x,y), radius)(math.Pi.toFloat/2 + arc * ((2*item+1).toFloat/(2*items)))
-  }
+  }   
 
   
 }

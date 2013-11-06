@@ -17,8 +17,8 @@ object VolumePropertyType extends PropertyType {
   val Vicinity = 2 * Width
   val PropertyColor = new MTColor(0, 130, 0)  
   val ColorAlpha = 100
-  val ProgressColorAlpha = 130 
-  val HighlightedColorAlpha = 160 //alpha value for path segments wich are highlighted  
+  val ProgressColorAlpha = 150 
+  val HighlightedColorAlpha = 200 //alpha value for path segments wich are highlighted  
   val Range = (0.0f, 1.0f) //range of a property bucket
   
   protected val SymbolWidth = Tool.Width/4.0f //width of volume control
