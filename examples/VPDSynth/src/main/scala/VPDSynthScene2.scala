@@ -239,7 +239,7 @@ class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
 
     ellipse.setPositionGlobal(ellipsePos)
 
-    params.slice(0,15).zipWithIndex.foreach( {
+    params.slice(0,16).zipWithIndex.foreach( {
       x =>
       mySynth.parameters() = (parameterMapping(x._2)._1 -> x._1)
 
@@ -308,6 +308,7 @@ class VPDSynthScene2(app: Application, name: String) extends Scene(app,name) {
       val frequency = (m.get+(12*currentOctave)+60).midicps // middle C + octave + offset via keyboard
 
       mySynth.parameters() = ("frequency" -> frequency)
+	mySynth.parameters() = ("volume" -> 1.0)
     }
 
 

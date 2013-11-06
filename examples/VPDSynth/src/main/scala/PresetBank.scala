@@ -36,6 +36,7 @@ class PresetBank(csvFilename: String, mappingJitter:Float = 0.0f) {
     val seq:Iterator[((Float, Float), (Array[Float], Int))] = lines.map({
       l =>
         val values = l.split(",").map(_.toFloat)
+
         val xy = ( scala.math.max(values(0)+generateJitter(jitter),-1.0f)
           , scala.math.max(values(1) + generateJitter(jitter),-1.0f) )
 
