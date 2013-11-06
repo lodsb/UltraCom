@@ -11,17 +11,18 @@ object MIDIInputChannels {
 trait MIDIInputChannels {
 
   protected var midiChannel = new Array[Boolean](4) //initializing 4 channels for midi input
-  for (index <- 0 until this.inputChannelNumber) this.setInputChannel(index, true) //set channels to true 
+  this.setInputChannel(0, true) //set first channel to true
    
-  def toggleInputChannel(index: Int) = {
-    this.midiChannel(index) = !this.midiChannel(index)
+  def activateInputChannel(index: Int) = {
+    for (index <- 0 until this.inputChannelNumber) this.setInputChannel(index, false) //set all channels to false
+    this.midiChannel(index) = true //then activate specified channel
   }
   
-  def setInputChannel(index: Int, isOpen: Boolean) = {
-    this.midiChannel(index) = isOpen
+  def setInputChannel(index: Int, isActive: Boolean) = {
+    this.midiChannel(index) = isActive
   }
   
-  def isInputChannelOpen(index: Int) = {
+  def isInputChannelActive(index: Int) = {
     this.midiChannel(index)
   }
   

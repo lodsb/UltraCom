@@ -197,10 +197,10 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
             this.toggleOutputChannel(event.channel)
           }
         }
-        
+                                            
         case event: ToggleInputChannelEvent => {
           this.synchronized {
-            this.toggleInputChannel(event.channel)
+            this.activateInputChannel(event.channel)
           }
         }        
         

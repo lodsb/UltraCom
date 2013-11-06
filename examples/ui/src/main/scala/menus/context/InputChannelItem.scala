@@ -79,12 +79,12 @@ class InputChannelItem(app: Application, menu: NodeContextMenu, center: Vector3D
   override def drawComponent(g: PGraphics) = {
     val channelOn = menu.node.associatedPath match {
       case Some(path) => {
-        path.isInputChannelOpen(channelNumber)
+        path.isInputChannelActive(channelNumber)
       }
       case None => {
         menu.node match {
           case withChannels: MIDIInputChannels => {
-            withChannels.isInputChannelOpen(channelNumber)
+            withChannels.isInputChannelActive(channelNumber)
           }         
           case somethingElse => false
         }
