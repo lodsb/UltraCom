@@ -17,7 +17,7 @@ import ui.properties.types._
 import ui.menus.main._
 import ui._
 
-class PlayTimbreDragAction(node: Node) extends BoundedDragAction(Menu.Space, Menu.Space, Ui.width - Menu.Space, Ui.height - Menu.Space) {
+class PlayTimbreDragAction(node: Node) extends NotifyingDragAction(node) {
   
   	override def processGestureEvent(gestureEvent: MTGestureEvent): Boolean = {  
   	  val returnValue = super.processGestureEvent(gestureEvent)
