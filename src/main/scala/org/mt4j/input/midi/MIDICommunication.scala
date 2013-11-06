@@ -60,7 +60,7 @@ object MidiCommunication {
 					this.receipt.emit(MidiCtrlMsg(ch,num,v))
 				}
 				
-				case sm: ShortMessage if (sm.getCommand() == ShortMessage.NOTE_OFF || (sm.getCommand() == ShortMessage.NOTE_ON &&sm.getData1() == 0)) => {
+				case sm: ShortMessage if (sm.getCommand() == ShortMessage.NOTE_OFF) => {
 					val ch = sm.getChannel()
 					val note = sm.getData1()
 
@@ -72,7 +72,12 @@ object MidiCommunication {
 					val note = sm.getData1()
 					val velocity = (sm.getData2().floatValue) / 127.0f
 
-					this.receipt.emit(MidiNoteOnMsg(ch, note, velocity))
+					// note off via velocity = 0
+					if(velocity == 0.0f) {
+						this.receipt.emit(MidiNoteOffMsg(ch, note))
+					} else {
+						this.receipt.emit(MidiNoteOnMsg(ch, note, velocity))
+					}
 				}
 			}
 		}
