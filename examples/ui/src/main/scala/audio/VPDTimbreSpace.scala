@@ -156,7 +156,16 @@ class VPDTimbreSpace extends TimbreSpace {
     synth.parameters() = ("volume" -> volume)
     
   }
-  
+
+  def noteOn(synth: Synth, midiNote: Int, relativePitch: Float) {
+
+  }
+
+  def noteOff(synth: Synth, midiNote: Int) {
+
+  }
+
+
   /**
   * Returns for a relative pitch value between 0 and 1 the corresponding relative note in halftones,
   * that is, the number of halftones that is to be added or subtracted.

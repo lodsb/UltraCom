@@ -30,6 +30,7 @@ abstract class AbstractMidiMsg {
 }
 case class MidiMsg(channel: Int) extends AbstractMidiMsg
 case class MidiCtrlMsg(channel: Int, num: Int, data: Float) extends AbstractMidiMsg
+case class MidiNoteMsg(channel: Int, note: Int, velocity: Float) extends AbstractMidiMsg
 
 trait TraitMidiInputSource extends TraitInputSource[MidiMsg, Nothing]
 trait TraitMidiOutputSink extends TraitOutputSink[MidiMsg]

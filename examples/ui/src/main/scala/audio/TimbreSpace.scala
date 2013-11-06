@@ -30,5 +30,9 @@ abstract class TimbreSpace {
   * Returns - as an Option - a two-dimensional visual representation of this timbre space, or None if it is not defined.
   */
   def visualRepresentation: Option[PImage]
+
+  def noteOn(synth: Synth, note: Int, relativePitch: Float)
+
+  def noteOff(synth: Synth, note: Int)
   
 }

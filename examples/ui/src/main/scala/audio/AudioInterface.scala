@@ -27,6 +27,16 @@ object AudioInterface {
 * 
 */
 class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
+
+  /**
+   * midi device name
+   */
+  val midiDeviceName = "foo"
+
+  case class SynthInfo(synth: Synth, midiChan: Int, currentPitch: Int,  relativePitch: Float)
+
+
+
   
   /**
   * The number of output channels.
@@ -36,7 +46,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
   /**
   * Maps caller ids to synths.
   */
-  var synthMap = Map[Int, Synth]()
+  var synthMap = Map[Int, SynthInfo]()
   
   this.start
   
@@ -45,16 +55,27 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
       //println("in play")
       if (this.synthMap.contains(event.callerID)) {
         //println("updating synth with caller id " + event.callerID)
-        val synth = this.synthMap(event.callerID)
+        val synthInfo = this.synthMap(event.callerID)
+
+        val synth = synthInfo.synth
+
+        //TODO: also update current frequency @ midihandling
+        val updatedInfo = SynthInfo(synthInfo.synth, synthInfo.midiChan, synthInfo.currentPitch, synthInfo.relativePitch)
+        this.synthMap += (event.callerID -> updatedInfo)
+
         synth.parameters() = ("gate" -> 1)
         this.updateParameters(synth, event)
       }
       else {
         val synthDef = this.timbreSpace.synthDefinition(event.x, event.y, event.pitch, event.volume)
         println("starting synth with caller id " + event)
-        this.synthMap += (event.callerID -> synthDef.play())
-        val mySynth = this.synthMap(event.callerID)
-        mySynth.parameters.observe{x => println(x); true}
+
+        val synth = synthDef.play()
+        val synthInfo = SynthInfo(synth, 0, 60, event.pitch)
+
+        this.synthMap += (event.callerID -> synthInfo)
+
+        synth.parameters.observe{x => println(x); true}
         Thread.sleep(50)
         /* 
         the sleep call is actually a workaround for cases where play and stop are called in rapid succession;
@@ -70,7 +91,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
   def pause(event: PauseAudioEvent) = {
     this.synchronized {
       if (this.synthMap.contains(event.callerID)) {
-        val synth = this.synthMap(event.callerID)
+        val synth = this.synthMap(event.callerID).synth
         synth.parameters() = ("gate" -> 0)
       }    
       else {println("synth does not exist")}
@@ -80,7 +101,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
   def resume(event: ResumeAudioEvent) = {
     this.synchronized {
       if (this.synthMap.contains(event.callerID)) {
-        val synth = this.synthMap(event.callerID)
+        val synth = this.synthMap(event.callerID).synth
         synth.parameters() = ("gate" -> 1)
       }    
       else {println("synth does not exist")}
@@ -90,7 +111,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
   def stop(event: StopAudioEvent) = {
     this.synchronized {
       if (this.synthMap.contains(event.callerID)) {
-        val synth = this.synthMap(event.callerID)
+        val synth = this.synthMap(event.callerID).synth
         this.synthMap -= event.callerID
         synth.free 
       }    
@@ -124,5 +145,22 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
   def updateParameters(synth: Synth, event: PlayAudioEvent) = {
     this.timbreSpace.updateParameters(synth, event.x, event.y, event.pitch, event.volume)
   }
-                                               
+
+  def noteOn(midiChan: Int, midiNote: Int) {
+    synthMap.values.foreach({ x =>
+      if(midiChan == x.midiChan) {
+        this.timbreSpace.noteOn(x.synth, midiNote, x.relativePitch)
+      }
+    })
+  }
+
+  def noteOff(midiChan: Int, midiNote: Int) {
+    synthMap.values.foreach({ x =>
+      if(midiChan == x.midiChan) {
+        this.timbreSpace.noteOff(x.synth, midiNote)
+      }
+    })
+  }
+
+
 }
