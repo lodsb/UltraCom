@@ -104,7 +104,7 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
         case event: ManipulationEvent => {
           this.synchronized {
             this.updateProperty(event.tool.propertyType, event.value) 
-            if (this.isPlaying) Ui.audioInterface ! PlayAudioEvent(this.id, x, y, this.properties(PitchPropertyType)(), this.properties(VolumePropertyType)(), this.activeInputChannel, this.collectOpenOutputChannels)              
+            this.sendPlayEvent()
             this.registerTool(event.tool)
           }
         }
@@ -112,14 +112,14 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
         case event: ToggleOutputChannelEvent => {
           this.synchronized {
             this.toggleOutputChannel(event.channel)
-            if (this.isPlaying) Ui.audioInterface ! PlayAudioEvent(this.id, x, y, this.properties(PitchPropertyType)(), this.properties(VolumePropertyType)(), this.activeInputChannel, this.collectOpenOutputChannels)             
+            this.sendPlayEvent()
           }
         } 
         
         case event: ToggleInputChannelEvent => {
           this.synchronized {
             this.activateInputChannel(event.channel)
-            if (this.isPlaying) Ui.audioInterface ! PlayAudioEvent(this.id, x, y, this.properties(PitchPropertyType)(), this.properties(VolumePropertyType)(), this.activeInputChannel, this.collectOpenOutputChannels)              
+            this.sendPlayEvent()
           }
         }        
   
@@ -144,7 +144,7 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
           this.synchronized {
             this.timeConnections.foreach(timeConnection => {
               timeConnection.updateConnectionNode()
-              if (this.isPlaying) Ui.audioInterface ! PlayAudioEvent(this.id, x, y, this.properties(PitchPropertyType)(), this.properties(VolumePropertyType)(), this.activeInputChannel, this.collectOpenOutputChannels)              
+              this.sendPlayEvent()
             })
           }
         }
@@ -197,9 +197,7 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
             
             else if (event.name == "START_PLAYBACK") {
               lastTime = System.nanoTime() //init time
-              val (uiX, uiY) = (this.position._1, this.position._2)
-              val (x, y) = (uiX/Ui.width, uiY/Ui.height)
-              Ui.audioInterface ! PlayAudioEvent(this.id, x, y, this.properties(PitchPropertyType)(), this.properties(VolumePropertyType)(), this.activeInputChannel, this.collectOpenOutputChannels)
+              this.sendPlayEvent()
               this.isPlaying = true
               this ! UiEvent("PLAY") 
             }
@@ -215,8 +213,8 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
                 currentTime = System.nanoTime()
                 val passedTime = (currentTime - lastTime)/1000000.0f
                 this.playbackPos = if (passedTime%2000 < 1000) (passedTime%1000)/1000 else 1f - (passedTime%1000)/1000
-                val (uiX, uiY) = (this.position._1, this.position._2)
-                val (x, y) = (uiX/Ui.width, uiY/Ui.height)
+                //val (uiX, uiY) = (this.position._1, this.position._2)
+                //val (x, y) = (uiX/Ui.width, uiY/Ui.height)
                 //Ui.audioInterface ! PlayAudioEvent(this.id, x, y, this.properties(PitchPropertyType)(), this.properties(VolumePropertyType)(),this.activeInputChannel, this.collectOpenOutputChannels)
                 this ! event
               }              
@@ -229,6 +227,16 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
       Thread.sleep(5)
     }
   } 
+  
+  
+  def sendPlayEvent() = {
+    if (this.isPlaying) {
+      val (uiX, uiY) = (this.position._1, this.position._2)
+      val (x, y) = (uiX/Ui.width, uiY/Ui.height)
+      Ui.audioInterface ! PlayAudioEvent(this.id, x, y, this.properties(PitchPropertyType)(), this.properties(VolumePropertyType)(), this.activeInputChannel, this.collectOpenOutputChannels)          
+    }
+  }
+  
   
   def playbackPosition: Float = {
     this.playbackPos
