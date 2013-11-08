@@ -309,8 +309,8 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
   
   private def removeTimeConnections() = {    
     this.timeConnections.foreach(timeConnection => {
-      this.timeConnections = this.timeConnections.filter(_ != timeConnection) //and remove them from this path
-      timeConnection.timeNode.associatedPath.foreach(_ ! NodeDeletionEvent(timeConnection.connectionNode)) //propagate to other path if exists
+      this.timeConnections = this.timeConnections.filter(_ != timeConnection) //and remove them from this node
+      timeConnection.timeNode.associatedPath.foreach(_ ! NodeDeletionEvent(timeConnection.connectionNode)) //propagate to path if exists
       Ui -= timeConnection.connectionNode //remove the connection node as well
       Ui -= timeConnection
     })      

@@ -842,6 +842,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
     val newConnection = this.defaultConnectionFactory(app, lastNode, newNode) //create a new connection between last node and specified node
     lastNode.nodeType = AnchorNodeType //set node types
     this.connections = this.connections :+ newConnection
+    this.removeTimeConnectionsToStartNode(node) 
     Ui -= node
     Ui += newNode
     Ui.getCurrentScene.registerPreDrawAction(new AddNodeActionThreadSafe(newConnection, this))
@@ -857,6 +858,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
     val newConnection = this.defaultConnectionFactory(app, newNode, firstNode) //create a new connection between first node and specified node
     firstNode.nodeType = AnchorNodeType //set node types
     this.connections = newConnection +: this.connections
+    this.removeTimeConnectionsToStartNode(node)     
     this.currentConnection = if (this.playbackState != Stopped) this.currentConnection + 1 else 0
     Ui -= node
     Ui += newNode
