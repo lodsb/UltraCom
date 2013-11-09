@@ -273,6 +273,7 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
   */
   override def destroy() = {
     this.exists = false 
+    this.removeTimeConnections()
     Ui.audioInterface ! StopAudioEvent(this.id)
     super.destroy()
   }  
