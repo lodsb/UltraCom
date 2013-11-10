@@ -31,22 +31,26 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
    * @param howMany Int How many controllers should be initialized
    */
   def initializeControllers(howMany: Int) {
+
+    // quit if there are no controllers or the number of controllers didn't change
     if (containers != null && containers.length == howMany) {
       return
     }
 
     // save the heights from the first and middle controller for re-use later
-    var height1 = null.asInstanceOf[Float]
-    var height2 = null.asInstanceOf[Float]
+    // instantiation
+    val oldHeights = new ArrayBuffer[Float]()
 
     if (containers != null) {
-      height1 = containers(0).controller.height()
-      height2 = containers(containers.length/2).controller.height()
-      // remove all children / old controllers
-      containers.foreach( container =>
+      containers.foreach( container => {
+        // saving old heights for later use
+        oldHeights += container.controller.getHeight
+        // remove all children / old controllers
         container.removeFromParent()
-      )
+      })
     }
+
+    // remove all left old controllers
     removeAllChildren()
 
     // create new controllers and add them
@@ -68,9 +72,11 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
     }
     containers = tmpContainers
 
-    if (height1 != null) { println("height1="+height1)
-      containers(0).controller.height() = height1
-      containers(containers.length/2).controller.height() = height2
+    if (0 < oldHeights.length && 0 < containers.length) {
+      for (i <- 0 to containers.length-1) {
+        val j = ((oldHeights.length.toFloat / containers.length) * i).toInt
+        containers(i).controller.height() = oldHeights(j)
+      }
     }
   }
 

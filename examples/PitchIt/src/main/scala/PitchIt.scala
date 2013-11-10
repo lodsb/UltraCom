@@ -68,10 +68,11 @@ class PitchItScene extends Scene(app, "PitchIt Scene") {
 	showTracer(show = true)
 
   // add a ControllerCanvas, which contains the sound-controller
-  val controllerCanvas = new ControllerCanvas(300f, 100f, 16)
+  val controllerCanvas = new ControllerCanvas(300f, 200f, 16)
   app.scene.canvas() += controllerCanvas
   controllerCanvas.setPositionGlobal(Vec3d(app.width/2f, app.height/2f))
 
+  // add slider
   val slider = Slider(2f, 16f, height=20f)
   slider.value.map { x =>
     val z = math.round(x)
@@ -80,7 +81,7 @@ class PitchItScene extends Scene(app, "PitchIt Scene") {
     }
   }
   app.scene.canvas() += slider
-  slider.globalPosition() = app.center.getAdded(Vec3d(0f,80f))
+  slider.globalPosition() = app.center.getAdded(Vec3d(0f,120f))
 
   // start Metronome
   Metronome() ! "start"
