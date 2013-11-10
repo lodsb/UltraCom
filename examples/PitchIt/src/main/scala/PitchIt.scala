@@ -28,6 +28,7 @@ import org.mt4j.components.ComponentImplicits._
 import org.mt4j.util.MTColor
 import scala.collection.mutable.ArrayBuffer
 import org.mt4j.components.visibleComponents.widgets.Slider
+import org.mt4j.output.audio.AudioServer
 
 
 object app extends Application {
@@ -63,6 +64,9 @@ class PitchItScene extends Scene(app, "PitchIt Scene") {
 
   // setting scene for global access
   app.scene = this
+
+  // start AudioServer
+  AudioServer.start(synchronously = true)
 
 	// Show touches
 	showTracer(show = true)

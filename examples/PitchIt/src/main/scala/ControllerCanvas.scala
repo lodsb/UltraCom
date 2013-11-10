@@ -141,7 +141,7 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
     }
     activeController = containers(i-1).controller
     activeController.triggerActive
-    activeController.height()
+    (-2f) * activeController.getHeight / height().asInstanceOf[Float]
   }
 
 }
