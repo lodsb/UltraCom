@@ -22,8 +22,8 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
   var containers = null.asInstanceOf[ArrayBuffer[ControllerContainer]]
   var activeController = null.asInstanceOf[Controller]
 
-  initializeControllers(howMany)
   initializeBaseline
+  initializeControllers(howMany)
 
 
   /**

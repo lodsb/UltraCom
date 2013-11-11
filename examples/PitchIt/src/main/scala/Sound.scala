@@ -43,7 +43,63 @@ object Sound {
       val secondNeg: GE = (tone sig_== -6) * 246.9
       val negNeg: GE =   (tone sig_== -7) * 220.0
 
-      (primePos + secondPos + thirdPos + fourthPos + fifthPos + sixthPos + seventhPos + eigthPos + seventhNeg + sixthNeg + fifthNeg + fourthNeg + thirdNeg + secondNeg + negNeg)
+      (
+        primePos
+          + secondPos
+          + thirdPos
+          + fourthPos
+          + fifthPos
+          + sixthPos
+          + seventhPos
+          + eigthPos
+          + seventhNeg
+          + sixthNeg
+          + fifthNeg
+          + fourthNeg
+          + thirdNeg
+          + secondNeg
+          + negNeg
+       )
+
+    }
+
+    def pitch2Pentatone = {
+      val tone = pitch.signum * (pitch.abs * 6).floor
+
+      val primePos: GE =   (tone sig_== 0) * 440.0
+      //val secondPos: GE =  (tone sig_== 1) * 493.9
+      val thirdPos: GE =   (tone sig_== 1) * 523.2
+      val fourthPos: GE =  (tone sig_== 2) * 587.3
+      val fifthPos: GE =   (tone sig_== 3) * 659.2
+      //val sixthPos: GE =   (tone sig_== 5) * 698.4
+      val seventhPos: GE = (tone sig_== 4) * 784.0
+      val eigthPos: GE =   (tone sig_== 5) * 880.0
+
+      val seventhNeg: GE =  (tone sig_== -1) * 392.0
+      //val sixthNeg: GE =   (tone sig_== -2) * 349.2
+      val fifthNeg: GE =  (tone sig_== -2) * 329.6
+      val fourthNeg: GE =   (tone sig_== -3) * 293.6
+      val thirdNeg: GE =   (tone sig_== -4) * 261.6
+      //val secondNeg: GE = (tone sig_== -6) * 246.9
+      val negNeg: GE =   (tone sig_== -5) * 220.0
+
+      (
+        primePos
+          //+ secondPos
+          + thirdPos
+          + fourthPos
+          + fifthPos
+          //+ sixthPos
+          + seventhPos
+          + eigthPos
+          + seventhNeg
+          //+ sixthNeg
+          + fifthNeg
+          + fourthNeg
+          + thirdNeg
+          //+ secondNeg
+          + negNeg
+        )
 
     }
 
@@ -53,7 +109,7 @@ object Sound {
 
     // tone
     val dec = 1.35
-    var bing = volume * SinOsc.ar(pitch2Tone).madd(0.5,0) * EnvGen.kr(Env.perc(attack=0.01, release=dec), Changed1.kr(gate), doneAction=1)
+    var bing = volume * SinOsc.ar(pitch2Pentatone).madd(0.5,0) * EnvGen.kr(Env.perc(attack=0.01, release=dec), Changed1.kr(gate), doneAction=1)
     bing = Pan2.ar(SplayAz.ar(2, bing/0.325))
 
     bing = Limiter.ar(0.5f*bing)
