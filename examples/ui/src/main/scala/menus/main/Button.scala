@@ -27,10 +27,10 @@ import ui._
 object Button {
   
   val Radius = Ui.width/100
-  private val StrokeColor = new MTColor(0, 0, 0, 100)
-  private val BackgroundColor = new MTColor(0, 20, 80, 10)
+  private val StrokeColor = new MTColor(0, 0, 0, 0)
+  private val BackgroundColor = new MTColor(0, 20, 80, 50)
   private val ForegroundColor = new MTColor(0, 0, 0, 200)
-  private val TapColor = new MTColor(0, 0, 0, 80)
+  private val TapColor = new MTColor(0, 20, 80, 100)
   val StrokeWeight = 1
   
 }
