@@ -43,10 +43,9 @@ class Metronome extends Actor {
   // here takes place the iteration through all controllers for each beat
   def startLoopIteration {
     while (running) {
-      counter++
-      val all = app.allControllerCanvas
-      all.foreach( controllerCanvas =>
-        controllerCanvas.setStep(counter())
+      counter++;
+      app.allControllerCanvas.foreach( controllerCanvas =>
+        Sound().play(controllerCanvas.setStep(counter()))
       )
       Thread.sleep(duration)
     }

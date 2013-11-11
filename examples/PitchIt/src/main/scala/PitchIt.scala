@@ -28,6 +28,7 @@ import org.mt4j.components.ComponentImplicits._
 import org.mt4j.util.MTColor
 import scala.collection.mutable.ArrayBuffer
 import org.mt4j.components.visibleComponents.widgets.Slider
+import org.mt4j.output.audio.AudioServer
 
 
 object app extends Application {
@@ -64,14 +65,18 @@ class PitchItScene extends Scene(app, "PitchIt Scene") {
   // setting scene for global access
   app.scene = this
 
+  // start AudioServer
+  AudioServer.start(synchronously = true)
+
 	// Show touches
 	showTracer(show = true)
 
   // add a ControllerCanvas, which contains the sound-controller
-  val controllerCanvas = new ControllerCanvas(300f, 100f, 16)
+  val controllerCanvas = new ControllerCanvas(300f, 200f, 16)
   app.scene.canvas() += controllerCanvas
   controllerCanvas.setPositionGlobal(Vec3d(app.width/2f, app.height/2f))
 
+  // add slider
   val slider = Slider(2f, 16f, height=20f)
   slider.value.map { x =>
     val z = math.round(x)
@@ -80,7 +85,7 @@ class PitchItScene extends Scene(app, "PitchIt Scene") {
     }
   }
   app.scene.canvas() += slider
-  slider.globalPosition() = app.center.getAdded(Vec3d(0f,80f))
+  slider.globalPosition() = app.center.getAdded(Vec3d(0f,120f))
 
   // start Metronome
   Metronome() ! "start"
