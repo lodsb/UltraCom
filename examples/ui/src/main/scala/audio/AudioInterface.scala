@@ -42,7 +42,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
   /**
    * midi device name
    */
-  val midiDeviceName = "Keystation Mini 32, USB MIDI, Keystation Mini 32"
+  val midiDeviceName = "Renoise MIDI Input"
 
 
   val midiInput = MidiCommunication.createMidiInput(midiDeviceName)
@@ -59,6 +59,19 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
     })
 
   }
+
+  val myThread = new Thread(new Runnable {
+    def run() {
+      while (true) {
+       Thread.sleep(300)
+       AudioInterface.this ! NoteOn(1, 66, 127)
+       Thread.sleep(500)
+       AudioInterface.this ! NoteOff(1, 66)
+      }
+    }
+  })
+
+  myThread.start()
 
 
 
