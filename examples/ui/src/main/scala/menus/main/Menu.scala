@@ -251,7 +251,7 @@ class Menu(app: Application, val center: Vector3D, val rotationAngle: Float) ext
         if(ae.getId() == AnimationEvent.ANIMATION_ENDED){ //if the animation has been played back uninterrupted
           Menu -= me
           Ui -= me
-          println("ended")
+          println("fadeout ended")
         }
         else {
           val componentFillColor = me.getFillColor()
