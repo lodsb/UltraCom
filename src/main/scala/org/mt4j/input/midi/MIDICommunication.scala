@@ -79,6 +79,8 @@ object MidiCommunication {
 						this.receipt.emit(MidiNoteOnMsg(ch, note, velocity))
 					}
 				}
+
+				case _=> println("Message not supported")
 			}
 		}
 	}
@@ -107,13 +109,38 @@ object MidiCommunication {
 	def createMidiInput(deviceName: String): Option[MidiInput] = {
 		val DUMP_IN = false
 		val DUMP_OUT = false
-		val infos = knownDevices
-
-		var ret: Option[MidiInput] = None;
+		val infos = knownDevices		
 
 		infos.foreach(x => println("Found MIDI-Device: "+x.getDescription))
 
 		val inDevO = infos.filter(_.getDescription == deviceName).map(MidiSystem.getMidiDevice(_)).find(_.getMaxTransmitters() != 0)
+
+		val ret = openDeviceForInput(inDevO)
+
+		if(ret.isEmpty) {
+			println("No input device '" + deviceName + "' found!")
+		}
+
+		ret
+	}
+
+	def createMidiInputByDeviceIndex(index: Int) : Option[MidiInput] = {
+		
+		val infos = knownDevices
+
+		if(index < knownDevices.size) {
+			val deviceInfo = infos(index)
+
+			println("Opening "+deviceInfo)
+			openDeviceForInput(Some(MidiSystem.getMidiDevice(deviceInfo)))
+		} else {
+			None
+		}
+	}
+
+	private def openDeviceForInput(inDevO: Option[MidiDevice]) : Option[MidiInput] = {
+		var ret: Option[MidiInput] = None;
+
 		try {
 			inDevO match {
 				case Some(inDev) =>
@@ -122,11 +149,10 @@ object MidiCommunication {
 					val input = new MidiInput
 					t.setReceiver(input)
 					ret = Some(input)
-				case _ =>
-					if (inDevO.isEmpty) println("No input device '" + deviceName + "' found!")
+				case _  =>
 			}
 		} catch {
-			case e =>
+			case e: Throwable =>
 				println("Error initializing MIDI: ")
 				e.printStackTrace()
 		}
@@ -156,7 +182,7 @@ object MidiCommunication {
 					if (outDevO.isEmpty) println("No output device '" + deviceName + "' found!")
 			}
 		} catch {
-			case e =>
+			case e:Throwable =>
 				println("Error initializing MIDI: ")
 				e.printStackTrace()
 		}

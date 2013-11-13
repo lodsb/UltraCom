@@ -9,7 +9,7 @@ import processing.core.PImage
 import scala.util.Random
 
 
-class PresetBank(csvFilename: String, mappingJitter:Float = 0.0f) {
+class PresetBank(csvFilename: String, mappingJitter:Float = 0.0f, private val loadPercussive: Boolean = true, private val loadInvEnv: Boolean = true) {
   private var minX = Float.MaxValue
   private var minY = Float.MaxValue
 
@@ -33,7 +33,7 @@ class PresetBank(csvFilename: String, mappingJitter:Float = 0.0f) {
 
     val lines = src.getLines()
 
-    val seq:Iterator[((Float, Float), (Array[Float], Int))] = lines.map({
+    var seq:Iterator[((Float, Float), (Array[Float], Int))] = lines.map({
       l =>
         val values = l.split(",").map(_.toFloat)
 
@@ -50,6 +50,21 @@ class PresetBank(csvFilename: String, mappingJitter:Float = 0.0f) {
 
         (xy, (parameters, cluster))
     })
+
+    if(!loadPercussive) {
+	    seq = seq.filter({x => 
+		val p = x._2._1
+	
+		p(p.size-1) < 1f
+	    })
+    }
+
+    if(!loadInvEnv) {
+    	seq = seq.filter{x=>
+		val p =x._2._1
+		p(3) <= 0.75
+	}
+    }
 
     seq.toSeq
   }

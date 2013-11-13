@@ -25,7 +25,7 @@ abstract class TimbreSpace {
    * Updates the parameters of the synthesizer associated with this timbre space.
    * Return Octave
    */
-  def updateParameters(synth: Synthesizer, x: Float, y: Float, midiNote: Int,  pitch: Float, volume: Float) : Int
+  def updateParameters(synth: Synthesizer, x: Float, y: Float, midiNote: Int,  pitch: Float, volume: Float, channels: Array[Int]) : Int
  
   /**
   * Returns - as an Option - a two-dimensional visual representation of this timbre space, or None if it is not defined.

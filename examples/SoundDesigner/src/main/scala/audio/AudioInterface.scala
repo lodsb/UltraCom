@@ -42,10 +42,10 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
   /**
    * midi device name
    */
-  val midiDeviceName = "Keystation Mini 32, USB MIDI, Keystation Mini 32"
+  val midiDeviceName = "BCR2000, USB MIDI, BCR2000"
 
 
-  val midiInput = MidiCommunication.createMidiInput(midiDeviceName)
+  val midiInput = MidiCommunication.createMidiInputByDeviceIndex(2)
   if(midiInput.isDefined) {
 
     midiInput.get.receipt.observe( { x => println(x)
@@ -53,6 +53,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
       x match {
         case m:MidiNoteOnMsg => this ! NoteOn(m.channel,m.note,m.velocity)
         case m:MidiNoteOffMsg => this ! NoteOff(m.channel, m.note)
+        case _ => println("Message dropped")
       }
 
       true;
@@ -60,6 +61,23 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
 
   }
 
+  // controller id should be larger than 20 and < 40
+  def sendControlMessage(controllerID: Int, controllerValue: Float) : Unit = {}
+
+  /*
+  val myThread = new Thread(new Runnable {
+    def run() {
+      while (true) {
+       Thread.sleep(300)
+       AudioInterface.this ! NoteOn(1, 66, 127)
+       Thread.sleep(500)
+       AudioInterface.this ! NoteOff(1, 66)
+      }
+    }
+  })
+
+  myThread.start()
+  */
 
 
 
@@ -188,7 +206,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
   
   
   def updateParameters(synthInfo: SynthInfo, event: PlayAudioEvent) : Int= {
-    this.timbreSpace.updateParameters(synthInfo.synth, event.x, event.y, synthInfo.currentPitch, event.pitch, event.volume)
+    this.timbreSpace.updateParameters(synthInfo.synth, event.x, event.y, synthInfo.currentPitch, event.pitch, event.volume, event.channels)
   }
 
   def noteOn(midiChan: Int, midiNote: Int) {
@@ -200,12 +218,12 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
       val x = kv._2
 
       println("NOTE YAY")
-    //  if(midiChan == x.midiChan) {
+      if(midiChan == x.midiChan) {
         this.timbreSpace.noteOn(x.synth, x.octave, midiNote, x.relativePitch)
 
         list = list :+ (kv._1, SynthInfo(x.synth, x.midiChan, x.octave, midiNote, x.relativePitch))
 
-    //  }
+      }
     })
 
     list.foreach({x =>
@@ -214,12 +232,18 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
 
   }
 
+  /*
+  def noteOffSynth(x: Synth) {
+    this.timbreSpace.noteOff(x)
+  }
+  */
+
   def noteOff(midiChan: Int, midiNote: Int) {
     println("NOTE OFF")
     synthMap.values.foreach({ x =>
-      //if(midiChan == x.midiChan) {
+      if(midiChan == x.midiChan) {
         this.timbreSpace.noteOff(x.synth)
-      //}
+      }
     })
   }
 

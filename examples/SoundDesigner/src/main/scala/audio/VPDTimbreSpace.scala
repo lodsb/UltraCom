@@ -45,7 +45,7 @@ class VPDTimbreSpace extends TimbreSpace {
     "fxRouteType"-> (0.0f,1.0f)
   );
 
-  private val presetBank = new PresetBank("gtm_result_withfreqs_62k_presets_lat22500_rbf100_beta0.200000.csv_extracted.csv", mappingJitter = 0.02f)
+  private val presetBank = new PresetBank("gtm_result_withfreqs_62k_presets_lat22500_rbf100_beta0.200000.csv_extracted.csv", mappingJitter = 0.02f, false, false)
 
 
 
@@ -78,12 +78,35 @@ class VPDTimbreSpace extends TimbreSpace {
     val nA    = Lag.kr("noiseAmount".kr, clag)
     val fxRT  = Lag.kr("fxRouteType".kr, clag)
     val vol   = "volume".kr
+    val channel1 = "chan1".kr(1.0)
+    val channel2 = "chan2".kr(1.0)
+    val channel3 = "chan3".kr(1.0)
+    val channel4 = "chan4".kr(1.0)
 
     val out = VPDSynthGated.ar(gr,
       cfm, mfm, freq, aEt, cvpY, mvpY, cvpX, mvpX, cvpYW, mvpYW, cvpXW, mvpXW, fmT, fmIdx, nA, fxRT, vol
     )
 
-    AudioServer attach out
+    val mix = Mix(out)
+
+    val multi = Seq(channel1*mix,
+                    channel2*mix,
+                    channel3*mix,
+                    channel4*mix
+    )
+
+    //AudioServer attach(multi, false)
+    //Out.ar(Seq(0,1,2,3), multi)
+    //Out.ar(0, multi)
+
+    //Out.ar(0, channel1*mix)
+    /*Out.ar(1, 0*mix)
+    Out.ar(2, 0*mix)
+    Out.ar(3, 0*mix)*/
+
+    //Out.ar(Seq(0,1), Seq(out, out, out))
+
+    AudioServer attach mix
   }
 
 
@@ -137,7 +160,7 @@ class VPDTimbreSpace extends TimbreSpace {
   /**
    * Updates the parameters of the synthesizer associated with this timbre space.
    */
-  def updateParameters(synth: Synthesizer, x: Float, y: Float, midiNote: Int,  pitch: Float, volume: Float) : Int =  {
+  def updateParameters(synth: Synthesizer, x: Float, y: Float, midiNote: Int,  pitch: Float, volume: Float, channels: Array[Int]) : Int =  {
     val xy = convertCoords(x,y)
     val coordsAndParms = presetBank.parameterRelCoordInterp(xy._1,xy._2,1)
     val params = coordsAndParms._2
@@ -153,6 +176,14 @@ class VPDTimbreSpace extends TimbreSpace {
     val frequency = (relativeNote+(12*octave)+( midiNote % 12 ) + 60).midicps// middle C + octave + offset via keyboard
     //synth.parameters() = ("frequency" -> frequency)
     synth.parameters() = ("volume" -> volume)
+
+    for(channelNumber <- 0 to 3) {
+      if (channels.contains(channelNumber)) {
+        synth.parameters() = (("chan"+channelNumber) -> 1)
+      } else {
+        synth.parameters() = (("chan"+channelNumber) -> 0)
+      }
+    }
 
     octave
   }
