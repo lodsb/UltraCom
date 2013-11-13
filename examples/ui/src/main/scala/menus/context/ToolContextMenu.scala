@@ -39,6 +39,12 @@ object ToolContextMenu {
       Vector.euclideanDistance((menu.position.getX, menu.position.getY), (vector.getX, vector.getY)) <= 2*Radius
     })
   }  
+  
+  def isMenuInBounds(app: Application, vector: Vector3D) = {
+    vector.getX > Menu.Space && vector.getY > Menu.Space && vector.getX < app.width - Menu.Space && vector.getY < app.height - Menu.Space  
+  }
+  
+  
 }
 
 class ToolContextMenu(app: Application, val position: Vector3D) extends ContextMenu(app) {

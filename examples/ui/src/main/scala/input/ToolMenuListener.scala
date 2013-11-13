@@ -33,7 +33,7 @@ class ToolMenuListener(app: Application) extends AbstractGlobalInputProcessor[MT
 
   private var tapList = List[CustomTapEvent]() //list for keeping track of touch events, that is, their position and the time at which they occurred
   private val TapAndHoldMaxDist = 5 //maximum distance between the start and end point of a tap and hold touch event
-  private val TapAndHoldTime = 400 //time in milliseconds before a tap and hold is triggered
+  private val TapAndHoldTime = 600 //time in milliseconds before a tap and hold is triggered
   this.start()
   this ! "CHECK"
   
@@ -72,7 +72,7 @@ class ToolMenuListener(app: Application) extends AbstractGlobalInputProcessor[MT
           this.tapList.foreach(event => {
             if ((System.nanoTime() - event.time)/1000000.0f >= TapAndHoldTime) { //tap and hold completed
               println("tap and hold completed")
-              if (!ToolContextMenu.isMenuInProximity(Vec3d(event.x, event.y)) && !CursorProcessor.isCursorInUse(event.id)) {
+              if (!ToolContextMenu.isMenuInProximity(Vec3d(event.x, event.y)) && ToolContextMenu.isMenuInBounds(app, Vec3d(event.x, event.y)) && !CursorProcessor.isCursorInUse(event.id)) {
                 completedTaps = event :: completedTaps
                 val menu = ToolContextMenu(app, Vec3d(event.x, event.y))
                 ToolContextMenu += menu

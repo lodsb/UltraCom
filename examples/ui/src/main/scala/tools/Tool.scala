@@ -44,7 +44,7 @@ object Tool {
   val StrokeAlpha = 70
   val ActiveStrokeAlpha = 170
   
-  val Width = (Ui.width/38.0f).toInt //width of a tool relative to the ui width
+  val Width = (Ui.width/32.0f).toInt //width of a tool relative to the ui width
   val Height = (Width*2.1f).toInt //height of a tool, already relative to ui (so do not change if you want to keep current proportions)
   val BottomHeight = (Width/3.0f).toInt //height of the bottom area of a tool, already relative to ui 
   val ArcDelta = 2*Height/7.0f //distance from arc center to tip of tool
