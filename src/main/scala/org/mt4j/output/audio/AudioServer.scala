@@ -59,6 +59,7 @@ object AudioServer {
 		}
 	}
 
+	//TODO: make multichannel for all outputs
 	private def globalLimiter: SynthDef = {
  		SynthDef("globalLimiter") {
 		ReplaceOut.ar(audioOutBusses, Limiter.ar(In.ar(audioOutBusFirstChannel, 2), 0.3))
@@ -201,7 +202,8 @@ object AudioServer {
 			// for visual feedback
 			timerTriggerSynth.play(s)
 
-			// limit output if necessary
+			// TODO: fixme limit output if necessary
+			
 			if(MT4jSettings.getInstance().isLimiterEnabled()){
 				globalLimiter.play(s, addAction = addToTail)
 			}
