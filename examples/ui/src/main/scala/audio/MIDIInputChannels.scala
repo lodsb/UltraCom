@@ -5,12 +5,13 @@ import org.mt4j.util.MTColor
 import ui._
 
 object MIDIInputChannels {
+  final val InputChannels = 6
 }
 
 
 trait MIDIInputChannels {
 
-  protected var midiChannel = new Array[Boolean](4) //initializing 4 channels for midi input    
+  protected var midiChannel = new Array[Boolean](MIDIInputChannels.InputChannels) //initializing channels for midi input    
   this.activateInputChannel(0) //set first channel to true
    
   def activateInputChannel(index: Int) = {
