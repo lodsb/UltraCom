@@ -164,9 +164,14 @@ object AudioServer {
 
 	// once you made your processing graph, dont forget to call attach
 	// to add its output and _RECEIVE_ ui updates (amplitude)
-	def attach(graph : GE) : GE = {
+	def attach(graph : GE, extendChannels : Boolean = true) : GE = {
 		val pdiv = "__pulseDivision".kr(defaultTriggerDivisions)
-		Out.ar(audioOutBusses, graph)
+		if(extendChannels) {
+			//stereo
+			Out.ar(audioOutBusses, graph)
+		} else {
+			Out.ar(audioOutBusFirstChannel,graph)
+		}
 		SendTrig.kr(PulseDivider.kr(In.kr(timerBus),pdiv), amplitudeTriggerID, graph*1000f)//1000 * Amplitude.kr(graph))
 	}
 
