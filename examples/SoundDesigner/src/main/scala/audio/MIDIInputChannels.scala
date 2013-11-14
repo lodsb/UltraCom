@@ -6,6 +6,7 @@ import ui._
 
 object MIDIInputChannels {
   final val InputChannels = 6
+  final val Parameters = 3 //number of return channels, that is, parameters per channel which can be manipulated (e.g. note length)
 }
 
 

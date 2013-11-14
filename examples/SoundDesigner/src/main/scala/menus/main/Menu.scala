@@ -26,15 +26,17 @@ import scala.actors._
 import ui.menus._
 import ui._
 import ui.util._
+import ui.audio._
 
 
 /**
 * This object manages all menues currently visible to the users.
 */
 object Menu {
+  val fixedItems = 4 //number of items always displayed
   val Space = Ui.width/30.0f //width of area around the timbre space which is reserved for menu interaction
   val Padding = Space/6.0f
-  val Width = Ui.width/5.0f
+  val Width = (MIDIInputChannels.InputChannels + fixedItems)*(2*Button.Radius + Padding)
   val Height = Space
   val StrokeColor = new MTColor(200, 200, 200, 0)
   val Timeout = 5000 //number of milliseoncds without interaction before the menu fades out 
@@ -164,14 +166,22 @@ class Menu(app: Application, val center: Vector3D, val rotationAngle: Float) ext
     val (cx, cy) = (center.getX, center.getY)
     this.setNoFill(true)
     this.setNoStroke(true)
-    this.addChild(FastForwardButton(app, this, Vec3d(cx + 6 * Button.Radius + 3*Padding, cy)))
-    this.addChild(PlayButton(app, this, Vec3d(cx + 4 * Button.Radius + 2*Padding, cy)))
+    
+    val baseValue = (MIDIInputChannels.InputChannels + fixedItems)
+    val halfBaseValue = baseValue/2.0f
+    
+    this.addChild(FastForwardButton(app, this, Vec3d(cx + (baseValue - 1) * Button.Radius + halfBaseValue*Padding, cy)))
+    this.addChild(PlayButton(app, this, Vec3d(cx + (baseValue - 3) * Button.Radius + (halfBaseValue - 1)*Padding, cy)))
     //this.addChild(RecordButton(app, this, Vec3d(cx + 4 * Button.Radius + 2*Padding, cy)))    
-    this.addChild(StopButton(app, this, Vec3d(cx + 2 * Button.Radius + Padding, cy)))
-    this.addChild(RewindButton(app, this, Vec3d(cx, cy)))
-    this.addChild(SaveProjectButton(app, this, Vec3d(cx - 2 * Button.Radius - Padding, cy)))
-    this.addChild(LoadProjectButton(app, this, Vec3d(cx - 4 * Button.Radius - 2*Padding, cy)))
-    this.addChild(NewProjectButton(app, this, Vec3d(cx - 6 * Button.Radius - 3*Padding, cy)))
+    this.addChild(StopButton(app, this, Vec3d(cx + (baseValue - 5) * Button.Radius + (halfBaseValue - 2)*Padding, cy)))
+    this.addChild(RewindButton(app, this, Vec3d(cx + (baseValue - 7) * Button.Radius + (halfBaseValue - 3)*Padding, cy)))
+    //this.addChild(SaveProjectButton(app, this, Vec3d(cx - 2 * Button.Radius - Padding, cy)))
+    //this.addChild(LoadProjectButton(app, this, Vec3d(cx - 4 * Button.Radius - 2*Padding, cy)))
+    //this.addChild(NewProjectButton(app, this, Vec3d(cx - 6 * Button.Radius - 3*Padding, cy)))
+    for (index <- 0 until MIDIInputChannels.InputChannels) {
+     this.addChild(InputChannelButton(app, this, Vec3d(cx - (-(baseValue - 1 - 2*fixedItems) + 2*index) * Button.Radius - (-(halfBaseValue - fixedItems)+ index)*Padding, cy), index))
+    }
+    
     this.rotateZ(Vec3d(center.getX, center.getY), rotationAngle, TransformSpace.GLOBAL) //then apply new rotation
     
     this.fadeInAnimation(0, FadeInTime).start() 

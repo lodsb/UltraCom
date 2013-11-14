@@ -17,7 +17,7 @@ import ui.menus.main._
 object NodeSpace {
   
   val BorderWeight = 1.0f
-  val BorderColor = new MTColor(0,0,0,150)
+  val BorderColor = new MTColor(0,20,80,50)
   
   def apply(app: Application) = {
     new NodeSpace(app)
@@ -35,6 +35,7 @@ class NodeSpace(app: Application) extends MTRectangle(app, Menu.Space, Menu.Spac
   private def setupRepresentation() = {
     this.setStrokeWeight(NodeSpace.BorderWeight)
     this.setStrokeColor(NodeSpace.BorderColor)
+    //this.setNoStroke(true)
     
     val visOption = Ui.audioInterface.timbreSpace.visualRepresentation
     visOption.foreach(visualization => this.setTexture(this.processImage(visualization)))

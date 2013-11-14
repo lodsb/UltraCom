@@ -54,11 +54,9 @@ class NodeCreationListener(nodeSpace: NodeSpace) extends AbstractGlobalInputProc
             }
             this.tapList = this.tapList.filter(event => (System.nanoTime() - event.time)/1000000.0f <= DoubleTapMaxTime) //get rid of 'old' events
           }
-          true
         }
         case someEvent => {
           println("I can't process this particular event: " + someEvent.toString)
-          false
         }
       }
     }

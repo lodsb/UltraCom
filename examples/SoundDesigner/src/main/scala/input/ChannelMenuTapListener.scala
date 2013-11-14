@@ -5,7 +5,6 @@ import org.mt4j.{Application, Scene}
 import org.mt4j.input.inputProcessors.IGestureEventListener
 import org.mt4j.input.inputProcessors.MTGestureEvent
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor 
-
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent
 
 import org.mt4j.components.ComponentImplicits._
@@ -14,30 +13,25 @@ import org.mt4j.types.Vec3d
 
 import ui._
 import ui.util._
-import ui.tools._
+import ui.menus.main._
 
-class ToolTapListener(tool: Tool) extends IGestureEventListener{
+class ChannelMenuTapListener(channelMenu: ChannelMenu) extends IGestureEventListener{
 	
 	override def processGestureEvent(gestureEvent: MTGestureEvent): Boolean = {
 			gestureEvent match {
 				case tapEvent: TapEvent => {
 					if (tapEvent.getTapID == TapEvent.BUTTON_DOWN) {
-            val touchPoint = (tapEvent.getCursor.getCurrentEvtPosX(), tapEvent.getCursor.getCurrentEvtPosY())
-            val localTouchPoint = tool.globalToLocal(Vec3d(touchPoint._1, touchPoint._2))
-            tool.isEditing = tool.pointInEditArea((localTouchPoint.getX, localTouchPoint.getY))   
-					  println("tool down")
+					  println("channel menu down")
 					}
 					else if (tapEvent.getTapID == TapEvent.BUTTON_UP) {
-					  tool.isEditing = false
-					  println("tool up")
+					  println("channel menu up")
 					}
 					else if (tapEvent.getTapID == TapEvent.BUTTON_CLICKED) {
-					  //tool.isEditing = !tool.isEditing
-					  //println("tool is editing: " + tool.isEditing)
+					  println("channel clicked")
 					}
           else if (tapEvent.getTapID == TapEvent.BUTTON_DOUBLE_CLICKED) {
-            println("tool double tapped")
-            Ui -= tool
+            println("channel menu double tapped")
+            Ui -= channelMenu
           }
 					true
 				}
