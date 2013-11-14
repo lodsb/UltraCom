@@ -296,9 +296,9 @@ class VPDTimbreSpace extends TimbreSpace {
   private def colorFromData(data: (Int, Int, Boolean)) = { //data: (ClusterID, Octave, isPercussive)
     val clusters = 99f //too lazy to count clusters algorithmically; 100 seems correct :P
     val octaves = 7f //again determined by manual examination of data
-    val h = data._1/clusters
-    val s = 0.5f
-    val l = (0.3f*(octaves + data._2 - 1)/octaves) + 0.7f //luminance between 0.3 and 1.0 depending on the octave, with higher octaves being lighter
+    val h = 1/3f + data._1/clusters * 1/3f
+    val s = 0.4f
+    val l = (0.35f*(octaves + data._2 - 1)/octaves) + 0.65f //luminance between 0.35 and 1.0 depending on the octave, with higher octaves being lighter
     val (r,g,b) = Functions.hslToRgb(h,s,l)
     /*if (r > 255 || g > 255 || b > 255) {
       println("colorFromData: h: " + h + " s: " + s + " l: " + l)

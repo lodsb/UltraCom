@@ -31,6 +31,7 @@ class ChannelMenuTapListener(channelMenu: ChannelMenu) extends IGestureEventList
 					}
           else if (tapEvent.getTapID == TapEvent.BUTTON_DOUBLE_CLICKED) {
             println("channel menu double tapped")
+            ChannelMenu -= channelMenu
             Ui -= channelMenu
           }
 					true

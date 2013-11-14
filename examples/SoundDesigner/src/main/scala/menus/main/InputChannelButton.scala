@@ -26,6 +26,9 @@ import ui.util._
 import ui._
 
 object InputChannelButton {
+ 
+  final val OnOpacity = 1.0f
+  final val OffOpacity = 0.2f
   
   def apply(app: Application, menu: Menu, center: Vector3D, channelNumber: Int) = {
       new InputChannelButton(app, menu, center, channelNumber)
@@ -37,20 +40,34 @@ object InputChannelButton {
 
 class InputChannelButton(app: Application, menu: Menu, center: Vector3D, channelNumber: Int) extends Button(app, menu, center) {
   
-  
+  this.setOpacity(InputChannelButton.OffOpacity)
   
   override def drawComponent(g: PGraphics) = {
-    super.drawComponent(g)
+    this.drawComponentImpl(g)
     this.drawSymbol(g)
   }  
+  
+  def drawComponentImpl(g: PGraphics) = {
+    //super.drawComponent(g)
+    val center = this.getCenterPointLocal()
+    val cx = center.getX()
+    val cy = center.getY() 
+    val visibility = if (ChannelMenu.isMenuVisible(channelNumber)) InputChannelButton.OnOpacity else InputChannelButton.OffOpacity
+    
+    g.fill(this.currentColor.getR, this.currentColor.getG, this.currentColor.getB, this.currentColor.getAlpha * this.opacity * visibility)
+    g.stroke(this.itemStrokeColor.getR, this.itemStrokeColor.getG, this.itemStrokeColor.getB, this.itemStrokeColor.getAlpha * this.opacity * visibility)
+    g.strokeWeight(this.itemStrokeWeight)
+    g.ellipse(cx, cy, 2*this.radius, 2*this.radius)  
+  }    
 
   def drawSymbol(g: PGraphics) = {
     val center = this.getCenterPointLocal()
     val cx = center.getX()
     val cy = center.getY()  
+    val visibility = if (ChannelMenu.isMenuVisible(channelNumber)) InputChannelButton.OnOpacity else InputChannelButton.OffOpacity
     
     g.noStroke()
-    g.fill(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.itemForegroundColor.getAlpha * this.opacity)
+    g.fill(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.itemForegroundColor.getAlpha * this.opacity * visibility)
 
     if (channelNumber == 0) {
       g.ellipse(cx, cy, 8, 8)
@@ -67,7 +84,8 @@ class InputChannelButton(app: Application, menu: Menu, center: Vector3D, channel
   override def clicked() = {
     super.clicked()
     if (!ChannelMenu.isMenuVisible(channelNumber)) {
-      val menu = ChannelMenu(app, center, channelNumber)
+      val newGlobalVector = this.localToGlobal(Vec3d(this.getCenterPointLocal.getX, this.getCenterPointLocal.getY - ChannelMenu.Height/2f - Menu.Space))
+      val menu = ChannelMenu(app, newGlobalVector, channelNumber)
       ChannelMenu += menu
       Ui += menu
     }

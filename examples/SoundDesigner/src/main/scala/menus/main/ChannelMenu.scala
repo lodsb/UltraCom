@@ -9,6 +9,7 @@ import org.mt4j.components.TransformSpace
 import org.mt4j.util.math.Vector3D
 import org.mt4j.util.math.Vertex
 import org.mt4j.types.{Vec3d}
+import org.mt4j.components.visibleComponents.widgets.MTSlider
 
 import org.mt4j.util.MTColor
 
@@ -87,6 +88,9 @@ class ChannelMenu(app: Application, center: Vector3D, val channelNumber: Int)
       //add gesture listeners
       this.addGestureListener(classOf[DragProcessor], new BoundedDragAction(0, 0, Ui.width, Ui.height)) 
       this.addGestureListener(classOf[TapProcessor], new ChannelMenuTapListener(this))
+      
+      val slider1 = new MTSlider(app, center.getX - ChannelMenu.Width/2f, center.getY - ChannelMenu.Height/2f, ChannelMenu.Width/2f, 20, 0f, 1f)
+      this.addChild(slider1)
     }    
 
     
