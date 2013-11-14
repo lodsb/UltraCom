@@ -19,6 +19,7 @@
 */
 
 import org.mt4j.components.visibleComponents.widgets.{Slider, TextArea}
+import org.mt4j.input.midi.{MidiNoteOffMsg, MidiNoteOnMsg, MidiCommunication}
 import org.mt4j.{Scene, Application}
 import org.mt4j.types.{Vec3d}
 import org.mt4j.components.ComponentImplicits._
@@ -29,7 +30,7 @@ import org.mt4j.output.audio.AudioServer._
 
 import de.sciss.synth._
 import de.sciss.synth.ugen.{MouseY, SinOsc, MouseX, Impulse}
-import org.mt4j.output.audio.AudioServer
+import org.mt4j.output.audio.{Synthesizer, AudioServer}
 import de.sciss.synth._
 import de.sciss.synth.ugen._
 import de.sciss.synth.Ops._
@@ -58,29 +59,35 @@ object VPDSynthApp extends Application {
 
 class VPDSynthScene(app: Application, name: String) extends Scene(app,name) {
 
-  def buildSynth() : SynthDef = SynthDef("VPDTestSynth"){
+  def buildSynth(cfmp: Float, mfmp: Float, freqp: Float,
+                 aetp: Float, cvpyp: Float, mvpyp: Float, cvpxp: Float,
+                 mvpxp: Float, cvpywp: Float, mvpywp: Float, cvpxwp: Float,mvpxwp: Float, fmtp: Float,
+                 fmidxp: Float, nap: Float, fxrtp: Float): SynthDef = SynthDef("VPDTestSynthGated"){
 
-      val gr    = "gateRate".kr
-      val cfm   = "cleanFmRingmod".kr
-      val mfm   = "modFreqMult".kr
-      val freq  = "frequency".kr
-      val aEt   = "ampEnvType".kr
-      val cvpY  = "carrierVPSYType".kr
-      val mvpY  = "modulatorVPSYType".kr
-      val cvpX  = "carrierVPSXType".kr
-      val mvpX  = "modulatorVPSXType".kr
-      val cvpYW = "carrierVPSYWeight".kr
-      val mvpYW = "modulatorVPSYWeight".kr
-      val cvpXW = "carrierVPSXWeight".kr
-      val mvpXW = "modulatorVPSXWeight".kr
-      val fmT   = "fmModType".kr
-      val fmIdx = "fmModIdx".kr
-      val nA    = "noiseAmount".kr
-      val fxRT  = "fxRouteType".kr
+    val clag  = "cLag".kr(0.01)
+    val gr    = "gate".kr
+    val cfm   = Lag.kr("cleanFmRingmod".kr, clag)
+    val mfm   = Lag.kr("modFreqMult".kr, clag)
+    val freq  = "frequency".kr
+    val aEt   = Lag.kr("ampEnvType".kr, clag)
+    val cvpY  = Lag.kr("carrierVPSYType".kr, clag)
+    val mvpY  = Lag.kr("modulatorVPSYType".kr, clag)
+    val cvpX  = Lag.kr("carrierVPSXType".kr, clag)
+    val mvpX  = Lag.kr("modulatorVPSXType".kr, clag)
+    val cvpYW = Lag.kr("carrierVPSYWeight".kr, clag)
+    val mvpYW = Lag.kr("modulatorVPSYWeight".kr, clag)
+    val cvpXW = Lag.kr("carrierVPSXWeight".kr, clag)
+    val mvpXW = Lag.kr("modulatorVPSXWeight".kr, clag)
+    val fmT   = Lag.kr("fmModType".kr, clag)
+    val fmIdx = Lag.kr("fmModIdx".kr, clag)
+    val nA    = Lag.kr("noiseAmount".kr, clag)
+    val fxRT  = Lag.kr("fxRouteType".kr, clag)
+    val vol   = "volume".kr(0.8)
 
-      val out = VPDSynth.ar(Impulse.kr(gr),
-        cfm, mfm, freq, aEt, cvpY, mvpY, cvpX, mvpX, cvpYW, mvpYW, cvpXW, mvpXW, fmT, fmIdx, nA, fxRT
-      )
+    val out = VPDSynthGated.ar(gr,
+      cfm, mfm, freq, aEt, cvpY, mvpY, cvpX, mvpX, cvpYW, mvpYW, cvpXW, mvpXW, fmT, fmIdx, nA, fxRT, vol
+    )
+
 
       AudioServer attach out
     }
@@ -89,11 +96,10 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app,name) {
 
   showTracer(true)
 
-  val parameters = Seq[(String, (Float, Float))](
-    "gateRate" -> (0.01f, 2.0f),
+  private val parameterMapping = Seq[(String, (Float, Float))](
+    "frequency"-> (2.0f,1000.0f),
     "cleanFmRingmod" -> (-0.25f, 1.0f),
     "modFreqMult" -> (0.0f,1.0f),
-    "frequency"-> (2.0f,1000.0f),
     "ampEnvType"-> (0.0f,1.0f),
     "carrierVPSYType"-> (0.0f,1.0f),
     "modulatorVPSYType"-> (0.0f,1.0f),
@@ -103,26 +109,75 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app,name) {
     "modulatorVPSYWeight"-> (0.0f,20.0f),
     "carrierVPSXWeight"-> (0.0f,20.0f),
     "modulatorVPSXWeight"-> (0.0f,20.0f),
-    "fmModType"-> (0.0f,1.0f),
     "fmModIdx" -> (0.0f,1000.0f),
+    "fmModType"-> (0.0f,1.0f),
     "noiseAmount"-> (0.0f,1.0f),
     "fxRouteType"-> (0.0f,1.0f)
   );
 
 
-  val mySynthDef = buildSynth()
-  val mySynth = mySynthDef.play()
-  mySynth.parameters.observe({x => println(x); true})
+  val midiDeviceName = "BCR2000, USB MIDI, BCR2000"
+
+  var mySynth: Option[Synthesizer] = None
+
+  var currentChannel = 0;
+  var currentOctave = 5;
+
+
+  val midiInput = MidiCommunication.createMidiInputByDeviceIndex(2)
+  if(midiInput.isDefined) {
+
+    midiInput.get.receipt.observe( { x => println(x)
+
+    x match {
+      case m:MidiNoteOnMsg => noteOn(m.channel,m.note)
+      case m:MidiNoteOffMsg =>noteOff(m.channel, m.note)
+      case _ => println("Message dropped")
+    }
+
+    true;
+    })
+
+  }
+
+  def noteOn(midiChan: Int, midiNote: Int) {
+    if (mySynth.isDefined) {
+      if (midiChan == currentChannel) {
+
+        val frequency = ((12*currentOctave)+( midiNote % 12 ) + 60).midicps // middle C + octave + offset via keyboard
+
+        mySynth.get.parameters() = ("frequency" -> frequency)
+        mySynth.get.parameters() = ("gate" -> 1.0)
+      }
+    }
+
+  }
+
+  def noteOff(midiChan: Int, midiNote: Int) {
+    if (mySynth.isDefined) {
+      if (midiChan == currentChannel) {
+        mySynth.get.parameters() = ("gate" -> 0.0)
+      }
+    }
+  }
+
+  val mySynthDef = buildSynth(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1)
+
+
+  mySynth = Some(mySynthDef.play())
+
+
+  mySynth.get.parameters.observe({x => println(x); true})
 
   val xoffset = 200
   val yoffset = 300
 
-  for (i <- 0 to parameters.size-1) {
+  for (i <- 0 to parameterMapping.size-1) {
     val xcoord: Int = (i % 8) * xoffset + 180
     val ycoord: Int = (i / 8) * yoffset + 250
 
-    val parmName  = parameters(i)._1
-    val parmRange = parameters(i)._2
+    val parmName  = parameterMapping(i)._1
+    val parmRange = parameterMapping(i)._2
 
     val text = TextArea()
     text.setPositionGlobal(Vec3d(xcoord, ycoord-200))
@@ -137,13 +192,26 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app,name) {
     info.text <~ slider.value+""
     info.setPickable(false)
 
-    mySynth.parameters <~ slider.value.map({x => parmName -> x})
+    mySynth.get.parameters <~ slider.value.map({x => parmName -> x})
 
     slider.value() = (parmRange._1+parmRange._2)/2.0f
 
     canvas += text ++ slider ++ info
 
   }
+
+  val octaveSlider = Slider(-5, 8, 150, 50)
+  octaveSlider.setPositionGlobal(Vec3d(800, 700))
+
+  octaveSlider.value.observe({x => currentOctave = x.toInt; true})
+
+  val patternSlider = Slider(0, 6, 150, 50)
+  patternSlider.setPositionGlobal(Vec3d(800, 800))
+
+  patternSlider.value.observe({x => currentChannel = x.toInt; true})
+
+  canvas += octaveSlider ++ patternSlider
+
 
 }
 

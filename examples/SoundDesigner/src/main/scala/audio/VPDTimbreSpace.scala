@@ -45,7 +45,8 @@ class VPDTimbreSpace extends TimbreSpace {
     "fxRouteType"-> (0.0f,1.0f)
   );
 
-  private val presetBank = new PresetBank("gtm_result_withfreqs_FILTERED_62k_presets_lat22500_rbf100_beta0.200000.csv_extracted.csv", mappingJitter = 0.02f, true, true)
+  //private val presetBank = new PresetBank("gtm_result_withfreqs_FILTERED80.000000_62k_presets_lat4900_rbf100_beta0.200000.csv_extracted.csv", mappingJitter = 0.02f, true, true)
+  private val presetBank = new PresetBank("gtm_result_withfreqs_FILTERED80.000000_62k_presets_lat4900_rbf100_beta0.200000.csv_extracted.csv", mappingJitter = 0.02f, true, true)
 
 
 
@@ -59,7 +60,7 @@ class VPDTimbreSpace extends TimbreSpace {
                   mvpxp: Float, cvpywp: Float, mvpywp: Float, cvpxwp: Float,mvpxwp: Float, fmtp: Float,
                 fmidxp: Float, nap: Float, fxrtp: Float): SynthDef = SynthDef("VPDTestSynthGated"){
 
-    val clag  = "cLag".kr(5.01)
+    val clag  = "cLag".kr(0.01)
     val gr    = "gate".kr
     val cfm   = Lag.kr("cleanFmRingmod".kr, clag)
     val mfm   = Lag.kr("modFreqMult".kr, clag)
