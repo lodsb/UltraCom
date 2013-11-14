@@ -45,7 +45,7 @@ class VPDTimbreSpace extends TimbreSpace {
     "fxRouteType"-> (0.0f,1.0f)
   );
 
-  private val presetBank = new PresetBank("gtm_result_withfreqs_62k_presets_lat22500_rbf100_beta0.200000.csv_extracted.csv", mappingJitter = 0.02f, false, false)
+  private val presetBank = new PresetBank("gtm_result_withfreqs_FILTERED_62k_presets_lat22500_rbf100_beta0.200000.csv_extracted.csv", mappingJitter = 0.02f, true, true)
 
 
 
@@ -78,22 +78,22 @@ class VPDTimbreSpace extends TimbreSpace {
     val nA    = Lag.kr("noiseAmount".kr, clag)
     val fxRT  = Lag.kr("fxRouteType".kr, clag)
     val vol   = "volume".kr
-    val channel1 = "chan1".kr(1.0)
-    val channel2 = "chan2".kr(1.0)
-    val channel3 = "chan3".kr(1.0)
-    val channel4 = "chan4".kr(1.0)
+    val channel1 = "chan0".kr(1.0)
+    val channel2 = "chan1".kr(1.0)
+    val channel3 = "chan2".kr(1.0)
+    val channel4 = "chan3".kr(1.0)
 
     val out = VPDSynthGated.ar(gr,
       cfm, mfm, freq, aEt, cvpY, mvpY, cvpX, mvpX, cvpYW, mvpYW, cvpXW, mvpXW, fmT, fmIdx, nA, fxRT, vol
     )
 
     val mix = Mix(out)
-
+    /*
     val multi = Seq(channel1*mix,
                     channel2*mix,
                     channel3*mix,
                     channel4*mix
-    )
+    ) */
 
     //AudioServer attach(multi, false)
     //Out.ar(Seq(0,1,2,3), multi)
@@ -106,7 +106,12 @@ class VPDTimbreSpace extends TimbreSpace {
 
     //Out.ar(Seq(0,1), Seq(out, out, out))
 
-    AudioServer attach mix
+    //AudioServer attach multi
+
+    Out.ar(0, channel1*mix)
+    Out.ar(1, channel2*mix)
+    Out.ar(2, channel3*mix)
+    Out.ar(3, channel4*mix)
   }
 
 

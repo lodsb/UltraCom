@@ -397,7 +397,7 @@ public class MT4jSettings {
         return defaultSessionLogName;
     }
 
-    public static Boolean enableLimiter = true;
+    public static Boolean enableLimiter = false;
     public Boolean isLimiterEnabled() {
         return enableLimiter;
     }
