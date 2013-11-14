@@ -15,8 +15,7 @@ import org.mt4j.input.inputProcessors.MTGestureEvent
 import org.mt4j.input.gestureAction.DefaultDragAction
 import org.mt4j.input.gestureAction.InertiaDragAction
 
-import org.mt4j.util.MTColor
-import org.mt4j.util.Color
+import org.mt4j.util.{SessionLogger, MTColor, Color}
 import org.mt4j.util.math.Vector3D
 import org.mt4j.util.math.Vertex
 import org.mt4j.util.math.Matrix

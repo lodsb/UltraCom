@@ -9,7 +9,7 @@ import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent
 import org.mt4j.input.inputProcessors.IGestureEventListener
 import org.mt4j.input.inputProcessors.MTGestureEvent
 
-import org.mt4j.util.Color
+import org.mt4j.util.{SessionLogger, Color}
 
 import processing.core.PGraphics
 import processing.core.PConstants._
@@ -102,6 +102,7 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
         }         
         
         case event: ManipulationEvent => {
+          SessionLogger.log("Manipulation: Node",SessionLogger.SessionEvent.Event, this, event.tool, (event.value, event.value));
           this.synchronized {
             this.updateProperty(event.tool.propertyType, event.value) 
             this.sendPlayEvent()
@@ -110,6 +111,8 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
         }
         
         case event: ToggleOutputChannelEvent => {
+          SessionLogger.log("ToggleOutputChannel: Node",SessionLogger.SessionEvent.Event, this, null, (event.channel, event.channel));
+
           this.synchronized {
             this.toggleOutputChannel(event.channel)
             this.sendPlayEvent()
@@ -117,6 +120,7 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
         } 
         
         case event: ToggleInputChannelEvent => {
+          SessionLogger.log("ToggleInputChannel: Node",SessionLogger.SessionEvent.Event, this, null, (event.channel, event.channel));
           this.synchronized {
             this.activateInputChannel(event.channel)
             this.sendPlayEvent()
@@ -124,6 +128,7 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
         }        
   
         case event: TimeConnectionAddEvent => {
+          SessionLogger.log("TimeConnectionAddEvent: Node",SessionLogger.SessionEvent.Event, this, event.connection.startNode, event.connection.timeNode);
           this.synchronized {
             if (this.timeConnections.filter(connection => connection.timeNode == event.connection.timeNode && connection.startNode == event.connection.startNode).size <= 0) {
               //if such a connection is not already in place
@@ -135,12 +140,14 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
         }   
         
         case event: TimeConnectionDeletionEvent => {
+          SessionLogger.log("TimeConnectionDelEvent: Node",SessionLogger.SessionEvent.Event, this, event.connection.startNode, event.connection.timeNode);
           this.synchronized {
             this.timeConnections = this.timeConnections.filter(_ != event.connection)
           }
         }
         
         case event: NodeMoveEvent => {
+          SessionLogger.log("NodeMove: Node",SessionLogger.SessionEvent.Event, this, null, event.node.position);
           this.synchronized {
             this.timeConnections.foreach(timeConnection => {
               timeConnection.updateConnectionNode()
@@ -196,6 +203,8 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
             }
             
             else if (event.name == "START_PLAYBACK") {
+              SessionLogger.log("StartPlayback: Node",SessionLogger.SessionEvent.Event, this, null, null);
+
               lastTime = System.nanoTime() //init time
               this.isNodePlaying = true
               this.sendPlayEvent()
@@ -203,6 +212,8 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
             }
               
             else if (event.name == "STOP_PLAYBACK") {
+                SessionLogger.log("StopPlayback: Node",SessionLogger.SessionEvent.Event, this, null, null);
+
                 Ui.audioInterface ! PauseAudioEvent(this.id)
                 this.isNodePlaying = false
                 this.playbackPos = 0.0f               

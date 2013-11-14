@@ -16,6 +16,7 @@ import ui.audio._
 import ui.properties.types._
 import ui.menus.main._
 import ui._
+import org.mt4j.util.SessionLogger
 
 class PlayTimbreDragAction(node: Node) extends NotifyingDragAction(node) {
   
@@ -48,12 +49,14 @@ class PlayTimbreDragAction(node: Node) extends NotifyingDragAction(node) {
       
       node match {
         case singleNode: SingleNode => {
+          SessionLogger.log("Move (TimbrePlay): Node",SessionLogger.SessionEvent.Event, this, singleNode, (singleNode.position));
           if (!singleNode.isPlaying) {
             Ui.audioInterface ! PlayAudioEvent(node.id, x, y, singleNode.getPropertyValue(PitchPropertyType), singleNode.getPropertyValue(VolumePropertyType), singleNode.activeInputChannel, channels)
           }
         }
         case otherNode => {
           otherNode.associatedPath.foreach(path => {
+            SessionLogger.log("Move (TimbrePlay): Path",SessionLogger.SessionEvent.Event, this, otherNode, (otherNode.position, path));
             if (!path.isPlaying) {
               Ui.audioInterface ! PlayAudioEvent(path.id, x, y, PitchPropertyType.mean, VolumePropertyType.mean, path.activeInputChannel, channels)
             }

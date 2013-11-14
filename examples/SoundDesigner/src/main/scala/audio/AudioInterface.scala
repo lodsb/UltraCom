@@ -131,7 +131,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
 
         this.synthMap += (event.callerID -> synthInfo)
 
-        synth.parameters.observe{x => println(x); true}
+        //synth.parameters.observe{x => println(x); true}
         Thread.sleep(50)
         /* 
         the sleep call is actually a workaround for cases where play and stop are called in rapid succession;

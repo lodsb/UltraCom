@@ -9,7 +9,7 @@ import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent
 import org.mt4j.input.inputProcessors.IGestureEventListener
 import org.mt4j.input.inputProcessors.MTGestureEvent
 
-import org.mt4j.util.Color
+import org.mt4j.util.{SessionLogger, Color}
 
 import processing.core.PGraphics
 import processing.core.PConstants._
@@ -43,4 +43,10 @@ object SingleNode {
 * This class represents a single node.
 */
 class SingleNode(app: Application, center: Vector3D) extends ManipulableNode(app, SingleNodeType, center) {
+
+  SessionLogger.log("Created: Node",SessionLogger.SessionEvent.Event, this, null, (center, typeOfNode));
+
+  override def toString: String = {
+    super.toString +" @"+this.hashCode()
+  }
 }

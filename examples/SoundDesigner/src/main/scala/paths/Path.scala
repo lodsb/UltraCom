@@ -9,7 +9,7 @@ import org.mt4j.components.visibleComponents.AbstractVisibleComponent
 
 import org.mt4j.sceneManagement.AddNodeActionThreadSafe
 
-import org.mt4j.util.Color
+import org.mt4j.util.{SessionLogger, Color}
 import org.mt4j.util.math.Vector3D
 import org.mt4j.util.math.Vertex
 import org.mt4j.types.Vec3d
@@ -119,6 +119,8 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
   private var timeConnections = timeConnectionsList
       
   this.setup()
+
+  SessionLogger.log("Created: Path",SessionLogger.SessionEvent.Event, this, null, null);
  
   private def setup() = {
     connections.foreach(_.nodes.foreach(node => {
@@ -168,6 +170,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
       receive {       
         
         case event: TimeNodeAddEvent => {
+          SessionLogger.log("TimeNodeAdd: Path",SessionLogger.SessionEvent.Event, this, event.node, null);
           this.synchronized {
             this.timeNodes = this.timeNodes + (event.node -> false)
             Ui += event.node
@@ -175,6 +178,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
         }      
  
         case event: TimeConnectionAddEvent => {
+          SessionLogger.log("TimeConnectionAdd: Path",SessionLogger.SessionEvent.Event, this, event.connection.timeNode, event.connection.startNode);
           this.synchronized {
             if (this.timeConnections.filter(connection => connection.timeNode == event.connection.timeNode && connection.startNode == event.connection.startNode).size <= 0) {
               //if such a connection is not already in place
@@ -187,24 +191,28 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
                 
         
         case event: PathPlaybackTypeEvent => {
+          SessionLogger.log("PathPlaybackType: Path",SessionLogger.SessionEvent.Event, this,null,event.playbackType );
           this.synchronized {
             this.connections.last.nodes.last.nodeType = event.playbackType
           }
         }
         
         case event: ToggleOutputChannelEvent => {
+          SessionLogger.log("ToggleOutputChannel: Path",SessionLogger.SessionEvent.Event, this, null, (event.channel, event.channel));
           this.synchronized {
             this.toggleOutputChannel(event.channel)
           }
         }
                                             
         case event: ToggleInputChannelEvent => {
+          SessionLogger.log("ToggleInputChannel: Path",SessionLogger.SessionEvent.Event, this, null, (event.channel, event.channel));
           this.synchronized {
             this.activateInputChannel(event.channel)
           }
         }        
         
         case event: NodeDeletionEvent => {
+          SessionLogger.log("NodeDeletion: Path",SessionLogger.SessionEvent.Event, this, null, event.node);
           this.synchronized {
             event.node match {
               case timeNode: TimeNode => {
@@ -235,6 +243,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
         }
         
         case event: NodeAppendEvent => {
+          SessionLogger.log("NodeAppend: Path",SessionLogger.SessionEvent.Event, this, null, event.node);
           this.synchronized {
             this += event.node
             //event.node.updateRotation()
@@ -242,6 +251,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
         }
         
         case event: NodePrependEvent => {
+          SessionLogger.log("NodePrepend: Path",SessionLogger.SessionEvent.Event, this, null, event.node);
           this.synchronized {
             event.node +=: this
             //event.node.updateRotation()
@@ -249,6 +259,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
         }
         
         case event: PathAppendEvent => {
+          SessionLogger.log("PathAppend: Path",SessionLogger.SessionEvent.Event, this, null, event.path);
           this.synchronized {
             this ++= event.path
           }
@@ -266,6 +277,9 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
               
             this.timeNodes.keys.foreach(timeNode => { //only then update the time nodes
               val (x,y) = timeNode.connection(timeNode.parameter)
+
+              SessionLogger.log("TimeNodeMoveEvent: Path",SessionLogger.SessionEvent.Event, this, event.node, Vec3d(x,y));
+
               Ui.getCurrentScene.registerPreDrawAction(new RepositionNodeActionThreadSafe(timeNode, Vec3d(x,y)))
               //timeNode.globalPosition := Vec3d(x,y)
             })
@@ -281,6 +295,9 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
           this.synchronized {
             val (connection, parameter) = this.closestSegment(event.x, event.y)
             val (closestX, closestY) = connection(parameter)
+
+            SessionLogger.log("TimeNodeMoveEvent: Path",SessionLogger.SessionEvent.Event, this, event.node, Vec3d(closestX,closestY));
+
             event.node.connection = connection
             event.node.parameter = parameter
             //event.node.globalPosition := Vec3d(closestX, closestY) 
@@ -308,6 +325,9 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
         }   
         
         case event: PathManipulationEvent => {
+
+          SessionLogger.log("PathManipulationEvent: Path",SessionLogger.SessionEvent.Event, this, null, (event.value, event.value));
+
           this.synchronized {
             event.connection.updateProperty(event.tool.propertyType, event.connectionParameter, event.manipulationRadius, event.value)
             if (event.tool.propertyType == SpeedPropertyType) { //if the speed property has been changed
@@ -373,6 +393,9 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
             }
             
             else if (event.name == "START_PLAYBACK") {
+
+              SessionLogger.log("StartPlayback: Path",SessionLogger.SessionEvent.Event, this, null, null);
+
               if (ignoreNextTogglePlayback) {ignoreNextTogglePlayback = false}
               else {
                 if (this.playbackState != Playing) {
@@ -402,6 +425,9 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
             }
 
             else if (event.name == "STOP_GLOBAL_PLAYBACK") {
+
+              SessionLogger.log("StartPlayback: Path",SessionLogger.SessionEvent.Event, this, null, null);
+
               this ! UiEvent("STOP_PLAYBACK")
             }
             
@@ -1041,7 +1067,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
   }
   
   override def toString = {
-    "Path(" + this.connections.map(_ + "").foldLeft("")((c1, c2) => c1 + " + " + c2) + ")"
+    "Path(" + this.connections.map(_ + "").foldLeft("")((c1, c2) => c1 + " + " + c2) + ") @"+this.hashCode
   }
   
   

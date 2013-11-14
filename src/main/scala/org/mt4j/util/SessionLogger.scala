@@ -57,6 +57,8 @@ object SessionLogger {
     var commitToLog = true;
 
     var millisGesture = -1L
+     
+    var millisGestureString = "";
     // fake "hash"
     val keyString = ""+message._4+message._5
 
@@ -77,11 +79,18 @@ object SessionLogger {
         millisGesture = (gestureBeginDateTime to message._1).millis
       }
 
-    }
+    } 
+//FIXME: hack!!!
+if(message._2 == SessionEvent.Event) {
+millisGestureString = message._5+"";
+} else {
+	millisGestureString = millisGesture+""
+}
+
 
     if (commitToLog) {
       val intervalSinceAppStart = (MTApplication.getStartDateOfApplication to message._1).millis
-      val csvString = intervalSinceAppStart + delimiter + message._2 + delimiter + "\""+message._3+"\"" + delimiter + message._4 + delimiter + millisGesture + delimiter + message._6;
+      val csvString = intervalSinceAppStart + delimiter + message._2 + delimiter + "\""+message._3+"\"" + delimiter + message._4 + delimiter + millisGestureString + delimiter + message._6;
 
       fileWriter.println(csvString);
       fileWriter.flush();

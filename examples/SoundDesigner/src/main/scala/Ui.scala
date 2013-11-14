@@ -193,7 +193,7 @@ object Ui extends Application with Persistability {
 
 	override def startUp() = {
     AudioServer.start(true)
-		this.addScene(new UIScene(this, "Collaborative Sounddesign"))
+		this.addScene(new UIScene(this, "Collaborative SoundDesigner"))
 		//getInputManager().registerInputSource(new MacTrackpadSource(this))
 		/* Ctrl+N to set second point, shift to toggle it */
 	}
