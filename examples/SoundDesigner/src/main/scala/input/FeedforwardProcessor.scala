@@ -52,11 +52,9 @@ class FeedforwardProcessor(app: Application) extends AbstractGlobalInputProcesso
           }
         })      
         this.feedforwardMap.foreach(entry => {entry._1.giveFeedforward(entry._2)}) //finally give strongest feedforward for every node
-        true
       }
       case someEvent => {
         println("I can't process this particular event: " + someEvent.toString)
-        false
       }
     }    
   }

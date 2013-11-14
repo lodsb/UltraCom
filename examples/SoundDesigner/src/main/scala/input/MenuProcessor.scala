@@ -59,11 +59,9 @@ class MenuProcessor(app: Application) extends AbstractGlobalInputProcessor[MTFin
           else if (cursorEvent.getId == AbstractCursorInputEvt.INPUT_ENDED) {
             this ! CustomCursorEvent(cursorEvent, time, CustomCursorEvent.Ended)
           }
-          true
         }
         case someEvent => {
           println("I can't process this particular event: " + someEvent.toString)
-          false
         }
       }
     }

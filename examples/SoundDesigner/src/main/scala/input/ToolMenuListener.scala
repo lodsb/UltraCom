@@ -54,11 +54,9 @@ class ToolMenuListener(app: Application) extends AbstractGlobalInputProcessor[MT
           else if (cursorEvent.getId == AbstractCursorInputEvt.INPUT_ENDED) {
             this ! CustomTapEvent(id, x, y, time, CustomTapEvent.Ended)
           }
-          true
         }
         case someEvent => {
           println("I can't process this particular event: " + someEvent.toString)
-          false
         }
       }
     }

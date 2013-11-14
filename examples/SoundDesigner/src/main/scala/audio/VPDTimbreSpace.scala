@@ -1,6 +1,5 @@
 package ui.audio
 
-import ui.audio.TimbreSpace
 import de.sciss.synth.SynthDef
 import processing.core.PImage
 import org.lodsb.VPDSynth._
@@ -45,7 +44,7 @@ class VPDTimbreSpace extends TimbreSpace {
     "fxRouteType"-> (0.0f,1.0f)
   );
 
-  private val presetBank = new PresetBank("gtm_result_withfreqs_FILTERED_62k_presets_lat22500_rbf100_beta0.200000.csv_extracted.csv", mappingJitter = 0.02f, true, true)
+  private val presetBank = new PresetBank("gtm_result_withfreqs_FILTERED80.000000_62k_presets_lat4900_rbf100_beta0.200000.csv_extracted.csv", mappingJitter = 0.02f, true, true)
 
 
 
@@ -295,7 +294,7 @@ class VPDTimbreSpace extends TimbreSpace {
     val octaves = 7f //again determined by manual examination of data
     val h = data._1/clusters
     val s = 0.5f
-    val l = (0.2f*(octaves + data._2 - 1)/octaves) + 0.8f //luminance between 0.3 and 1.0 depending on the octave, with higher octaves being lighter
+    val l = (0.3f*(octaves + data._2 - 1)/octaves) + 0.7f //luminance between 0.3 and 1.0 depending on the octave, with higher octaves being lighter
     val (r,g,b) = Functions.hslToRgb(h,s,l)
     /*if (r > 255 || g > 255 || b > 255) {
       println("colorFromData: h: " + h + " s: " + s + " l: " + l)

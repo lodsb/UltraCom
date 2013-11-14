@@ -69,11 +69,9 @@ class CursorProcessor(app: Application) extends AbstractGlobalInputProcessor[MTF
           else if (cursorEvent.getId == AbstractCursorInputEvt.INPUT_ENDED) {
             this.processReleaseCursor(cursorEvent)
           }
-          true
         }
         case someEvent => {
           println("I can't process this particular event: " + someEvent.toString)
-          false
         }
       }
     }
