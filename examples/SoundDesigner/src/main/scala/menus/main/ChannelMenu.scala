@@ -41,6 +41,8 @@ object ChannelMenu {
   final val Width = 200
   final val Height = 200
   final val Color = new MTColor(0,20,80,40)
+  final val SliderWidth = 1*Width/2f
+  final val SliderHeight = Height/8f
   
   private var registry = Set[ChannelMenu]()
   
@@ -89,8 +91,31 @@ class ChannelMenu(app: Application, center: Vector3D, val channelNumber: Int)
       this.addGestureListener(classOf[DragProcessor], new BoundedDragAction(0, 0, Ui.width, Ui.height)) 
       this.addGestureListener(classOf[TapProcessor], new ChannelMenuTapListener(this))
       
-      val slider1 = new MTSlider(app, center.getX - ChannelMenu.Width/2f, center.getY - ChannelMenu.Height/2f, ChannelMenu.Width/2f, 20, 0f, 1f)
-      this.addChild(slider1)
+      val translation = 65
+      
+      for (index <- 0 until MIDIInputChannels.Parameters) {
+        val sliderPos = Vec3d(center.getX - ChannelMenu.SliderWidth/2f, center.getY - ChannelMenu.SliderHeight/2f)   
+        val slider = new MTSlider(app, sliderPos.getX, sliderPos.getY, ChannelMenu.SliderWidth, ChannelMenu.SliderHeight, 0f, 1f)
+        
+        slider.getOuterShape.setFillColor(ChannelMenu.Color)
+        slider.getOuterShape.setStrokeColor(ChannelMenu.Color)
+        slider.getOuterShape.setStrokeWeight(0)
+        slider.getOuterShape.setNoStroke(true)
+                
+        val h = (index * 1f)/MIDIInputChannels.Parameters
+        val s = 1f
+        val l = 0.5f
+        val a = 150       
+        val (r,g,b) = Functions.hslToRgb(h,s,l)
+        val color = new MTColor(r,g,b,a)   
+
+        slider.getKnob.setFillColor(color)
+        slider.getKnob.setNoStroke(true)        
+        
+        slider.translate(Vec3d(0,translation))
+        slider.rotateZ(center, 360f/MIDIInputChannels.Parameters * index)
+        this.addChild(slider)
+      }
     }    
 
     
