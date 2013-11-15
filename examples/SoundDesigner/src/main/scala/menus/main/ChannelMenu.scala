@@ -122,7 +122,7 @@ class ChannelMenu(app: Application, center: Vector3D, val channelNumber: Int)
         slider.rotateZ(center, 360f/MIDIInputChannels.Parameters * index)
         
         slider.value.observe({newValue => {
-          Ui.audioInterface ! MIDIControlEvent(MIDIControlEvent.LowestID + index, newValue)
+          Ui.audioInterface ! MIDIControlEvent(this.channelNumber, MIDIControlEvent.LowestNumber + index, newValue)
           true
         }})
         

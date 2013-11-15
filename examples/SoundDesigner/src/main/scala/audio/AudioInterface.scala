@@ -3,7 +3,7 @@ package ui.audio
 import org.mt4j.util.Color
 
 import scala.actors._
-import org.mt4j.input.midi.{MidiNoteOffMsg, MidiNoteOnMsg, MidiCommunication}
+import org.mt4j.input.midi.{MidiNoteOffMsg, MidiNoteOnMsg, MidiCtrlMsg, MidiCommunication}
 
 //import ugen._
 import org.mt4j.output.audio.AudioServer
@@ -60,10 +60,17 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
     })
 
   }
+  
+  val midiOutput = MidiCommunication.createMidiOutput(midiDeviceName)
+  
 
   // controller id should be larger than 20 and < 40
-  def sendControlMessage(controllerID: Int, controllerValue: Float) : Unit = {
-    
+  def sendControlMessage(controllerChannel: Int, controllerNumber: Int, controllerValue: Float) : Unit = {
+    if(this.midiOutput.isDefined) {
+      this.midiOutput.foreach(output => {
+        output.senderAction(new MidiCtrlMsg(controllerChannel, controllerNumber, controllerValue)) //MidiCtrlMsg(channel: Int, num: Int, data: Float) 
+      })
+    }
   }
 
   /*
@@ -195,7 +202,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
           this.resume(event)
         }
         case event: MIDIControlEvent => {
-          this.sendControlMessage(event.controllerID, event.controllerValue)
+          this.sendControlMessage(event.controllerChannel, event.controllerNumber, event.controllerValue)
         }
         case NoteOn(ch, note, velocity) => {
           this.noteOn(ch, note)

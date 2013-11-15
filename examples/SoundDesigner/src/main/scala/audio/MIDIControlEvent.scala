@@ -4,12 +4,12 @@ import scala.collection.mutable._
 
 object MIDIControlEvent {
   
-  final val LowestID = 21
+  final val LowestNumber = 21
   
-  def apply(controllerID: Int, controllerValue: Float) = {
-    new MIDIControlEvent(controllerID, controllerValue)
+  def apply(controllerChannel: Int, controllerNumber: Int, controllerValue: Float) = {
+    new MIDIControlEvent(controllerChannel, controllerNumber, controllerValue)
   }
 }
 
-class MIDIControlEvent(val controllerID: Int, val controllerValue: Float) {
+class MIDIControlEvent(val controllerChannel: Int, val controllerNumber: Int, val controllerValue: Float) {
 }
