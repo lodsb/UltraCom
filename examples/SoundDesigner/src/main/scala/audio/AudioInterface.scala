@@ -62,7 +62,9 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
   }
 
   // controller id should be larger than 20 and < 40
-  def sendControlMessage(controllerID: Int, controllerValue: Float) : Unit = {}
+  def sendControlMessage(controllerID: Int, controllerValue: Float) : Unit = {
+    
+  }
 
   /*
   val myThread = new Thread(new Runnable {
@@ -191,6 +193,9 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
         }
         case event: ResumeAudioEvent => {
           this.resume(event)
+        }
+        case event: MIDIControlEvent => {
+          this.sendControlMessage(event.controllerID, event.controllerValue)
         }
         case NoteOn(ch, note, velocity) => {
           this.noteOn(ch, note)

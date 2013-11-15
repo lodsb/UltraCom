@@ -16,9 +16,12 @@ import org.mt4j.util.MTColor
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor 
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor 
+import org.mt4j.input.inputProcessors.componentProcessors.rotateProcessor.RotateProcessor 
+
 import org.mt4j.input.inputProcessors.IGestureEventListener
 import org.mt4j.input.inputProcessors.MTGestureEvent
 import org.mt4j.input.gestureAction.DefaultDragAction
+import org.mt4j.input.gestureAction.DefaultRotateAction
 
 import org.mt4j.util.animation.Animation
 import org.mt4j.util.animation.AnimationEvent
@@ -83,13 +86,16 @@ class ChannelMenu(app: Application, center: Vector3D, val channelNumber: Int)
                     
       //register input processors
       this.registerInputProcessor(new DragProcessor(app))
+      this.registerInputProcessor(new RotateProcessor(app))
       val tapProcessor = new TapProcessor(app)
       tapProcessor.setEnableDoubleTap(true)
       this.registerInputProcessor(tapProcessor)
       
       //add gesture listeners
+      this.addGestureListener(classOf[RotateProcessor], new DefaultRotateAction(this)) 
       this.addGestureListener(classOf[DragProcessor], new BoundedDragAction(0, 0, Ui.width, Ui.height)) 
       this.addGestureListener(classOf[TapProcessor], new ChannelMenuTapListener(this))
+      
       
       val translation = 65
       
@@ -114,6 +120,12 @@ class ChannelMenu(app: Application, center: Vector3D, val channelNumber: Int)
         
         slider.translate(Vec3d(0,translation))
         slider.rotateZ(center, 360f/MIDIInputChannels.Parameters * index)
+        
+        slider.value.observe({newValue => {
+          Ui.audioInterface ! MIDIControlEvent(MIDIControlEvent.LowestID + index, newValue)
+          true
+        }})
+        
         this.addChild(slider)
       }
     }    
