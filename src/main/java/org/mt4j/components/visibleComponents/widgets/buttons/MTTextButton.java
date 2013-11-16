@@ -141,6 +141,8 @@ public class MTTextButton extends MTTextArea implements IclickableButton {
      * Fire action performed.
      */
     protected synchronized void fireActionPerformed() {
+	System.err.println("fireperf wo");
+	this.pressed.update(true);
         ActionListener[] listeners = this.getActionListeners();
         for (ActionListener listener : listeners) {
             listener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "action performed on tangible button"));
@@ -153,6 +155,7 @@ public class MTTextButton extends MTTextArea implements IclickableButton {
      * @param ce the ce
      */
     public synchronized void fireActionPerformed(TapEvent ce) {
+	System.err.println("fireperf with ");
         this.pressed.update(ce.isTapDown());
 
         ActionListener[] listeners = this.getActionListeners();

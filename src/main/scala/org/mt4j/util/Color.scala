@@ -24,6 +24,8 @@ package org.mt4j.util
 
 object Color {
 
+	type Color = MTColor
+
 	val RED = new MTColor(255, 0, 0, 255);
  	val GREEN = new MTColor(0, 128, 0, 255);
  	val BLUE = new MTColor(0, 0, 255, 255);
