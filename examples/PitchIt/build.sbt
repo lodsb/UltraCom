@@ -27,3 +27,6 @@ unmanagedClasspath in Compile += Attributed.blank(new java.io.File("doesnotexist
 unmanagedBase <<= baseDirectory { base => base / "../../libraries/misc" }
 
 
+seq(com.github.retronym.SbtOneJar.oneJarSettings: _*)
+
+libraryDependencies += "commons-lang" % "commons-lang" % "2.6"
