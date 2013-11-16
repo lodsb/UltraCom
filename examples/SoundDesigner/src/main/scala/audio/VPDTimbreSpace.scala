@@ -182,7 +182,7 @@ class VPDTimbreSpace extends TimbreSpace {
     
     val relativeNote = this.relativeNoteFromRelativePitch(this.pentatonic, 6, pitch) //at max 3 halftones down and 3 halftones up
     val frequency = (relativeNote+(12*octave)+( midiNote % 12 ) + 60).midicps// middle C + octave + offset via keyboard
-    //synth.parameters() = ("frequency" -> frequency)
+    synth.parameters() = ("frequency" -> frequency) //####### tentatively commented in again since i don't know why we would not want to update the frequency also; is there any reason? #######
     synth.parameters() = ("volume" -> volume)
 
     for(channelNumber <- 0 to 3) {

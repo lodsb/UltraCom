@@ -25,6 +25,7 @@ import ui._
 import ui.util._
 import ui.tools._
 import ui.persistence._
+import ui.menus.context._
 
 
 object ManipulableNode {
@@ -311,7 +312,7 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
       g.noStroke()
       (0 to this.activeInputChannel).foreach(item => {
         val (px,py) = Functions.positionOnCircle(x, y, this.radius, 2*math.Pi.toFloat, item, this.activeInputChannel + 1)
-        g.ellipse(px, py, 7, 7)
+        g.ellipse(px, py, InputChannelItem.DotWidth, InputChannelItem.DotWidth)
       })
       
       

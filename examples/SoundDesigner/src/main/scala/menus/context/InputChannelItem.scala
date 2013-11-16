@@ -24,6 +24,8 @@ import ui._
 object InputChannelItem {
 
   val Radius = Ui.width/150
+  val DotWidth = Radius/2f
+  val EdgeWidth = Radius/2f
   val Alpha = 130
   val StrokeWeight = 0  
   
@@ -104,15 +106,15 @@ class InputChannelItem(app: Application, menu: NodeContextMenu, center: Vector3D
     val cy = center.getY()    
     g.fill(this.itemBackgroundColor.getR * saturationMultiplier + saturationConstant, this.itemBackgroundColor.getG * saturationMultiplier + saturationConstant, this.itemBackgroundColor.getB * saturationMultiplier + saturationConstant, this.opacity * InputChannelItem.Alpha)
     g.noStroke()
-    g.rect(cx - this.radius, cy  - this.radius, 2*this.radius, 2*this.radius, 7f, 7f, 7f, 7f)
+    g.rect(cx - this.radius, cy  - this.radius, 2*this.radius, 2*this.radius, InputChannelItem.EdgeWidth, InputChannelItem.EdgeWidth, InputChannelItem.EdgeWidth, InputChannelItem.EdgeWidth)
     
     if (channelNumber == 0) {
-      g.ellipse(cx, cy, 5, 5)
+      g.ellipse(cx, cy, InputChannelItem.DotWidth, InputChannelItem.DotWidth)
     }
     else {
       (1 to channelNumber + 1).foreach(item => {
         val (x,y) = Functions.positionOnCircle(cx, cy, 0.6f * this.radius, 2*math.Pi.toFloat, item, channelNumber + 1)
-        g.ellipse(x, y, 5, 5)
+        g.ellipse(x, y, InputChannelItem.DotWidth, InputChannelItem.DotWidth)
       })
     }
 

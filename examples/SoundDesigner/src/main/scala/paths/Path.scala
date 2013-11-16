@@ -26,6 +26,7 @@ import ui.events._
 import ui.audio._
 import ui.properties.types._
 import ui.menus.main._
+import ui.menus.context._
 import ui.usability._
 import ui.tools._
 import ui.persistence._
@@ -739,7 +740,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
       g.noStroke()
       (0 to this.activeInputChannel).foreach(item => {
         val (px,py) = Functions.positionOnCircle(x, y, startNode.radius*startNode.getScaleFactor, 2*math.Pi.toFloat, item, this.activeInputChannel + 1)
-        g.ellipse(px, py, 7, 7)
+        g.ellipse(px, py, InputChannelItem.DotWidth, InputChannelItem.DotWidth)
       })
     }
   }   

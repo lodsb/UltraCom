@@ -29,6 +29,7 @@ object InputChannelButton {
  
   final val OnOpacity = 1.0f
   final val OffOpacity = 0.2f
+  final val DotWidth = Button.Radius/2.5f
   
   def apply(app: Application, menu: Menu, center: Vector3D, channelNumber: Int) = {
       new InputChannelButton(app, menu, center, channelNumber)
@@ -70,12 +71,12 @@ class InputChannelButton(app: Application, menu: Menu, center: Vector3D, channel
     g.fill(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.itemForegroundColor.getAlpha * this.opacity * visibility)
 
     if (channelNumber == 0) {
-      g.ellipse(cx, cy, 8, 8)
+      g.ellipse(cx, cy, InputChannelButton.DotWidth, InputChannelButton.DotWidth)
     }
     else {
       (1 to channelNumber + 1).foreach(item => {
         val (x,y) = Functions.positionOnCircle(cx, cy, 0.5f * this.radius, 2*math.Pi.toFloat, item, channelNumber + 1)
-        g.ellipse(x, y, 8, 8)
+        g.ellipse(x, y, InputChannelButton.DotWidth, InputChannelButton.DotWidth)
       })
     }    
     

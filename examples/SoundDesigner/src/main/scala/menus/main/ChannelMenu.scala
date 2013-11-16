@@ -41,11 +41,12 @@ import ui.input._
 
 object ChannelMenu {
   
-  final val Width = 200
-  final val Height = 200
+  final val Width = Ui.width/10f
+  final val Height = Width
   final val Color = new MTColor(0,20,80,40)
   final val SliderWidth = 1*Width/2f
   final val SliderHeight = Height/8f
+  final val DotWidth = Width/10f
   
   private var registry = Set[ChannelMenu]()
   
@@ -97,7 +98,7 @@ class ChannelMenu(app: Application, center: Vector3D, val channelNumber: Int)
       this.addGestureListener(classOf[TapProcessor], new ChannelMenuTapListener(this))
       
       
-      val translation = 65
+      val translation = ChannelMenu.Width/3f
       
       for (index <- 0 until MIDIInputChannels.Parameters) {
         val sliderPos = Vec3d(center.getX - ChannelMenu.SliderWidth/2f, center.getY - ChannelMenu.SliderHeight/2f)   
@@ -146,12 +147,12 @@ class ChannelMenu(app: Application, center: Vector3D, val channelNumber: Int)
       graphics.fill(r, g, b, (a+50)%255)
   
       if (channelNumber == 0) {
-        graphics.ellipse(cx, cy, 20, 20)
+        graphics.ellipse(cx, cy, ChannelMenu.DotWidth, ChannelMenu.DotWidth)
       }
       else {
         (1 to channelNumber + 1).foreach(item => {
-          val (x,y) = Functions.positionOnCircle(cx, cy, 0.5f * 50, 2*math.Pi.toFloat, item, channelNumber + 1)
-          graphics.ellipse(x, y, 20, 20)
+          val (x,y) = Functions.positionOnCircle(cx, cy, 0.5f * ChannelMenu.Width/4f, 2*math.Pi.toFloat, item, channelNumber + 1)
+          graphics.ellipse(x, y, ChannelMenu.DotWidth, ChannelMenu.DotWidth)
         })
       }    
       
