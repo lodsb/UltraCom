@@ -110,10 +110,10 @@ class VPDTimbreSpace extends TimbreSpace {
 
     //AudioServer attach multi
 
-    Out.ar(4, channel1*mix)
-    Out.ar(5, channel2*mix)
-    Out.ar(2, channel3*mix)
-    Out.ar(3, channel4*mix)
+    Out.ar(2, channel1*mix)
+    Out.ar(3, channel2*mix)
+    Out.ar(4, channel3*mix)
+    Out.ar(5, channel4*mix)
   }
 
 
