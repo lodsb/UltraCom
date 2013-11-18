@@ -213,15 +213,15 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
     }
   }
 
-  val mySynthDef = buildSynth(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1)
+  //val mySynthDef = buildSynth(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1)
 
 
-  mySynth = Some(mySynthDef.play())
+  //mySynth = Some(mySynthDef.play())
 
 
-  mySynth.get.parameters.observe({
+ /* mySynth.get.parameters.observe({
     x => println(x); true
-  })
+  })*/
 
   val xoffset = VPDSynthApp.width/10
   val yoffset = VPDSynthApp.height/2
@@ -318,9 +318,6 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
   for (i <- 0 to parameterMapping.size - 1) {
     val xcoord: Int = (i % 9) * xoffset + VPDSynthApp.width/8
     val ycoord: Int = (i / 9) * yoffset + VPDSynthApp.width/8
-
-    val xcoord: Int = (i % 9) * xoffset + 250
-    val ycoord: Int = (i / 9) * yoffset + 250
     val position = Vec3d(xcoord, ycoord)
 
     val parmName = parameterMapping(i)._1
@@ -329,9 +326,9 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
 
     val slider = labeledSlider(position, parmName, parmRange._1, parmRange._2, colorMap(group))
 
-    mySynth.get.parameters <~ slider.value.map({
+    /*mySynth.get.parameters <~ slider.value.map({
       x => parmName -> x
-    })
+    })*/
 
     if (parmName != "noiseAmount") {
       slider.value() = (parmRange._1 + parmRange._2) / 4.0f
