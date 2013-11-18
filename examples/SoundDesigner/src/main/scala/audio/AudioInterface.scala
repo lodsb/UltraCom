@@ -127,7 +127,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
 
         //TODO: also update current frequency @ midihandling
         val updatedInfo = SynthInfo(synthInfo.synth, event.midiChan, synthOctave, synthInfo.currentPitch,
-                                    synthInfo.relativePitch)
+                                    event.pitch)
 
         println(updatedInfo)
 

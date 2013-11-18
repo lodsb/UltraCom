@@ -18,7 +18,7 @@ object NodeType {
   protected[paths] val StrokeColor = Color(0, 0, 0, 100)
   protected[paths] val TapColor = Color(0, 0, 0, 40)
   val StrokeWeight = 1
-  val Radius = Ui.width/100
+  val Radius = Ui.width/95
 }
 
 /**

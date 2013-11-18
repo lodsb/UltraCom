@@ -74,10 +74,13 @@ object ChannelMenu {
 
 
 class ChannelMenu(app: Application, center: Vector3D, val channelNumber: Int) 
-      extends MTRoundRectangle(app, center.getX - ChannelMenu.Width/2f, center.getY - ChannelMenu.Height/2f, 0, ChannelMenu.Width, ChannelMenu.Height, 10, 10) {
+      extends MTRoundRectangle(app, center.getX - ChannelMenu.Width/2f, center.getY - ChannelMenu.Height/2f, 0, ChannelMenu.Width, ChannelMenu.Height, ChannelMenu.Width/10f, ChannelMenu.Width/10f) {
         
     this.setFillColor(ChannelMenu.Color)
-    this.setNoStroke(true)
+    val strokeCol = new MTColor(ChannelMenu.Color.getR, ChannelMenu.Color.getG, ChannelMenu.Color.getB, (ChannelMenu.Color.getAlpha + 20)%255)
+    this.setStrokeColor(strokeCol)
+    this.setStrokeWeight(1)
+    //this.setNoStroke(true)
     this.setupInteraction()
     
     private def setupInteraction() = {

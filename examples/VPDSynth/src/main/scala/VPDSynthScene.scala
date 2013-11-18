@@ -27,6 +27,7 @@ import org.mt4j.types.{Vec3d}
 import org.mt4j.components.ComponentImplicits._
 import org.lodsb.reakt.Implicits._
 import org.mt4j.components.visibleComponents.font.FontManager
+import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle
 
 import org.mt4j.util.Color
 import org.mt4j.util.MTColor
@@ -64,8 +65,8 @@ object VPDSynthApp extends Application {
 
 object VPDSynthScene {
   
-  final val SliderLength = VPDSynthApp.height/8f
-  final val SliderWidth = SliderLength/5f
+  final val SliderLength = VPDSynthApp.height/7f
+  final val SliderWidth = SliderLength/6f
   
 }
 
@@ -213,22 +214,22 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
     }
   }
 
-  val mySynthDef = buildSynth(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1)
+  //val mySynthDef = buildSynth(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1)
 
 
-  mySynth = Some(mySynthDef.play())
+  //mySynth = Some(mySynthDef.play())
 
 
-  mySynth.get.parameters.observe({
+ /* mySynth.get.parameters.observe({
     x => println(x); true
-  })
+  })*/
 
   val xoffset = VPDSynthApp.width/10
   val yoffset = VPDSynthApp.height/2
   //val font = createFont(processing.core.PApplet pa, java.lang.String fontFileName, int fontSize, MTColor fillColor, boolean antiAliased) 
   val font = FontManager.getInstance.createFont(VPDSynthApp, "SansSerif", VPDSynthApp.width/100, new MTColor(255,255,255), new MTColor(255,255,255), true)
 
-  def labeledSlider(position: Vector3D, name: String, min: Float, max: Float, color: Color): MTSlider = {
+  def labeledSlider(position: Vector3D, name: String, min: Float, max: Float, color: Color, parent: MTComponent): MTSlider = {
     val text = TextArea()
     text.setText(name)
     text.setPickable(false)
@@ -245,12 +246,12 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
 
 
     slider.rotateZGlobal(Vec3d(0,0,0), 0f)
-    slider.setPositionGlobal(position)
+    slider.setPositionRelativeToParent(position)
 
     text.rotateZ(Vec3d(0,0,0), 0f)
-    text.setPositionGlobal(Vec3d(position.x, position.y-VPDSynthApp.height/25))
+    text.setPositionRelativeToParent(Vec3d(position.x, position.y-VPDSynthApp.height/25))
 
-    info.setPositionGlobal(Vec3d(position.x-VPDSynthApp.width/100, position.y+VPDSynthApp.height/25))
+    info.setPositionRelativeToParent(Vec3d(position.x-VPDSynthApp.width/100, position.y+VPDSynthApp.height/25))
 
 
     info.text <~ slider.value.map( x => x.formatted("%2.2f"))
@@ -260,7 +261,7 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
     slider.strokeColor() = color
     info.strokeColor() = color
 
-    canvas += info ++ slider ++ text
+    parent += info ++ slider ++ text
 
     slider
   }
@@ -315,20 +316,60 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
     val backgroundImage = new MTBackgroundImage(app, image, false)
     canvas().addChild(backgroundImage)
 
-  for (i <- 0 to parameterMapping.size - 1) {
-    val xcoord: Int = (i % 9) * xoffset + VPDSynthApp.width/8
-    val ycoord: Int = (i / 9) * yoffset + VPDSynthApp.width/8
-    val position = Vec3d(xcoord, ycoord)
+    val cuts = Array(0,4,8,12,14)
+    
+    val rectHeight = VPDSynthApp.height/7
+    val inputWidth = VPDSynthApp.width/8
+    
+    val rect1 = new MTRoundRectangle(VPDSynthApp, 0, 0, 0, VPDSynthApp.width/8, rectHeight, VPDSynthApp.width/50, VPDSynthApp.width/50)
+    
+    val rect2 = new MTRoundRectangle(VPDSynthApp, VPDSynthApp.width/20, 0, 0, VPDSynthApp.width/2, rectHeight, VPDSynthApp.width/50, VPDSynthApp.width/50)  
+    
+    val rect3 = new MTRoundRectangle(VPDSynthApp, VPDSynthApp.width/2, 0, 0, VPDSynthApp.width/2, rectHeight, VPDSynthApp.width/50, VPDSynthApp.width/50)   
+    
+    val rect4 = new MTRoundRectangle(VPDSynthApp, 0, VPDSynthApp.height/2, 0, VPDSynthApp.width/2, rectHeight, VPDSynthApp.width/50, VPDSynthApp.width/50)
+    
+    val rect5 = new MTRoundRectangle(VPDSynthApp, VPDSynthApp.height/2, VPDSynthApp.height/2, 0, VPDSynthApp.width/4, rectHeight, VPDSynthApp.width/50, VPDSynthApp.width/50)
 
+    val rects = Array(rect1,rect2,rect3,rect4,rect5)
+    
+    rects.foreach(rect => {
+      rect.setFillColor(new MTColor(0,0,0,50))
+      rect.setStrokeColor(new MTColor(0,0,0,100))
+    })
+   
+    canvas += rect1 ++ rect2 ++ rect3 ++ rect4 ++ rect5
+    
+    for (i <- 0 to parameterMapping.size - 1) {
     val parmName = parameterMapping(i)._1
     val parmRange = parameterMapping(i)._3
     val group = parameterMapping(i)._2
 
-    val slider = labeledSlider(position, parmName, parmRange._1, parmRange._2, colorMap(group))
+    var parent = 0
+    var position = Vec3d(0,0)//xcoord, ycoord)    
+      
+    if (i > cuts(0)) {
+      parent = 1
+      position = Vec3d(i*inputWidth, 0)
+    }
+    if (i > cuts(1)) {
+      parent = 2
+      position = Vec3d(i*inputWidth - cuts(1)*inputWidth, 0)
+    }
+    if (i > cuts(2)) {
+      parent = 3
+      position = Vec3d(i*inputWidth - cuts(2)*inputWidth, 0)      
+    }
+    if (i > cuts(3)) {
+      parent = 4
+      position = Vec3d(i*inputWidth - cuts(3)*inputWidth, 0)      
+    }
+    
+    val slider = labeledSlider(position, parmName, parmRange._1, parmRange._2, colorMap(group), rects(parent))
 
-    mySynth.get.parameters <~ slider.value.map({
+    /*mySynth.get.parameters <~ slider.value.map({
       x => parmName -> x
-    })
+    })*/
 
     if (parmName != "noiseAmount") {
       slider.value() = (parmRange._1 + parmRange._2) / 4.0f
