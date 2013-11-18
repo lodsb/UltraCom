@@ -26,8 +26,10 @@ import org.mt4j.{Scene, Application}
 import org.mt4j.types.{Vec3d}
 import org.mt4j.components.ComponentImplicits._
 import org.lodsb.reakt.Implicits._
+import org.mt4j.components.visibleComponents.font.FontManager
 
 import org.mt4j.util.Color
+import org.mt4j.util.MTColor
 import org.mt4j.util.Color._
 
 import org.mt4j.output.audio.AudioServer._
@@ -57,6 +59,14 @@ object VPDSynthApp extends Application {
   }
 
 
+}
+
+
+object VPDSynthScene {
+  
+  final val SliderLength = VPDSynthApp.height/8f
+  final val SliderWidth = SliderLength/5f
+  
 }
 
 
@@ -196,50 +206,54 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
     }
   }
 
-  val mySynthDef = buildSynth(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1)
+  //val mySynthDef = buildSynth(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1)
 
 
-  mySynth = Some(mySynthDef.play())
+  //mySynth = Some(mySynthDef.play())
 
 
-  mySynth.get.parameters.observe({
+  /*mySynth.get.parameters.observe({
     x => println(x); true
-  })
+  })*/
 
-  val xoffset = 190
-  val yoffset = 530
+  val xoffset = VPDSynthApp.width/10
+  val yoffset = VPDSynthApp.height/2
+  //val font = createFont(processing.core.PApplet pa, java.lang.String fontFileName, int fontSize, MTColor fillColor, boolean antiAliased) 
+  val font = FontManager.getInstance.createFont(VPDSynthApp, "SansSerif", VPDSynthApp.width/100, new MTColor(255,255,255), new MTColor(255,255,255), true)
 
   def labeledSlider(position: Vector3D, name: String, min: Float, max: Float, color: Color): MTSlider = {
-    //val text = TextArea()
-    //text.setText(name)
-    //text.setPickable(false)
+    val text = TextArea()
+    text.setText(name)
+    text.setPickable(false)
+    text.setFont(font)
 
     val info = TextArea()
+    info.setFont(font)
     info.setPickable(false)
 
-    val slider = Slider(min, max, 250, 60)
-
+    val slider = Slider(min, max, VPDSynthScene.SliderLength, VPDSynthScene.SliderWidth)
+    slider.getKnob.setFillColor(new MTColor(255,255,255))
 
     // bug with relative positioning for children of slider?
 
 
-    slider.rotateZGlobal(Vec3d(0,0,0), -90f)
+    slider.rotateZGlobal(Vec3d(0,0,0), 0f)
     slider.setPositionGlobal(position)
 
-    //text.rotateZ(Vec3d(0,0,0), -90f)
-    //text.setPositionGlobal(Vec3d(position.x, position.y-150))
-    //
-    info.setPositionGlobal(Vec3d(position.x-20, position.y+150))
+    text.rotateZ(Vec3d(0,0,0), 0f)
+    text.setPositionGlobal(Vec3d(position.x, position.y-VPDSynthApp.height/25))
+
+    info.setPositionGlobal(Vec3d(position.x-VPDSynthApp.width/100, position.y+VPDSynthApp.height/25))
 
 
     info.text <~ slider.value.map( x => x.formatted("%2.2f"))
 
-    //text.strokeColor() = color
+    text.strokeColor() = color
     slider.fillColor() = color
     slider.strokeColor() = color
     info.strokeColor() = color
 
-    canvas += info ++ slider
+    canvas += info ++ slider ++ text
 
     slider
   }
@@ -295,8 +309,8 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
     canvas().addChild(backgroundImage)
 
   for (i <- 0 to parameterMapping.size - 1) {
-    val xcoord: Int = (i % 9) * xoffset + 250
-    val ycoord: Int = (i / 9) * yoffset + 250
+    val xcoord: Int = (i % 9) * xoffset + VPDSynthApp.width/8
+    val ycoord: Int = (i / 9) * yoffset + VPDSynthApp.width/8
     val position = Vec3d(xcoord, ycoord)
 
     val parmName = parameterMapping(i)._1
@@ -305,9 +319,9 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
 
     val slider = labeledSlider(position, parmName, parmRange._1, parmRange._2, colorMap(group))
 
-    mySynth.get.parameters <~ slider.value.map({
+    /*mySynth.get.parameters <~ slider.value.map({
       x => parmName -> x
-    })
+    })*/
 
     if (parmName != "noiseAmount") {
       slider.value() = (parmRange._1 + parmRange._2) / 4.0f
