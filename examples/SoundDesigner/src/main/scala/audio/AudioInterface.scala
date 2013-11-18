@@ -61,7 +61,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
 
   }
 
-  val midiOutput = MidiCommunication.createMidiOutputByDeviceIndex(1)
+  val midiOutput = MidiCommunication.createMidiOutputByDeviceIndex(4)
   
 
   // controller id should be larger than 20 and < 40
