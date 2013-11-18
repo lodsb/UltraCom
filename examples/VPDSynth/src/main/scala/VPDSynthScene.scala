@@ -104,12 +104,19 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
       cfm, mfm, freq, aEt, cvpY, mvpY, cvpX, mvpX, cvpYW, mvpYW, cvpXW, mvpXW, fmT, fmIdx, nA, fxRT, vol
     )
 
+    val mix = Mix(out)
 
-    AudioServer attach out
+
+    //AudioServer attach out
     /*Out.ar(0, out)
     Out.ar(1, out)
     Out.ar(2, out)
     Out.ar(3, out)*/
+
+    Out.ar(2, mix)
+    Out.ar(3, mix)
+    Out.ar(4, mix)
+    Out.ar(5, mix)
   }
 
 
@@ -173,7 +180,7 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
 
   }
 
-  val midiOutput = MidiCommunication.createMidiOutput(midiDeviceName)
+  val midiOutput = MidiCommunication.createMidiOutputByDeviceIndex(4)
 
 
   // controller id should be larger than 20 and < 40
