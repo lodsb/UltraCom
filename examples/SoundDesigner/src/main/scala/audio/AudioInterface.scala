@@ -45,7 +45,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
   val midiDeviceName = "BCR2000, USB MIDI, BCR2000"
 
 
-  val midiInput = MidiCommunication.createMidiInputByDeviceIndex(2)
+  val midiInput = MidiCommunication.createMidiInputByDeviceIndex(1)
   if(midiInput.isDefined) {
 
     midiInput.get.receipt.observe( { x => println(x)
@@ -61,7 +61,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
 
   }
   
-  val midiOutput = MidiCommunication.createMidiOutput(midiDeviceName)
+  val midiOutput = MidiCommunication.createMidiOutputByDeviceIndex(1)
   
 
   // controller id should be larger than 20 and < 40
