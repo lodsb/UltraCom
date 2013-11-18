@@ -20,7 +20,7 @@
 
 import org.mt4j.components.MTComponent
 import org.mt4j.components.visibleComponents.widgets.{MTSlider, MTBackgroundImage, Button, Slider, TextArea}
-import org.mt4j.input.midi.{MidiNoteOffMsg, MidiNoteOnMsg, MidiCommunication}
+import org.mt4j.input.midi.{MidiCtrlMsg, MidiNoteOffMsg, MidiNoteOnMsg, MidiCommunication}
 import org.mt4j.util.math.Vector3D
 import org.mt4j.{Scene, Application}
 import org.mt4j.types.{Vec3d}
@@ -47,8 +47,6 @@ object VPDSynthApp extends Application {
   def main(args: Array[String]) {
 
 
-    AudioServer.start(true)
-
     this.execute(false)
 
   }
@@ -63,6 +61,9 @@ object VPDSynthApp extends Application {
 
 
 class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
+
+
+  AudioServer.start(true)
 
   def buildSynth(cfmp: Float, mfmp: Float, freqp: Float,
                  aetp: Float, cvpyp: Float, mvpyp: Float, cvpxp: Float,
@@ -95,13 +96,17 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
 
 
     AudioServer attach out
+    /*Out.ar(0, out)
+    Out.ar(1, out)
+    Out.ar(2, out)
+    Out.ar(3, out)*/
   }
 
 
   showTracer(true)
 
   private val parameterMapping = Seq[(String, Int, (Float, Float))](
-    //("frequency", 6, (2.0f, 1000.0f)), dont show the frequency
+   // ("frequency", 6, (2.0f, 1000.0f)), //dont show the frequency
     ("ampEnvType", 6, (0.0f, 1.0f)),
     ("cleanFmRingmod", 7, (-0.25f, 1.0f)),
     ("fmModIdx", 7, (0.0f, 1000.0f)),
@@ -138,7 +143,7 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
   var mySynth: Option[Synthesizer] = None
 
   var currentChannel = 0;
-  var currentOctave = 5;
+  var currentOctave = 1;
 
 
   val midiInput = MidiCommunication.createMidiInputByDeviceIndex(2)
@@ -156,6 +161,18 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
       true;
     })
 
+  }
+
+  val midiOutput = MidiCommunication.createMidiOutput(midiDeviceName)
+
+
+  // controller id should be larger than 20 and < 40
+  def sendControlMessage(controllerChannel: Int, controllerNumber: Int, controllerValue: Float) : Unit = {
+    if(this.midiOutput.isDefined) {
+      this.midiOutput.foreach(output => {
+        output.senderAction(new MidiCtrlMsg(controllerChannel, controllerNumber, controllerValue)) //MidiCtrlMsg(channel: Int, num: Int, data: Float)
+      })
+    }
   }
 
   def noteOn(midiChan: Int, midiNote: Int) {
@@ -189,18 +206,18 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
     x => println(x); true
   })
 
-  val xoffset = 200
-  val yoffset = 400
+  val xoffset = 190
+  val yoffset = 530
 
   def labeledSlider(position: Vector3D, name: String, min: Float, max: Float, color: Color): MTSlider = {
-    val text = TextArea()
-    text.setText(name)
-    text.setPickable(false)
+    //val text = TextArea()
+    //text.setText(name)
+    //text.setPickable(false)
 
     val info = TextArea()
     info.setPickable(false)
 
-    val slider = Slider(min, max, 150, 30)
+    val slider = Slider(min, max, 250, 60)
 
 
     // bug with relative positioning for children of slider?
@@ -210,19 +227,19 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
     slider.setPositionGlobal(position)
 
     //text.rotateZ(Vec3d(0,0,0), -90f)
-    text.setPositionGlobal(Vec3d(position.x, position.y-150))
+    //text.setPositionGlobal(Vec3d(position.x, position.y-150))
     //
-    info.setPositionGlobal(Vec3d(position.x-20, position.y-100))
+    info.setPositionGlobal(Vec3d(position.x-20, position.y+150))
 
 
     info.text <~ slider.value.map( x => x.formatted("%2.2f"))
 
-    text.strokeColor() = color
+    //text.strokeColor() = color
     slider.fillColor() = color
     slider.strokeColor() = color
     info.strokeColor() = color
 
-    canvas += text ++ info ++ slider
+    canvas += info ++ slider
 
     slider
   }
@@ -239,23 +256,23 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
 
     text += bup ++ bdown
 
-    bup.setPositionRelativeToParent(Vec3d(130, 15))
+    bup.setPositionRelativeToParent(Vec3d(60, 15))
     bdown.setPositionRelativeToParent(Vec3d(-40, 15))
 
     var currentValue = value
 
-    text.text() = name+": "+ currentValue
+    text.text() = currentValue+""
 
     bup.pressed.observe {
       x => println(x)
       if (x && currentValue + 1 <= max) {
-        currentValue = currentValue + 1; text.text() = name +": "+ currentValue + ""
+        currentValue = currentValue + 1; text.text() =  currentValue + ""
       }; callback(currentValue); true
     }
     bdown.pressed.observe {
       x => println(x)
         if (x && currentValue - 1 >= min) {
-        currentValue = currentValue - 1; text.text() = name +": "+ currentValue + ""
+        currentValue = currentValue - 1; text.text() =  currentValue + ""
       }; callback(currentValue); true
     }
 
@@ -278,8 +295,8 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
     canvas().addChild(backgroundImage)
 
   for (i <- 0 to parameterMapping.size - 1) {
-    val xcoord: Int = (i % 8) * xoffset + 180
-    val ycoord: Int = (i / 8) * yoffset + 250
+    val xcoord: Int = (i % 9) * xoffset + 250
+    val ycoord: Int = (i / 9) * yoffset + 250
     val position = Vec3d(xcoord, ycoord)
 
     val parmName = parameterMapping(i)._1
@@ -304,17 +321,27 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
 
   }
 
-  val octave = upDownThing("Octave", -2, 8, 4, colorMap(8), {
+  val octave = upDownThing("Octave", -2, 8, 1, colorMap(8), {
     x: Int => currentOctave = x
   })
-  octave.setPositionGlobal(Vec3d(1920/2, 800))
+  octave.setPositionGlobal(Vec3d(1620f,760f))
 
   val pattern = upDownThing("Pattern", 0, 5, 0, colorMap(9), {
-    x: Int => currentChannel = x
+    x: Int => currentChannel = x ; println("pattern"+x)
   })
-  pattern.setPositionGlobal(Vec3d(1920/2, 900))
+  pattern.setPositionGlobal(Vec3d(1620f, 840f))
 
-  canvas += octave ++ pattern
+  val mod1 = Slider(0,1,120, 30)
+  mod1.setPositionGlobal(Vec3d(1620f, 920f))
+
+  mod1.value.observe {x=> this.sendControlMessage(currentChannel, 21, x) ;true}
+
+  val mod2 = Slider(0,1,120, 30)
+  mod2.setPositionGlobal(Vec3d(1620f, 1000f))
+
+  mod2.value.observe {x=> this.sendControlMessage(currentChannel, 22, x) ;true}
+
+  canvas += octave ++ pattern ++ mod1 ++ mod2
 
 }
 
