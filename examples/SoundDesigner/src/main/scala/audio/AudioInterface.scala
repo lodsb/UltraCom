@@ -45,7 +45,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
   val midiDeviceName = "BCR2000, USB MIDI, BCR2000"
 
 
-  val midiInput = MidiCommunication.createMidiInputByDeviceIndex(2)
+  val midiInput = MidiCommunication.createMidiInputByDeviceIndex(1)
   if(midiInput.isDefined) {
 
     midiInput.get.receipt.observe( { x => println(x)
@@ -60,15 +60,20 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
     })
 
   }
-  
-  val midiOutput = MidiCommunication.createMidiOutput(midiDeviceName)
+
+  val midiOutput = MidiCommunication.createMidiOutputByDeviceIndex(4)
   
 
   // controller id should be larger than 20 and < 40
   def sendControlMessage(controllerChannel: Int, controllerNumber: Int, controllerValue: Float) : Unit = {
+    println("called send control")
     if(this.midiOutput.isDefined) {
+      println("IS SENDING")
       this.midiOutput.foreach(output => {
-        output.senderAction(new MidiCtrlMsg(controllerChannel, controllerNumber, controllerValue)) //MidiCtrlMsg(channel: Int, num: Int, data: Float) 
+
+        val ctrlMsg = MidiCtrlMsg(controllerChannel, controllerNumber, controllerValue)
+        println(ctrlMsg)
+        output.senderAction(ctrlMsg ) //MidiCtrlMsg(channel: Int, num: Int, data: Float)
       })
     }
   }

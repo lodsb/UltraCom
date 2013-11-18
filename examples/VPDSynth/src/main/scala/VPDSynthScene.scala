@@ -156,7 +156,7 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
   var currentOctave = 1;
 
 
-  val midiInput = MidiCommunication.createMidiInputByDeviceIndex(2)
+  val midiInput = MidiCommunication.createMidiInputByDeviceIndex(1)
   if (midiInput.isDefined) {
 
     midiInput.get.receipt.observe({
@@ -309,8 +309,14 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
     canvas().addChild(backgroundImage)
 
   for (i <- 0 to parameterMapping.size - 1) {
+<<<<<<< HEAD
     val xcoord: Int = (i % 9) * xoffset + VPDSynthApp.width/8
     val ycoord: Int = (i / 9) * yoffset + VPDSynthApp.width/8
+=======
+
+    val xcoord: Int = (i % 9) * xoffset + 250
+    val ycoord: Int = (i / 9) * yoffset + 250
+>>>>>>> 484e462e8d12b6e31be63e6734bda84b6d5c6663
     val position = Vec3d(xcoord, ycoord)
 
     val parmName = parameterMapping(i)._1
