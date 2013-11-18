@@ -19,7 +19,7 @@
 */
 
 import org.mt4j.components.MTComponent
-import org.mt4j.components.visibleComponents.widgets.{MTSlider, Button, Slider, TextArea}
+import org.mt4j.components.visibleComponents.widgets.{MTSlider, MTBackgroundImage, Button, Slider, TextArea}
 import org.mt4j.input.midi.{MidiNoteOffMsg, MidiNoteOnMsg, MidiCommunication}
 import org.mt4j.util.math.Vector3D
 import org.mt4j.{Scene, Application}
@@ -102,19 +102,19 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
 
   private val parameterMapping = Seq[(String, Int, (Float, Float))](
     //("frequency", 6, (2.0f, 1000.0f)), dont show the frequency
-    ("cleanFmRingmod", 7, (-0.25f, 1.0f)),
-    ("modFreqMult", 7, (0.0f, 1.0f)),
     ("ampEnvType", 6, (0.0f, 1.0f)),
-    ("carrierVPSYType", 3, (0.0f, 1.0f)),
-    ("modulatorVPSYType", 4, (0.0f, 1.0f)),
-    ("carrierVPSXType", 1, (0.0f, 1.0f)),
-    ("modulatorVPSXType", 2, (0.0f, 1.0f)),
-    ("carrierVPSYWeight", 3, (0.0f, 20.0f)),
-    ("modulatorVPSYWeight", 4, (0.0f, 20.0f)),
-    ("carrierVPSXWeight", 1, (0.0f, 20.0f)),
-    ("modulatorVPSXWeight", 2, (0.0f, 20.0f)),
+    ("cleanFmRingmod", 7, (-0.25f, 1.0f)),
     ("fmModIdx", 7, (0.0f, 1000.0f)),
     ("fmModType", 7, (0.0f, 1.0f)),
+    ("modFreqMult", 7, (0.0f, 1.0f)),
+    ("carrierVPSXType", 1, (0.0f, 1.0f)),
+    ("modulatorVPSXType", 2, (0.0f, 1.0f)),
+    ("carrierVPSYType", 3, (0.0f, 1.0f)),
+    ("modulatorVPSYType", 4, (0.0f, 1.0f)),
+    ("carrierVPSXWeight", 1, (0.0f, 20.0f)),
+    ("modulatorVPSXWeight", 2, (0.0f, 20.0f)),
+    ("carrierVPSYWeight", 3, (0.0f, 20.0f)),
+    ("modulatorVPSYWeight", 4, (0.0f, 20.0f)),
     ("noiseAmount", 8, (0.0f, 1.0f)),
     ("fxRouteType", 8, (0.0f, 1.0f))
   );
@@ -270,6 +270,12 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
     text
 
   }
+
+
+    val image = app.loadImage("background.png")
+    image.resize(app.width, app.height)
+    val backgroundImage = new MTBackgroundImage(app, image, false)
+    canvas().addChild(backgroundImage)
 
   for (i <- 0 to parameterMapping.size - 1) {
     val xcoord: Int = (i % 8) * xoffset + 180
