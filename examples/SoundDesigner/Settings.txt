@@ -1,12 +1,15 @@
+DefaultAudioDevice=MOTU Audio ASIO
 #Wed Jan 30 04:24:13 CET 2008	
 Frametitle=UI
+
 #ScSynthPath=/Applications/SuperCollider/SuperCollider.app/Contents/Resources/scsynth
 #ScSynthPath=C:\\Program Files\\SuperCollider-3.6.5\\scsynth.exe
-ScSynthPath=/usr/local/bin/scsynth
+ScSynthPath=C:\\Program Files (x86)\\SuperCollider\\scsynth.exe
+#ScSynthPath=/usr/local/bin/scsynth
 #Renderer: OpenGL: 1 P3D: 2
 Renderer=1
 #Fullscreen:'true' or 'false'
-Fullscreen=false
+Fullscreen=true
 #Switch for using fullscreen exclusive mode 
 #(if not exclusive, mt4j just uses an undecorated window, other windows can overlap it)
 FullscreenExclusive=false

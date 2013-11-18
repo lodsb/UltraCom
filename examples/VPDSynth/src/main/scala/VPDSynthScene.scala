@@ -146,7 +146,7 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
   var currentOctave = 1;
 
 
-  val midiInput = MidiCommunication.createMidiInputByDeviceIndex(2)
+  val midiInput = MidiCommunication.createMidiInputByDeviceIndex(1)
   if (midiInput.isDefined) {
 
     midiInput.get.receipt.observe({
