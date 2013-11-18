@@ -295,6 +295,7 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
     canvas().addChild(backgroundImage)
 
   for (i <- 0 to parameterMapping.size - 1) {
+
     val xcoord: Int = (i % 9) * xoffset + 250
     val ycoord: Int = (i / 9) * yoffset + 250
     val position = Vec3d(xcoord, ycoord)

@@ -46,10 +46,9 @@ class VPDTimbreSpace extends TimbreSpace {
 
 
   //private val presetBank = new PresetBank("gtm_result_withfreqs_FILTERED80.000000_62k_presets_lat4900_rbf100_beta0.200000.csv_extracted.csv", mappingJitter = 0.02f, true, true)
-
-
   private val presetBank = new PresetBank("gtm_result_withfreqs_FILTERED80.000000_62k_presets_lat4900_rbf100_beta0.200000.csv_extracted.csv", mappingJitter = 0.02f, true, true)
 
+//private val presetBank = new PresetBank("gtm_result_withfreqs_FILTERED80.000000_62k_presets_lat4900_rbf225_beta0.050000_iter1000.000000_numfeat50.000000.csv_extracted.csv", mappingJitter = 0.02f, true, true)
 
 
   /**

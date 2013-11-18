@@ -111,7 +111,7 @@ object MidiCommunication {
 		val DUMP_OUT = false
 		val infos = knownDevices		
 
-		infos.foreach(x => println("Found MIDI-Device: "+x.getDescription))
+		infos.foreach(x => println("Found MIDI-Device: "+x.getDescription+ " "+x.getName+""+x.getVersion))
 
 		val inDevO = infos.filter(_.getDescription == deviceName).map(MidiSystem.getMidiDevice(_)).find(_.getMaxTransmitters() != 0)
 
@@ -160,6 +160,29 @@ object MidiCommunication {
 		ret
 	}
 
+  private def openDeviceForOutput(outDevO: Option[MidiDevice]) : Option[MidiOutput] = {
+    var ret: Option[MidiOutput] = None;
+
+    try {
+      outDevO match {
+        case Some(outDev) =>
+          outDev.open
+          val output = new MidiOutput(outDev.getReceiver)
+
+          ret = Some(output)
+
+        case _ =>
+          //if (outDevO.isEmpty) println("No output device '" + deviceName + "' found!")
+      }
+    } catch {
+      case e:Throwable =>
+        println("Error initializing MIDI: ")
+        e.printStackTrace()
+    }
+
+    ret
+  }
+
 	def createMidiOutput(deviceName: String): Option[MidiOutput] = {
 		val DUMP_IN = false
 		val DUMP_OUT = false
@@ -169,24 +192,25 @@ object MidiCommunication {
 
 		infos.foreach(x => println(x.getDescription))
 
-		val outDevO = infos.filter(_.getDescription == deviceName).map(MidiSystem.getMidiDevice(_)).find(_.getMaxReceivers() != 0)
-		try {
-			outDevO match {
-				case Some(outDev) =>
-					outDev.open
-					val output = new MidiOutput(outDev.getReceiver)
-
-					ret = Some(output)
-
-				case _ =>
-					if (outDevO.isEmpty) println("No output device '" + deviceName + "' found!")
-			}
-		} catch {
-			case e:Throwable =>
-				println("Error initializing MIDI: ")
-				e.printStackTrace()
-		}
+		val outDevO = infos.filter(_.getDescription == deviceName).map(MidiSystem.getMidiDevice(_)).find(_.getMaxReceivers() >= 0)
+    ret = openDeviceForOutput(outDevO)
 
 		ret
 	}
+
+
+
+  def createMidiOutputByDeviceIndex(index: Int) : Option[MidiOutput] = {
+
+    val infos = knownDevices
+
+    if(index < knownDevices.size) {
+      val deviceInfo = infos(index)
+
+      println("Opening "+deviceInfo)
+      openDeviceForOutput(Some(MidiSystem.getMidiDevice(deviceInfo)))
+    } else {
+      None
+    }
+  }
 }
