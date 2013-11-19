@@ -28,6 +28,8 @@ import org.mt4j.components.ComponentImplicits._
 import org.lodsb.reakt.Implicits._
 import org.mt4j.components.visibleComponents.font.FontManager
 import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle
+import org.mt4j.components.TransformSpace
+import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleProcessor
 
 import org.mt4j.util.Color
 import org.mt4j.util.MTColor
@@ -66,7 +68,7 @@ object VPDSynthApp extends Application {
 object VPDSynthScene {
   
   final val SliderLength = VPDSynthApp.height/7f
-  final val SliderWidth = SliderLength/6f
+  final val SliderWidth = SliderLength/5f
   
 }
 
@@ -151,8 +153,8 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
     5 -> Color(12, 20, 130),
     6 -> Color(12, 180, 70),
     7 -> Color(52, 80, 70),
-    8 -> Color(112, 0, 0),
-    9 -> Color(0, 120, 0)
+    8 -> Color(150, 0, 0),
+    9 -> Color(0, 150, 0)
   )
 
 
@@ -214,21 +216,23 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
     }
   }
 
-  //val mySynthDef = buildSynth(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1)
+  val mySynthDef = buildSynth(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1)
 
 
-  //mySynth = Some(mySynthDef.play())
+  mySynth = Some(mySynthDef.play())
 
 
- /* mySynth.get.parameters.observe({
+  mySynth.get.parameters.observe({
     x => println(x); true
-  })*/
+  })
 
   val xoffset = VPDSynthApp.width/10
   val yoffset = VPDSynthApp.height/2
   //val font = createFont(processing.core.PApplet pa, java.lang.String fontFileName, int fontSize, MTColor fillColor, boolean antiAliased) 
   val font = FontManager.getInstance.createFont(VPDSynthApp, "SansSerif", VPDSynthApp.width/100, new MTColor(255,255,255), new MTColor(255,255,255), true)
 
+  
+  
   def labeledSlider(position: Vector3D, name: String, min: Float, max: Float, color: Color, parent: MTComponent): MTSlider = {
     val text = TextArea()
     text.setText(name)
@@ -242,16 +246,14 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
     val slider = Slider(min, max, VPDSynthScene.SliderLength, VPDSynthScene.SliderWidth)
     slider.getKnob.setFillColor(new MTColor(255,255,255))
 
-    // bug with relative positioning for children of slider?
-
 
     slider.rotateZGlobal(Vec3d(0,0,0), 0f)
-    slider.setPositionRelativeToParent(position)
+    slider.setPositionGlobal(position)
 
     text.rotateZ(Vec3d(0,0,0), 0f)
-    text.setPositionRelativeToParent(Vec3d(position.x, position.y-VPDSynthApp.height/25))
+    text.setPositionGlobal(Vec3d(position.x, position.y-VPDSynthApp.height/25))
 
-    info.setPositionRelativeToParent(Vec3d(position.x-VPDSynthApp.width/100, position.y+VPDSynthApp.height/25))
+    info.setPositionGlobal(Vec3d(position.x-VPDSynthApp.width/100, position.y+VPDSynthApp.height/25))
 
 
     info.text <~ slider.value.map( x => x.formatted("%2.2f"))
@@ -269,17 +271,20 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
   def upDownThing(name: String, min: Int, max: Int, value: Int, color: Color, callback: Int => Unit): MTComponent = {
     val text = TextArea()
 
-    val bup = Button("> +1")
-    val bdown = Button("-1 <")
+    val bup = Button("+1")
+    bup.setFont(font)    
+    val bdown = Button("-1")
+    bdown.setFont(font)    
 
     text.setPickable(false)
+    text.setFont(font)    
     //bup.setPickable(false)
     //bdown.setPickable(false)
 
     text += bup ++ bdown
 
-    bup.setPositionRelativeToParent(Vec3d(60, 15))
-    bdown.setPositionRelativeToParent(Vec3d(-40, 15))
+    bup.setPositionRelativeToParent(Vec3d(60, bup.getHeightXY(TransformSpace.GLOBAL)/2))
+    bdown.setPositionRelativeToParent(Vec3d(-40, bdown.getHeightXY(TransformSpace.GLOBAL)/2))
 
     var currentValue = value
 
@@ -320,96 +325,158 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
     
     val rectHeight = VPDSynthApp.height/7
     val inputWidth = VPDSynthApp.width/8
+    val padding = VPDSynthApp.width/100
     
-    val rect1 = new MTRoundRectangle(VPDSynthApp, 0, 0, 0, VPDSynthApp.width/8, rectHeight, VPDSynthApp.width/50, VPDSynthApp.width/50)
+    val rect1 = new MTRoundRectangle(VPDSynthApp, VPDSynthApp.width - VPDSynthApp.width/8, VPDSynthApp.height/2, 0, VPDSynthApp.width/8, rectHeight, VPDSynthApp.width/50, VPDSynthApp.width/50)
     
-    val rect2 = new MTRoundRectangle(VPDSynthApp, VPDSynthApp.width/20, 0, 0, VPDSynthApp.width/2, rectHeight, VPDSynthApp.width/50, VPDSynthApp.width/50)  
+    val rect2 = new MTRoundRectangle(VPDSynthApp, - VPDSynthApp.width/4 + rectHeight, VPDSynthApp.width/4, 0, VPDSynthApp.width/2, rectHeight, VPDSynthApp.width/50, VPDSynthApp.width/50)  
     
-    val rect3 = new MTRoundRectangle(VPDSynthApp, VPDSynthApp.width/2, 0, 0, VPDSynthApp.width/2, rectHeight, VPDSynthApp.width/50, VPDSynthApp.width/50)   
+    val rect3 = new MTRoundRectangle(VPDSynthApp, VPDSynthApp.width/2 - 2*padding, padding, 0, VPDSynthApp.width/2 + padding, rectHeight, VPDSynthApp.width/50, VPDSynthApp.width/50)   
     
-    val rect4 = new MTRoundRectangle(VPDSynthApp, 0, VPDSynthApp.height/2, 0, VPDSynthApp.width/2, rectHeight, VPDSynthApp.width/50, VPDSynthApp.width/50)
+    val rect4 = new MTRoundRectangle(VPDSynthApp, VPDSynthApp.width/6 + padding, VPDSynthApp.height - rectHeight - padding, 0, VPDSynthApp.width/2 + padding, rectHeight, VPDSynthApp.width/50, VPDSynthApp.width/50)
     
-    val rect5 = new MTRoundRectangle(VPDSynthApp, VPDSynthApp.height/2, VPDSynthApp.height/2, 0, VPDSynthApp.width/4, rectHeight, VPDSynthApp.width/50, VPDSynthApp.width/50)
+    val rect5 = new MTRoundRectangle(VPDSynthApp, VPDSynthApp.width/6, padding, 0, VPDSynthApp.width/4, rectHeight, VPDSynthApp.width/50, VPDSynthApp.width/50)
 
     val rects = Array(rect1,rect2,rect3,rect4,rect5)
     
     rects.foreach(rect => {
       rect.setFillColor(new MTColor(0,0,0,50))
       rect.setStrokeColor(new MTColor(0,0,0,100))
+      rect.getInputProcessors().foreach(ip => {
+        if (ip.isInstanceOf[ScaleProcessor]) {
+          rect.unregisterInputProcessor(ip)
+				}
+			})
+		  rect.removeAllGestureEventListeners(classOf[ScaleProcessor])     
     })
    
     canvas += rect1 ++ rect2 ++ rect3 ++ rect4 ++ rect5
     
-    for (i <- 0 to parameterMapping.size - 1) {
-    val parmName = parameterMapping(i)._1
-    val parmRange = parameterMapping(i)._3
-    val group = parameterMapping(i)._2
-
-    var parent = 0
-    var position = Vec3d(0,0)//xcoord, ycoord)    
-      
-    if (i > cuts(0)) {
-      parent = 1
-      position = Vec3d(i*inputWidth, 0)
-    }
-    if (i > cuts(1)) {
-      parent = 2
-      position = Vec3d(i*inputWidth - cuts(1)*inputWidth, 0)
-    }
-    if (i > cuts(2)) {
-      parent = 3
-      position = Vec3d(i*inputWidth - cuts(2)*inputWidth, 0)      
-    }
-    if (i > cuts(3)) {
-      parent = 4
-      position = Vec3d(i*inputWidth - cuts(3)*inputWidth, 0)      
-    }
-    
-    val slider = labeledSlider(position, parmName, parmRange._1, parmRange._2, colorMap(group), rects(parent))
-
-    /*mySynth.get.parameters <~ slider.value.map({
+   val parmName = parameterMapping(0)._1
+   val parmRange = parameterMapping(0)._3
+   val group = parameterMapping(0)._2 
+   val position = Vec3d(rect1.getCenterPointGlobal.getX, rect1.getCenterPointGlobal.getY)
+   val slider1 = labeledSlider(position, parmName, parmRange._1, parmRange._2, colorMap(group), rects(0))   
+    mySynth.get.parameters <~ slider1.value.map({
       x => parmName -> x
-    })*/
+    })
 
     if (parmName != "noiseAmount") {
-      slider.value() = (parmRange._1 + parmRange._2) / 4.0f
+      slider1.value() = (parmRange._1 + parmRange._2) / 4.0f
     } else {
-      slider.value() = 0f
-    }
+      slider1.value() = 0f
+    }   
+    
+   
+   for (i <- 1 to 4) {
+      val parmName = parameterMapping(i)._1
+      val parmRange = parameterMapping(i)._3
+      val group = parameterMapping(i)._2    
+      val position = Vec3d(rect2.getCenterPointGlobal.getX - rect2.getWidthXY(TransformSpace.GLOBAL)/2 + inputWidth/2 + (i-1)*inputWidth, rect2.getCenterPointGlobal.getY)
+      val slider = labeledSlider(position, parmName, parmRange._1, parmRange._2, colorMap(group), rects(1))    
+      mySynth.get.parameters <~ slider.value.map({
+      x => parmName -> x
+      })
+      if (parmName != "noiseAmount") {
+        slider.value() = (parmRange._1 + parmRange._2) / 4.0f
+      } else {
+        slider.value() = 0f
+      }   
+   }
+   
+   for (i <- 1 to 4) {
+      val parmName = parameterMapping(i+4)._1
+      val parmRange = parameterMapping(i+4)._3
+      val group = parameterMapping(i+4)._2     
+      val position = Vec3d(rect3.getCenterPointGlobal.getX - rect3.getWidthXY(TransformSpace.GLOBAL)/2 + inputWidth/2 + (i-1)*inputWidth, rect3.getCenterPointGlobal.getY)
+      val slider = labeledSlider(position, parmName, parmRange._1, parmRange._2, colorMap(group), rects(2))           
+      mySynth.get.parameters <~ slider.value.map({
+        x => parmName -> x
+      })
+  
+      if (parmName != "noiseAmount") {
+        slider.value() = (parmRange._1 + parmRange._2) / 4.0f
+      } else {
+        slider.value() = 0f
+      }         
+   }
+   
+   for (i <- 1 to 4) {   
+      val parmName = parameterMapping(i+8)._1
+      val parmRange = parameterMapping(i+8)._3
+      val group = parameterMapping(i+8)._2
+      val position = Vec3d(rect4.getCenterPointGlobal.getX - rect4.getWidthXY(TransformSpace.GLOBAL)/2 + inputWidth/2 + (i-1)*inputWidth, rect4.getCenterPointGlobal.getY)
+      val slider = labeledSlider(position, parmName, parmRange._1, parmRange._2, colorMap(group), rects(3))          
+      mySynth.get.parameters <~ slider.value.map({
+        x => parmName -> x
+      })
+  
+      if (parmName != "noiseAmount") {
+        slider.value() = (parmRange._1 + parmRange._2) / 4.0f
+      } else {
+        slider.value() = 0f
+      }         
+   }
 
-    //slider.setPositionGlobal(position)
-
-    //canvas += slider
-
-  }
+   for (i <- 1 to 2) {     
+      val parmName = parameterMapping(i+12)._1
+      val parmRange = parameterMapping(i+12)._3
+      val group = parameterMapping(i+12)._2     
+      val position = Vec3d(rect5.getCenterPointGlobal.getX - rect5.getWidthXY(TransformSpace.GLOBAL)/2 + inputWidth/2 + (i-1)*inputWidth, rect5.getCenterPointGlobal.getY)
+      val slider = labeledSlider(position, parmName, parmRange._1, parmRange._2, colorMap(group), rects(4))          
+      mySynth.get.parameters <~ slider.value.map({
+        x => parmName -> x
+      })
+  
+      if (parmName != "noiseAmount") {
+        slider.value() = (parmRange._1 + parmRange._2) / 4.0f
+      } else {
+        slider.value() = 0f
+      }         
+   }
+   
+    rect1.rotateZGlobal(rect1.getCenterPointGlobal, 270)   
+    rect2.rotateZGlobal(rect2.getCenterPointGlobal, 90)
+    rect3.rotateZGlobal(rect3.getCenterPointGlobal, 180)
+    rect5.rotateZGlobal(rect5.getCenterPointGlobal, 180)      
+   
+    val specialRect = new MTRoundRectangle(VPDSynthApp, 3*VPDSynthApp.width/4, VPDSynthApp.height - 2*rectHeight - padding, 0, VPDSynthApp.width/6, 2*rectHeight, VPDSynthApp.width/50, VPDSynthApp.width/50)
+    specialRect.setFillColor(new MTColor(0,0,0,50))
+    specialRect.setStrokeColor(new MTColor(0,0,0,100))
+    specialRect.getInputProcessors().foreach(ip => {
+        if (ip.isInstanceOf[ScaleProcessor]) {
+          specialRect.unregisterInputProcessor(ip)
+				}
+			})
+    specialRect.removeAllGestureEventListeners(classOf[ScaleProcessor])
+    
+  val (cx, cy) = (specialRect.getCenterPointGlobal.getX, specialRect.getCenterPointGlobal.getY)
 
   val octave = upDownThing("Octave", -2, 8, 1, colorMap(8), {
     x: Int => currentOctave = x
   })
-  octave.setPositionGlobal(Vec3d(1620f,760f))
+  octave.setPositionGlobal(Vec3d(cx,cy - 3*rectHeight/5))
 
   val pattern = upDownThing("Pattern", 0, 5, 0, colorMap(9), {
     x: Int => currentChannel = x ; println("pattern"+x)
   })
-  pattern.setPositionGlobal(Vec3d(1620f, 840f))
+  pattern.setPositionGlobal(Vec3d(cx, cy - 1*rectHeight/5))
 
-  val mod1 = Slider(0,1,120, 30)
-  mod1.setPositionGlobal(Vec3d(1620f, 920f))
+  val mod1 = Slider(0,1,VPDSynthScene.SliderLength, VPDSynthScene.SliderWidth)
+  mod1.getKnob.setStrokeColor(new MTColor(150,150,150))
+  mod1.setPositionGlobal(Vec3d(cx, cy + 1*rectHeight/5))
 
   mod1.value.observe {x=> this.sendControlMessage(currentChannel, 21, x) ;true}
 
-  val mod2 = Slider(0,1,120, 30)
-  mod2.setPositionGlobal(Vec3d(1620f, 1000f))
+  val mod2 = Slider(0,1,VPDSynthScene.SliderLength, VPDSynthScene.SliderWidth)
+  mod2.getKnob.setStrokeColor(new MTColor(150,150,150))  
+  mod2.setPositionGlobal(Vec3d(cx, cy + 3*rectHeight/5))
 
   mod2.value.observe {x=> this.sendControlMessage(currentChannel, 22, x) ;true}
 
-  canvas += octave ++ pattern ++ mod1 ++ mod2
+  specialRect += octave ++ pattern ++ mod1 ++ mod2
+  canvas += specialRect
 
 }
-
-
-
-
-
 
 
