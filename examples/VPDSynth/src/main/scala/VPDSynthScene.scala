@@ -27,7 +27,7 @@ import org.mt4j.types.{Vec3d}
 import org.mt4j.components.ComponentImplicits._
 import org.lodsb.reakt.Implicits._
 import org.mt4j.components.visibleComponents.font.FontManager
-import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle
+import org.mt4j.components.visibleComponents.shapes.{MTRectangle, MTRoundRectangle}
 import org.mt4j.components.TransformSpace
 import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleProcessor
 
@@ -316,10 +316,15 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
   }
 
 
-    val image = app.loadImage("background.png")
-    image.resize(app.width, app.height)
-    val backgroundImage = new MTBackgroundImage(app, image, false)
-    canvas().addChild(backgroundImage)
+    //val image = app.loadImage("background.png")
+    //image.resize(app.width, app.height)
+    //val backgroundImage = new MTBackgroundImage(app, image, false)
+    //canvas().addChild(backgroundImage)
+
+    val bg = new MTRectangle(VPDSynthApp, 0 , 0, VPDSynthApp.width, VPDSynthApp.height);
+    bg.setFillColor(Color(40f,40f,40f));
+    bg.setPickable(false)
+    canvas += bg
 
     val cuts = Array(0,4,8,12,14)
     
