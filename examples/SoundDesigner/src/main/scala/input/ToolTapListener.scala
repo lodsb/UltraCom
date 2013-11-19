@@ -11,6 +11,7 @@ import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent
 import org.mt4j.components.ComponentImplicits._
 
 import org.mt4j.types.Vec3d
+import org.mt4j.util.SessionLogger
 
 import ui._
 import ui.util._
@@ -37,6 +38,7 @@ class ToolTapListener(tool: Tool) extends IGestureEventListener{
 					}
           else if (tapEvent.getTapID == TapEvent.BUTTON_DOUBLE_CLICKED) {
             println("tool double tapped")
+            SessionLogger.log("Deleted: Tool",SessionLogger.SessionEvent.Event, this, null, null)
             Ui -= tool
           }
 					true

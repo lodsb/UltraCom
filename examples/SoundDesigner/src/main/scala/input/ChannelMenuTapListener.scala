@@ -8,6 +8,7 @@ import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProc
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapEvent
 
 import org.mt4j.components.ComponentImplicits._
+import org.mt4j.util.SessionLogger
 
 import org.mt4j.types.Vec3d
 
@@ -31,6 +32,7 @@ class ChannelMenuTapListener(channelMenu: ChannelMenu) extends IGestureEventList
 					}
           else if (tapEvent.getTapID == TapEvent.BUTTON_DOUBLE_CLICKED) {
             println("channel menu double tapped")
+            SessionLogger.log("Deactivated: channel menu with channel " + channelMenu.channelNumber, SessionLogger.SessionEvent.Event, this, null, null)            
             ChannelMenu -= channelMenu
             Ui -= channelMenu
           }

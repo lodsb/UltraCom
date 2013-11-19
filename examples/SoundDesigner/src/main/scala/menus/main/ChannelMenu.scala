@@ -27,6 +27,7 @@ import org.mt4j.util.animation.Animation
 import org.mt4j.util.animation.AnimationEvent
 import org.mt4j.util.animation.IAnimationListener
 import org.mt4j.util.animation.MultiPurposeInterpolator
+import org.mt4j.util.SessionLogger
 
 import processing.core.PGraphics
 
@@ -44,8 +45,8 @@ object ChannelMenu {
   final val Width = Ui.width/10f
   final val Height = Width
   final val Color = new MTColor(0,20,80,40)
-  final val SliderWidth = 1*Width/2f
-  final val SliderHeight = Height/8f
+  final val SliderWidth = 3*Width/5f
+  final val SliderHeight = Height/7f
   final val DotWidth = Width/10f
   
   private var registry = Set[ChannelMenu]()
@@ -126,6 +127,7 @@ class ChannelMenu(app: Application, center: Vector3D, val channelNumber: Int)
         slider.rotateZ(center, 360f/MIDIInputChannels.Parameters * index)
         
         slider.value.observe({newValue => {
+          SessionLogger.log("Channel parameters changed; channel: " + this.channelNumber + ", parameter: " + MIDIControlEvent.LowestNumber + index,SessionLogger.SessionEvent.Event, this, null, null)
           Ui.audioInterface ! MIDIControlEvent(this.channelNumber, MIDIControlEvent.LowestNumber + index, newValue)
           true
         }})

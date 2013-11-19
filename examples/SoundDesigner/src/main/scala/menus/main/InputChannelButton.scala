@@ -15,6 +15,7 @@ import org.mt4j.util.Color
 import org.mt4j.util.math.Vector3D
 import org.mt4j.util.math.Vertex
 import org.mt4j.types.{Vec3d}
+import org.mt4j.util.SessionLogger
 
 import processing.core.PGraphics
 
@@ -87,12 +88,14 @@ class InputChannelButton(app: Application, menu: Menu, center: Vector3D, channel
     if (!ChannelMenu.isMenuVisible(channelNumber)) {
       val newGlobalVector = this.localToGlobal(Vec3d(this.getCenterPointLocal.getX, this.getCenterPointLocal.getY - ChannelMenu.Height/2f - Menu.Space))
       val menu = ChannelMenu(app, newGlobalVector, channelNumber)
+      SessionLogger.log("Activated: channel menu with channel " + channelNumber,SessionLogger.SessionEvent.Event, this, null, null)
       ChannelMenu += menu
       Ui += menu
     }
     else {
       val menuOption = ChannelMenu.menuFromChannelNumber(channelNumber)
       menuOption.foreach(menu => {
+        SessionLogger.log("Deactivated: channel menu with channel " + channelNumber,SessionLogger.SessionEvent.Event, this, null, null)        
         ChannelMenu -= menu
         Ui -= menu
       })

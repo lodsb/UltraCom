@@ -20,6 +20,7 @@ import org.mt4j.input.inputProcessors.componentProcessors.tapAndHoldProcessor.Ta
 
 import org.mt4j.components.ComponentImplicits._
 import org.mt4j.types.Vec3d
+import org.mt4j.util.SessionLogger
 
 import scala.actors._
 
@@ -73,6 +74,7 @@ class ToolMenuListener(app: Application) extends AbstractGlobalInputProcessor[MT
               if (!ToolContextMenu.isMenuInProximity(Vec3d(event.x, event.y)) && ToolContextMenu.isMenuInBounds(app, Vec3d(event.x, event.y)) && !CursorProcessor.isCursorInUse(event.id)) {
                 completedTaps = event :: completedTaps
                 val menu = ToolContextMenu(app, Vec3d(event.x, event.y))
+                SessionLogger.log("Created: Tool menu",SessionLogger.SessionEvent.Event, this, null, null)
                 ToolContextMenu += menu
                 Ui += menu      
               }

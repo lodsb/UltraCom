@@ -7,6 +7,7 @@ import org.mt4j.util.MTColor
 import org.mt4j.util.math.Vector3D
 import org.mt4j.util.math.Vertex
 import org.mt4j.types.{Vec3d}
+import org.mt4j.util.SessionLogger
 
 import processing.core.PGraphics
 
@@ -35,6 +36,7 @@ class ToolItem(app: Application, menu: ToolContextMenu, center: Vector3D, val pr
 
   override def clicked() = {
     println("clicked!")
+    SessionLogger.log("Created: Tool of type " + propertyType, SessionLogger.SessionEvent.Event, this, null, null)
     Ui += Tool(Ui, (menu.position.getX, menu.position.getY), propertyType)
     menu.remove()
   }
