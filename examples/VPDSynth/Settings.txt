@@ -9,7 +9,7 @@ Renderer=1
 Fullscreen=true
 #Switch for using fullscreen exclusive mode 
 #(if not exclusive, mt4j just uses an undecorated window, other windows can overlap it)
-FullscreenExclusive=true
+FullscreenExclusive=false
 #Resolution
 DisplayWidth=1920
 DisplayHeight=1080
@@ -22,7 +22,7 @@ Vertical_sync=true
 #Enables multiple mice use (windows, some linux)
 MultiMiceEnabled=false
 #Anti aliasing multisampling - '0' disables it - 2,4,8 determines the quality of the a.a.
-OpenGLAntialiasing=1
+OpenGLAntialiasing=0
 DefaultSessionLogName=logs/TESTING
 EnableLogging=true
 
