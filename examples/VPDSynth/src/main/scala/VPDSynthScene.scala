@@ -316,10 +316,10 @@ class VPDSynthScene(app: Application, name: String) extends Scene(app, name) {
   }
 
 
-    //val image = app.loadImage("background.png")
-    //image.resize(app.width, app.height)
-    //val backgroundImage = new MTBackgroundImage(app, image, false)
-    //canvas().addChild(backgroundImage)
+    val image = app.loadImage("background.png")
+    image.resize(app.width, app.height)
+    val backgroundImage = new MTBackgroundImage(app, image, false)
+    canvas().addChild(backgroundImage)
 
     val bg = new MTRectangle(VPDSynthApp, 0 , 0, VPDSynthApp.width, VPDSynthApp.height);
     bg.setFillColor(Color(40f,40f,40f));
