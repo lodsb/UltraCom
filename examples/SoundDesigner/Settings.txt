@@ -27,7 +27,7 @@ Vertical_sync=false
 #Enables multiple mice use (windows, some linux)
 MultiMiceEnabled=false
 #Anti aliasing multisampling - '0' disables it - 2,4,8 determines the quality of the a.a.
-OpenGLAntialiasing=1
+OpenGLAntialiasing=4
 #enable logging
 DefaultSessionLogName=logs/SoundDesigner_
 EnableLogging=true

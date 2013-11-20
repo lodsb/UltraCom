@@ -53,7 +53,7 @@ object ManipulableNode {
 * </ul>
 */
 class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) extends Node(app, nodeType, None, center) with Actor with AudioOutputChannels with MIDIInputChannels with ToolRegistry with Persistability {
-  private var exists = true
+  var exists = true
   protected var isNodePlaying = false
   private var playbackPos = 0.0f
 
@@ -285,6 +285,7 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
   */
   override def destroy() = {
     this.exists = false 
+    this.inEx = false
     this.removeTimeConnections()
     Ui.audioInterface ! StopAudioEvent(this.id)
     super.destroy()
