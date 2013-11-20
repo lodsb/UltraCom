@@ -224,6 +224,9 @@ class Menu(app: Application, val center: Vector3D, val rotationAngle: Float) ext
             this ! "CHECK_TIMEOUT"
           }
         }
+        case "STOP_ACTING" => {
+          exit()
+        }
       }
     }
   }
@@ -261,6 +264,7 @@ class Menu(app: Application, val center: Vector3D, val rotationAngle: Float) ext
       def processAnimationEvent(ae: AnimationEvent) {
         if(ae.getId() == AnimationEvent.ANIMATION_ENDED){ //if the animation has been played back uninterrupted
           inExistence = false
+          me ! "STOP_ACTING"
           Menu -= me
           Ui -= me
           println("fadeout ended")
