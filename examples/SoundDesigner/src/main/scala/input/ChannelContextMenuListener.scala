@@ -89,6 +89,9 @@ class ChannelContextMenuListener(node: Node) extends IGestureEventListener() wit
             this ! "CHECK"
           }
         }
+        case "STOP_ACTING" => {
+          exit()
+        }
       }
     }
     

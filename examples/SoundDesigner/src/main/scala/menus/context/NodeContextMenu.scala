@@ -34,6 +34,7 @@ object NodeContextMenu {
 abstract class NodeContextMenu(app: Application, val node: Node) extends ContextMenu(app) {
 
   protected[context] override def remove() = {
+    this.inExistence = false
     NodeContextMenu -= this
     Ui -= this
   }  

@@ -284,6 +284,12 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
   * Destroys this node, which also implies stopping any associated threads as well as its audio output.
   */
   override def destroy() = {
+    this.getGestureListeners.foreach(listener => {
+      listener match {
+        case actor: Actor => {actor ! "STOP_ACTING"}
+        case noActor => {}
+      }
+    })
     this.exists = false 
     this.inEx = false
     this.removeTimeConnections()
