@@ -40,6 +40,7 @@ object ContextMenu {
 */
 abstract class ContextMenu(app: Application) extends MTComponent(app) with Actor {
   
+  var inExistence = true
   this.setup()  
   
   private def setup() = {
@@ -64,7 +65,7 @@ abstract class ContextMenu(app: Application) extends MTComponent(app) with Actor
     var fadeOut = this.fadeOutAnimation(255, FadeOutTime)
     var isFadingOut = false
     
-    while (true) {
+    while(this.inExistence) {
       receive {
         case "CHECK_TIMEOUT" => {
           currentTime = System.nanoTime()
@@ -132,6 +133,7 @@ abstract class ContextMenu(app: Application) extends MTComponent(app) with Actor
   
   
   protected[context] def remove() = {
+    this.inExistence = false
     Ui -= this   
   }
   

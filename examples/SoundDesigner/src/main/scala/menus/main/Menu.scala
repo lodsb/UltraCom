@@ -136,6 +136,7 @@ object Menu {
 */
 class Menu(app: Application, val center: Vector3D, val rotationAngle: Float) extends MTRectangle(app, center.getX - Menu.Width/2, center.getY - Menu.Height/2, Menu.Width, Menu.Height) with Actor {
   
+  var inExistence = true
   this.setup()  
   
   private def setup() = {
@@ -199,7 +200,7 @@ class Menu(app: Application, val center: Vector3D, val rotationAngle: Float) ext
     var fadeOut = this.fadeOutAnimation(255, Menu.FadeOutTime)
     var isFadingOut = false
     
-    while (true) {
+    while (this.inExistence) {
       receive {
         case "CHECK_TIMEOUT" => {
           currentTime = System.nanoTime()
@@ -259,6 +260,7 @@ class Menu(app: Application, val center: Vector3D, val rotationAngle: Float) ext
     animation.addAnimationListener(new IAnimationListener() { 
       def processAnimationEvent(ae: AnimationEvent) {
         if(ae.getId() == AnimationEvent.ANIMATION_ENDED){ //if the animation has been played back uninterrupted
+          inExistence = false
           Menu -= me
           Ui -= me
           println("fadeout ended")

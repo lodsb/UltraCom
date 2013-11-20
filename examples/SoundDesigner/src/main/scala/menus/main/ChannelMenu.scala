@@ -91,13 +91,13 @@ class ChannelMenu(app: Application, center: Vector3D, val channelNumber: Int)
                     
       //register input processors
       this.registerInputProcessor(new DragProcessor(app))
-      this.registerInputProcessor(new RotateProcessor(app))
+     // this.registerInputProcessor(new RotateProcessor(app))
       val tapProcessor = new TapProcessor(app)
       tapProcessor.setEnableDoubleTap(true)
       this.registerInputProcessor(tapProcessor)
       
       //add gesture listeners
-      this.addGestureListener(classOf[RotateProcessor], new DefaultRotateAction(this)) 
+      //this.addGestureListener(classOf[RotateProcessor], new DefaultRotateAction(this)) 
       this.addGestureListener(classOf[DragProcessor], new BoundedDragAction(0, 0, Ui.width, Ui.height)) 
       this.addGestureListener(classOf[TapProcessor], new ChannelMenuTapListener(this))
       

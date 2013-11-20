@@ -58,12 +58,17 @@ object Node {
 *
 */
 class Node(val app: Application, var typeOfNode: NodeType, var associatedPath: Option[Path], center: Vector3D) extends MTEllipse(app, Vec3d(0,0), NodeType.Radius, NodeType.Radius) with NodeFeedback with NodeFeedforward with Persistability with Identifier {
+    protected[paths] var inEx = true
     private var scaleFactor = 1.0f //the current scale of this node
     private var rotationAngle = 0.0f //the current rotation angle (in degrees) of this node
     private var currentColor = this.nodeType.backgroundColor
     private var clockValue = 0 //the current clock value, which lies between 0 and 360
     
     this.setup()
+    
+    def inExistence: Boolean = {
+      this.inEx
+    }
     
     protected[paths] def setup(): Unit = {
       this.globalPosition := center

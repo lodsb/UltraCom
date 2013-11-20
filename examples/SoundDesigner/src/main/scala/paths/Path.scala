@@ -105,7 +105,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
            timeNodesMap: Map[TimeNode, Boolean], timeConnectionsList: List[TimeConnection], channels: Array[Boolean]) 
            extends AbstractVisibleComponent(app) with Actor with AudioOutputChannels with MIDIInputChannels with ToolRegistry with Persistability with Identifier {
  
-  private var exists = true
+  var exists = true
   
   private var playbackState = playback //whether this path is currently played back, paused or stopped  
   private var isReversedPlayback = reversed //whether the path is played back reversed
@@ -144,7 +144,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
       Playback ! PathPlaybackEvent(this, true)
     }
   }  
-    
+  
 
   def act = {         
     println("path: starting to act!")
@@ -1063,6 +1063,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
   
   
   override def destroy() = {
+    this.exists = false    
     Ui.audioInterface ! StopAudioEvent(this.id)
     super.destroy()
   }

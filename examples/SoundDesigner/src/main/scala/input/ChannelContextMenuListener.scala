@@ -21,7 +21,7 @@ import ui.events._
 import ui.menus.context._
 
 /**
-* This class realizes a listener for tap and hold actions on nodes eliciting channel context menus. 
+* This class realizes a listener for tap and hold actions on nodes eliciting channel context menus.
 */
 class ChannelContextMenuListener(node: Node) extends IGestureEventListener() with Actor {
 
@@ -61,10 +61,10 @@ class ChannelContextMenuListener(node: Node) extends IGestureEventListener() wit
     var keepChecking = false
     var initTime: Long = 0
     
-    while (true) {
+    while (node.inExistence) {
       receive {
         case "START_TIMER" => {
-          initTime = System.nanoTime() 
+          initTime = System.nanoTime()
           keepChecking = true
           this ! "CHECK"
         }
