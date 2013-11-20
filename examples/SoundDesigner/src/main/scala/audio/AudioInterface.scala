@@ -68,7 +68,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
   def sendControlMessage(controllerChannel: Int, controllerNumber: Int, controllerValue: Float) : Unit = {
     println("called send control")
     if(this.midiOutput.isDefined) {
-      println("IS SENDING")
+      print(">>")
       this.midiOutput.foreach(output => {
 
         val ctrlMsg = MidiCtrlMsg(controllerChannel, controllerNumber, controllerValue)
@@ -227,14 +227,12 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
   }
 
   def noteOn(midiChan: Int, midiNote: Int) {
-    println("NOTE ON")
+    print(".")
 
     var list = List[(Int, SynthInfo)]()
 
     synthMap.foreach({ kv =>
       val x = kv._2
-
-      println("NOTE YAY")
       if(midiChan == x.midiChan) {
         this.timbreSpace.noteOn(x.synth, x.octave, midiNote, x.relativePitch)
 
@@ -256,7 +254,7 @@ class AudioInterface(val timbreSpace: TimbreSpace) extends Actor {
   */
 
   def noteOff(midiChan: Int, midiNote: Int) {
-    println("NOTE OFF")
+    print("-")
     synthMap.values.foreach({ x =>
       if(midiChan == x.midiChan) {
         this.timbreSpace.noteOff(x.synth)
