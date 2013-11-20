@@ -231,7 +231,11 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
                 this ! event
               }              
             }
-
+            
+            else if (event.name == "STOP_ACTING") {
+              exit()
+            }
+            
             else println("OH NO!")
           }
         }
@@ -284,6 +288,7 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
   * Destroys this node, which also implies stopping any associated threads as well as its audio output.
   */
   override def destroy() = {
+    this ! "STOP_ACTING"
     this.getGestureListeners.foreach(listener => {
       listener match {
         case actor: Actor => {actor ! "STOP_ACTING"}

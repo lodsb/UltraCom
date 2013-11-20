@@ -497,6 +497,10 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
               }              
             }       
             
+            else if (event.name == "STOP_ACTING") {
+              exit()
+            }
+            
             else {
               println("OH NO! Event is " + event.name)
             }
@@ -1063,6 +1067,7 @@ class Path(app: Application, defaultConnectionFactory: ((Application, Node, Node
   
   
   override def destroy() = {
+    this ! "STOP_ACTING"
     this.exists = false    
     Ui.audioInterface ! StopAudioEvent(this.id)
     super.destroy()
