@@ -22,7 +22,7 @@ scalacOptions <++= scalaVersion map { version =>
 
 libraryDependencies += "de.sciss" %% "scalacollider" % "1.10.+"
 
-libraryDependencies += "de.sciss" %% "scalaosc" % "1.1.+"
+libraryDependencies += "de.sciss" %% "scalaosc" % "1.1.2+"
 
 libraryDependencies += "org.lodsb" %% "reakt" % "0.2-SNAPSHOT"
 

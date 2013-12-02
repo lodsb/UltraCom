@@ -21,11 +21,11 @@ package org.mt4j.input.osc
   +4>>
     >>  Made in Bavaria by fat little elves - since 1983.
  */
-/*
+
 import java.nio.channels.DatagramChannel
 import java.net.{SocketAddress, InetSocketAddress}
 import de.sciss.osc.{Channel, Packet, Message => OSCMessage, UDP => OSCviaUDP, TCP => OSCviaTCP, Transport => OSCTransport, Transmitter, PacketCodec => OSCPacketCodec}
-import de.sciss.osc.Channel.DirectedOutput
+
 
 object OSCCommunication {
 	class OSCTransportType;
@@ -38,7 +38,7 @@ object OSCCommunication {
 			case UDP => {
 				val r = OSCviaUDP.Receiver(address);
 				val sr = new SignalingOSCReceiver(r);
-				r.asInstanceOf[Channel.DirectedInput].action = {x:Packet => sr.receipt.emit(x)};
+				r.action = {x:Packet => sr.receipt.emit(x)};
 				r.connect()
 				sr
 			}
@@ -61,10 +61,9 @@ object OSCCommunication {
 				val cfg = OSCviaUDP.Config();
 				cfg.codec = OSCPacketCodec().doublesAsFloats().booleansAsInts();
 				val t = OSCviaUDP.Transmitter(localAddress, cfg)
-				val sendFunc = t.asInstanceOf[DirectedOutput].! _
 
 				val st = new OSCTransmitter(t);
-				st.sendAction =  { x:Packet => sendFunc(x); println(x);true}
+				st.sendAction =  { x:Packet => t.!(x); println(x);true}
 				t.connect()
 				st
 			}
@@ -85,4 +84,4 @@ object OSCCommunication {
 	}
 
 
-}*/
+}

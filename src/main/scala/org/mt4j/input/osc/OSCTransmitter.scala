@@ -23,7 +23,11 @@
 package org.mt4j.input.osc
 
 import de.sciss.osc.{Packet, Transmitter, Channel}
+import de.sciss.osc.Channel.Directed.Output
 
 
-// ducktaping class, since DirectedImpl for Transmitter is private final in ScalaOsc
-//class OSCTransmitter(val transmitter: Transmitter ) extends TraitTransmitOSCComm
+class OSCTransmitter(private val transmitter:  Output) extends TraitTransmitOSCComm {
+    def close() = transmitter.close()
+    def isConnected() = transmitter.isConnected
+}
+

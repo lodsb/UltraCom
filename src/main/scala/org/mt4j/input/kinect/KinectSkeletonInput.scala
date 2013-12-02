@@ -21,7 +21,7 @@
  */
 
 package org.mt4j.input.kinect
-/*
+
 import org.mt4j.util.math.Vector3D
 import java.net.InetSocketAddress
 import org.lodsb.reakt.async.VarA
@@ -128,4 +128,4 @@ class KinectSkeletonSource(osceletonAddress: InetSocketAddress) {
 		}
 
 	}
-}*/
+}
