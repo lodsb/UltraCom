@@ -15,22 +15,42 @@ import scala.collection.mutable.ArrayBuffer
 class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: Int)
   extends MTRectangle(app, widthValue, heightValue) with IGestureEventListener {
 
-  setStrokeColor(BLUE)
-  setFillColor(app.TRANSPARENT)
+  // -- attributes
+
+  // rotation/orientation factor
+  var signum = -1
+
+  // initialize sound/synthesizer for this canvas
+  val synthi = new Synthi()
 
   // containers are all ControllerContainers. Needed for their sequential ordering
   var containers = null.asInstanceOf[ArrayBuffer[ControllerContainer]]
   var activeController = null.asInstanceOf[Controller]
 
+
+  // -- initialization
+
+  setStrokeColor(BLUE)
+  setFillColor(app.TRANSPARENT)
   initializeBaseline
   initializeControllers(howMany)
 
+
+  // -- methods
 
   /**
    * Adds some controllers to this canvas. Every with equal width.
    * @param howMany Int How many controllers should be initialized
    */
   def initializeControllers(howMany: Int) {
+
+    howMany match {
+      case 2 =>
+      case 4 =>
+      case 8 =>
+      case 16 =>
+      case _ => return
+    }
 
     // quit if there are no controllers or the number of controllers didn't change
     if (containers != null && containers.length == howMany) {
@@ -127,7 +147,9 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
    * @param step The step number to be activated
    * @return The height of the controller to be activated
    */
-  def setStep(step: Int): Float = {
+  def playNext(step: Int): Float = {
+
+    // find the number of the new active controller
     var stepLength = null.asInstanceOf[Int]
     containers.synchronized {
       stepLength = Metronome.totalSteps/containers.length
@@ -136,12 +158,29 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
     while (i*stepLength < step) {
       i += 1
     }
-    if(activeController != null) {
+
+    // make the current activeController visibly inactive
+    if (activeController != null) {
       activeController.triggerActive
     }
+
+    // replace the current activeController with the following one
     activeController = containers(i-1).controller
     activeController.triggerActive
-    (-2f) * activeController.getHeight / height().asInstanceOf[Float]
+
+    // get the height of the new activeController as percent
+    // ratio of
+    val height = (-1f) * activeController.getHeight / (this.height().toFloat/2f)
+
+    synthi.play(height)
+
+    height
+  }
+
+
+  def rotate180 {
+    rotateZ(app.center, 180f)
+    signum *= -1
   }
 
 }

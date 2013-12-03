@@ -29,6 +29,7 @@ import org.mt4j.util.MTColor
 import scala.collection.mutable.ArrayBuffer
 import org.mt4j.components.visibleComponents.widgets.Slider
 import org.mt4j.output.audio.AudioServer
+import org.mt4j.components.MTComponent
 
 
 object app extends Application {
@@ -39,15 +40,7 @@ object app extends Application {
   def center = Vec3d(width/2f,height/2f)
 
   // get all ControllerCanvas in an ArrayBuffer
-  def allControllerCanvas = {
-    val children = app.scene.canvas().getChildren
-    val canvas = new ArrayBuffer[ControllerCanvas]()
-    children.foreach {
-      case c: ControllerCanvas => canvas += c
-      case _ =>
-    }
-    canvas
-  }
+  val allControllerCanvas = new ArrayBuffer[ControllerCanvas]()
 
 	def main(args: Array[String]): Unit = {
 		this.execute(false)
@@ -71,21 +64,49 @@ class PitchItScene extends Scene(app, "PitchIt Scene") {
 	// Show touches
 	showTracer(show = true)
 
+  val component1 = new MTComponent(app)
+  app.scene.canvas += component1
+
   // add a ControllerCanvas, which contains the sound-controller
-  val controllerCanvas = new ControllerCanvas(300f, 200f, 16)
-  app.scene.canvas() += controllerCanvas
-  controllerCanvas.setPositionGlobal(Vec3d(app.width/2f, app.height/2f))
+  val controllerCanvas1: ControllerCanvas = new ControllerCanvas(300f, 200f, 16)
+  component1 += controllerCanvas1
+  app.allControllerCanvas += controllerCanvas1
+  controllerCanvas1.setPositionGlobal(Vec3d(app.width/2f, app.height/2f))
 
   // add slider
-  val slider = Slider(2f, 16f, height=20f)
-  slider.value.map { x =>
-    val z = math.round(x)
-    if (z==2 || z==4 || z==8 || z==16) {
-      controllerCanvas.initializeControllers(z)
-    }
+  val slider1 = Slider(0f, 1f, height=20f)
+  slider1.value.map { x =>
+    val percent = x / slider1.getValueRangeVar
+    val numberOfControllers = math.pow(2,1+(percent / 0.25).toInt).toInt
+    controllerCanvas1.initializeControllers(numberOfControllers)
+    controllerCanvas1.synthi.activity() = percent
   }
-  app.scene.canvas() += slider
-  slider.globalPosition() = app.center.getAdded(Vec3d(0f,120f))
+  component1 += slider1
+  slider1.globalPosition() = app.center.getAdded(Vec3d(0f,120f))
+
+  //controllerCanvas1.rotate180
+
+/*
+
+  val component2 = new MTComponent(app)
+  app.scene.canvas += component2
+
+  // add a second ControllerCanvas, which contains the sound-controller
+  val controllerCanvas2 = new ControllerCanvas(300f, 200f, 16)
+  component2 += controllerCanvas2
+  controllerCanvas2.setPositionGlobal(Vec3d(app.width/2f, app.height/2f))
+
+  // add slider
+  val slider2 = Slider(0f, 1f, height=20f)
+  slider2.value.map { x =>
+    val percent = x / slider2.getValueRangeVar
+    val numberOfControllers = math.pow(2,1+(percent / 0.25).toInt).toInt
+    controllerCanvas2.initializeControllers(numberOfControllers)
+    controllerCanvas2.synthi.activity() = percent
+  }
+  app.scene.canvas() += slider2
+  slider2.globalPosition() = app.center.getAdded(Vec3d(0f,120f))
+*/
 
   // start Metronome
   Metronome() ! "start"

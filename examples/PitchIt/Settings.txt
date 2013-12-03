@@ -1,7 +1,7 @@
 #Wed Jan 30 04:24:13 CET 2008	
 Frametitle=Tutorial Two
-#ScSynthPath=C:/Program Files (x86)/SuperCollider/scsynth.exe
-ScSynthPath=/usr/local/bin/scsynth
+ScSynthPath=C:/Program Files (x86)/SuperCollider/scsynth.exe
+#ScSynthPath=/usr/local/bin/scsynth
 #Renderer: OpenGL: 1 P3D: 2
 Renderer=1
 #Fullscreen:'true' or 'false'
@@ -12,8 +12,8 @@ FullscreenExclusive=true
 #Resolution
 #DisplayWidth=1920
 #DisplayHeight=1080
-DisplayWidth=800
-DisplayHeight=600
+DisplayWidth=1100
+DisplayHeight=700
 #Which display to use for fullscreen
 Display=1
 #Framerate maximum

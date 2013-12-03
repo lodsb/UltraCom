@@ -45,7 +45,7 @@ class Metronome extends Actor {
     while (running) {
       counter++;
       app.allControllerCanvas.foreach( controllerCanvas =>
-        Sound().play(controllerCanvas.setStep(counter()))
+        controllerCanvas.playNext(counter())
       )
       Thread.sleep(duration)
     }

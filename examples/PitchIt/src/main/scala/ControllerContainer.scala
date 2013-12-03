@@ -7,6 +7,7 @@ import org.mt4j.input.inputProcessors.{MTGestureEvent, IGestureEventListener}
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent
 import org.mt4j.util.math.{Vertex, Vector3D}
 import scala.math._
+import org.mt4j.components.TransformSpace._
 
 /**
  * A wrapper class for controllers. For better handling of the touch/draw events.
@@ -50,25 +51,30 @@ class ControllerContainer(val widthValue: Float, var heightValue: Float)
    * @return The corner of this controller-rectangle next to the point
    */
   def getNearestCorner(point: Vector3D): Vector3D = {
+
+    // initialization
     var distance = Float.MaxValue
     var tmp = 0f
     var nearestCorner = null.asInstanceOf[Vector3D]
     val vertices: Array[Vertex] = getVerticesGlobal.clone()
 
-    // throw out the same corner
+    // throw out the same corners as the passed point
     for(i <- 0 to vertices.length-1) {
       if(vertices(i).equalsVector(point)) {
         vertices(i) = null.asInstanceOf[Vertex]
       }
     }
 
-    vertices.foreach( vertex => { if(vertex != null) {
-      tmp = point.distance2D(vertex)
-      if(tmp < distance) {
-        distance = tmp
-        nearestCorner = vertex
-      }
-    }})
+    // find nearestCorner
+    vertices.foreach {
+      case null =>
+      case vertex: Vertex =>
+        tmp = point.distance2D(vertex)
+        if (tmp < distance) {
+          distance = tmp
+          nearestCorner = vertex
+        }
+    }
     nearestCorner
   }
 
@@ -82,21 +88,31 @@ class ControllerContainer(val widthValue: Float, var heightValue: Float)
    */
   def getNewHeight(point: Vector3D): Float = {
 
-    // Get the two nearest corners
+    // Get the two nearest corners = the nearest line of the controller rectangle
     val nearestCorner = getNearestCorner(point)
     val secondNearestCorner = getNearestCorner(nearestCorner)
 
     // calculate the new height out of the known points
+
+    // the connection lines to the nearest corners
     val a = point.getSubtracted(nearestCorner)
     val b = secondNearestCorner.getSubtracted(nearestCorner)
+
+    // the angle between the connection lines
     val angle = a.angleBetween(b).toDouble
+
+    // distance from the point to the connection line
     val distance = a.length() * sin(angle)
+
+    // the new height for the controller rectangle
+    // height of the controller/2 minus the distance
     var newHeight = heightValue/2f - distance.toFloat
-    newHeight *= -1 * center.getSubtracted(point).getY.signum
+
+    // take the correct signum
+    newHeight *= parent.signum * parent.getPosition(GLOBAL).getSubtracted(point).getY.signum
 
     newHeight
   }
-
   def center = getCenterPointGlobal
   def parent = getParent.asInstanceOf[ControllerCanvas]
 

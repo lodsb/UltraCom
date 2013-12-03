@@ -55,7 +55,7 @@ class Controller(var widthValue: Float, var heightValue: Float)
   def parent = getParent.asInstanceOf[ControllerContainer]
 
   def getHeight: Float = {
-    val vertices = getVerticesGlobal
+    val vertices = getVerticesLocal//getVerticesGlobal
     var upperCorners = new ArrayBuffer[Vertex]()
     upperCorners += vertices(0)
     var lowerCorners = new ArrayBuffer[Vertex]()
