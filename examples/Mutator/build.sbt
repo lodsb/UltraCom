@@ -1,4 +1,4 @@
-name := "PitchIt"
+name := "Mutator"
 
 organization := "org.lodsb"
 
@@ -18,7 +18,10 @@ scalacOptions <++= scalaVersion map { version =>
 }
 
 
+
 libraryDependencies += "org.lodsb" %% "ultracom" % "0.2-SNAPSHOT"
+
+//libraryDependencies += "com.assembla.scala-incubator" % "graph-core_2.9.2" % "1.5.1"
 
 resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
 
@@ -27,6 +30,3 @@ unmanagedClasspath in Compile += Attributed.blank(new java.io.File("doesnotexist
 unmanagedBase <<= baseDirectory { base => base / "../../libraries/misc" }
 
 
-//seq(com.github.retronym.SbtOneJar.oneJarSettings: _*)
-
-libraryDependencies += "commons-lang" % "commons-lang" % "2.6"

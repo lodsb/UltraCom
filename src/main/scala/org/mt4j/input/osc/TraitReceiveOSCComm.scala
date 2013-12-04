@@ -50,7 +50,7 @@ import java.net.{SocketAddress, InetSocketAddress}
 import org.mt4j.input.TraitInputSource
 import de.sciss.osc.{	Message => OSCMessage}
 
-trait TraitReceiveOSCComm extends TraitInputSource[Packet,Nothing]
+trait TraitReceiveOSCComm extends TraitInputSource[(OSCMessage, InetSocketAddress),Nothing]
 
 
 

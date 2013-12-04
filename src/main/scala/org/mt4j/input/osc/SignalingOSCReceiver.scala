@@ -25,10 +25,11 @@ package org.mt4j.input.osc
 
 import java.nio.channels.DatagramChannel
 import de.sciss.osc._
+import impl.UndirectedNetInputImpl
 import java.net.SocketAddress
 import de.sciss.osc.Channel.Directed.Input
 
-class SignalingOSCReceiver(val receiver: Input) extends TraitReceiveOSCComm  {
+class SignalingOSCReceiver(val receiver: de.sciss.osc.Channel) extends TraitReceiveOSCComm  {
   def close() = receiver.close()
   def isConnected = receiver.isConnected
 }

@@ -24,7 +24,7 @@ package org.mt4j.input.osc
 
 import java.nio.channels.DatagramChannel
 import java.net.{SocketAddress, InetSocketAddress}
-import de.sciss.osc.{Channel, Packet, Message => OSCMessage, UDP => OSCviaUDP, TCP => OSCviaTCP, Transport => OSCTransport, Transmitter, PacketCodec => OSCPacketCodec}
+import de.sciss.osc.{Message => OSCMessage, UDP => OSCviaUDP, TCP => OSCviaTCP, Transport => OSCTransport, PacketCodec => OSCPacketCodec, Receiver, Channel, Packet, Transmitter}
 
 
 object OSCCommunication {
@@ -32,20 +32,26 @@ object OSCCommunication {
 	case object UDP extends OSCTransportType;
 	case object TCP extends OSCTransportType;
 
-	// argh... i am stupid today.
 	def createOSCReceiver(transport: OSCTransportType, address: InetSocketAddress):  SignalingOSCReceiver = {
 		val recv = transport match {
 			case UDP => {
-				val r = OSCviaUDP.Receiver(address);
+        val cfg = OSCviaUDP.Config()
+        // FIXME: dont use broadcasts only
+        cfg.localPort = address.getPort
+				val r: OSCviaUDP.Receiver.Undirected = OSCviaUDP.Receiver(cfg);
+
 				val sr = new SignalingOSCReceiver(r);
-				r.action = {x:Packet => sr.receipt.emit(x)};
+				r.action = {case x => sr.receipt.emit(x)};
 				r.connect()
 				sr
 			}
 			case TCP => {
-				val r = OSCviaTCP.Receiver(address);
-				val sr = new SignalingOSCReceiver(r);
-				r.action = {x:Packet => sr.receipt.emit(x)};
+        val cfg = OSCviaTCP.Config()
+        cfg.localPort = address.getPort
+        val r: OSCviaTCP.Receiver = OSCviaTCP.Receiver(address)
+
+        val sr = new SignalingOSCReceiver(r);
+        r.action = {case x => println(x);sr.receipt.emit(x)};
 				r.connect()
 				sr
 			}

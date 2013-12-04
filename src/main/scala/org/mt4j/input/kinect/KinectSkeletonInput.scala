@@ -80,7 +80,7 @@ class KinectSkeletonSource(osceletonAddress: InetSocketAddress) {
 		x => {
 			// TODO: should be re-tested
 			if (started) x match {
-				case (m@Message("/joint", joint: String, id: Int, xCoord: Float, yCoord: Float, zCoord: Float)) => {
+				case (m@(Message("/joint", joint: String, id: Int, xCoord: Float, yCoord: Float, zCoord: Float)),_) => {
 					joint match {
 						case "head" => skeletons(id).head() = new Vector3D(xCoord, yCoord, zCoord)
 						case "neck" => skeletons(id).neck() = new Vector3D(xCoord, yCoord, zCoord)
@@ -112,13 +112,13 @@ class KinectSkeletonSource(osceletonAddress: InetSocketAddress) {
 						case "l_foot" => skeletons(id).leftFoot() = new Vector3D(xCoord, yCoord, zCoord)
 					}
 				}
-				case (m@Message("/new_skel", id: Int)) => {
+				case (m@Message("/new_skel", id: Int),_) => {
 					skeletons(id).alive() = true;
 				}
-				case (m@Message("/lost_user", id: Int)) => {
+				case (m@Message("/lost_user", id: Int),_) => {
 					skeletons(id).alive() = false;
 				}
-				case (m@Message("/new_user", id: Int)) => {
+				case (m@Message("/new_user", id: Int),_) => {
 					skeletons(id).alive() = false;
 					println("Found user " + id + "! Please callibrate...");
 				}
