@@ -12,7 +12,7 @@ FullscreenExclusive=true
 #Resolution
 #DisplayWidth=1920
 #DisplayHeight=1080
-DisplayWidth=1100
+DisplayWidth=1200
 DisplayHeight=700
 #Which display to use for fullscreen
 Display=1

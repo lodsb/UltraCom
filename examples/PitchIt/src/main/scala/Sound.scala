@@ -13,9 +13,19 @@ import de.sciss.synth._
 import ugen._
 import de.sciss.synth.Ops._
 import org.lodsb.reakt.sync.VarS
+import scala.collection.mutable.ArrayBuffer
+
 
 
 class Synthi {
+
+  val scales = new ArrayBuffer[Scale]()
+  scales += Scale("Phrygian").get
+  scales += Scale("Aolian").get
+  scales += Scale("Dorian").get
+  scales += Scale("Mixolydian").get
+  scales += Scale("Ionian").get
+  scales += Scale("Lydian").get
 
   // synthesizer definition
   val synthDef = SynthDef("") {
@@ -25,6 +35,16 @@ class Synthi {
     val volume = "volume".kr(0.9)
     val pitch = "pitch".kr(0)
     val activity = "activity".kr(0)
+
+
+    // further parameters
+    // scale is the tonalic scale as number
+    val scale = "scale".kr(0)
+
+    // harmony is the scale degree as number
+    // the actual chord is determined by this
+    val harmony = "harmony".kr(0)
+
 
     def pitch2Tone = {
       val tone = pitch.signum * (pitch.abs * 8).floor

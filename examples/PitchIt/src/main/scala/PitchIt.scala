@@ -64,14 +64,13 @@ class PitchItScene extends Scene(app, "PitchIt Scene") {
 	// Show touches
 	showTracer(show = true)
 
-  val component1 = new MTComponent(app)
-  app.scene.canvas += component1
+
+  // -- add first player modules
 
   // add a ControllerCanvas, which contains the sound-controller
   val controllerCanvas1: ControllerCanvas = new ControllerCanvas(300f, 200f, 16)
-  component1 += controllerCanvas1
+  app.scene.canvas += controllerCanvas1
   app.allControllerCanvas += controllerCanvas1
-  controllerCanvas1.setPositionGlobal(Vec3d(app.width/2f, app.height/2f))
 
   // add slider
   val slider1 = Slider(0f, 1f, height=20f)
@@ -81,20 +80,21 @@ class PitchItScene extends Scene(app, "PitchIt Scene") {
     controllerCanvas1.initializeControllers(numberOfControllers)
     controllerCanvas1.synthi.activity() = percent
   }
-  component1 += slider1
-  slider1.globalPosition() = app.center.getAdded(Vec3d(0f,120f))
+  app.scene.canvas += slider1
 
-  //controllerCanvas1.rotate180
+  // set positions and rotate
+  controllerCanvas1.rotate180
+  controllerCanvas1.setPositionGlobal(Vec3d(app.center.getX, 150f))
+  slider1.rotateZ(app.center, 180f)
+  slider1.setPositionGlobal(Vec3d(app.center.getX, 25f))
 
-/*
 
-  val component2 = new MTComponent(app)
-  app.scene.canvas += component2
+  // -- add second player modules
 
-  // add a second ControllerCanvas, which contains the sound-controller
-  val controllerCanvas2 = new ControllerCanvas(300f, 200f, 16)
-  component2 += controllerCanvas2
-  controllerCanvas2.setPositionGlobal(Vec3d(app.width/2f, app.height/2f))
+  // add a ControllerCanvas, which contains the sound-controller
+  val controllerCanvas2: ControllerCanvas = new ControllerCanvas(300f, 200f, 16)
+  app.scene.canvas += controllerCanvas2
+  app.allControllerCanvas += controllerCanvas2
 
   // add slider
   val slider2 = Slider(0f, 1f, height=20f)
@@ -104,9 +104,28 @@ class PitchItScene extends Scene(app, "PitchIt Scene") {
     controllerCanvas2.initializeControllers(numberOfControllers)
     controllerCanvas2.synthi.activity() = percent
   }
-  app.scene.canvas() += slider2
-  slider2.globalPosition() = app.center.getAdded(Vec3d(0f,120f))
-*/
+  app.scene.canvas += slider2
+
+
+  // set positions
+  controllerCanvas2.rotate180
+  controllerCanvas2.setPositionGlobal(Vec3d(app.center.getX, app.height-150f))
+  slider2.rotateZ(app.center, 180f)
+  slider2.setPositionGlobal(Vec3d(app.center.getX, app.height-25f))
+
+
+  // -- add global slider in the middle
+
+  // add slider
+  val slider3 = Slider(0f, 1f, height=40f, width=300f)
+  slider3.value.map { x =>
+    val percent = x / slider3.getValueRangeVar
+
+  }
+  app.scene.canvas += slider3
+
+  // set position
+  slider3.setPositionGlobal(app.center)
 
   // start Metronome
   Metronome() ! "start"

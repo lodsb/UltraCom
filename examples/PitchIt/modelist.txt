@@ -1,0 +1,1 @@
+modelist = [Phrygian, Aolian, Dorian, Mixolydian, Ionian, Lydian]
