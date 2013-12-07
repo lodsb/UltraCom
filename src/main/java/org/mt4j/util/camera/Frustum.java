@@ -25,8 +25,9 @@ import org.mt4j.util.math.Plane;
 import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
-import processing.core.PGraphics3D;
-import processing.opengl.PGraphicsOpenGL;
+import processing.opengl.PGraphics3D;
+
+//import processing.opengl.PGraphicsOpenGL;
 
 /**
  * The Class Frustum. Represents a camera frustum.

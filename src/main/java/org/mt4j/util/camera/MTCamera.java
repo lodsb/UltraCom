@@ -22,7 +22,7 @@ import org.mt4j.util.math.Matrix;
 import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
-import processing.core.PGraphics3D;
+import processing.opengl.PGraphics3D;
 import processing.core.PMatrix3D;
 
 /**

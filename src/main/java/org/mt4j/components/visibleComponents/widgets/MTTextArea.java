@@ -23,7 +23,6 @@ import java.util.List;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import codeanticode.glgraphics.GLShader;
 import org.mt4j.MTApplication;
 import org.mt4j.components.TransformSpace;
 import org.mt4j.components.clipping.Clip;
@@ -304,8 +303,6 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
         this(app, app.getCssStyleManager().getDefaultFont(app));
     }
 
-
-	private GLShader shader;
 
     private void init(PApplet pApplet, IFont font, int mode) {
         this.pa = pApplet;

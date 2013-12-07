@@ -28,7 +28,16 @@ libraryDependencies += "org.lodsb" %% "reakt" % "0.2-SNAPSHOT"
 
 unmanagedClasspath in Compile += Attributed.blank(new java.io.File("doesnotexist"))
 
-unmanagedBase <<= baseDirectory { base => base / "libraries/misc" }
+//unmanagedBase <<= baseDirectory { base => base / "libraries/misc" }
+
+unmanagedBase <<= baseDirectory { base => base / "libraries/" }
+
+unmanagedJars in Compile <++= baseDirectory map { base =>
+    val baseDirectories = (base / "libraries/misc") +++ (base / "libraries/processing") 
+    val customJars = (baseDirectories ** "*.jar")
+    customJars.classpath
+}
+
 
 resolvers += "sbt-idea-repo" at "http://mpeltonen.github.com/maven/"
 

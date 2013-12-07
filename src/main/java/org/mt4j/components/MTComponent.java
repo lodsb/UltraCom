@@ -48,7 +48,7 @@ import org.mt4j.util.camera.Icamera;
 import org.mt4j.util.math.*;
 import processing.core.PApplet;
 import processing.core.PGraphics;
-import processing.core.PGraphics3D;
+import processing.opengl.PGraphics3D;
 import processing.opengl.PGraphicsOpenGL;
 
 import javax.media.opengl.GL;
@@ -226,6 +226,7 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
     /**
      * The pgraphics3 d.
      */
+
     private PGraphics3D pgraphics3D;
 
     /**
@@ -1979,6 +1980,7 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
 
         MTLight aLight = this.getLight();
         if (aLight != null) {
+
             GL gl = ((PGraphicsOpenGL) g).gl;
             gl.glEnable(GL.GL_LIGHTING); //this is expensive
             aLight.enable();
