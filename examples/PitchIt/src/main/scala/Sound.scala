@@ -14,17 +14,19 @@ import ugen._
 import de.sciss.synth.Ops._
 import org.lodsb.reakt.sync.VarS
 import scala.collection.mutable.ArrayBuffer
-
+import de.lodsb.scales.Conversions._
+import de.lodsb.scales.Transformations._
+import de.lodsb.scales.Scale
 
 
 class Synthi {
 
   val scales = new ArrayBuffer[Scale]()
   scales += Scale("Phrygian").get
-  scales += Scale("Aolian").get
+  scales += Scale("Aeolian Flat 1").get
   scales += Scale("Dorian").get
   scales += Scale("Mixolydian").get
-  scales += Scale("Ionian").get
+  scales += Scale("Ionian Sharp 5").get
   scales += Scale("Lydian").get
 
   // synthesizer definition
