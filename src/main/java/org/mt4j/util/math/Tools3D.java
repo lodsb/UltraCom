@@ -34,9 +34,9 @@ import processing.opengl.PGL;
 import processing.opengl.PGraphics3D;
 import processing.opengl.PGraphicsOpenGL;
 
-import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
-import javax.media.opengl.GLException;
+import javax.media.opengl.GL22;
+import javax.media.opengl.GL2Exception;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.gl2.GLUgl2;
 import java.nio.*;
@@ -450,7 +450,7 @@ public class Tools3D {
         // BROKEN!!!
 /*        switch (MT4jSettings.getInstance().getRendererMode()) {
             case MT4jSettings.OPENGL_MODE:
-//			GL gl = ((PGraphicsOpenGL)pa.g).gl;
+//			GL2 gl = ((PGraphicsOpenGL)pa.g).gl;
                 GL2 gl = Tools3D.getGL(g);
                 gl.glPushAttrib(GL2.GL_DEPTH_BUFFER_BIT);//FIXME TEST
                 gl.glDepthFunc(javax.media.opengl.GL2.GL_ALWAYS); //turn off Z buffering
@@ -700,7 +700,7 @@ public class Tools3D {
      */
     public static void setVSyncing(PApplet pa, boolean on) {
         if (MT4jSettings.getInstance().getRendererMode() == MT4jSettings.OPENGL_MODE) {
-            GL gl = getGL(pa);
+            GL2 gl = getGL(pa);
             if (on) {
                 gl.setSwapInterval(1);
             } else {
@@ -710,7 +710,7 @@ public class Tools3D {
     }
 
 
-    public static void setLineSmoothEnabled(GL gl, boolean enable) {
+    public static void setLineSmoothEnabled(GL2 gl, boolean enable) {
         //    	/*
         //DO this if we use multisampling and enable line_smooth from the beginning
         //and use multisampling -> we turn off multisampling then before using line_smooth for best restult

@@ -22,7 +22,7 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.mt4j.components.bounds.BoundingSphere;
 import org.mt4j.components.bounds.IBoundingShape;
@@ -115,7 +115,7 @@ public class MTTriangleMesh extends AbstractShape {
         this.outlineBuffers = new ArrayList<FloatBuffer>();
 
         //Some Settings
-        this.setFillDrawMode(GL.GL_TRIANGLES);
+        this.setFillDrawMode(GL2.GL_TRIANGLES);
         this.setName("unnamed triangle mesh");
         this.drawNormals = false;
         this.setNoStroke(true);
@@ -493,7 +493,7 @@ public class MTTriangleMesh extends AbstractShape {
         PApplet pa = this.getRenderer();
 
         if (this.isUseDirectGL()) {
-            GL gl = Tools3D.beginGL(g);
+            GL2 gl = Tools3D.beginGL(g);
             this.drawComponent(gl);
             Tools3D.endGL(g);
         } else { //Draw with pure proccessing...
@@ -562,7 +562,7 @@ public class MTTriangleMesh extends AbstractShape {
      *
      * @param gl the gl
      */
-    public void drawComponent(GL gl) {
+    public void drawComponent(GL2 gl) {
         if (this.isUseDisplayList()) {
             int[] displayLists = this.getGeometryInfo().getDisplayListIDs();
             if (!this.isNoFill()) {
@@ -663,7 +663,7 @@ public class MTTriangleMesh extends AbstractShape {
      *
      * @param gl the gl
      */
-    private void drawPureGl(GL gl) {
+    private void drawPureGl(GL2 gl) {
 //		/*
         //Get display array/buffer pointers
         FloatBuffer tbuff = this.getGeometryInfo().getTexBuff();
@@ -672,18 +672,18 @@ public class MTTriangleMesh extends AbstractShape {
         IntBuffer indexBuff = this.getGeometryInfo().getIndexBuff(); //null if not indexed
 
         //Enable Pointers, set vertex array pointer
-        gl.glEnableClientState(GL.GL_VERTEX_ARRAY);
-        gl.glEnableClientState(GL.GL_COLOR_ARRAY);
+        gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
+        gl.glEnableClientState(GL2.GL_COLOR_ARRAY);
 
         if (this.isUseVBOs()) {//Vertices
-            gl.glBindBuffer(GL.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBOVerticesName());
-            gl.glVertexPointer(3, GL.GL_FLOAT, 0, 0);
+            gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBOVerticesName());
+            gl.glVertexPointer(3, GL2.GL_FLOAT, 0, 0);
         } else {
-            gl.glVertexPointer(3, GL.GL_FLOAT, 0, vertBuff);
+            gl.glVertexPointer(3, GL2.GL_FLOAT, 0, vertBuff);
         }
 
         //Default texture target
-        int textureTarget = GL.GL_TEXTURE_2D;
+        int textureTarget = GL2.GL_TEXTURE_2D;
 
         /////// DRAW SHAPE ///////
         if (!this.isNoFill()) {
@@ -696,45 +696,45 @@ public class MTTriangleMesh extends AbstractShape {
                 textureTarget = tex.getTextureTarget();
 
                 //tells opengl which texture to reference in following calls from now on!
-                //the first parameter is eigher GL.GL_TEXTURE_2D or ..1D
+                //the first parameter is eigher GL2.GL_TEXTURE_2D or ..1D
                 gl.glEnable(textureTarget);
                 gl.glBindTexture(textureTarget, tex.getTextureID());
-                gl.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY);
+                gl.glEnableClientState(GL2.GL_TEXTURE_COORD_ARRAY);
 
                 if (this.isUseVBOs()) {//Texture
-                    gl.glBindBuffer(GL.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBOTextureName());
-                    gl.glTexCoordPointer(2, GL.GL_FLOAT, 0, 0);
+                    gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBOTextureName());
+                    gl.glTexCoordPointer(2, GL2.GL_FLOAT, 0, 0);
                 } else {
-                    gl.glTexCoordPointer(2, GL.GL_FLOAT, 0, tbuff);
+                    gl.glTexCoordPointer(2, GL2.GL_FLOAT, 0, tbuff);
                 }
                 textureDrawn = true;
             }
 
             // Normals
             if (this.getGeometryInfo().isContainsNormals()) {
-                gl.glEnableClientState(GL.GL_NORMAL_ARRAY);
+                gl.glEnableClientState(GL2.GL_NORMAL_ARRAY);
                 if (this.isUseVBOs()) {
-                    gl.glBindBuffer(GL.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBONormalsName());
-                    gl.glNormalPointer(GL.GL_FLOAT, 0, 0);
+                    gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBONormalsName());
+                    gl.glNormalPointer(GL2.GL_FLOAT, 0, 0);
                 } else {
-                    gl.glNormalPointer(GL.GL_FLOAT, 0, this.getGeometryInfo().getNormalsBuff());
+                    gl.glNormalPointer(GL2.GL_FLOAT, 0, this.getGeometryInfo().getNormalsBuff());
                 }
             }
 
             if (this.isUseVBOs()) {//Color
-                gl.glBindBuffer(GL.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBOColorName());
-                gl.glColorPointer(4, GL.GL_FLOAT, 0, 0);
+                gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBOColorName());
+                gl.glColorPointer(4, GL2.GL_FLOAT, 0, 0);
             } else {
-                gl.glColorPointer(4, GL.GL_FLOAT, 0, colorBuff);
+                gl.glColorPointer(4, GL2.GL_FLOAT, 0, colorBuff);
             }
 
             //DRAW with drawElements if geometry is indexed, else draw with drawArrays!
             if (this.getGeometryInfo().isIndexed()) {
-                gl.glDrawElements(this.getFillDrawMode(), indexBuff.capacity(), GL.GL_UNSIGNED_INT, indexBuff); //limit() oder capacity()??
+                gl.glDrawElements(this.getFillDrawMode(), indexBuff.capacity(), GL2.GL_UNSIGNED_INT, indexBuff); //limit() oder capacity()??
 
                 /*
                     int error = gl.glGetError();
-                    if (error != GL.GL_NO_ERROR){
+                    if (error != GL2.GL_NO_ERROR){
                         System.out.println("GL Error: " + error);
                     }else{
                         System.out.println("No gl error.");
@@ -745,12 +745,12 @@ public class MTTriangleMesh extends AbstractShape {
             }
 
             if (this.getGeometryInfo().isContainsNormals()) {
-                gl.glDisableClientState(GL.GL_NORMAL_ARRAY);
+                gl.glDisableClientState(GL2.GL_NORMAL_ARRAY);
             }
 
             if (textureDrawn) {
                 gl.glBindTexture(textureTarget, 0);//Unbind texture
-                gl.glDisableClientState(GL.GL_TEXTURE_COORD_ARRAY);
+                gl.glDisableClientState(GL2.GL_TEXTURE_COORD_ARRAY);
                 gl.glDisable(textureTarget); //weiter nach unten?
             }
         }
@@ -765,17 +765,17 @@ public class MTTriangleMesh extends AbstractShape {
 
 //			FloatBuffer strokeColBuff = this.getStrokeColBuff();
 //			if (this.isUseVBOs()){
-//				gl.glBindBuffer(GL.GL_ARRAY_BUFFER, this.getVBOStrokeColorName());
-//				gl.glColorPointer(4, GL.GL_FLOAT, 0, 0);
+//				gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, this.getVBOStrokeColorName());
+//				gl.glColorPointer(4, GL2.GL_FLOAT, 0, 0);
 //				
-//				gl.glBindBuffer(GL.GL_ARRAY_BUFFER, 0);//Experimental 
+//				gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);//Experimental
 //			}else{
-//				gl.glColorPointer(4, GL.GL_FLOAT, 0, strokeColBuff);
+//				gl.glColorPointer(4, GL2.GL_FLOAT, 0, strokeColBuff);
 //			}
 
             //Turn on smooth outlines
 //			if (this.isDrawSmooth())
-//				gl.glEnable(GL.GL_LINE_SMOOTH);
+//				gl.glEnable(GL2.GL_LINE_SMOOTH);
             //FIXME TEST
             Tools3D.setLineSmoothEnabled(gl, true);
 
@@ -784,7 +784,7 @@ public class MTTriangleMesh extends AbstractShape {
             short lineStipple = this.getLineStipple();
             if (lineStipple != 0) {
                 gl.glLineStipple(1, lineStipple);
-                gl.glEnable(GL.GL_LINE_STIPPLE);
+                gl.glEnable(GL2.GL_LINE_STIPPLE);
             }
 //			*/
 
@@ -793,45 +793,45 @@ public class MTTriangleMesh extends AbstractShape {
 
             //Dont use geometryinfo strokecolor buffer because its useless in a trianglemesh
             //instead we use a single, simple stroke color and custom outlines, if provided
-            gl.glDisableClientState(GL.GL_COLOR_ARRAY); //disable color buffer use
+            gl.glDisableClientState(GL2.GL_COLOR_ARRAY); //disable color buffer use
             gl.glColor4f(strokeR, strokeG, strokeB, strokeA);
 
             //Always use just buffes and drawarrays instead of vbos..too complicated for a simple outline..
             for (FloatBuffer outlineBuffer : this.outlineBuffers) { //FIXME EXPERIMENTAL
-                gl.glVertexPointer(3, GL.GL_FLOAT, 0, outlineBuffer);
-//				gl.glDrawArrays(GL.GL_LINES, 0, outlineBuffer.capacity()/3);
-//				gl.glDrawArrays(GL.GL_LINE_LOOP, 0, outlineBuffer.capacity()/3);
-                gl.glDrawArrays(GL.GL_LINE_STRIP, 0, outlineBuffer.capacity() / 3);
+                gl.glVertexPointer(3, GL2.GL_FLOAT, 0, outlineBuffer);
+//				gl.glDrawArrays(GL2.GL_LINES, 0, outlineBuffer.capacity()/3);
+//				gl.glDrawArrays(GL2.GL_LINE_LOOP, 0, outlineBuffer.capacity()/3);
+                gl.glDrawArrays(GL2.GL_LINE_STRIP, 0, outlineBuffer.capacity() / 3);
             }
 
             /*
                //DRAW mesh outline
                //Draw with drawElements if geometry is indexed, else draw with drawArrays!
                if (this.getGeometryInfo().isIndexed()){
-                   gl.glDrawElements(GL.GL_LINES, indexBuff.limit(), GL.GL_UNSIGNED_INT, indexBuff);
-   //				gl.glDrawElements(this.getFillDrawMode(), indexBuff.capacity(), GL.GL_UNSIGNED_INT, indexBuff);
+                   gl.glDrawElements(GL2.GL_LINES, indexBuff.limit(), GL2.GL_UNSIGNED_INT, indexBuff);
+   //				gl.glDrawElements(this.getFillDrawMode(), indexBuff.capacity(), GL2.GL_UNSIGNED_INT, indexBuff);
                }else{
-                   gl.glDrawArrays(GL.GL_LINES, 0, vertBuff.capacity()/3);
+                   gl.glDrawArrays(GL2.GL_LINES, 0, vertBuff.capacity()/3);
                }
                */
             //RESET LINE STIPPLE
             if (lineStipple != 0) {
-                gl.glDisable(GL.GL_LINE_STIPPLE);
+                gl.glDisable(GL2.GL_LINE_STIPPLE);
             }
 //			if (this.isDrawSmooth())
-//				gl.glDisable(GL.GL_LINE_SMOOTH);
+//				gl.glDisable(GL2.GL_LINE_SMOOTH);
             //FIXME TEST
             Tools3D.setLineSmoothEnabled(gl, false);
         }
 
-        gl.glDisableClientState(GL.GL_VERTEX_ARRAY);
+        gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
         if (!outlineDrawn) {
-            gl.glDisableClientState(GL.GL_COLOR_ARRAY); //If outline drawn we disabled color_array earlier
+            gl.glDisableClientState(GL2.GL_COLOR_ARRAY); //If outline drawn we disabled color_array earlier
         }
 
         if (this.isUseVBOs()) {
-            gl.glBindBuffer(GL.GL_ARRAY_BUFFER, 0);
-            gl.glBindBuffer(GL.GL_ELEMENT_ARRAY_BUFFER, 0);
+            gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
+            gl.glBindBuffer(GL2.GL_ELEMENT_ARRAY_BUFFER, 0);
         }
 //		*/
 
@@ -944,7 +944,7 @@ public class MTTriangleMesh extends AbstractShape {
             int[] ids = this.getGeometryInfo().getDisplayListIDs();
             //Delete default outline display list, not really usable in a mesh.
             if (MT4jSettings.getInstance().isOpenGlMode()) {
-                GL gl = ((PGraphicsOpenGL) this.getRenderer().g).gl;
+                GL2 gl = ((PGraphicsOpenGL) this.getRenderer().g).gl;
                 if (ids[1] != -1) {
                     gl.glDeleteLists(ids[1], 1);
                 }
@@ -970,7 +970,7 @@ public class MTTriangleMesh extends AbstractShape {
                 && this.outlineContours != null
                 ) {
             if (ids[1] != -1) {
-                GL gl = ((PGraphicsOpenGL) this.getRenderer().g).gl;
+                GL2 gl = ((PGraphicsOpenGL) this.getRenderer().g).gl;
                 gl.glDeleteLists(ids[1], 1);
             }
             //Create outline display list from manually set outline contours if available.
@@ -985,17 +985,17 @@ public class MTTriangleMesh extends AbstractShape {
      * @return the int
      */
     private int generateContoursDisplayList() {
-        GL gl = ((PGraphicsOpenGL) this.getRenderer().g).gl;
+        GL2 gl = ((PGraphicsOpenGL) this.getRenderer().g).gl;
         int listId = gl.glGenLists(1);
         if (listId == 0) {
             System.err.println("Failed to create display list");
             return 0;
         }
 
-        gl.glNewList(listId, GL.GL_COMPILE);
+        gl.glNewList(listId, GL2.GL_COMPILE);
 
 //		if (this.isDrawSmooth()){
-//			gl.glEnable(GL.GL_LINE_SMOOTH);
+//			gl.glEnable(GL2.GL_LINE_SMOOTH);
 //		}
         //FIXME TEST
         Tools3D.setLineSmoothEnabled(gl, true);
@@ -1004,7 +1004,7 @@ public class MTTriangleMesh extends AbstractShape {
         FloatBuffer strokeColBuff = this.getGeometryInfo().getStrokeColBuff();
         gl.glColor4d(strokeColBuff.get(0), strokeColBuff.get(1), strokeColBuff.get(2), strokeColBuff.get(3));
         for (Vertex[] varr : this.outlineContours) {
-            gl.glBegin(GL.GL_LINE_STRIP);
+            gl.glBegin(GL2.GL_LINE_STRIP);
             for (Vertex v : varr) {
                 gl.glVertex3f(v.x, v.y, v.z);
             }

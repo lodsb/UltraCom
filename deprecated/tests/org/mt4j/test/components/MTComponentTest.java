@@ -40,7 +40,7 @@ public class MTComponentTest extends AbstractWindowTestcase {
 			@Override
 			public void runMTTestCode() {
 				System.out.println("\nTesting some base MTComponent functions..");
-				System.out.println("Ext supported: " + Tools3D.isGLExtensionSupported(app, "test"));
+				System.out.println("Ext supported: " + Tools3D.isGL2ExtensionSupported(app, "test"));
 				
 				assertEquals(0, parent.getChildCount());
 				int numChildren = Math.round(ToolsMath.getRandom(1, 10));

@@ -51,7 +51,7 @@ import processing.core.PGraphics;
 import processing.opengl.PGraphics3D;
 import processing.opengl.PGraphicsOpenGL;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import java.lang.System;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -1981,8 +1981,8 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
         MTLight aLight = this.getLight();
         if (aLight != null) {
 
-            GL gl = ((PGraphicsOpenGL) g).gl;
-            gl.glEnable(GL.GL_LIGHTING); //this is expensive
+            GL2 gl = ((PGraphicsOpenGL) g).gl;
+            gl.glEnable(GL2.GL_LIGHTING); //this is expensive
             aLight.enable();
         }
 
@@ -2048,8 +2048,8 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
         MTLight aLight = this.getLight();
         if (aLight != null) {
             aLight.disable();
-            GL gl = ((PGraphicsOpenGL) g).gl;
-            gl.glDisable(GL.GL_LIGHTING);
+            GL2 gl = ((PGraphicsOpenGL) g).gl;
+            gl.glDisable(GL2.GL_LIGHTING);
         }
     }
 

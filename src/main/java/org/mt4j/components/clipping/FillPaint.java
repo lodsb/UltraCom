@@ -17,7 +17,7 @@
  ***********************************************************************/
 package org.mt4j.components.clipping;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.mt4j.components.MTComponent;
 import org.mt4j.components.visibleComponents.AbstractVisibleComponent;
@@ -40,7 +40,7 @@ public class FillPaint {
      */
     protected MTComponent fillPaint;
 
-    private GL gl;
+    private GL2 gl;
 
     private AbstractVisibleComponent clipShape;
 
@@ -51,14 +51,14 @@ public class FillPaint {
      * @param gl        the gl
      * @param fillPaint the fill paint
      */
-    public FillPaint(GL gl, AbstractVisibleComponent fillPaint) {
+    public FillPaint(GL2 gl, AbstractVisibleComponent fillPaint) {
         //super(gl);
         this.gl = gl;
         this.fillPaint = fillPaint;
 //		this.clipShape = shape;
     }
 
-//	public FillPaint(GL gl, AbstractVisibleComponent shape, MTComponent fillPaint) {
+//	public FillPaint(GL2 gl, AbstractVisibleComponent shape, MTComponent fillPaint) {
 //		//super(gl);
 //		this.gl = gl;
 //		this.fillPaint = fillPaint;

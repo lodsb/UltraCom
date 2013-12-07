@@ -36,7 +36,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Properties;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.swing.ImageIcon;
 
 //import codeanticode.glgraphics.GLConstants;
@@ -228,9 +228,9 @@ public abstract class MTApplication extends PApplet {
 
          background(0);
 
-         GL gl = Tools3D.getGL(this);
- //		 gl.glEnable(GL.GL_MULTISAMPLE);
- //	     gl.glEnable(GL.GL_MULTISAMPLE_EXT);
+         GL2 gl = Tools3D.getGL(this);
+ //		 gl.glEnable(GL2.GL_MULTISAMPLE);
+ //	     gl.glEnable(GL2.GL_MULTISAMPLE_EXT);
      }
      @Override
      public void draw(){
@@ -240,24 +240,24 @@ public abstract class MTApplication extends PApplet {
          stroke(250,0,0,255);
          line(0,10, 280,20);
 
-         GL gl = Tools3D.beginGL(this);
- //		GL gl =  ((PGraphicsOpenGL)this.g).beginGL();
- //		gl.glEnable(GL.GL_LINE_SMOOTH );
-         gl.glDisable(GL.GL_LINE_SMOOTH );
- //		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
+         GL2 gl = Tools3D.beginGL(this);
+ //		GL2 gl =  ((PGraphicsOpenGL)this.g).beginGL();
+ //		gl.glEnable(GL2.GL_LINE_SMOOTH );
+         gl.glDisable(GL2.GL_LINE_SMOOTH );
+ //		gl.glHint(GL2.GL_LINE_SMOOTH_HINT, GL2.GL_NICEST);
          // Enable Blending
-         gl.glEnable(GL.GL_BLEND);
+         gl.glEnable(GL2.GL_BLEND);
          // Specifies pixel arithmetic
-         gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+         gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
          gl.glLineWidth(1);
          gl.glColor4d(0.0, 0.0, 0.0, 1);
 
-         gl.glBegin(GL.GL_LINE_STRIP);
+         gl.glBegin(GL2.GL_LINE_STRIP);
          gl.glVertex3d(0, 20, 0);
          gl.glVertex3d(280, 30, 0);
          gl.glEnd();
 
-         gl.glBegin(GL.GL_LINE_STRIP);
+         gl.glBegin(GL2.GL_LINE_STRIP);
          gl.glVertex3d(0, 20, 0);
          gl.glVertex3d(711, 230, 0);
          gl.glVertex3d(200, 300, 0);
@@ -663,7 +663,7 @@ public abstract class MTApplication extends PApplet {
           */
 
 //	    pContext.hint( PApplet.ENABLE_OPENGL_4X_SMOOTH );  // ENABLES OPENGL EXTRA SMOOTHING -> DOESENT GET CONSISTENT RESULTS ON ALL MACHINES! DISABLE WHEN PROBLEMS OCCUR!
-        //hint(ENABLE_DEPTH_SORT); // Enable primitive z-sorting of triangles and lines in P3D and OPENGL. This can slow performance considerably, and the algorithm is not yet perfect.
+        //hint(ENABLE_DEPTH_SORT); // Enable primitive z-sorting of triangles and lines in P3D and OPENGL2. This can slow performance considerably, and the algorithm is not yet perfect.
         //hint(DISABLE_ERROR_REPORT); // Speeds up the OPENGL renderer setting by not checking for errors while running.
         //hint(ENABLE_ACCURATE_TEXTURES); //Enables better texture accuracy for the P3D renderer. This option will do a better job of dealing with textures in perspective.
 
@@ -749,10 +749,10 @@ public abstract class MTApplication extends PApplet {
         // - or disable mutisample before drawing with line_smooth!
         //TOOD dont use lines to smooth some objects then (fonts, etc)
         if (MT4jSettings.getInstance().isOpenGlMode()) {
-            GL gl = Tools3D.getGL(this);
+            GL2 gl = Tools3D.getGL(this);
 
-            logger.info("OpenGL Version: \"" + gl.glGetString(GL.GL_VERSION) + "\"" + " - Vendor: \"" + gl.glGetString(GL.GL_VENDOR) + "\"" + " - Renderer: \"" + gl.glGetString(GL.GL_RENDERER) + "\"");
-//	    	logger.info("Shading language version: \"" +  gl.glGetString(GL.GL_SHADING_LANGUAGE_VERSION) + "\"");
+            logger.info("OpenGL Version: \"" + gl.glGetString(GL2.GL_VERSION) + "\"" + " - Vendor: \"" + gl.glGetString(GL2.GL_VENDOR) + "\"" + " - Renderer: \"" + gl.glGetString(GL2.GL_RENDERER) + "\"");
+//	    	logger.info("Shading language version: \"" +  gl.glGetString(GL2.GL_SHADING_LANGUAGE_VERSION) + "\"");
             logger.info("Non power of two texture sizes allowed: \"" + Tools3D.supportsNonPowerOfTwoTexture(this) + "\"");
             logger.info("OpenGL Framebuffer Object Extension available: \"" + GLFBO.isSupported(this) + "\"");
 
@@ -765,12 +765,12 @@ public abstract class MTApplication extends PApplet {
             logger.info("Vertical Sync enabled: \"" + vSync + "\"");
 
             if (MT4jSettings.getInstance().isMultiSampling()) {
-                gl.glEnable(GL.GL_MULTISAMPLE);
-//	    		gl.glDisable(GL.GL_MULTISAMPLE);
+                gl.glEnable(GL2.GL_MULTISAMPLE);
+//	    		gl.glDisable(GL2.GL_MULTISAMPLE);
                 logger.info("OpenGL multi-sampling enabled.");
             }
-            gl.glEnable(GL.GL_LINE_SMOOTH);
-//	    	gl.glDisable(GL.GL_LINE_SMOOTH);
+            gl.glEnable(GL2.GL_LINE_SMOOTH);
+//	    	gl.glDisable(GL2.GL_LINE_SMOOTH);
         }
     }
 

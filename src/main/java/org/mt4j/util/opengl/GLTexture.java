@@ -20,6 +20,7 @@ package org.mt4j.util.opengl;
 import java.nio.IntBuffer;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.mt4j.MTApplication;
@@ -31,11 +32,10 @@ import processing.core.PConstants;
 import processing.core.PImage;
 import processing.opengl.PGraphicsOpenGL;
 
-import com.sun.opengl.util.BufferUtil;
 
 /**
  * This class can only be used in combination with a OpenGL renderer.
- * It holds a texture which can be used by processing and OpenGL. It allows to load, configure and update the OpenGL texture object as well
+ * It holds a texture which can be used by processing and OpenGL2. It allows to load, configure and update the OpenGL texture object as well
  * as Processing's PImage superclass.
  * If the texture isnt neeeded anymore, the destroy() method has to be called.
  *
@@ -44,10 +44,10 @@ import com.sun.opengl.util.BufferUtil;
 public class GLTexture extends PImage {
 
     public enum WRAP_MODE {
-        REPEAT(GL.GL_REPEAT),
-        CLAMP(GL.GL_CLAMP),
-        CLAMP_TO_EDGE(GL.GL_CLAMP_TO_EDGE),
-        CLAMP_TO_BORDER(GL.GL_CLAMP_TO_BORDER);
+        REPEAT(GL2.GL_REPEAT),
+        CLAMP(GL2.GL_CLAMP),
+        CLAMP_TO_EDGE(GL2.GL_CLAMP_TO_EDGE),
+        CLAMP_TO_BORDER(GL2.GL_CLAMP_TO_BORDER);
 
         private int glConstant;
 
@@ -67,7 +67,7 @@ public class GLTexture extends PImage {
          * center for the pixel color. While fast, this results in aliasing and
          * shimmering during minification. (GL equivalent: GL_NEAREST)
          */
-        NearestNeighborNoMipMaps(GL.GL_NEAREST, false),
+        NearestNeighborNoMipMaps(GL2.GL_NEAREST, false),
 
         /**
          * In this method the four nearest texels to the pixel center are
@@ -76,7 +76,7 @@ public class GLTexture extends PImage {
          * same aliasing and shimmering problems as nearest
          * NearestNeighborNoMipMaps. (GL equivalent: GL_LINEAR)
          */
-        BilinearNoMipMaps(GL.GL_LINEAR, false),
+        BilinearNoMipMaps(GL2.GL_LINEAR, false),
 
         /**
          * Same as NearestNeighborNoMipMaps except that instead of using samples
@@ -84,7 +84,7 @@ public class GLTexture extends PImage {
          * distance. This reduces the aliasing and shimmering significantly, but
          * does not help with blockiness. (GL equivalent: GL_NEAREST_MIPMAP_NEAREST)
          */
-        NearestNeighborNearestMipMap(GL.GL_NEAREST_MIPMAP_NEAREST, true),
+        NearestNeighborNearestMipMap(GL2.GL_NEAREST_MIPMAP_NEAREST, true),
 
 
         /**
@@ -93,7 +93,7 @@ public class GLTexture extends PImage {
          * distance. By using mipmapping we avoid the aliasing and shimmering
          * problems of BilinearNoMipMaps. (GL equivalent: GL_LINEAR_MIPMAP_NEAREST)
          */
-        BilinearNearestMipMap(GL.GL_LINEAR_MIPMAP_NEAREST, true),
+        BilinearNearestMipMap(GL2.GL_LINEAR_MIPMAP_NEAREST, true),
 
         /**
          * Similar to NearestNeighborNoMipMaps except that instead of using
@@ -101,7 +101,7 @@ public class GLTexture extends PImage {
          * closest (by distance) two mipmap levels. A weighted average of these
          * two samples is returned. (GL equivalent: GL_NEAREST_MIPMAP_LINEAR)
          */
-        NearestNeighborLinearMipMap(GL.GL_NEAREST_MIPMAP_LINEAR, true),
+        NearestNeighborLinearMipMap(GL2.GL_NEAREST_MIPMAP_LINEAR, true),
 
         /**
          * Trilinear filtering is a remedy to a common artifact seen in
@@ -116,7 +116,7 @@ public class GLTexture extends PImage {
          * one mipmap level available, and the algorithm reverts to bilinear
          * filtering (GL equivalent: GL_LINEAR_MIPMAP_LINEAR)
          */
-        Trilinear(GL.GL_LINEAR_MIPMAP_LINEAR, true);
+        Trilinear(GL2.GL_LINEAR_MIPMAP_LINEAR, true);
 
         private boolean usesMipMapLevels;
 
@@ -143,7 +143,7 @@ public class GLTexture extends PImage {
          * center for the pixel color. While fast, this results in texture
          * 'blockiness' during magnification. (GL equivalent: GL_NEAREST)
          */
-        NearestNeighbor(GL.GL_NEAREST),
+        NearestNeighbor(GL2.GL_NEAREST),
 
         /**
          * In this mode the four nearest texels to the pixel center are sampled
@@ -153,7 +153,7 @@ public class GLTexture extends PImage {
          * change from one texel to the next, instead of an abrupt jump as the
          * pixel center crosses the texel boundary. (GL equivalent: GL_LINEAR)
          */
-        Bilinear(GL.GL_LINEAR);
+        Bilinear(GL2.GL_LINEAR);
 
         private int glConstant;
 
@@ -167,11 +167,11 @@ public class GLTexture extends PImage {
     }
 
     public enum TEXTURE_TARGET {
-        TEXTURE_1D(GL.GL_TEXTURE_1D),
+        TEXTURE_1D(GL2.GL_TEXTURE_1D),
 
-        TEXTURE_2D(GL.GL_TEXTURE_2D),
+        TEXTURE_2D(GL2.GL_TEXTURE_2D),
 
-        RECTANGULAR(GL.GL_TEXTURE_RECTANGLE_ARB);
+        RECTANGULAR(GL2.GL_TEXTURE_RECTANGLE_ARB);
 
         private int glConstant;
 
@@ -187,11 +187,11 @@ public class GLTexture extends PImage {
     /*
      //FIXME obsolete?  how to deal with the PImage.format and the glFormat??
      public enum INTERNAL_FORMAT{
- //		RGB(GL.GL_RGB),
+ //		RGB(GL2.GL_RGB),
 
-         RGBA(GL.GL_RGBA)
+         RGBA(GL2.GL_RGBA)
 
- //		,BGRA(GL.GL_BGRA)
+ //		,BGRA(GL2.GL_BGRA)
 
          ;
 
@@ -207,9 +207,9 @@ public class GLTexture extends PImage {
     /*
      //FIXME use instead of hardcoded GL_UNSIGNED_BYTE?
      public enum GL_TYPE{
-         INTEGER(GL.GL_INT),
+         INTEGER(GL2.GL_INT),
 
-         UNSIGNED_BYTE(GL.GL_UNSIGNED_BYTE);
+         UNSIGNED_BYTE(GL2.GL_UNSIGNED_BYTE);
 
          private int glConstant;
          private GL_TYPE(int glConstant) {
@@ -225,7 +225,7 @@ public class GLTexture extends PImage {
 
     private PGraphicsOpenGL pgl;
 
-    private GL gl;
+    private GL2 gl;
 
     protected boolean fboSupported;
 
@@ -280,7 +280,7 @@ public class GLTexture extends PImage {
         this.app = parent;
         this.parent = parent;
         pgl = (PGraphicsOpenGL) parent.g;
-        gl = pgl.gl;
+        gl = GLU.getCurrentGL().getGL2(); // pgl.beginPGL().gl.getGL2();
     }
 
     /**
@@ -323,7 +323,7 @@ public class GLTexture extends PImage {
         this.app = parent;
         this.parent = parent;
         pgl = (PGraphicsOpenGL) parent.g;
-        gl = pgl.gl;
+        gl = GLU.getCurrentGL().getGL2();
 
 //    	 		setTextureParams(params);
 
@@ -368,7 +368,7 @@ public class GLTexture extends PImage {
         this.app = parent;
         this.parent = parent;
         pgl = (PGraphicsOpenGL) app.g;
-        gl = pgl.gl;
+        gl = GLU.getCurrentGL().getGL2();
         this.glTextureSettings = settings;
         this.loadTexture(fileName, this.glTextureSettings);
     }
@@ -492,10 +492,10 @@ public class GLTexture extends PImage {
             //FIXME gluBuildmipmaps staucht NPOT texture auf pot zusammen?
             //BEi clamp komischer wasser fbo error
             if (glTextureSettings.wrappingHorizontal == WRAP_MODE.REPEAT) {
-                glTextureSettings.wrappingHorizontal = WRAP_MODE.CLAMP_TO_EDGE; //        		this.wrap_s = GL.GL_CLAMP;
+                glTextureSettings.wrappingHorizontal = WRAP_MODE.CLAMP_TO_EDGE; //        		this.wrap_s = GL2.GL_CLAMP;
             }
             if (glTextureSettings.wrappingVertical == WRAP_MODE.REPEAT) {
-                glTextureSettings.wrappingVertical = WRAP_MODE.CLAMP_TO_EDGE; //        		this.wrap_t = GL.GL_CLAMP;
+                glTextureSettings.wrappingVertical = WRAP_MODE.CLAMP_TO_EDGE; //        		this.wrap_t = GL2.GL_CLAMP;
             }
 
             //NPOT texture dont support mipmaps!
@@ -514,13 +514,13 @@ public class GLTexture extends PImage {
         // Texture internal format
         switch (this.format) {
             case PConstants.RGB:
-                this.internalFormat = GL.GL_RGB;
+                this.internalFormat = GL2.GL_RGB;
                 break;
             case PConstants.ARGB:
-                this.internalFormat = GL.GL_RGBA;
+                this.internalFormat = GL2.GL_RGBA;
                 break;
             default:
-                this.internalFormat = GL.GL_RGBA;
+                this.internalFormat = GL2.GL_RGBA;
                 break;
         }
 
@@ -529,19 +529,19 @@ public class GLTexture extends PImage {
         //Bind the texture
         gl.glBindTexture(textureTarget, glTextureID[0]);
         //SET texture mag/min FILTER mode
-        gl.glTexParameteri(textureTarget, GL.GL_TEXTURE_MIN_FILTER, minFilter);
-        gl.glTexParameteri(textureTarget, GL.GL_TEXTURE_MAG_FILTER, magFilter);
+        gl.glTexParameteri(textureTarget, GL2.GL_TEXTURE_MIN_FILTER, minFilter);
+        gl.glTexParameteri(textureTarget, GL2.GL_TEXTURE_MAG_FILTER, magFilter);
         //Set texture wrapping mode
-        gl.glTexParameteri(textureTarget, GL.GL_TEXTURE_WRAP_S, wrap_s);
-        gl.glTexParameteri(textureTarget, GL.GL_TEXTURE_WRAP_T, wrap_t);
+        gl.glTexParameteri(textureTarget, GL2.GL_TEXTURE_WRAP_S, wrap_s);
+        gl.glTexParameteri(textureTarget, GL2.GL_TEXTURE_WRAP_T, wrap_t);
 
         switch (glTextureSettings.target) {
             case TEXTURE_1D:
-                gl.glTexImage1D(textureTarget, 0, internalFormat, width, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, null);
+                gl.glTexImage1D(textureTarget, 0, internalFormat, width, 0, GL2.GL_RGBA, GL2.GL_UNSIGNED_BYTE, null);
                 break;
             default:
-                gl.glTexImage2D(textureTarget, 0, internalFormat, width, height, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, null); //FIXME always use GL_RGBA as glformat??
-//			gl.glTexImage2D(textureTarget, 0, internalFormat, width, height, 0, GL.GL_BGRA, GL.GL_UNSIGNED_BYTE, null);//ORIGINAL
+                gl.glTexImage2D(textureTarget, 0, internalFormat, width, height, 0, GL2.GL_RGBA, GL2.GL_UNSIGNED_BYTE, null); //FIXME always use GL_RGBA as glformat??
+//			gl.glTexImage2D(textureTarget, 0, internalFormat, width, height, 0, GL2.GL_BGRA, GL2.GL_UNSIGNED_BYTE, null);//ORIGINAL
                 break;
         }
         gl.glBindTexture(textureTarget, 0);
@@ -667,8 +667,8 @@ public class GLTexture extends PImage {
 
         //      int glFormat = glTextureSettings.glType.getGLConstant();
 
-        int glFormat = GL.GL_BGRA;                 //FIXME DONT HARDCODE!?
-        int type = GL.GL_UNSIGNED_BYTE;         //FIXME DONT HARDCODE!?
+        int glFormat = GL2.GL_BGRA;                 //FIXME DONT HARDCODE!?
+        int type = GL2.GL_UNSIGNED_BYTE;         //FIXME DONT HARDCODE!?
 
         int textureTarget = glTextureSettings.target.getGLConstant();
         // int internalFormat = glTextureSettings.textureInternalFormat.getGLConstant();
@@ -688,13 +688,13 @@ public class GLTexture extends PImage {
 
         switch (this.format) {
             case PConstants.RGB:
-                this.internalFormat = GL.GL_RGB;
+                this.internalFormat = GL2.GL_RGB;
                 break;
             case PConstants.ARGB:
-                this.internalFormat = GL.GL_RGBA;
+                this.internalFormat = GL2.GL_RGBA;
                 break;
             default:
-                this.internalFormat = GL.GL_RGBA;
+                this.internalFormat = GL2.GL_RGBA;
                 break;
         }
 
@@ -702,8 +702,8 @@ public class GLTexture extends PImage {
 
         switch (glTextureSettings.target) {
             case TEXTURE_1D:
-                if (glFormat == GL.GL_BGRA) {
-                    glFormat = GL.GL_RGBA;
+                if (glFormat == GL2.GL_BGRA) {
+                    glFormat = GL2.GL_RGBA;
                 }
                 gl.glTexSubImage1D(textureTarget, 0, 0, this.width, glFormat, type, buffer);
                 break;
@@ -715,7 +715,7 @@ public class GLTexture extends PImage {
                         && this.glTextureSettings.target != TEXTURE_TARGET.RECTANGULAR
                         ) {
                     //deprectated in opengl 3.0 -will always create mipmaps automatically if lvl 0 changes
-//				gl.glTexParameteri( textureTarget, GL.GL_GENERATE_MIPMAP, GL.GL_TRUE ); 
+//				gl.glTexParameteri( textureTarget, GL2.GL_GENERATE_MIPMAP, GL2.GL_TRUE );
                     if (this.forcedRectMipMaps) {
                         //Resizes NPOT textures to POT
                         GLU glu = ((PGraphicsOpenGL) this.parent.g).glu;
@@ -723,7 +723,8 @@ public class GLTexture extends PImage {
                     } else {
                         if (this.fboSupported) { //Naive check if glGenerateMipmapEXT command is supported
                             gl.glTexSubImage2D(textureTarget, 0, 0, 0, this.width, this.height, glFormat, type, buffer);
-                            gl.glGenerateMipmapEXT(textureTarget);  //newer OpenGL 3.x method of creating mip maps //TODO problems on ATI? use gl.glEnable(textureTarget) first?
+
+                            gl.glGenerateMipmap(textureTarget);  //newer OpenGL 3.x method of creating mip maps //TODO problems on ATI? use gl.glEnable(textureTarget) first?
                         } else {
                             //Old school software method, will resize a NPOT texture to a POT texture
                             GLU glu = ((PGraphicsOpenGL) this.parent.g).glu;
@@ -732,7 +733,7 @@ public class GLTexture extends PImage {
                     }
                 } else {
                     gl.glTexSubImage2D(textureTarget, 0, 0, 0, width, height, glFormat, type, buffer); //ORG
-//				gl.glTexSubImage2D(textureTarget, 0, 0, 0, width, height, GL.GL_RGB, type, buffer);
+//				gl.glTexSubImage2D(textureTarget, 0, 0, 0, width, height, GL2.GL_RGB, type, buffer);
                 }
                 break;
         }
@@ -761,7 +762,7 @@ public class GLTexture extends PImage {
         IntBuffer buff = BufferUtil.newIntBuffer(this.width * this.height);
         int textureTarget = this.glTextureSettings.target.getGLConstant();
         gl.glBindTexture(textureTarget, this.glTextureID[0]);
-        gl.glGetTexImage(textureTarget, 0, GL.GL_BGRA, GL.GL_UNSIGNED_BYTE, buff);
+        gl.glGetTexImage(textureTarget, 0, GL2.GL_BGRA, GL2.GL_UNSIGNED_BYTE, buff);
         gl.glBindTexture(textureTarget, 0);
         buff.get(pixels);
     }
@@ -792,8 +793,8 @@ public class GLTexture extends PImage {
 
         if (this.isGLTexObjectInitialized()) {
             gl.glBindTexture(this.getTextureTarget(), this.getTextureID());
-            gl.glTexParameteri(this.getTextureTarget(), GL.GL_TEXTURE_WRAP_S, this.glTextureSettings.wrappingHorizontal.getGLConstant());
-            gl.glTexParameteri(this.getTextureTarget(), GL.GL_TEXTURE_WRAP_T, this.glTextureSettings.wrappingVertical.getGLConstant());
+            gl.glTexParameteri(this.getTextureTarget(), GL2.GL_TEXTURE_WRAP_S, this.glTextureSettings.wrappingHorizontal.getGLConstant());
+            gl.glTexParameteri(this.getTextureTarget(), GL2.GL_TEXTURE_WRAP_T, this.glTextureSettings.wrappingVertical.getGLConstant());
             gl.glBindTexture(this.getTextureTarget(), 0);
         }
     }
@@ -825,8 +826,8 @@ public class GLTexture extends PImage {
 
         if (this.isGLTexObjectInitialized()) {
             gl.glBindTexture(this.getTextureTarget(), this.getTextureID());
-            gl.glTexParameteri(this.getTextureTarget(), GL.GL_TEXTURE_MIN_FILTER, this.glTextureSettings.shrinkFilter.getGLConstant());
-            gl.glTexParameteri(this.getTextureTarget(), GL.GL_TEXTURE_MAG_FILTER, this.glTextureSettings.expansionFilter.getGLConstant());
+            gl.glTexParameteri(this.getTextureTarget(), GL2.GL_TEXTURE_MIN_FILTER, this.glTextureSettings.shrinkFilter.getGLConstant());
+            gl.glTexParameteri(this.getTextureTarget(), GL2.GL_TEXTURE_MAG_FILTER, this.glTextureSettings.expansionFilter.getGLConstant());
             gl.glBindTexture(this.getTextureTarget(), 0);
         }
 
@@ -873,7 +874,7 @@ public class GLTexture extends PImage {
         int twidth = width;
 
         int[] tIntArray = new int[width * height];
-        if (PGraphicsOpenGL.BIG_ENDIAN) {
+        if (PGraphicsOpenGL2.BIG_ENDIAN) {
             switch (arrayFormat) {
             case ALPHA:
 
@@ -955,7 +956,7 @@ public class GLTexture extends PImage {
         int p = 0;
         int twidth = width;
         int[] tIntArray = new int[width * height];
-        if (PGraphicsOpenGL.BIG_ENDIAN) {
+        if (PGraphicsOpenGL2.BIG_ENDIAN) {
             for (int y = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
                     int pixel = intArray[p++];

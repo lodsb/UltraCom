@@ -21,7 +21,7 @@ import java.util.WeakHashMap;
 
 //FIXME this is class is not used at the moment - hard to track all states if processing also messes with it
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import sun.text.IntHashtable;
 
@@ -73,7 +73,7 @@ public class GLStateHolder {
     /**
      * The gl.
      */
-    GL gl;
+    GL2 gl;
 
 
     /**
@@ -82,7 +82,7 @@ public class GLStateHolder {
      * @param gl the GL context
      * @return the associated GLState
      */
-    public static GLStateHolder getInstance(GL gl) {
+    public static GLStateHolder getInstance(GL2 gl) {
         GLStateHolder s = (GLStateHolder) gl2state.get(gl);
         if (s == null) {
             s = new GLStateHolder(gl);
@@ -95,7 +95,7 @@ public class GLStateHolder {
      *
      * @param gl the GL context.
      */
-    private GLStateHolder(GL gl) {
+    private GLStateHolder(GL2 gl) {
         this.gl = gl;
         state = new IntHashtable();
         state.setDefaultValue(-1);
@@ -109,12 +109,12 @@ public class GLStateHolder {
      * Initialize.
      */
     private void initialize() {
-        version = gl.glGetString(GL.GL_VERSION);
-        state.put(GL.GL_TEXTURE_1D, 0);
-        state.put(GL.GL_TEXTURE_2D, 0);
-        state.put(GL.GL_TEXTURE_BINDING_1D, 0);
-        state.put(GL.GL_TEXTURE_BINDING_2D, 0);
-        state.put(GL.GL_TEXTURE_ENV_MODE, 0);
+        version = gl.glGetString(GL2.GL_VERSION);
+        state.put(GL2.GL_TEXTURE_1D, 0);
+        state.put(GL2.GL_TEXTURE_2D, 0);
+        state.put(GL2.GL_TEXTURE_BINDING_1D, 0);
+        state.put(GL2.GL_TEXTURE_BINDING_2D, 0);
+        state.put(GL2.GL_TEXTURE_ENV_MODE, 0);
     }
 
     /**
@@ -234,8 +234,8 @@ public class GLStateHolder {
      * @param tex the tex
      */
     public void bindTexture1D(int tex) {
-        if (setState(GL.GL_TEXTURE_BINDING_1D, tex)) {
-            gl.glBindTexture(GL.GL_TEXTURE_1D, tex);
+        if (setState(GL2.GL_TEXTURE_BINDING_1D, tex)) {
+            gl.glBindTexture(GL2.GL_TEXTURE_1D, tex);
             checkError();
         }
     }
@@ -246,8 +246,8 @@ public class GLStateHolder {
      * @param tex the tex
      */
     public void bindTexture2D(int tex) {
-        if (setState(GL.GL_TEXTURE_BINDING_2D, tex)) {
-            gl.glBindTexture(GL.GL_TEXTURE_2D, tex);
+        if (setState(GL2.GL_TEXTURE_BINDING_2D, tex)) {
+            gl.glBindTexture(GL2.GL_TEXTURE_2D, tex);
             checkError();
         }
     }
@@ -258,7 +258,7 @@ public class GLStateHolder {
      * @param model the model
      */
     public void glSetShadeModel(int model) {
-        if (setState(GL.GL_SHADE_MODEL, model)) {
+        if (setState(GL2.GL_SHADE_MODEL, model)) {
             gl.glShadeModel(model);
             checkError();
         }
@@ -294,7 +294,7 @@ public class GLStateHolder {
      * @param op the op
      */
     public void glLogicOp(int op) {
-        if (setState(GL.GL_LOGIC_OP, op)) {
+        if (setState(GL2.GL_LOGIC_OP, op)) {
             gl.glLogicOp(op);
             checkError();
         }

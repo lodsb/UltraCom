@@ -19,7 +19,7 @@ package org.mt4j.util.opengl;
 
 import java.util.Stack;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.apache.log4j.ConsoleAppender;
@@ -52,7 +52,7 @@ public class GLFboStack {
     /**
      * The gl.
      */
-    public GL gl;
+    public GL2 gl;
 
     /**
      * The current fbo.
@@ -74,7 +74,7 @@ public class GLFboStack {
      *
      * @param gl the gl
      */
-    private GLFboStack(GL gl) {
+    private GLFboStack(GL2 gl) {
         this.gl = gl;
         fboNameStack = new Stack<Integer>();
         currentFBO = 0;
@@ -108,7 +108,7 @@ public class GLFboStack {
      */
     public void useFBO(int fbo) {
         currentFBO = fbo;
-        gl.glBindFramebufferEXT(GL.GL_FRAMEBUFFER_EXT, currentFBO);
+        gl.glBindFramebufferEXT(GL2.GL_FRAMEBUFFER_EXT, currentFBO);
     }
 
     /**
@@ -147,7 +147,7 @@ public class GLFboStack {
             logger.error("Trying to pop() from an empty framebuffer stack!"); //TODO -> just bind 0 !?
         } else {
             currentFBO = fboNameStack.pop();
-            gl.glBindFramebufferEXT(GL.GL_FRAMEBUFFER_EXT, currentFBO);
+            gl.glBindFramebufferEXT(GL2.GL_FRAMEBUFFER_EXT, currentFBO);
         }
     }
 

@@ -17,7 +17,7 @@
  ***********************************************************************/
 package org.mt4j.components.visibleComponents.shapes;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
@@ -181,7 +181,7 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
         this.useVBOs = false;
         this.useDisplayList = false;
         this.textureMode = PConstants.NORMALIZED;
-        this.setFillDrawMode(GL.GL_TRIANGLE_FAN);
+        this.setFillDrawMode(GL2.GL_TRIANGLE_FAN);
 //		this.boundsGlobalVerticesDirty = true;
         this.boundsAutoCompute = true;
 

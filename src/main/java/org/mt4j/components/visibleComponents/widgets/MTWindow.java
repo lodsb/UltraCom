@@ -17,7 +17,7 @@
  ***********************************************************************/
 package org.mt4j.components.visibleComponents.widgets;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.mt4j.components.clipping.Clip;
 import org.mt4j.components.visibleComponents.AbstractVisibleComponent;
@@ -111,7 +111,7 @@ public class MTWindow extends MTRoundRectangle {
 
         //Create inner children clip shape
         float border = 10;
-        GL gl = ((PGraphicsOpenGL) applet.g).gl;
+        GL2 gl = ((PGraphicsOpenGL) applet.g).gl;
 //		MTRoundRectangle clipRect =  new MTRoundRectangle(x+border, y+border, z, width-(2*border), height-(2*border), arcWidth, arcHeight, applet);
         MTRectangle clipRect = new MTRectangle(applet, x + border, y + border, z, width - (2 * border), height - (2 * border));
         clipRect.setDrawSmooth(true);

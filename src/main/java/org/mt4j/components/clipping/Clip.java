@@ -17,7 +17,7 @@
  ***********************************************************************/
 package org.mt4j.components.clipping;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.mt4j.components.bounds.BoundsZPlaneRectangle;
 import org.mt4j.components.visibleComponents.AbstractVisibleComponent;
@@ -52,7 +52,7 @@ public class Clip {
     /**
      * The gl.
      */
-    private GL gl;
+    private GL2 gl;
 
     /**
      * Instantiates a new clip.
@@ -106,7 +106,7 @@ public class Clip {
      * @param gl        the gl
      * @param clipShape the clip shape
      */
-    public Clip(GL gl, AbstractVisibleComponent clipShape) {
+    public Clip(GL2 gl, AbstractVisibleComponent clipShape) {
         if (MT4jSettings.getInstance().isOpenGlMode()) {
             this.gl = Tools3D.getGL(clipShape.getRenderer());
         }

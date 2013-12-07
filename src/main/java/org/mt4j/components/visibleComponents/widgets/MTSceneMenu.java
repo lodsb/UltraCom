@@ -177,8 +177,8 @@ public class MTSceneMenu extends MTRectangle {
 
         if (MT4jSettings.getInstance().isOpenGlMode()) {
 //			GLTextureParameters tp = new GLTextureParameters();
-//			tp.wrap_s = GL.GL_CLAMP;
-//			tp.wrap_t = GL.GL_CLAMP;
+//			tp.wrap_s = GL2.GL_CLAMP;
+//			tp.wrap_t = GL2.GL_CLAMP;
 ////			GLTexture glTex = new GLTexture(app, MT4jSettings.getInstance().getDefaultImagesPath()+
 ////					"blackRoundSolidCorner64sh2.png", tp);
 //			GLTexture glTex = new GLTexture(app, menuImage.width, menuImage.height, tp);

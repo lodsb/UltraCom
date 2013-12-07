@@ -17,7 +17,7 @@
  ***********************************************************************/
 package org.mt4j.components;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.mt4j.util.math.ToolsLight;
 import org.mt4j.util.math.Vector3D;
@@ -40,7 +40,7 @@ public class MTLight {
     /**
      * The gl.
      */
-    private GL gl;
+    private GL2 gl;
 
 
     /**
@@ -80,22 +80,22 @@ public class MTLight {
      * @param ambientA the ambient a
      */
     public static void enableLightningAndAmbient(PApplet pa, float ambientR, float ambientG, float anbientB, float ambientA) {
-        GL gl = ((PGraphicsOpenGL) pa.g).gl;
+        GL2 gl = ((PGraphicsOpenGL) pa.g).gl;
 
         //ENABLE LIGHTNING
-        gl.glEnable(GL.GL_LIGHTING);
+        gl.glEnable(GL2.GL_LIGHTING);
 
         //Set default ambient lightning for all objs
         ToolsLight.setAmbientLight(gl, new float[]{ambientR / 255, ambientG / 255, anbientB / 255, ambientA / 255});
 
         //This means that glMaterial will control the polygon's specular and emission colours
         //and the ambient and diffuse will both be set using glColor.
-//	    	gl.glColorMaterial(GL.GL_FRONT, GL.GL_AMBIENT_AND_DIFFUSE);
-        gl.glColorMaterial(GL.GL_FRONT_AND_BACK, GL.GL_AMBIENT_AND_DIFFUSE);
-//	    	gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);
+//	    	gl.glColorMaterial(GL2.GL_FRONT, GL2.GL_AMBIENT_AND_DIFFUSE);
+        gl.glColorMaterial(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE);
+//	    	gl.glColorMaterial(GL2.GL_FRONT, GL2.GL_DIFFUSE);
 
         //Enable color material
-        gl.glEnable(GL.GL_COLOR_MATERIAL);
+        gl.glEnable(GL2.GL_COLOR_MATERIAL);
 
         /*
                * GL_RESCALE_NORMAL multiplies the transformed normal by a scale factor.
@@ -104,7 +104,7 @@ public class MTLight {
                * If the ModelView matrix contains nonuniform scaling, GL_NORMALIZE is the
                * preferred solution.
               */
-        gl.glEnable(GL.GL_RESCALE_NORMAL);
+        gl.glEnable(GL2.GL_RESCALE_NORMAL);
     }
 
 
@@ -168,7 +168,7 @@ public class MTLight {
      */
     public void updateLightPosition(float x, float y, float z) {
         this.lightPosition = new float[]{x, y, z, 1};
-        gl.glLightfv(this.lightId, GL.GL_POSITION, lightPosition, 0);
+        gl.glLightfv(this.lightId, GL2.GL_POSITION, lightPosition, 0);
     }
 
 

@@ -112,11 +112,11 @@ public class Rotate3DAction implements IGestureEventListener, ICollisionAction {
               gl.glPointSize(5.0f);
               gl.glLineWidth(100.0f);
               gl.glColor3f(255.0f,0.0f,0.0f);
-              gl.glBegin(GL.GL_POINTS);
+              gl.glBegin(GL2.GL_POINTS);
               System.out.println(lastRotateEvent.getRotationPoint());
               gl.glVertex3f(lastRotateEvent.getRotationPoint().x,lastRotateEvent.getRotationPoint().y,lastRotateEvent.getRotationPoint().z);
               gl.glEnd();
-              gl.glBegin(GL.GL_LINES);
+              gl.glBegin(GL2.GL_LINES);
               Vector3D rotPoint = Tools3D.projectPointToPlane(lastRotateEvent.getRotationPoint(), ((MTApplication)pApplet).getScenes()[0].getSceneCam().getFrustum(), ((MTApplication)pApplet).getScenes()[0].getSceneCam().getFrustum().getZValueOfNearPlane()-0.001f, (MTApplication)pApplet);
               gl.glVertex3f(rotPoint.x,rotPoint.y,rotPoint.z);
               Vector3D axisAdded = rotPoint.getAdded(lastRotateEvent.getRotationAxis());

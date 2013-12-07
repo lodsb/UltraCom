@@ -17,7 +17,7 @@
  ***********************************************************************/
 package org.mt4j.components.visibleComponents.font;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.mt4j.components.bounds.IBoundingShape;
 import org.mt4j.components.visibleComponents.shapes.MTRectangle;
@@ -86,8 +86,8 @@ public class BitmapFontCharacter extends MTRectangle implements IFontCharacter {
             PImage tex = this.getTexture();
             if (tex instanceof GLTexture) {
                 GLTexture glTex = (GLTexture) tex;
-//				glTex.setWrap(GL.GL_CLAMP, GL.GL_CLAMP);
-//				glTex.setWrap(GL.GL_CLAMP_TO_EDGE, GL.GL_CLAMP_TO_EDGE);
+//				glTex.setWrap(GL2.GL_CLAMP, GL2.GL_CLAMP);
+//				glTex.setWrap(GL2.GL_CLAMP_TO_EDGE, GL2.GL_CLAMP_TO_EDGE);
 
                 glTex.setWrapMode(WRAP_MODE.CLAMP_TO_EDGE, WRAP_MODE.CLAMP_TO_EDGE);
 
@@ -104,7 +104,7 @@ public class BitmapFontCharacter extends MTRectangle implements IFontCharacter {
       * @see org.mt4j.components.visibleComponents.font.IFontCharacter#drawComponent(javax.media.opengl.GL)
       */
     //@Override
-    public void drawComponent(GL gl) { //FIXME
+    public void drawComponent(GL2 gl) { //FIXME
 //		this.drawPureGl(gl);
 //		/*
         if (MT4jSettings.getInstance().isOpenGlMode()) {
@@ -185,10 +185,10 @@ public class BitmapFontCharacter extends MTRectangle implements IFontCharacter {
                 //small text is too filtered and smudged so we use NEAREST -> but this makes
                 //scaled text very ugly and pixelated..
                 if (scalable) {
-//					glTex.setFilter(GL.GL_LINEAR, GL.GL_LINEAR);
+//					glTex.setFilter(GL2.GL_LINEAR, GL2.GL_LINEAR);
                     glTex.setFilter(SHRINKAGE_FILTER.BilinearNoMipMaps, EXPANSION_FILTER.Bilinear);
                 } else {
-//					glTex.setFilter(GL.GL_LINEAR, GL.GL_NEAREST); 
+//					glTex.setFilter(GL2.GL_LINEAR, GL2.GL_NEAREST);
                     glTex.setFilter(SHRINKAGE_FILTER.BilinearNoMipMaps, EXPANSION_FILTER.NearestNeighbor);
                 }
             }

@@ -21,7 +21,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Iterator;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
@@ -200,15 +200,15 @@ public abstract class SimpleAbstractScene extends EventHandler implements Iscene
 
     protected void clear(PGraphics graphics) {
         if (MT4jSettings.getInstance().isOpenGlMode()) {
-            GL gl = Tools3D.getGL(mtApplication);
+            GL2 gl = Tools3D.getGL(mtApplication);
             gl.glClearColor(this.glClearColor.getR(), this.glClearColor.getG(), this.glClearColor.getB(), this.glClearColor.getAlpha());
             gl.glClear(
-                    GL.GL_COLOR_BUFFER_BIT
+                    GL2.GL_COLOR_BUFFER_BIT
                             |
-                            GL.GL_DEPTH_BUFFER_BIT
+                            GL2.GL_DEPTH_BUFFER_BIT
             );
 //			gl.glDepthMask(false);
-//			gl.glDisable(GL.GL_DEPTH_TEST);
+//			gl.glDisable(GL2.GL_DEPTH_TEST);
         } else {
             graphics.background(this.clearColor.getR(), this.clearColor.getG(), this.clearColor.getB(), this.clearColor.getAlpha());
         }

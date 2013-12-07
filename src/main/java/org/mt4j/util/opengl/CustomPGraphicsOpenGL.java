@@ -27,7 +27,7 @@ import org.mt4j.util.MT4jSettings;
 import processing.opengl.PGraphicsOpenGL;
 
 /**
- * The Class CustomPGraphicsOpenGL. An extension to processing's opengl renderer.
+ * The Class CustomPGraphicsOpenGL2. An extension to processing's opengl renderer.
  *
  * @author Christopher Ruff
  */
@@ -40,7 +40,7 @@ public class CustomPGraphicsOpenGL extends PGraphicsOpenGL {
 //    protected void allocate() {
 //		super.allocate();
 //        if (context == null) {
-////	      System.out.println("PGraphicsOpenGL.allocate() for " + width + " " + height);
+////	      System.out.println("PGraphicsOpenGL2.allocate() for " + width + " " + height);
 ////	      new Exception().printStackTrace(System.out);
 //            // If OpenGL 2X or 4X smoothing is enabled, setup caps object for them
 //            GLCapabilities capabilities = new GLCapabilities();

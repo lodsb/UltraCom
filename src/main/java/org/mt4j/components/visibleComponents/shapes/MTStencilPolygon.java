@@ -21,7 +21,7 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.mt4j.util.math.Tools3D;
 import org.mt4j.util.math.ToolsGeometry;
@@ -309,7 +309,7 @@ public class MTStencilPolygon extends MTPolygon {
      *
      * @param gl the gl
      */
-    public void drawComponent(GL gl) {
+    public void drawComponent(GL2 gl) {
         if (isUseDirectGL()) {
             if (isUseDisplayList()) {
                 int[] displayListIDs = this.getGeometryInfo().getDisplayListIDs();
@@ -326,7 +326,7 @@ public class MTStencilPolygon extends MTPolygon {
     @Override
     public void drawComponent(PGraphics g) {
         if (isUseDirectGL()) {
-            GL gl = ((PGraphicsOpenGL) this.getRenderer().g).beginGL();
+            GL2 gl = ((PGraphicsOpenGL) this.getRenderer().g).beginGL();
             drawComponent(gl);
             ((PGraphicsOpenGL) this.getRenderer().g).endGL();
         }
@@ -337,33 +337,33 @@ public class MTStencilPolygon extends MTPolygon {
      *
      * @param gl the gl
      */
-    private void drawPureGL(GL gl) {
+    private void drawPureGL(GL2 gl) {
         FloatBuffer vertBuff = this.getGeometryInfo().getVertBuff();
         FloatBuffer colorBuff = this.getGeometryInfo().getColorBuff();
         FloatBuffer strokeColBuff = this.getGeometryInfo().getStrokeColBuff();
 
-        gl.glEnableClientState(GL.GL_VERTEX_ARRAY);
-        gl.glEnableClientState(GL.GL_COLOR_ARRAY);
+        gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
+        gl.glEnableClientState(GL2.GL_COLOR_ARRAY);
 
         if (this.isUseVBOs()) {
-            gl.glBindBuffer(GL.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBOVerticesName());
-            gl.glVertexPointer(3, GL.GL_FLOAT, 0, 0);
+            gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBOVerticesName());
+            gl.glVertexPointer(3, GL2.GL_FLOAT, 0, 0);
 
-            gl.glBindBuffer(GL.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBOColorName());
-            gl.glColorPointer(4, GL.GL_FLOAT, 0, 0);
+            gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBOColorName());
+            gl.glColorPointer(4, GL2.GL_FLOAT, 0, 0);
         } else {
-            gl.glVertexPointer(3, GL.GL_FLOAT, 0, vertBuff);
-            gl.glColorPointer(4, GL.GL_FLOAT, 0, colorBuff);
+            gl.glVertexPointer(3, GL2.GL_FLOAT, 0, vertBuff);
+            gl.glColorPointer(4, GL2.GL_FLOAT, 0, colorBuff);
         }
 
         //Normals
         if (this.getGeometryInfo().isContainsNormals()) {
-            gl.glEnableClientState(GL.GL_NORMAL_ARRAY);
+            gl.glEnableClientState(GL2.GL_NORMAL_ARRAY);
             if (this.isUseVBOs()) {
-                gl.glBindBuffer(GL.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBONormalsName());
-                gl.glNormalPointer(GL.GL_FLOAT, 0, 0);
+                gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBONormalsName());
+                gl.glNormalPointer(GL2.GL_FLOAT, 0, 0);
             } else {
-                gl.glNormalPointer(GL.GL_FLOAT, 0, this.getGeometryInfo().getNormalsBuff());
+                gl.glNormalPointer(GL2.GL_FLOAT, 0, this.getGeometryInfo().getNormalsBuff());
             }
         }
 
@@ -376,20 +376,20 @@ public class MTStencilPolygon extends MTPolygon {
                ///////////////////////
                gl.glClearStencil(0);
                gl.glColorMask(false,false,false,false);
-               gl.glDisable(GL.GL_BLEND);
+               gl.glDisable(GL2.GL_BLEND);
                gl.glDepthMask(false);//remove..?
 
                //Enable stencilbuffer
-               gl.glEnable(GL.GL_STENCIL_TEST);
+               gl.glEnable(GL2.GL_STENCIL_TEST);
    //		    gl.glStencilMask (0x01);
-               gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_INVERT);
-               gl.glStencilFunc (GL.GL_ALWAYS, 0, ~0);
+               gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_INVERT);
+               gl.glStencilFunc (GL2.GL_ALWAYS, 0, ~0);
 
                //Draw into stencil
-               gl.glDrawArrays(GL.GL_TRIANGLE_FAN, 0, vertBuff.capacity()/3);
+               gl.glDrawArrays(GL2.GL_TRIANGLE_FAN, 0, vertBuff.capacity()/3);
 
                if (this.getGeometryInfo().isContainsNormals()){
-                   gl.glDisableClientState(GL.GL_NORMAL_ARRAY);
+                   gl.glDisableClientState(GL2.GL_NORMAL_ARRAY);
                }
 
                //////////////////////
@@ -397,13 +397,13 @@ public class MTStencilPolygon extends MTPolygon {
                //////////////////////
                gl.glDepthMask(true);
                gl.glColorMask(true, true, true, true);
-               gl.glEnable (GL.GL_BLEND);
+               gl.glEnable (GL2.GL_BLEND);
 
-               gl.glStencilOp (GL.GL_ZERO, GL.GL_ZERO, GL.GL_ZERO);
-               gl.glStencilFunc(GL.GL_EQUAL, 0x01, 0x01);
+               gl.glStencilOp (GL2.GL_ZERO, GL2.GL_ZERO, GL2.GL_ZERO);
+               gl.glStencilFunc(GL2.GL_EQUAL, 0x01, 0x01);
 
                if (useGradient){
-                   gl.glBegin (GL.GL_QUADS);
+                   gl.glBegin (GL2.GL_QUADS);
                        gl.glColor4f(x1R, x1G, x1B, x1A);
                        gl.glVertex3d (minX, minY, 0.0);
                        gl.glColor4f(x2R, x2G, x2B, x2A);
@@ -415,7 +415,7 @@ public class MTStencilPolygon extends MTPolygon {
                    gl.glEnd ();
                }else{
                    gl.glColor4d (colorBuff.get(0), colorBuff.get(1), colorBuff.get(2), colorBuff.get(3));
-                   gl.glBegin (GL.GL_QUADS);
+                   gl.glBegin (GL2.GL_QUADS);
                        gl.glVertex3d (minX, minY, 0.0);
                        gl.glVertex3d (maxX, minY, 0.0);
                        gl.glVertex3d (maxX, maxY, 0.0);
@@ -423,7 +423,7 @@ public class MTStencilPolygon extends MTPolygon {
                    gl.glEnd ();
                }
 
-               gl.glDisable (GL.GL_STENCIL_TEST);
+               gl.glDisable (GL2.GL_STENCIL_TEST);
                */
 
             ///////////////////////
@@ -432,33 +432,33 @@ public class MTStencilPolygon extends MTPolygon {
 //	    	GLStencilUtil.getInstance().beginDrawClipShape(gl);
 
             if (GLStencilUtil.getInstance().isClipActive()) {
-                gl.glPushAttrib(GL.GL_STENCIL_BUFFER_BIT);
+                gl.glPushAttrib(GL2.GL_STENCIL_BUFFER_BIT);
             } else {
                 //Enable stencilbuffer
-                gl.glEnable(GL.GL_STENCIL_TEST);
+                gl.glEnable(GL2.GL_STENCIL_TEST);
                 gl.glClearStencil(GLStencilUtil.getInstance().stencilValueStack.peek());
-                gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
+                gl.glClear(GL2.GL_STENCIL_BUFFER_BIT);
             }
-//	    	gl.glPushAttrib(GL.GL_STENCIL_TEST);
-//	    	gl.glDisable(GL.GL_STENCIL_TEST);
+//	    	gl.glPushAttrib(GL2.GL_STENCIL_TEST);
+//	    	gl.glDisable(GL2.GL_STENCIL_TEST);
 //	    	gl.glClearStencil(GLStencilUtil.getInstance().stencilValueStack.peek());
 //			gl.glClearStencil(0);
-//	    	gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
+//	    	gl.glClear(GL2.GL_STENCIL_BUFFER_BIT);
             gl.glColorMask(false, false, false, false);
-            gl.glDisable(GL.GL_BLEND);
+            gl.glDisable(GL2.GL_BLEND);
             gl.glDepthMask(false);//remove..?
 
 
 //		    gl.glStencilMask (0x01);
-            gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_INVERT);
-            gl.glStencilFunc(GL.GL_ALWAYS, 0, ~0);
-//		    gl.glStencilFunc (GL.GL_ALWAYS, GLStencilUtil.getInstance().stencilValueStack.peek(), ~GLStencilUtil.getInstance().stencilValueStack.peek());
+            gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_INVERT);
+            gl.glStencilFunc(GL2.GL_ALWAYS, 0, ~0);
+//		    gl.glStencilFunc (GL2.GL_ALWAYS, GLStencilUtil.getInstance().stencilValueStack.peek(), ~GLStencilUtil.getInstance().stencilValueStack.peek());
 
             //Draw into stencil
-            gl.glDrawArrays(GL.GL_TRIANGLE_FAN, 0, vertBuff.capacity() / 3);
+            gl.glDrawArrays(GL2.GL_TRIANGLE_FAN, 0, vertBuff.capacity() / 3);
 
             if (this.getGeometryInfo().isContainsNormals()) {
-                gl.glDisableClientState(GL.GL_NORMAL_ARRAY);
+                gl.glDisableClientState(GL2.GL_NORMAL_ARRAY);
             }
 
             //////////////////////
@@ -466,23 +466,23 @@ public class MTStencilPolygon extends MTPolygon {
             //////////////////////
             gl.glDepthMask(true);
             gl.glColorMask(true, true, true, true);
-            gl.glEnable(GL.GL_BLEND);
+            gl.glEnable(GL2.GL_BLEND);
 
 
-            gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);
-//		    gl.glStencilOp (GL.GL_ZERO, GL.GL_REPLACE, GL.GL_REPLACE);
-//			gl.glStencilOp (GL.GL_KEEP, GL.GL_KEEP, GL.GL_ZERO); 
-//		     gl.glStencilOp (GL.GL_ZERO, GL.GL_ZERO, GL.GL_ZERO); //Org
-//		    gl.glStencilFunc(GL.GL_EQUAL, 0x01, 0x01); //org
+            gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
+//		    gl.glStencilOp (GL2.GL_ZERO, GL2.GL_REPLACE, GL2.GL_REPLACE);
+//			gl.glStencilOp (GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_ZERO);
+//		     gl.glStencilOp (GL2.GL_ZERO, GL2.GL_ZERO, GL2.GL_ZERO); //Org
+//		    gl.glStencilFunc(GL2.GL_EQUAL, 0x01, 0x01); //org
 //			if (GLStencilUtil.getInstance().isClipActive()){
-            gl.glStencilFunc(GL.GL_NOTEQUAL, GLStencilUtil.getInstance().stencilValueStack.peek(), GLStencilUtil.getInstance().stencilValueStack.peek());
-//				gl.glStencilFunc(GL.GL_NOTEQUAL, 0x01, 0x01);
+            gl.glStencilFunc(GL2.GL_NOTEQUAL, GLStencilUtil.getInstance().stencilValueStack.peek(), GLStencilUtil.getInstance().stencilValueStack.peek());
+//				gl.glStencilFunc(GL2.GL_NOTEQUAL, 0x01, 0x01);
 //			}else{
-//				gl.glStencilFunc(GL.GL_EQUAL, GLStencilUtil.getInstance().stencilValueStack.peek(), GLStencilUtil.getInstance().stencilValueStack.peek());
+//				gl.glStencilFunc(GL2.GL_EQUAL, GLStencilUtil.getInstance().stencilValueStack.peek(), GLStencilUtil.getInstance().stencilValueStack.peek());
 //			}
 
             if (useGradient) {
-                gl.glBegin(GL.GL_QUADS);
+                gl.glBegin(GL2.GL_QUADS);
                 gl.glColor4f(x1R, x1G, x1B, x1A);
                 gl.glVertex3d(minX, minY, 0.0);
                 gl.glColor4f(x2R, x2G, x2B, x2A);
@@ -494,7 +494,7 @@ public class MTStencilPolygon extends MTPolygon {
                 gl.glEnd();
             } else {
                 gl.glColor4d(colorBuff.get(0), colorBuff.get(1), colorBuff.get(2), colorBuff.get(3));
-                gl.glBegin(GL.GL_QUADS);
+                gl.glBegin(GL2.GL_QUADS);
                 gl.glVertex3d(minX, minY, 0.0);
                 gl.glVertex3d(maxX, minY, 0.0);
                 gl.glVertex3d(maxX, maxY, 0.0);
@@ -505,7 +505,7 @@ public class MTStencilPolygon extends MTPolygon {
             if (GLStencilUtil.getInstance().isClipActive()) {
                 gl.glPopAttrib();
             } else {
-                gl.glDisable(GL.GL_STENCIL_TEST);
+                gl.glDisable(GL2.GL_STENCIL_TEST);
             }
 
         }
@@ -515,21 +515,21 @@ public class MTStencilPolygon extends MTPolygon {
         //////////////////////////////
         if (!isNoStroke()) {
             if (this.isUseVBOs()) {
-                gl.glBindBuffer(GL.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBOStrokeColorName());
-                gl.glColorPointer(4, GL.GL_FLOAT, 0, 0);
+                gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBOStrokeColorName());
+                gl.glColorPointer(4, GL2.GL_FLOAT, 0, 0);
             } else {
-                gl.glColorPointer(4, GL.GL_FLOAT, 0, strokeColBuff);
+                gl.glColorPointer(4, GL2.GL_FLOAT, 0, strokeColBuff);
             }
 
 //		  	gl.glDepthMask(false); //FIXME enable? disable?
 //		    // Draw aliased off-pixels to real
-//		    gl.glEnable (GL.GL_BLEND);
-//		    gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+//		    gl.glEnable (GL2.GL_BLEND);
+//		    gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 //			
-//		    gl.glStencilOp (GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
-//		    gl.glStencilFunc (GL.GL_EQUAL, 0x00, 0x01); //THIS IS THE ORIGINAL!
+//		    gl.glStencilOp (GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_KEEP);
+//		    gl.glStencilFunc (GL2.GL_EQUAL, 0x00, 0x01); //THIS IS THE ORIGINAL!
 
-//		    gl.glEnable(GL.GL_LINE_SMOOTH);
+//		    gl.glEnable(GL2.GL_LINE_SMOOTH);
             //FIXME TEST
             Tools3D.setLineSmoothEnabled(gl, true);
 
@@ -538,39 +538,39 @@ public class MTStencilPolygon extends MTPolygon {
             short lineStipple = this.getLineStipple();
             if (lineStipple != 0) {
                 gl.glLineStipple(1, lineStipple);
-                gl.glEnable(GL.GL_LINE_STIPPLE);
+                gl.glEnable(GL2.GL_LINE_STIPPLE);
             }
 
             //DRAW
-//			gl.glDrawElements(GL.GL_LINE_STRIP, indexBuff.capacity(), GL.GL_UNSIGNED_INT, indexBuff);
-//			gl.glDrawArrays(GL.GL_LINE_STRIP, 0, vertexArr.length);
+//			gl.glDrawElements(GL2.GL_LINE_STRIP, indexBuff.capacity(), GL2.GL_UNSIGNED_INT, indexBuff);
+//			gl.glDrawArrays(GL2.GL_LINE_STRIP, 0, vertexArr.length);
 
             /////TEST/// //TODO make vertex pointer arrays?
             gl.glColor4d(strokeColBuff.get(0), strokeColBuff.get(1), strokeColBuff.get(2), strokeColBuff.get(3));
             for (Vertex[] outline : contours) {
-                gl.glBegin(GL.GL_LINE_STRIP);
+                gl.glBegin(GL2.GL_LINE_STRIP);
                 for (Vertex vertex : outline)
                     gl.glVertex3f(vertex.getX(), vertex.getY(), vertex.getZ());
                 gl.glEnd();
             }
 
-//			gl.glDisable (GL.GL_LINE_SMOOTH);
+//			gl.glDisable (GL2.GL_LINE_SMOOTH);
             //FIXME TEST
             Tools3D.setLineSmoothEnabled(gl, false);
 
-            gl.glDisable(GL.GL_LINE_STIPPLE);
+            gl.glDisable(GL2.GL_LINE_STIPPLE);
         }
 
-//		gl.glDisable (GL.GL_STENCIL_TEST);	
+//		gl.glDisable (GL2.GL_STENCIL_TEST);
 //		gl.glDepthMask(true);
 
         //Disable client states
-        gl.glDisableClientState(GL.GL_VERTEX_ARRAY);
-        gl.glDisableClientState(GL.GL_COLOR_ARRAY);
+        gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
+        gl.glDisableClientState(GL2.GL_COLOR_ARRAY);
 
         if (this.isUseVBOs()) {
-            gl.glBindBuffer(GL.GL_ARRAY_BUFFER, 0);
-            gl.glBindBuffer(GL.GL_ELEMENT_ARRAY_BUFFER, 0);
+            gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
+            gl.glBindBuffer(GL2.GL_ELEMENT_ARRAY_BUFFER, 0);
         }
     }
 

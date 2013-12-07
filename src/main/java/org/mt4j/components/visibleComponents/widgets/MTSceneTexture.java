@@ -19,7 +19,7 @@ package org.mt4j.components.visibleComponents.widgets;
 
 import java.util.HashMap;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.mt4j.MTApplication;
 import org.mt4j.components.visibleComponents.shapes.MTRectangle;
@@ -151,7 +151,7 @@ public class MTSceneTexture extends MTRectangle {
     @Override
     public void drawComponent(PGraphics g) {
         PGraphicsOpenGL pgl = (PGraphicsOpenGL) g;
-        GL gl = pgl.gl;
+        GL2 gl = pgl.gl;
 
 //		boolean b = false;
 //		if (GLStencilUtil.getInstance().isClipActive()){
@@ -162,17 +162,17 @@ public class MTSceneTexture extends MTRectangle {
 
         fbo.startRenderToTexture();
         //Change blending mode to avoid artifacts from alpha blending at antialiasing for example
-//			gl.glBlendFuncSeparate(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA, GL.GL_ZERO, GL.GL_ONE);
-        gl.glBlendFuncSeparate(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA, GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+//			gl.glBlendFuncSeparate(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA, GL2.GL_ZERO, GL2.GL_ONE);
+        gl.glBlendFuncSeparate(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA, GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
 //			/*
         boolean clipping = false;
         if (GLStencilUtil.getInstance().isClipActive()) {
             clipping = true;
-            gl.glPushAttrib(GL.GL_STENCIL_BUFFER_BIT);
+            gl.glPushAttrib(GL2.GL_STENCIL_BUFFER_BIT);
             gl.glClearStencil(GLStencilUtil.getInstance().stencilValueStack.peek());
-            gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
-            //			gl.glDisable(GL.GL_STENCIL_TEST);
+            gl.glClear(GL2.GL_STENCIL_BUFFER_BIT);
+            //			gl.glDisable(GL2.GL_STENCIL_TEST);
         }
 //			*/
 
@@ -191,7 +191,7 @@ public class MTSceneTexture extends MTRectangle {
         fbo.stopRenderToTexture();
 
         if (GLFboStack.getInstance().peekFBO() == 0)
-            gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA); //Restore default blend mode //FIXME TEST -> neccessary?
+            gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA); //Restore default blend mode //FIXME TEST -> neccessary?
 
         //FIXME NOT NEEDED!? sufficient to call glGenerateMipmapEXT at texture creation!?
         //TODO I actually think its necessary to call each time after rendering to the texture! But only for POT dimensions!?

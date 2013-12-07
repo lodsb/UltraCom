@@ -41,7 +41,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import javax.swing.JPanel;
 
@@ -1519,7 +1519,7 @@ public class SVGLoader implements SVGConstants {
                 rectangle.setTexture(swingTex.getTextureToRenderTo());
                 rectangle.setNoStroke(true);
                 rectangle.setPickable(false);
-                rectangle.setFillDrawMode(GL.GL_QUADS);
+                rectangle.setFillDrawMode(GL2.GL_QUADS);
 
                 //Use displaylist by default for gradientshape
                 if (MT4jSettings.getInstance().isOpenGlMode()) {
@@ -1779,7 +1779,7 @@ public class SVGLoader implements SVGConstants {
 
 
     private FillPaint setUpRotatedGradientUserSpace(AbstractShape testShape, float angle, List<Stop> stops, Point2D p1, Point2D p2) {
-        GL gl = ((PGraphicsOpenGL) pa.g).gl;
+        GL2 gl = ((PGraphicsOpenGL) pa.g).gl;
         float gradAngle = angle;
 
         float invAngle = angle * -1;
@@ -1909,7 +1909,7 @@ public class SVGLoader implements SVGConstants {
         p.setNoStroke(true);
         p.setPickable(false);
         p.setStrokeWeight(testShape.getStrokeWeight());
-        p.setFillDrawMode(GL.GL_QUADS);
+        p.setFillDrawMode(GL2.GL_QUADS);
         //Use displaylist by default for gradientshape
         p.generateAndUseDisplayLists();
 
@@ -1919,7 +1919,7 @@ public class SVGLoader implements SVGConstants {
 
 
     private FillPaint setUpRotatedGradientBBox(AbstractShape testShape, float angle, List<Stop> stops) {
-        GL gl = ((PGraphicsOpenGL) pa.g).gl;
+        GL2 gl = ((PGraphicsOpenGL) pa.g).gl;
         float gradAngle = angle;
 
         //Get copy of shapes vertices
@@ -1973,7 +1973,7 @@ public class SVGLoader implements SVGConstants {
         MTPolygon p = new MTPolygon(pa, newBounds);
         p.setNoStroke(true);
         p.setPickable(false);
-        p.setFillDrawMode(GL.GL_QUADS);
+        p.setFillDrawMode(GL2.GL_QUADS);
         p.setStrokeWeight(testShape.getStrokeWeight());
         //Use displaylist by default for gradientshape
         p.generateAndUseDisplayLists();

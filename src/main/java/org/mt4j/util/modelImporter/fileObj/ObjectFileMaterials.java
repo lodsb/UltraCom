@@ -60,7 +60,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.mt4j.components.visibleComponents.shapes.AbstractShape;
 import org.mt4j.util.MT4jSettings;
@@ -115,7 +115,7 @@ class ObjectFileMaterials implements ImageObserver {
     }
 
 
-    void assignMaterial(GL gl, String matName, AbstractShape shape) {
+    void assignMaterial(GL2 gl, String matName, AbstractShape shape) {
         ObjectFileMaterial p = null;
 
         if ((DEBUG & 1) != 0)

@@ -17,7 +17,7 @@
  ***********************************************************************/
 package org.mt4j.components.visibleComponents;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.mt4j.util.MTColor;
 import org.mt4j.util.opengl.GLMaterial;
@@ -80,7 +80,7 @@ public class StyleInfo {
                 false,
                 false,
                 1.0f,
-                GL.GL_TRIANGLE_FAN,
+                GL2.GL_TRIANGLE_FAN,
                 (short) 0
         );
     }

@@ -33,7 +33,7 @@ class Emitter{
     iterateListExist();
     render();
     
-    pgl.disable( PGL.TEXTURE_2D );
+    pgl.disable( PGL2.TEXTURE_2D );
     
     if( ALLOWTRAILS )
       iterateListRenderTrails();

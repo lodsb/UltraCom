@@ -1,6 +1,6 @@
 #Wed Jan 30 04:24:13 CET 2008	
 Frametitle=UltraCom Test
-#Renderer: OpenGL: 1 P3D: 2
+#Renderer: OpenGL2: 1 P3D: 2
 Renderer=1
 #Fullscreen:'true' or 'false'
 Fullscreen=false
@@ -21,4 +21,4 @@ Vertical_sync=false
 #Enables multiple mice use (windows, some linux)
 MultiMiceEnabled=false
 #Anti aliasing multisampling - '0' disables it - 2,4,8 determines the quality of the a.a.
-OpenGLAntialiasing=1
+OpenGL2Antialiasing=1

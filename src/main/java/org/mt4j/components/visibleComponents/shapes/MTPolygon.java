@@ -20,7 +20,7 @@ package org.mt4j.components.visibleComponents.shapes;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.mt4j.components.bounds.BoundingSphere;
 import org.mt4j.components.bounds.IBoundingShape;
@@ -199,7 +199,7 @@ public class MTPolygon extends MTCSSStylableShape {
         //Draw the shape
         if (MT4jSettings.getInstance().isOpenGlMode()
                 && this.isUseDirectGL()) {
-            GL gl = Tools3D.beginGL(renderer);
+            GL2 gl = Tools3D.beginGL(renderer);
 
             //Draw with PURE opengl
             if (this.isUseDisplayList() /*&& this.getDisplayListIDs() != null && this.getDisplayListIDs()[0] != -1 && this.getDisplayListIDs()[1] != -1*/) {
@@ -329,7 +329,7 @@ public class MTPolygon extends MTCSSStylableShape {
      *
      * @param gl the gl
      */
-    protected void drawPureGl(GL gl) {
+    protected void drawPureGl(GL2 gl) {
 //		/*
         //Get display array/buffer pointers
         FloatBuffer tbuff = this.getGeometryInfo().getTexBuff();
@@ -339,17 +339,17 @@ public class MTPolygon extends MTCSSStylableShape {
         IntBuffer indexBuff = this.getGeometryInfo().getIndexBuff();
 
         //Enable Pointers, set vertex array pointer
-        gl.glEnableClientState(GL.GL_VERTEX_ARRAY);
-        gl.glEnableClientState(GL.GL_COLOR_ARRAY);
+        gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
+        gl.glEnableClientState(GL2.GL_COLOR_ARRAY);
         if (this.isUseVBOs()) {//Vertices
-            gl.glBindBuffer(GL.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBOVerticesName());
-            gl.glVertexPointer(3, GL.GL_FLOAT, 0, 0);
+            gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBOVerticesName());
+            gl.glVertexPointer(3, GL2.GL_FLOAT, 0, 0);
         } else {
-            gl.glVertexPointer(3, GL.GL_FLOAT, 0, vertBuff);
+            gl.glVertexPointer(3, GL2.GL_FLOAT, 0, vertBuff);
         }
 
         //Default texture target
-        int textureTarget = GL.GL_TEXTURE_2D;
+        int textureTarget = GL2.GL_TEXTURE_2D;
 
         /////// DRAW SHAPE ///////
         if (!this.isNoFill()) {
@@ -362,54 +362,54 @@ public class MTPolygon extends MTCSSStylableShape {
                 textureTarget = tex.getTextureTarget();
 
                 //tells opengl which texture to reference in following calls from now on!
-                //the first parameter is eigher GL.GL_TEXTURE_2D or ..1D
+                //the first parameter is eigher GL2.GL_TEXTURE_2D or ..1D
                 gl.glEnable(textureTarget);
                 gl.glBindTexture(textureTarget, tex.getTextureID());
 
-                gl.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY);
+                gl.glEnableClientState(GL2.GL_TEXTURE_COORD_ARRAY);
 
                 if (this.isUseVBOs()) {//Texture
-                    gl.glBindBuffer(GL.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBOTextureName());
-                    gl.glTexCoordPointer(2, GL.GL_FLOAT, 0, 0);
+                    gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBOTextureName());
+                    gl.glTexCoordPointer(2, GL2.GL_FLOAT, 0, 0);
                 } else
-                    gl.glTexCoordPointer(2, GL.GL_FLOAT, 0, tbuff);
+                    gl.glTexCoordPointer(2, GL2.GL_FLOAT, 0, tbuff);
 
                 textureDrawn = true;
             }
 
             if (this.isUseVBOs()) {//Color
-                gl.glBindBuffer(GL.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBOColorName());
-                gl.glColorPointer(4, GL.GL_FLOAT, 0, 0);
+                gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBOColorName());
+                gl.glColorPointer(4, GL2.GL_FLOAT, 0, 0);
             } else {
-                gl.glColorPointer(4, GL.GL_FLOAT, 0, colorBuff);
+                gl.glColorPointer(4, GL2.GL_FLOAT, 0, colorBuff);
             }
 
             //Normals
             if (this.getGeometryInfo().isContainsNormals()) {
-                gl.glEnableClientState(GL.GL_NORMAL_ARRAY);
+                gl.glEnableClientState(GL2.GL_NORMAL_ARRAY);
                 if (this.isUseVBOs()) {
-                    gl.glBindBuffer(GL.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBONormalsName());
-                    gl.glNormalPointer(GL.GL_FLOAT, 0, 0);
+                    gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBONormalsName());
+                    gl.glNormalPointer(GL2.GL_FLOAT, 0, 0);
                 } else {
-                    gl.glNormalPointer(GL.GL_FLOAT, 0, this.getGeometryInfo().getNormalsBuff());
+                    gl.glNormalPointer(GL2.GL_FLOAT, 0, this.getGeometryInfo().getNormalsBuff());
                 }
             }
 
             //DRAW //Draw with drawElements if geometry is indexed, else draw with drawArrays!
             if (this.getGeometryInfo().isIndexed()) {
-                gl.glDrawElements(this.getFillDrawMode(), indexBuff.limit(), GL.GL_UNSIGNED_INT, indexBuff);
-//				gl.glDrawElements(this.getFillDrawMode(), indexBuff.capacity(), GL.GL_UNSIGNED_INT, indexBuff);
+                gl.glDrawElements(this.getFillDrawMode(), indexBuff.limit(), GL2.GL_UNSIGNED_INT, indexBuff);
+//				gl.glDrawElements(this.getFillDrawMode(), indexBuff.capacity(), GL2.GL_UNSIGNED_INT, indexBuff);
             } else {
                 gl.glDrawArrays(this.getFillDrawMode(), 0, vertBuff.capacity() / 3);
             }
 
             if (this.getGeometryInfo().isContainsNormals()) {
-                gl.glDisableClientState(GL.GL_NORMAL_ARRAY);
+                gl.glDisableClientState(GL2.GL_NORMAL_ARRAY);
             }
 
             if (textureDrawn) {
                 gl.glBindTexture(textureTarget, 0);//Unbind texture
-                gl.glDisableClientState(GL.GL_TEXTURE_COORD_ARRAY);
+                gl.glDisableClientState(GL2.GL_TEXTURE_COORD_ARRAY);
                 gl.glDisable(textureTarget); //weiter nach unten?
             }
         }
@@ -417,16 +417,16 @@ public class MTPolygon extends MTCSSStylableShape {
         ////////// DRAW OUTLINE ////////
         if (!this.isNoStroke()) {
             if (this.isUseVBOs()) {
-                gl.glBindBuffer(GL.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBOStrokeColorName());
-                gl.glColorPointer(4, GL.GL_FLOAT, 0, 0);
+                gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, this.getGeometryInfo().getVBOStrokeColorName());
+                gl.glColorPointer(4, GL2.GL_FLOAT, 0, 0);
             } else {
-                gl.glColorPointer(4, GL.GL_FLOAT, 0, strokeColBuff);
+                gl.glColorPointer(4, GL2.GL_FLOAT, 0, strokeColBuff);
             }
 
 
 //			//Turn on smooth outlines
 //			if (this.isDrawSmooth()){
-//				gl.glEnable(GL.GL_LINE_SMOOTH);
+//				gl.glEnable(GL2.GL_LINE_SMOOTH);
 //			}
             //FIXME TEST
             Tools3D.setLineSmoothEnabled(gl, true);
@@ -436,7 +436,7 @@ public class MTPolygon extends MTCSSStylableShape {
             short lineStipple = this.getLineStipple();
             if (lineStipple != 0) {
                 gl.glLineStipple(1, lineStipple);
-                gl.glEnable(GL.GL_LINE_STIPPLE);
+                gl.glEnable(GL2.GL_LINE_STIPPLE);
             }
 //			*/
 
@@ -446,32 +446,32 @@ public class MTPolygon extends MTCSSStylableShape {
             //DRAW Polygon outline
             //Draw with drawElements if geometry is indexed, else draw with drawArrays!
             if (this.getGeometryInfo().isIndexed()) {
-                gl.glDrawElements(GL.GL_LINE_STRIP, indexBuff.limit(), GL.GL_UNSIGNED_INT, indexBuff);
-//				gl.glDrawElements(this.getFillDrawMode(), indexBuff.capacity(), GL.GL_UNSIGNED_INT, indexBuff);
+                gl.glDrawElements(GL2.GL_LINE_STRIP, indexBuff.limit(), GL2.GL_UNSIGNED_INT, indexBuff);
+//				gl.glDrawElements(this.getFillDrawMode(), indexBuff.capacity(), GL2.GL_UNSIGNED_INT, indexBuff);
             } else {
-                gl.glDrawArrays(GL.GL_LINE_STRIP, 0, vertBuff.capacity() / 3);
+                gl.glDrawArrays(GL2.GL_LINE_STRIP, 0, vertBuff.capacity() / 3);
             }
 
             //RESET LINE STIPPLE
             if (lineStipple != 0) {
-                gl.glDisable(GL.GL_LINE_STIPPLE);
+                gl.glDisable(GL2.GL_LINE_STIPPLE);
             }
 
             //FIXME TEST
             Tools3D.setLineSmoothEnabled(gl, false);
             /*
                if (this.isDrawSmooth())
-                   gl.glDisable(GL.GL_LINE_SMOOTH);
+                   gl.glDisable(GL2.GL_LINE_SMOOTH);
                 */
         }
 
-        gl.glDisableClientState(GL.GL_VERTEX_ARRAY);
-        gl.glDisableClientState(GL.GL_COLOR_ARRAY);
+        gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
+        gl.glDisableClientState(GL2.GL_COLOR_ARRAY);
 
         //TEST
         if (this.isUseVBOs()) {
-            gl.glBindBuffer(GL.GL_ARRAY_BUFFER, 0);
-            gl.glBindBuffer(GL.GL_ELEMENT_ARRAY_BUFFER, 0);
+            gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
+            gl.glBindBuffer(GL2.GL_ELEMENT_ARRAY_BUFFER, 0);
         }
 //		*/
     }

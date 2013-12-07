@@ -17,7 +17,7 @@
  ***********************************************************************/
 package org.mt4j.util.camera;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.mt4j.util.MT4jSettings;
 import org.mt4j.util.math.ToolsMath;
@@ -43,7 +43,7 @@ public class Frustum implements IFrustum {
     private float nearD;
     private float farD;
 
-    private GL gl;
+    private GL2 gl;
 
     private Vector3D _tmpVec3 = new Vector3D();
     private Vector3D _tmpVec2 = new Vector3D();
@@ -423,7 +423,7 @@ public class Frustum implements IFrustum {
 
 
     public void drawPoints() {
-        gl.glBegin(GL.GL_POINTS);
+        gl.glBegin(GL2.GL_POINTS);
         gl.glVertex3f(ntl.x, ntl.y, ntl.z);
         gl.glVertex3f(ntr.x, ntr.y, ntr.z);
         gl.glVertex3f(nbl.x, nbl.y, nbl.z);
@@ -438,7 +438,7 @@ public class Frustum implements IFrustum {
 
 
     public void drawLines() {
-        gl.glBegin(GL.GL_LINE_LOOP);
+        gl.glBegin(GL2.GL_LINE_LOOP);
         //near plane
         gl.glVertex3f(ntl.x, ntl.y, ntl.z);
         gl.glVertex3f(ntr.x, ntr.y, ntr.z);
@@ -446,7 +446,7 @@ public class Frustum implements IFrustum {
         gl.glVertex3f(nbl.x, nbl.y, nbl.z);
         gl.glEnd();
 
-        gl.glBegin(GL.GL_LINE_LOOP);
+        gl.glBegin(GL2.GL_LINE_LOOP);
         //far plane
         gl.glVertex3f(ftr.x, ftr.y, ftr.z);
         gl.glVertex3f(ftl.x, ftl.y, ftl.z);
@@ -454,7 +454,7 @@ public class Frustum implements IFrustum {
         gl.glVertex3f(fbr.x, fbr.y, fbr.z);
         gl.glEnd();
 
-        gl.glBegin(GL.GL_LINE_LOOP);
+        gl.glBegin(GL2.GL_LINE_LOOP);
         //bottom plane
         gl.glVertex3f(nbl.x, nbl.y, nbl.z);
         gl.glVertex3f(nbr.x, nbr.y, nbr.z);
@@ -462,7 +462,7 @@ public class Frustum implements IFrustum {
         gl.glVertex3f(fbl.x, fbl.y, fbl.z);
         gl.glEnd();
 
-        gl.glBegin(GL.GL_LINE_LOOP);
+        gl.glBegin(GL2.GL_LINE_LOOP);
         //top plane
         gl.glVertex3f(ntr.x, ntr.y, ntr.z);
         gl.glVertex3f(ntl.x, ntl.y, ntl.z);
@@ -470,7 +470,7 @@ public class Frustum implements IFrustum {
         gl.glVertex3f(ftr.x, ftr.y, ftr.z);
         gl.glEnd();
 
-        gl.glBegin(GL.GL_LINE_LOOP);
+        gl.glBegin(GL2.GL_LINE_LOOP);
         //left plane
         gl.glVertex3f(ntl.x, ntl.y, ntl.z);
         gl.glVertex3f(nbl.x, nbl.y, nbl.z);
@@ -478,7 +478,7 @@ public class Frustum implements IFrustum {
         gl.glVertex3f(ftl.x, ftl.y, ftl.z);
         gl.glEnd();
 
-        gl.glBegin(GL.GL_LINE_LOOP);
+        gl.glBegin(GL2.GL_LINE_LOOP);
         // right plane
         gl.glVertex3f(nbr.x, nbr.y, nbr.z);
         gl.glVertex3f(ntr.x, ntr.y, ntr.z);
@@ -490,7 +490,7 @@ public class Frustum implements IFrustum {
 
 
     public void drawPlanes() {
-        gl.glBegin(GL.GL_QUADS);
+        gl.glBegin(GL2.GL_QUADS);
 
         //near plane
         gl.glColor4d(1.0f, 0.5f, 0.5f, 0.5f);
@@ -540,7 +540,7 @@ public class Frustum implements IFrustum {
     public void drawNormals() {
         Vector3D a, b;
 
-        gl.glBegin(GL.GL_LINES);
+        gl.glBegin(GL2.GL_LINES);
         // near
         a = (ntr.getAdded(ntl).getAdded(nbr).getAdded(nbl)).scaleLocal(0.25f);
         b = a.getAdded(planes[NEARP].normal);

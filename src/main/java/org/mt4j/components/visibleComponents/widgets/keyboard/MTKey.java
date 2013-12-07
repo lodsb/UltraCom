@@ -19,7 +19,7 @@ package org.mt4j.components.visibleComponents.widgets.keyboard;
 
 import java.util.List;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.mt4j.components.TransformSpace;
 import org.mt4j.components.bounds.BoundsZPlaneRectangle;
@@ -143,7 +143,7 @@ public class MTKey extends
         buttonBackGround.setStrokeColor(new MTColor(210, 210, 210, 255));
         buttonBackGround.setFillColor(new MTColor(220, 220, 220, 255));
         //change drawmode to polygon, triangle fan doesent work (!?)
-        buttonBackGround.setFillDrawMode(GL.GL_POLYGON);
+        buttonBackGround.setFillDrawMode(GL2.GL_POLYGON);
 //		buttonBackGround.scaleGlobal(0.95f, 0.95f, 1, buttonBackGround.getCenterPointGlobal());
     }
 
@@ -251,7 +251,7 @@ public class MTKey extends
     public void drawComponent(PGraphics g) {
         if (this.isUseDirectGL()) {
             if (this.isUseDisplayList()) {
-                GL gl = ((PGraphicsOpenGL) this.getRenderer().g).beginGL();
+                GL2 gl = ((PGraphicsOpenGL) this.getRenderer().g).beginGL();
                 int[] pds = buttonBackGround.getGeometryInfo().getDisplayListIDs();
                 //Draw only filling of background polygon, without outer stroke
                 gl.glCallList(pds[0]);
@@ -266,7 +266,7 @@ public class MTKey extends
             super.drawComponent(g);
         }
 
-//		GL gl=((PGraphicsOpenGL)this.getRenderer().g).beginGL();
+//		GL2 gl=((PGraphicsOpenGL)this.getRenderer().g).beginGL();
 //			if (isUseDisplayList()){
 //				int[] pds = buttonBackGround.getDisplayListIDs();
 //				//Draw only filling of background polygon, without outer stroke

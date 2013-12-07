@@ -20,7 +20,7 @@ package org.mt4j.components.visibleComponents;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.mt4j.util.MT4jSettings;
 import org.mt4j.util.math.Tools3D;
@@ -790,7 +790,7 @@ public class GeometryInfo {
      */
     public void deleteAllVBOs() {
         if (MT4jSettings.getInstance().isOpenGlMode()) {
-            GL gl = ((PGraphicsOpenGL) this.getRenderer().g).gl;
+            GL2 gl = ((PGraphicsOpenGL) this.getRenderer().g).gl;
             if (this.getVBOVerticesName() != -1) {
                 gl.glDeleteBuffersARB(1, new int[]{this.getVBOVerticesName()}, 0);
                 this.vboVerticesID = -1;
@@ -896,7 +896,7 @@ public class GeometryInfo {
      */
     public void deleteDisplayLists() {
         if (MT4jSettings.getInstance().isOpenGlMode()) {
-            GL gl = ((PGraphicsOpenGL) this.getRenderer().g).gl;
+            GL2 gl = ((PGraphicsOpenGL) this.getRenderer().g).gl;
             for (int id : this.displayListIDs) {
                 if (id != -1) {
                     gl.glDeleteLists(id, 1);

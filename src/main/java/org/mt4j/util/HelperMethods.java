@@ -18,7 +18,7 @@
 package org.mt4j.util;
 
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.mt4j.util.math.Matrix;
 
@@ -26,7 +26,7 @@ import processing.core.PApplet;
 import processing.opengl.PGraphics3D;
 import processing.opengl.PGraphicsOpenGL;
 
-import javax.media.opengl.GL2;
+import javax.media.opengl.GL22;
 
 /**
  * The Class HelperMethods.
@@ -287,7 +287,7 @@ public class HelperMethods {
                 );
                 break;
             case OPENGL_MATRIX_MODE:
-                GL gl = getGL();
+                GL2 gl = getGL();
                 ctm[0] = m.m00;
                 ctm[1] = m.m10;
                 ctm[2] = m.m20;

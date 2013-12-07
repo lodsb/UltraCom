@@ -22,7 +22,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import processing.core.PApplet;
 import processing.opengl.PGraphicsOpenGL;
@@ -52,18 +52,18 @@ public class ToolsLight {
      * @param position the position
      */
     public static void setupDefaultLightning(PApplet pa, int lightID, Vector3D position) {
-        GL gl = ((PGraphicsOpenGL) pa.g).gl;
+        GL2 gl = ((PGraphicsOpenGL) pa.g).gl;
 
         //Set default ambient lightning for all objs
         setAmbientLight(gl, new float[]{0.2f, 0.2f, 0.2f, 1});
 
         //This means that glMaterial will control the polygon's specular and emission colours
         //and the ambient and diffuse will both be set using glColor.
-        gl.glColorMaterial(GL.GL_FRONT, GL.GL_AMBIENT_AND_DIFFUSE);
-//    	gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);
+        gl.glColorMaterial(GL2.GL_FRONT, GL2.GL_AMBIENT_AND_DIFFUSE);
+//    	gl.glColorMaterial(GL2.GL_FRONT, GL2.GL_DIFFUSE);
 
         //Enable color material
-        gl.glEnable(GL.GL_COLOR_MATERIAL);
+        gl.glEnable(GL2.GL_COLOR_MATERIAL);
 
         /*
            * GL_RESCALE_NORMAL multiplies the transformed normal by a scale factor.
@@ -72,7 +72,7 @@ public class ToolsLight {
            * If the ModelView matrix contains nonuniform scaling, GL_NORMALIZE is the
            * preferred solution.
           */
-        gl.glEnable(GL.GL_RESCALE_NORMAL);
+        gl.glEnable(GL2.GL_RESCALE_NORMAL);
 
         float lightAmbient[] = {.0f, .0f, .0f, 1f}; // scattered light
         float lightDiffuse[] = {1.0f, 1.0f, 1.0f, 1f}; // direct light
@@ -83,7 +83,7 @@ public class ToolsLight {
         setLight(gl, lightID, lightDiffuse, lightAmbient, lightSpecular, lightPosition);
 
         // Enable lightning
-        gl.glEnable(GL.GL_LIGHTING);
+        gl.glEnable(GL2.GL_LIGHTING);
     }
 
     /*
@@ -132,9 +132,9 @@ public class ToolsLight {
      * @param gl                the gl
      * @param ambientLightColor the ambient light color
      */
-    public static void setAmbientLight(GL gl, float[] ambientLightColor) {
+    public static void setAmbientLight(GL2 gl, float[] ambientLightColor) {
         FloatBuffer ltAmbient = allocFloats(ambientLightColor);
-        gl.glLightModelfv(GL.GL_LIGHT_MODEL_AMBIENT, ltAmbient);
+        gl.glLightModelfv(GL2.GL_LIGHT_MODEL_AMBIENT, ltAmbient);
     }
 
 
@@ -148,17 +148,17 @@ public class ToolsLight {
      * @param position      the position
      * @param gl            the gl
      */
-    public static void setLight(GL gl, int GLLightHandle, float[] color, float[] position) {
+    public static void setLight(GL2 gl, int GLLightHandle, float[] color, float[] position) {
         float[] ambientLight = {color[0] / 4f, color[1] / 4f, color[2] / 4f, color[3] / 4f};
 
         FloatBuffer lightColor = allocFloats(color);
         FloatBuffer ambientColor = allocFloats(ambientLight);
         FloatBuffer ltPosition = allocFloats(position);
 
-        gl.glLightfv(GLLightHandle, GL.GL_DIFFUSE, lightColor);   // color of the direct illumination
-        gl.glLightfv(GLLightHandle, GL.GL_SPECULAR, lightColor);  // color of the highlight (same as direct light)
-        gl.glLightfv(GLLightHandle, GL.GL_AMBIENT, ambientColor); // color of the scattered light (darker)
-        gl.glLightfv(GLLightHandle, GL.GL_POSITION, ltPosition);
+        gl.glLightfv(GLLightHandle, GL2.GL_DIFFUSE, lightColor);   // color of the direct illumination
+        gl.glLightfv(GLLightHandle, GL2.GL_SPECULAR, lightColor);  // color of the highlight (same as direct light)
+        gl.glLightfv(GLLightHandle, GL2.GL_AMBIENT, ambientColor); // color of the scattered light (darker)
+        gl.glLightfv(GLLightHandle, GL2.GL_POSITION, ltPosition);
 
 //        gl.glEnable(GLLightHandle);	// Enable the light (GL_LIGHT1 - 7)
     }
@@ -183,7 +183,7 @@ public class ToolsLight {
      * @param position           the position
      */
     public static void setLight(
-            GL gl,
+            GL2 gl,
             int GLLightHandle,
             float[] diffuseLightColor,
             float[] ambientLightColor,
@@ -195,10 +195,10 @@ public class ToolsLight {
         FloatBuffer ltSpecular = allocFloats(specularLightColor);
         FloatBuffer ltPosition = allocFloats(position);
 
-        gl.glLightfv(GLLightHandle, GL.GL_DIFFUSE, ltDiffuse);   // color of the direct illumination
-        gl.glLightfv(GLLightHandle, GL.GL_AMBIENT, ltAmbient);   // color of the reflected light
-        gl.glLightfv(GLLightHandle, GL.GL_SPECULAR, ltSpecular); // color of the highlight (same as direct light)
-        gl.glLightfv(GLLightHandle, GL.GL_POSITION, ltPosition); //FIXME ENABLE!
+        gl.glLightfv(GLLightHandle, GL2.GL_DIFFUSE, ltDiffuse);   // color of the direct illumination
+        gl.glLightfv(GLLightHandle, GL2.GL_AMBIENT, ltAmbient);   // color of the reflected light
+        gl.glLightfv(GLLightHandle, GL2.GL_SPECULAR, ltSpecular); // color of the highlight (same as direct light)
+        gl.glLightfv(GLLightHandle, GL2.GL_POSITION, ltPosition); //FIXME ENABLE!
 
 //            gl.glEnable(GLLightHandle);	// Enable the light (GL_LIGHT1 - 7)
         //GL11.glLightf(GLLightHandle, GL11.GL_QUADRATIC_ATTENUATION, .005F);    // how light beam drops off
@@ -208,9 +208,9 @@ public class ToolsLight {
 //     * Set the position of a light to the given xyz. 
 //     * <br>NOTE: Positional light only, not directional.
 //     */
-//    public static void setLightPos(GL gl, int GLLightHandle, float x, float y, float z){
+//    public static void setLightPos(GL2 gl, int GLLightHandle, float x, float y, float z){
 //    	float[] position = new float[] {x,y,z,1};
-//        gl.glLightfv(GLLightHandle, GL.GL_POSITION, allocFloats(position));
+//        gl.glLightfv(GLLightHandle, GL2.GL_POSITION, allocFloats(position));
 //    }
 
     /**
@@ -223,18 +223,18 @@ public class ToolsLight {
      * @param y             the y
      * @param z             the z
      */
-    public static void setLightPos(GL gl, int GLLightHandle, float x, float y, float z) {
+    public static void setLightPos(GL2 gl, int GLLightHandle, float x, float y, float z) {
         float[] position = new float[]{x, y, z, 1};
-        gl.glLightfv(GLLightHandle, GL.GL_POSITION, position, 0);
+        gl.glLightfv(GLLightHandle, GL2.GL_POSITION, position, 0);
     }
 
     /**
-     * Disables the given light. (GL.GL_LIGHT0..7)
+     * Disables the given light. (GL2.GL_LIGHT0..7)
      *
      * @param gl            the gl
      * @param GLLightHandle the gL light handle
      */
-    public static void disableLight(GL gl, int GLLightHandle) {
+    public static void disableLight(GL2 gl, int GLLightHandle) {
         gl.glDisable(GLLightHandle);
     }
 

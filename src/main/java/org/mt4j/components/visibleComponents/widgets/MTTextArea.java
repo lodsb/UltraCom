@@ -20,7 +20,7 @@ package org.mt4j.components.visibleComponents.widgets;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.mt4j.MTApplication;
@@ -444,7 +444,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
         if (enableCaret)
             return -1;
 
-        GL gl = GLU.getCurrentGL();
+        GL2 gl = GLU.getCurrentGL();
         //Delete old one
         if (this.displayListID != 0) {
             gl.glDeleteLists(this.displayListID, 1);
@@ -464,7 +464,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
         }
 
         //Record list
-        gl.glNewList(listIDFill, GL.GL_COMPILE);
+        gl.glNewList(listIDFill, GL2.GL_COMPILE);
         drawCharactersGL(gl, characterList, characterList.size(), lastXAdvancement, thisLineTotalXAdvancement);
         gl.glEndList();
 
@@ -483,7 +483,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
         super.destroyComponent();
 
         if (MT4jSettings.getInstance().isOpenGlMode() && this.displayListID != 0) {
-            GL gl = GLU.getCurrentGL();
+            GL2 gl = GLU.getCurrentGL();
             //Delete old one
             if (gl != null) {
                 gl.glDeleteLists(this.displayListID, 1);
@@ -560,7 +560,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
 //		*/
 
         if (this.isUseDirectGL()) {
-            GL gl = Tools3D.beginGL(pa);
+            GL2 gl = Tools3D.beginGL(pa);
             if (totalScrollTextX != 0.0f && totalScrollTextY != 0.0f) {
                 gl.glTranslatef(totalScrollTextX, totalScrollTextY + font.getFontMaxAscent(), 0);
             } else {
@@ -652,7 +652,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
     }
 
 
-    private void drawCharactersGL(GL gl, List<IFontCharacter> characterList, int charListSize, int lastXAdv, int lineTotalAdv) {
+    private void drawCharactersGL(GL2 gl, List<IFontCharacter> characterList, int charListSize, int lastXAdv, int lineTotalAdv) {
         int lastXAdvancement = lastXAdv;
         int thisLineTotalXAdvancement = lineTotalAdv;
         for (int i = 0; i < charListSize; i++) {
@@ -1338,7 +1338,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
         public void drawComponent(PGraphics g) {
         }
 
-        public void drawComponent(GL gl) {
+        public void drawComponent(GL2 gl) {
         }
 
         public void destroy() {

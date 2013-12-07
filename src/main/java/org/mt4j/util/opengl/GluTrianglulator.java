@@ -220,7 +220,7 @@ public class GluTrianglulator extends GLUtessellatorCallbackAdapter {
     public List<Vertex> tesselate(List<Vertex[]> contours, int windingRule) {
         this.triList.clear();
         glu.gluTessProperty(tesselator, GLU.GLU_TESS_WINDING_RULE, windingRule);
-//	    	gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+//	    	gl.glPolygonMode(GL2.GL_FRONT_AND_BACK, GL2.GL_FILL);
 
         //FIXME TEST!
         glu.gluTessNormal(tesselator, 0.0, 0.0, 1.0);
@@ -280,16 +280,16 @@ public class GluTrianglulator extends GLUtessellatorCallbackAdapter {
     public void begin(int type) {
         /*
              switch (type) {
-              case GL.GL_TRIANGLE_FAN: System.out.println("GL_TRIANGLE_FAN");	break;
-              case GL.GL_TRIANGLE_STRIP:	System.out.println("GL_TRIANGLE_STRIP"); break;
-              case GL.GL_TRIANGLES:System.out.println("GL_TRIANGLES");break;
-              case GL.GL_POLYGON:System.out.println("GL_TRIANGLES");break;
-              case GL.GL_POINTS: System.out.println("GL_POINTS");	break;
-              case GL.GL_LINES:	System.out.println("GL_LINES"); break;
-              case GL.GL_LINE_LOOP: System.out.println("GL_LINE_LOOP");	break;
-              case GL.GL_LINE_STRIP:	System.out.println("GL_LINE_STRIP"); break;
-              case GL.GL_QUADS :System.out.println("GL_QUADS");break;
-              case GL.GL_QUAD_STRIP:System.out.println("GL_QUAD_STRIP");break;
+              case GL2.GL_TRIANGLE_FAN: System.out.println("GL_TRIANGLE_FAN");	break;
+              case GL2.GL_TRIANGLE_STRIP:	System.out.println("GL_TRIANGLE_STRIP"); break;
+              case GL2.GL_TRIANGLES:System.out.println("GL_TRIANGLES");break;
+              case GL2.GL_POLYGON:System.out.println("GL_TRIANGLES");break;
+              case GL2.GL_POINTS: System.out.println("GL_POINTS");	break;
+              case GL2.GL_LINES:	System.out.println("GL_LINES"); break;
+              case GL2.GL_LINE_LOOP: System.out.println("GL_LINE_LOOP");	break;
+              case GL2.GL_LINE_STRIP:	System.out.println("GL_LINE_STRIP"); break;
+              case GL2.GL_QUADS :System.out.println("GL_QUADS");break;
+              case GL2.GL_QUAD_STRIP:System.out.println("GL_QUAD_STRIP");break;
               default:
                   System.out.println("OTHER?!"); break;
               }

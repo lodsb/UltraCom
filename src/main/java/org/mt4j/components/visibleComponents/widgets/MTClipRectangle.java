@@ -17,7 +17,7 @@
  ***********************************************************************/
 package org.mt4j.components.visibleComponents.widgets;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.mt4j.components.clipping.Clip;
 import org.mt4j.components.visibleComponents.shapes.MTRectangle;
@@ -55,7 +55,7 @@ public class MTClipRectangle extends MTRectangle {
             clipRect.setNoStroke(true);
             clipRect.setBoundsBehaviour(MTRectangle.BOUNDS_ONLY_CHECK);
 
-            GL gl = ((PGraphicsOpenGL) applet.g).gl;
+            GL2 gl = ((PGraphicsOpenGL) applet.g).gl;
             Clip clipMask = new Clip(gl, clipRect);
             this.setChildClip(clipMask);
         }

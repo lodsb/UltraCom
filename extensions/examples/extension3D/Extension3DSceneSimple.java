@@ -73,7 +73,7 @@ public class Extension3DSceneSimple extends SimpleAbstractScene {
         //Init light settings
         MTLight.enableLightningAndAmbient(mtApplication, 150, 150, 150, 255);
         //Create a light source //I think GL_LIGHT0 is used by processing!
-        MTLight light = new MTLight(mtApplication, GL.GL_LIGHT3, new Vector3D(0, 0, 0));
+        MTLight light = new MTLight(mtApplication, GL2.GL_LIGHT3, new Vector3D(0, 0, 0));
 
         //Set up a material to react to the light
         GLMaterial material = new GLMaterial(Tools3D.getGL(mtApplication));

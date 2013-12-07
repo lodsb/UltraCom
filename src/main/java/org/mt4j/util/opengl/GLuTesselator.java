@@ -20,7 +20,7 @@ package org.mt4j.util.opengl;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUtessellator;
 import javax.media.opengl.glu.GLUtessellatorCallbackAdapter;
@@ -46,7 +46,7 @@ public class GLuTesselator extends GLUtessellatorCallbackAdapter {
     /**
      * The gl.
      */
-    private GL gl;
+    private GL2 gl;
 
     /**
      * The glu.
@@ -76,7 +76,7 @@ public class GLuTesselator extends GLUtessellatorCallbackAdapter {
      * @param gl  the gl
      * @param glu the glu
      */
-    public GLuTesselator(GL gl, GLU glu) {
+    public GLuTesselator(GL2 gl, GLU glu) {
         this.gl = gl;
         this.glu = glu;
 
@@ -99,7 +99,7 @@ public class GLuTesselator extends GLUtessellatorCallbackAdapter {
 //        */
 //	   public static GLuTesselator getInstance(PApplet pa){
 //	   		if (instance == null){
-//	   			GL gl=((PGraphicsOpenGL)pa.g).gl;
+//	   			GL2 gl=((PGraphicsOpenGL)pa.g).gl;
 //	   			GLU glu = ((PGraphicsOpenGL)pa.g).glu;
 //	   			instance = new GLuTesselator(gl,glu);
 //	   			return instance;
@@ -143,7 +143,7 @@ public class GLuTesselator extends GLUtessellatorCallbackAdapter {
      */
     public int tesselateToDisplayList(List<Vertex[]> contours, PApplet pa, int windingRule) {
         int listId = gl.glGenLists(1);
-        gl.glNewList(listId, GL.GL_COMPILE);
+        gl.glNewList(listId, GL2.GL_COMPILE);
         this.tesselate(contours, windingRule);
         gl.glEndList();
         return listId;
@@ -180,7 +180,7 @@ public class GLuTesselator extends GLUtessellatorCallbackAdapter {
      */
     public void tesselate(List<Vertex[]> contours, int windingRule) {
         glu.gluTessProperty(tesselator, GLU.GLU_TESS_WINDING_RULE, windingRule);
-//	    	   gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+//	    	   gl.glPolygonMode(GL2.GL_FRONT_AND_BACK, GL2.GL_FILL);
 
         //FIXME TEST!
         glu.gluTessNormal(tesselator, 0.0, 0.0, 1.0);
@@ -231,16 +231,16 @@ public class GLuTesselator extends GLUtessellatorCallbackAdapter {
         gl.glBegin(type);
         /*
              switch (type) {
-              case GL.GL_TRIANGLE_FAN: System.out.println("GL_TRIANGLE_FAN");	break;
-              case GL.GL_TRIANGLE_STRIP:	System.out.println("GL_TRIANGLE_STRIP"); break;
-              case GL.GL_TRIANGLES:System.out.println("GL_TRIANGLES");break;
-              case GL.GL_POLYGON:System.out.println("GL_TRIANGLES");break;
-              case GL.GL_POINTS: System.out.println("GL_POINTS");	break;
-              case GL.GL_LINES:	System.out.println("GL_LINES"); break;
-              case GL.GL_LINE_LOOP: System.out.println("GL_LINE_LOOP");	break;
-              case GL.GL_LINE_STRIP:	System.out.println("GL_LINE_STRIP"); break;
-              case GL.GL_QUADS :System.out.println("GL_QUADS");break;
-              case GL.GL_QUAD_STRIP:System.out.println("GL_QUAD_STRIP");break;
+              case GL2.GL_TRIANGLE_FAN: System.out.println("GL_TRIANGLE_FAN");	break;
+              case GL2.GL_TRIANGLE_STRIP:	System.out.println("GL_TRIANGLE_STRIP"); break;
+              case GL2.GL_TRIANGLES:System.out.println("GL_TRIANGLES");break;
+              case GL2.GL_POLYGON:System.out.println("GL_TRIANGLES");break;
+              case GL2.GL_POINTS: System.out.println("GL_POINTS");	break;
+              case GL2.GL_LINES:	System.out.println("GL_LINES"); break;
+              case GL2.GL_LINE_LOOP: System.out.println("GL_LINE_LOOP");	break;
+              case GL2.GL_LINE_STRIP:	System.out.println("GL_LINE_STRIP"); break;
+              case GL2.GL_QUADS :System.out.println("GL_QUADS");break;
+              case GL2.GL_QUAD_STRIP:System.out.println("GL_QUAD_STRIP");break;
               default:
                   System.out.println("OTHER?!"); break;
               }

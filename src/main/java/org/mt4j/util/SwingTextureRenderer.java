@@ -45,7 +45,7 @@ import processing.core.PImage;
 
 /**
  * This class can be used to render java swing JComponents to an
- * OpenGL texture. So this can at the moment only be used in OpenGL.
+ * OpenGL texture. So this can at the moment only be used in OpenGL2.
  * <br>After instantiating this class the component will be rendered
  * by a call to <code>scheduleRefresh()</code>.
  * The OpenGL texture can then be retrieved by the

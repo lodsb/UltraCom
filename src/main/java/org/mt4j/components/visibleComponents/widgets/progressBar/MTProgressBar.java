@@ -17,7 +17,7 @@
  ***********************************************************************/
 package org.mt4j.components.visibleComponents.widgets.progressBar;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.mt4j.components.TransformSpace;
 import org.mt4j.components.visibleComponents.shapes.MTRectangle;
@@ -245,12 +245,12 @@ public class MTProgressBar extends MTRoundRectangle {
         }
 
         //gl.scissor so text gezts clipped
-        GL gl = null;
+        GL2 gl = null;
         if (openGl) {
             gl = pgl.beginGL();
             gl = pgl.gl;
 
-            gl.glEnable(GL.GL_SCISSOR_TEST);
+            gl.glEnable(GL2.GL_SCISSOR_TEST);
 
             //Project upper Left corner
             upperLeftProjected = Tools3D.projectGL(gl, pgl.glu, upperLeft, upperLeftProjected);
@@ -305,7 +305,7 @@ public class MTProgressBar extends MTRoundRectangle {
         }
 
         if (openGl) {
-            gl.glDisable(GL.GL_SCISSOR_TEST);
+            gl.glDisable(GL2.GL_SCISSOR_TEST);
         }
     }
 
