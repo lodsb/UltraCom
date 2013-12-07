@@ -14,9 +14,9 @@ import ugen._
 import de.sciss.synth.Ops._
 import org.lodsb.reakt.sync.VarS
 import scala.collection.mutable.ArrayBuffer
-import de.lodsb.scales.Conversions._
-import de.lodsb.scales.Transformations._
-import de.lodsb.scales.Scale
+import org.lodsb.scales.Conversions._
+import org.lodsb.scales.Transformations._
+import org.lodsb.scales._
 
 
 class Synthi {
@@ -29,6 +29,40 @@ class Synthi {
   scales += Scale("Ionian Sharp 5").get
   scales += Scale("Lydian").get
 
+  val tuning = Tuning("Equal").get
+
+  private var _activeScale = 0
+  def activeScale = scales(_activeScale)
+  def activeScale_=(value: Int) {
+    if(0 <= value && value < scales.size) {
+      _activeScale = value
+    }
+  }
+
+  private var _activeHarmony : org.lodsb.scales.Pitch = org.lodsb.scales.Pitch(0)
+  def activeHarmony_=(value: org.lodsb.scales.Pitch) {
+    _activeHarmony = value
+    println("_activeHarmony"+_activeHarmony)
+  }
+  def activeHarmony = tune(scale(Tetrad(_activeHarmony),activeScale),tuning)
+
+  def frequency(height: Float): Double = {
+    var degree = math.round(4*height+4)
+    var factor = 1d
+    //tuning(activeScale(org.lodsb.scales.Pitch(degree))).asInstanceOf[ConcretePitch].frequency
+
+    if (4 <= degree) {
+      degree -= 4
+      factor = 2d
+      if (4 <= degree) {
+        degree -= 4
+        factor = 4d
+      }
+    }
+
+    factor * activeHarmony(degree).asInstanceOf[ConcretePitch].frequency
+  }
+
   // synthesizer definition
   val synthDef = SynthDef("") {
 
@@ -37,6 +71,7 @@ class Synthi {
     val volume = "volume".kr(0.9)
     val pitch = "pitch".kr(0)
     val activity = "activity".kr(0)
+    val frequency = "frequency".kr(0)
 
 
     // further parameters
@@ -46,6 +81,13 @@ class Synthi {
     // harmony is the scale degree as number
     // the actual chord is determined by this
     val harmony = "harmony".kr(0)
+
+
+    def getFrequency: Scale = {
+      val something = (0 sig_== scale)
+      scales
+      null
+    }
 
 
     def pitch2Tone = {
@@ -134,7 +176,7 @@ class Synthi {
 
     // tone
     val dec = 1.35
-    var bing = volume * SinOsc.ar(pitch2Pentatone).madd(0.5,0) * EnvGen.kr(Env.perc(attack=0.01, release=dec), Changed1.kr(gate), doneAction=1)
+    var bing = volume * SinOsc.ar(frequency).madd(0.5,0) * EnvGen.kr(Env.perc(attack=0.01, release=dec), Changed1.kr(gate), doneAction=1)
     bing = Pan2.ar(SplayAz.ar(2, bing/0.325))
 
     bing = Limiter.ar(0.5f*bing)
@@ -152,8 +194,9 @@ class Synthi {
   private var _switch = 1f
   def switch = {_switch = math.abs(_switch-1f); _switch}
   def play(pitch: Float) {
+    synthesizer.parameters() = ("frequency",frequency(pitch))
     synthesizer.parameters() = ("gate",switch)
-    synthesizer.parameters() = ("pitch",pitch)
+    //synthesizer.parameters() = ("pitch",pitch)
     synthesizer.run()
   }
 
