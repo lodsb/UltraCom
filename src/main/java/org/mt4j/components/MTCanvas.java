@@ -351,7 +351,7 @@ public class MTCanvas extends MTComponent implements IHitTestInfoProvider {
                     //Applies all transforms up to this components parent
                     //because the new camera wiped out all previous transforms
                     Matrix m = currentcomp.getParent().getGlobalMatrix();
-                    PGraphics3D pgraphics3D = (PGraphics3D) graphics;
+                    PGraphicsOpenGL pgraphics3D = (PGraphicsOpenGL) graphics;
                     pgraphics3D.modelview.apply(
                             m.m00, m.m01, m.m02, m.m03,
                             m.m10, m.m11, m.m12, m.m13,

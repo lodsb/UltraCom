@@ -173,7 +173,7 @@ public class Tools3D {
 //				PMatrix inv = projectionM.invert();
 
                     PMatrix3D modelView = new PMatrix3D(applet.g.getMatrix());
-                    PMatrix3D projectionM = new PMatrix3D(((PGraphics3D) applet.g).projection);
+                    PMatrix3D projectionM = new PMatrix3D(((PGraphicsOpenGL) applet.g).projection);
 
                     projectionM.apply(modelView);
                     projectionM.invert();

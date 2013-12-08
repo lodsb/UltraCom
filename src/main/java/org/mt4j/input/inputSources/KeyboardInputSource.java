@@ -18,7 +18,7 @@
 package org.mt4j.input.inputSources;
 
 
-import java.awt.event.KeyEvent;
+import processing.event.KeyEvent;
 
 import org.mt4j.MTApplication;
 import org.mt4j.input.inputData.ActiveCursorPool;
@@ -79,7 +79,7 @@ public class KeyboardInputSource extends AbstractInputSource<MTFingerInputEvt> {
     public KeyboardInputSource(MTApplication pa) {
         super(pa);
         this.applet = pa;
-        applet.registerKeyEvent(this);
+        applet.registerMethod("keyEvent", this);
 
 //		applet.registerDraw(this);
 
@@ -87,14 +87,14 @@ public class KeyboardInputSource extends AbstractInputSource<MTFingerInputEvt> {
         this.locationY = 0;
 
 
-        this.moveUpKeyCode = KeyEvent.VK_W;
-        this.moveLeftKeyCode = KeyEvent.VK_A;
-        this.moveDownKeyCode = KeyEvent.VK_S;
-        this.moveRightKeyCode = KeyEvent.VK_D;
+        this.moveUpKeyCode = 'W';
+        this.moveLeftKeyCode = 'A';
+        this.moveDownKeyCode = 'S';
+        this.moveRightKeyCode = 'D';
 
-        this.newFingerLocationKCode = KeyEvent.VK_N;
+        this.newFingerLocationKCode = 'N';
 
-        this.fingerDownKeyCode = KeyEvent.VK_SHIFT;
+        this.fingerDownKeyCode = 'M';
     }
 
 
@@ -109,9 +109,9 @@ public class KeyboardInputSource extends AbstractInputSource<MTFingerInputEvt> {
 //		System.out.println(e.getID());
 //		System.out.println(e.getKeyCode());
 
-        int evtID = e.getID();
+        int evtID = e.getAction();
 
-        if (evtID == KeyEvent.KEY_PRESSED) {
+        if (evtID == KeyEvent.TOUCH) {
             if (e.isControlDown() && e.getKeyCode() == this.newFingerLocationKCode) {
                 locationX = applet.mouseX;
                 locationY = applet.mouseY;
@@ -138,7 +138,7 @@ public class KeyboardInputSource extends AbstractInputSource<MTFingerInputEvt> {
             } else if (e.getKeyCode() == this.fingerDownKeyCode) {
                 fingerDown(e);
             }
-        } else if (evtID == KeyEvent.KEY_RELEASED) {
+        } else if (evtID == KeyEvent.RELEASE) {
             if (e.getKeyCode() == this.fingerDownKeyCode) {
                 fingerUp(e);
             }

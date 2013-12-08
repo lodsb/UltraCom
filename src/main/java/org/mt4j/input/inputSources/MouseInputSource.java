@@ -18,7 +18,7 @@
 package org.mt4j.input.inputSources;
 
 
-import java.awt.event.MouseEvent;
+import processing.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
@@ -32,7 +32,7 @@ import org.mt4j.input.inputData.MTFingerInputEvt;
  *
  * @author Christopher Ruff
  */
-public class MouseInputSource extends AbstractInputSource<MTFingerInputEvt> implements MouseMotionListener, MouseListener {
+public class MouseInputSource extends AbstractInputSource<MTFingerInputEvt> {// implements MouseMotionListener, MouseListener {
 
     /**
      * The Constant OPENGL_MODE.
@@ -76,7 +76,7 @@ public class MouseInputSource extends AbstractInputSource<MTFingerInputEvt> impl
 //		}
 
 //		if (ConstantsAndSettings.getInstance().isOpenGlMode()){
-        pa.registerMouseEvent(this);
+        pa.registerMethod("mouseEvent", this);
 //		}
 
         mouseBusy = false;
@@ -87,24 +87,24 @@ public class MouseInputSource extends AbstractInputSource<MTFingerInputEvt> impl
      *
      * @param event the event
      */
-    public void mouseEvent(MouseEvent event) {
+    public void mouseEvent(processing.event.MouseEvent event) {
 //		System.out.println(event.getButton());
 
 //		/*
-        switch (event.getID()) {
-            case MouseEvent.MOUSE_PRESSED:
+        switch (event.getAction()) {
+            case MouseEvent.PRESS:
                 this.mousePressed(event);
                 break;
-            case MouseEvent.MOUSE_RELEASED:
+            case MouseEvent.RELEASE:
                 this.mouseReleased(event);
                 break;
-            case MouseEvent.MOUSE_CLICKED:
+            case MouseEvent.CLICK:
                 this.mouseClicked(event);
                 break;
-            case MouseEvent.MOUSE_DRAGGED:
+            case MouseEvent.DRAG:
                 this.mouseDragged(event);
                 break;
-            case MouseEvent.MOUSE_MOVED:
+            case MouseEvent.MOVE:
                 this.mouseMoved(event);
                 break;
         }

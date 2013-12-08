@@ -18,8 +18,17 @@ scalacOptions <++= scalaVersion map { version =>
 }
 
 
+unmanagedBase <<= baseDirectory { base => base / "../../libraries/" }
 
-libraryDependencies += "org.lodsb" %% "ultracom" % "0.2-SNAPSHOT"
+unmanagedJars in Compile <++= baseDirectory map { base =>
+    val baseDirectories = (base / "../../libraries/misc") +++ (base / "../../libraries/processing")
+    val customJars = (baseDirectories ** "*.jar")
+    customJars.classpath
+}
+
+
+
+libraryDependencies += "org.lodsb" %% "ultracom" % "0.2-PROC2"
 
 //libraryDependencies += "com.assembla.scala-incubator" % "graph-core_2.9.2" % "1.5.1"
 

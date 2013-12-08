@@ -227,7 +227,7 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
      * The pgraphics3 d.
      */
 
-    private PGraphics3D pgraphics3D;
+    private PGraphicsOpenGL pgraphics3D;
 
     /**
      * The controller.
@@ -377,7 +377,7 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
         this.globalInverseMatrixDirty = true;
 
         //This class should only be used with a renderer derived from pgraphics3D!
-        this.pgraphics3D = (PGraphics3D) pApplet.g;
+        this.pgraphics3D = (PGraphicsOpenGL) pApplet.g;
 
         //FIXME EXPERIMENTAL
         light = null;

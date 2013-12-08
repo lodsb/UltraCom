@@ -27,6 +27,7 @@ import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
 import processing.opengl.PGraphics3D;
+import processing.opengl.PGraphicsOpenGL;
 
 //import processing.opengl.PGraphicsOpenGL;
 
@@ -112,7 +113,7 @@ public class Frustum implements IFrustum {
                 , new Plane(Vector3D.ZERO_VECTOR, Vector3D.ZERO_VECTOR)
         };
 
-        PGraphics3D p3d = ((PGraphics3D) pa.g);
+        PGraphicsOpenGL p3d = ((PGraphicsOpenGL) pa.g);
 
         //This has to be called if the perspective is changed!!
         this.setCamInternals(p3d.cameraFOV * 0.5f, p3d.cameraAspect, p3d.cameraNear, p3d.cameraFar);

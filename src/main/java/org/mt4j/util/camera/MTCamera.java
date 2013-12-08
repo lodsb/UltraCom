@@ -24,6 +24,7 @@ import org.mt4j.util.math.Vector3D;
 import processing.core.PApplet;
 import processing.opengl.PGraphics3D;
 import processing.core.PMatrix3D;
+import processing.opengl.PGraphicsOpenGL;
 
 /**
  * The Class MTCamera.
@@ -77,7 +78,7 @@ public class MTCamera implements Icamera {
     private Matrix cameraMatrix;
     private Matrix cameraInvMatrix;
 
-    private PGraphics3D p3d;
+    private PGraphicsOpenGL p3d;
 
     /**
      * Instantiates a new mT camera.
@@ -121,7 +122,7 @@ public class MTCamera implements Icamera {
         this.frustum = new Frustum(pa);
         this.frustum.setCamDef(this.getPosition(), this.getViewCenterPos(), xAxisUp, -yAxisUp, zAxisUp); //new Vector3D(xAxisUp, -yAxisUp, zAxisUp));
 
-        this.p3d = ((PGraphics3D) pa.g);
+        this.p3d = ((PGraphicsOpenGL) pa.g);
         this.dirty = true;
         this.cameraMat = new PMatrix3D();
         this.cameraInvMat = new PMatrix3D();
