@@ -24,9 +24,6 @@ import org.mt4j.util.math.Matrix;
 
 import processing.core.PApplet;
 import processing.opengl.PGraphics3D;
-import processing.opengl.PGraphicsOpenGL;
-
-import javax.media.opengl.GL22;
 
 /**
  * The Class HelperMethods.
@@ -263,7 +260,7 @@ public class HelperMethods {
      *
      * @return the gL
      */
-    public static GL getGL() {
+    public static GL2 getGL() {
         return gl;
     }
 

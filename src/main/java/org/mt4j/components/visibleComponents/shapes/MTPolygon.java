@@ -43,6 +43,7 @@ import org.mt4j.util.opengl.GLTexture;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;
+import processing.opengl.PGraphicsOpenGL;
 
 /**
  * This class represents a planar, convex polygon. The user of this class
@@ -94,7 +95,7 @@ public class MTPolygon extends MTCSSStylableShape {
 //		this.hasVertexColor = false;//Dont set here, gets set to false after being true in super constructor
 
         this.setTextureEnabled(false);
-        this.setTextureMode(PApplet.NORMALIZED);
+        this.setTextureMode(PApplet.NORMAL);
 
         this.setEnabled(true);
         this.setVisible(true);
@@ -192,14 +193,14 @@ public class MTPolygon extends MTCSSStylableShape {
       * @see org.mt4j.components.visibleComponents.AbstractVisibleComponent#drawComponent(processing.core.PGraphics)
       */
     @Override
-    public void drawComponent(PGraphics g) {
+    public void drawComponent(PGraphicsOpenGL g) {
 //		super.drawComponent(g);
         PApplet renderer = this.getRenderer();
 
         //Draw the shape
         if (MT4jSettings.getInstance().isOpenGlMode()
                 && this.isUseDirectGL()) {
-            GL2 gl = Tools3D.beginGL(renderer);
+            GL2 gl = Tools3D.getGL(g);
 
             //Draw with PURE opengl
             if (this.isUseDisplayList() /*&& this.getDisplayListIDs() != null && this.getDisplayListIDs()[0] != -1 && this.getDisplayListIDs()[1] != -1*/) {

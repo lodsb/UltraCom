@@ -41,6 +41,7 @@ import org.mt4j.util.camera.MTCamera;
 import org.mt4j.util.math.Tools3D;
 
 import processing.core.PGraphics;
+import processing.opengl.PGraphicsOpenGL;
 
 /**
  * A class representing a scene in a program or game.
@@ -176,7 +177,7 @@ public abstract class SimpleAbstractScene extends EventHandler implements Iscene
     /* (non-Javadoc)
       * @see org.mt4j.sceneManagement.Iscene#drawAndUpdate(processing.core.PGraphics, long)
       */
-    public void drawAndUpdate(PGraphics graphics, long timeDelta) {
+    public void drawAndUpdate(PGraphicsOpenGL graphics, long timeDelta) {
         //Process preDrawActions
         synchronized (preDrawActions) {
             for (Iterator<IPreDrawAction> iter = preDrawActions.iterator(); iter.hasNext();) {
@@ -198,7 +199,7 @@ public abstract class SimpleAbstractScene extends EventHandler implements Iscene
     }
 
 
-    protected void clear(PGraphics graphics) {
+    protected void clear(PGraphicsOpenGL graphics) {
         if (MT4jSettings.getInstance().isOpenGlMode()) {
             GL2 gl = Tools3D.getGL(mtApplication);
             gl.glClearColor(this.glClearColor.getR(), this.glClearColor.getG(), this.glClearColor.getB(), this.glClearColor.getAlpha());

@@ -87,7 +87,7 @@ public class GLFboStack {
      */
     public static GLFboStack getInstance() {
         if (instance == null) {
-            instance = new GLFboStack(GLU.getCurrentGL());
+            instance = new GLFboStack(GLU.getCurrentGL().getGL2());
             return instance;
         } else {
             return instance;
@@ -108,7 +108,7 @@ public class GLFboStack {
      */
     public void useFBO(int fbo) {
         currentFBO = fbo;
-        gl.glBindFramebufferEXT(GL2.GL_FRAMEBUFFER_EXT, currentFBO);
+        gl.glBindFramebuffer(GL2.GL_FRAMEBUFFER, currentFBO);
     }
 
     /**
@@ -147,7 +147,7 @@ public class GLFboStack {
             logger.error("Trying to pop() from an empty framebuffer stack!"); //TODO -> just bind 0 !?
         } else {
             currentFBO = fboNameStack.pop();
-            gl.glBindFramebufferEXT(GL2.GL_FRAMEBUFFER_EXT, currentFBO);
+            gl.glBindFramebuffer(GL2.GL_FRAMEBUFFER, currentFBO);
         }
     }
 

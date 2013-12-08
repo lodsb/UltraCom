@@ -201,6 +201,10 @@ public abstract class MTApplication extends PApplet {
 
     private CSSStyleManager cssStyleManager;
 
+    public PGraphicsOpenGL graphicsOpenGL() {
+        return (PGraphicsOpenGL) this.g;
+    }
+
 //	private static boolean fullscreen;
     /*
      public static void main(String[] args){
@@ -855,7 +859,7 @@ public abstract class MTApplication extends PApplet {
         //Handle scene transitions
         if (this.pendingTransition != null) {
             //Run the transition
-            this.pendingTransition.transition.drawAndUpdate(this.g, timeDelta);
+            this.pendingTransition.transition.drawAndUpdate(this.graphicsOpenGL(), timeDelta);
 
             if (this.pendingTransition.transition.isFinished()) {
                 this.pendingTransition.transition.shutDown();
@@ -866,7 +870,7 @@ public abstract class MTApplication extends PApplet {
             //Draw the current scene
             Iscene theCurrentScene = this.getCurrentScene();
             if (theCurrentScene != null) {
-                theCurrentScene.drawAndUpdate(this.g, timeDelta);
+                theCurrentScene.drawAndUpdate(this.graphicsOpenGL(), timeDelta);
             }
         }
 //		 */
@@ -1115,7 +1119,6 @@ public abstract class MTApplication extends PApplet {
      * in its event list!
      *
      * @param lastScene the last scene
-     * @param newScene  the new scene
      */
     private void sendEndedEvents(Iscene lastScene) {
         logger.debug("Sending INPUT_ENDED events to the last scene, Active motions: " + ActiveCursorPool.getInstance().getActiveCursorCount());
@@ -1147,7 +1150,6 @@ public abstract class MTApplication extends PApplet {
      * This means that one cursor can have more than one input_ended and input_started event
      * in its event list!
      *
-     * @param lastScene the last scene
      * @param newScene  the new scene
      */
     private void sendStartedEvents(Iscene newScene) {

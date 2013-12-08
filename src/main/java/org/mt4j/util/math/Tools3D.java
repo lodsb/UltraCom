@@ -35,8 +35,7 @@ import processing.opengl.PGraphics3D;
 import processing.opengl.PGraphicsOpenGL;
 
 import javax.media.opengl.GL2;
-import javax.media.opengl.GL22;
-import javax.media.opengl.GL2Exception;
+import javax.media.opengl.GLException;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.gl2.GLUgl2;
 import java.nio.*;
@@ -135,12 +134,9 @@ public class Tools3D {
                 double[] mousePosArr = new double[4];
 
                 try {
-                    PGL pgl = ((PGraphicsOpenGL) applet.g).beginPGL();
                     GL2 gl = null;
 
-                    gl = pgl.gl.getGL2();
-
-
+                    GLU.getCurrentGL().getGL();
                     GLU glu = new GLUgl2();
 
                     gl.glGetIntegerv(GL2.GL_VIEWPORT, viewport, 0);
@@ -356,11 +352,9 @@ public class Tools3D {
         switch (MT4jSettings.getInstance().getRendererMode()) {
             case MT4jSettings.OPENGL_MODE:
                 try {
-                    PGraphicsOpenGL pgl = ((PGraphicsOpenGL) applet.g);
-                    GL2 gl = pgl.beginPGL().gl.getGL2();
+                    GL2 gl = GLU.getCurrentGL().getGL2();
                     GLU glu = new GLUgl2();
                     Vector3D returnVect = projectGL(gl, glu, point);
-                    pgl.endPGL();
                     return returnVect;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -563,31 +557,31 @@ public class Tools3D {
      */
     public static GL2 getGL(PApplet pa) {
 
-        PGraphicsOpenGL pogl = (PGraphicsOpenGL) pa.g;  // g may change
         GL2 gl2 = null;
         try {
-            gl2 = pogl.beginPGL().gl.getGL2();
-        } catch (GLException e) {
+            GL2 gl = GLU.getCurrentGL().getGL2();
+        } catch (Exception e) {
             System.err.println("Error while getting GL2 context");
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        pogl.endPGL();
 
         return gl2;
+    }
+
+    public static GL2 getGL() {
+        return GLU.getCurrentGL().getGL2();
     }
 
 
     public static GL2 getGL(PGraphicsOpenGL g) {
 
-        PGraphicsOpenGL pogl = (PGraphicsOpenGL) g;  // g may change
         GL2 gl2 = null;
         try {
-            gl2 = pogl.beginPGL().gl.getGL2();
+            GL2 gl = GLU.getCurrentGL().getGL2();
         } catch (GLException e) {
             System.err.println("Error while getting GL2 context");
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        pogl.endPGL();
 
         return gl2;
     }
@@ -617,7 +611,8 @@ public class Tools3D {
 
         GL2 gl2 = null;
         try {
-            gl2 = g.beginPGL().gl.getGL2();
+            GL2 gl = GLU.getCurrentGL().getGL2();
+            g.beginPGL();
         } catch (GLException e) {
             System.err.println("Error while getting GL2 context");
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -1385,7 +1380,7 @@ public class Tools3D {
     /**
      * projects a specific point on a plane with a specific depth
      *
-     * @param gl
+     * @param
      * @param point
      * @param frustum
      * @param z

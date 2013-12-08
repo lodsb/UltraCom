@@ -40,7 +40,6 @@ import org.mt4j.util.opengl.GLFBO;
 import org.mt4j.util.opengl.GLStencilUtil;
 import org.mt4j.util.opengl.GLTexture;
 
-import processing.core.PGraphics;
 import processing.opengl.PGraphicsOpenGL;
 
 /**
@@ -149,9 +148,9 @@ public class MTSceneTexture extends MTRectangle {
 
 
     @Override
-    public void drawComponent(PGraphics g) {
+    public void drawComponent(PGraphicsOpenGL g) {
         PGraphicsOpenGL pgl = (PGraphicsOpenGL) g;
-        GL2 gl = pgl.gl;
+        GL2 gl = Tools3D.getGL();
 
 //		boolean b = false;
 //		if (GLStencilUtil.getInstance().isClipActive()){

@@ -31,6 +31,7 @@ import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScalePr
 import org.mt4j.util.MT4jSettings;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Matrix;
+import org.mt4j.util.math.Tools3D;
 import org.mt4j.util.math.Vector3D;
 import org.mt4j.util.math.Vertex;
 
@@ -111,7 +112,7 @@ public class MTWindow extends MTRoundRectangle {
 
         //Create inner children clip shape
         float border = 10;
-        GL2 gl = ((PGraphicsOpenGL) applet.g).gl;
+        GL2 gl = Tools3D.getGL();
 //		MTRoundRectangle clipRect =  new MTRoundRectangle(x+border, y+border, z, width-(2*border), height-(2*border), arcWidth, arcHeight, applet);
         MTRectangle clipRect = new MTRectangle(applet, x + border, y + border, z, width - (2 * border), height - (2 * border));
         clipRect.setDrawSmooth(true);
@@ -165,7 +166,7 @@ public class MTWindow extends MTRoundRectangle {
       * @see org.mt4j.components.visibleComponents.AbstractVisibleComponent#preDraw(processing.core.PGraphics)
       */
     @Override
-    public void preDraw(PGraphics graphics) {
+    public void preDraw(PGraphicsOpenGL graphics) {
         this.savedNoStrokeSetting = this.isNoStroke();
         super.preDraw(graphics);
     }
@@ -175,7 +176,7 @@ public class MTWindow extends MTRoundRectangle {
       * @see org.mt4j.components.visibleComponents.AbstractVisibleComponent#postDrawChildren(processing.core.PGraphics)
       */
     @Override
-    public void postDrawChildren(PGraphics g) {
+    public void postDrawChildren(PGraphicsOpenGL g) {
         this.clip.disableClip(g);
 
         //Draw clipshape outline over all children to get an

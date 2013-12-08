@@ -21,6 +21,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.glu.GLU;
 
 import org.mt4j.util.MT4jSettings;
 import org.mt4j.util.math.Tools3D;
@@ -789,26 +790,27 @@ public class GeometryInfo {
      * Deletes all VBOs of the geometry.
      */
     public void deleteAllVBOs() {
+        //fixme n, deletebuffersarb?
         if (MT4jSettings.getInstance().isOpenGlMode()) {
-            GL2 gl = ((PGraphicsOpenGL) this.getRenderer().g).gl;
+            GL2 gl = GLU.getCurrentGL().getGL2();
             if (this.getVBOVerticesName() != -1) {
-                gl.glDeleteBuffersARB(1, new int[]{this.getVBOVerticesName()}, 0);
+                gl.glDeleteBuffers(1, new int[]{this.getVBOVerticesName()}, 0);
                 this.vboVerticesID = -1;
             }
             if (this.getVBOColorName() != -1) {
-                gl.glDeleteBuffersARB(1, new int[]{this.getVBOColorName()}, 0);
+                gl.glDeleteBuffers(1, new int[]{this.getVBOColorName()}, 0);
                 this.vboColorID = -1;
             }
             if (this.getVBOStrokeColorName() != -1) {
-                gl.glDeleteBuffersARB(1, new int[]{this.getVBOStrokeColorName()}, 0);
+                gl.glDeleteBuffers(1, new int[]{this.getVBOStrokeColorName()}, 0);
                 this.vboStrokeColID = -1;
             }
             if (this.getVBOTextureName() != -1) {
-                gl.glDeleteBuffersARB(1, new int[]{this.getVBOTextureName()}, 0);
+                gl.glDeleteBuffers(1, new int[]{this.getVBOTextureName()}, 0);
                 this.vboTextureID = -1;
             }
             if (this.getVBONormalsName() != -1) {
-                gl.glDeleteBuffersARB(1, new int[]{this.getVBONormalsName()}, 0);
+                gl.glDeleteBuffers(1, new int[]{this.getVBONormalsName()}, 0);
                 this.vboNormalsID = -1;
             }
         }
@@ -896,7 +898,7 @@ public class GeometryInfo {
      */
     public void deleteDisplayLists() {
         if (MT4jSettings.getInstance().isOpenGlMode()) {
-            GL2 gl = ((PGraphicsOpenGL) this.getRenderer().g).gl;
+            GL2 gl = GLU.getCurrentGL().getGL2();
             for (int id : this.displayListIDs) {
                 if (id != -1) {
                     gl.glDeleteLists(id, 1);

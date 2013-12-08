@@ -18,6 +18,7 @@
 package org.mt4j.components.visibleComponents.widgets.progressBar;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.glu.GLU;
 
 import org.mt4j.components.TransformSpace;
 import org.mt4j.components.visibleComponents.shapes.MTRectangle;
@@ -33,7 +34,6 @@ import org.mt4j.util.math.Vector3D;
 
 import processing.core.PApplet;
 import processing.core.PFont;
-import processing.core.PGraphics;
 import processing.opengl.PGraphicsOpenGL;
 
 /**
@@ -235,7 +235,7 @@ public class MTProgressBar extends MTRoundRectangle {
 
 
     @Override
-    public void drawComponent(PGraphics g) {
+    public void drawComponent(PGraphicsOpenGL g) {
         if (progressInfo == null) {
             return;
         }
@@ -247,18 +247,18 @@ public class MTProgressBar extends MTRoundRectangle {
         //gl.scissor so text gezts clipped
         GL2 gl = null;
         if (openGl) {
-            gl = pgl.beginGL();
-            gl = pgl.gl;
+            gl = Tools3D.getGL();
+            GLU glu = GLU.createGLU(gl);
 
             gl.glEnable(GL2.GL_SCISSOR_TEST);
 
             //Project upper Left corner
-            upperLeftProjected = Tools3D.projectGL(gl, pgl.glu, upperLeft, upperLeftProjected);
+            upperLeftProjected = Tools3D.projectGL(gl, glu, upperLeft, upperLeftProjected);
             int scissorStartX = (int) upperLeftProjected.x - 0;
             int scissorStartY = (int) upperLeftProjected.y - 1;
 
             //Project lower right corner
-            lowerRightProjected = Tools3D.projectGL(gl, pgl.glu, lowerRight, lowerRightProjected);
+            lowerRightProjected = Tools3D.projectGL(gl, glu, lowerRight, lowerRightProjected);
             int scissorWidth = (int) (lowerRightProjected.x - scissorStartX + 1);
             int scissorHeight = (int) (lowerRightProjected.y - scissorStartY + 1);
 
@@ -267,7 +267,7 @@ public class MTProgressBar extends MTRoundRectangle {
 
             gl.glScissor(scissorStartX, scissorStartY, scissorWidth, scissorHeight);
 
-            pgl.endGL();
+            //pgl.endGL();
         }
 
         //Draw component

@@ -52,7 +52,7 @@ public class ToolsLight {
      * @param position the position
      */
     public static void setupDefaultLightning(PApplet pa, int lightID, Vector3D position) {
-        GL2 gl = ((PGraphicsOpenGL) pa.g).gl;
+        GL2 gl = Tools3D.getGL();
 
         //Set default ambient lightning for all objs
         setAmbientLight(gl, new float[]{0.2f, 0.2f, 0.2f, 1});

@@ -20,6 +20,7 @@ package org.mt4j.util.camera;
 import javax.media.opengl.GL2;
 
 import org.mt4j.util.MT4jSettings;
+import org.mt4j.util.math.Tools3D;
 import org.mt4j.util.math.ToolsMath;
 import org.mt4j.util.math.Plane;
 import org.mt4j.util.math.Vector3D;
@@ -93,7 +94,7 @@ public class Frustum implements IFrustum {
      */
     public Frustum(PApplet pa) {
         if (MT4jSettings.getInstance().isOpenGlMode()) {
-            this.gl = ((PGraphicsOpenGL) pa.g).gl;
+            this.gl = Tools3D.getGL();
         }
 
 

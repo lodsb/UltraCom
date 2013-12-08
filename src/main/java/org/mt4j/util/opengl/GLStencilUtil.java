@@ -19,10 +19,11 @@ package org.mt4j.util.opengl;
 
 import java.util.Stack;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import org.mt4j.components.visibleComponents.AbstractVisibleComponent;
 
+import org.mt4j.util.math.Tools3D;
 import processing.opengl.PGraphicsOpenGL;
 
 /**
@@ -202,7 +203,10 @@ public class GLStencilUtil {
                 gl.glStencilFunc(GL2.GL_EQUAL, currentStencilValue, currentStencilValue);
                 gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_DECR);
                 //FIXME this can be bad for performance if the clipshape is complex
-                clipShape.drawComponent(clipShape.getRenderer().g);
+                //fixme wrng rendrer
+
+                PGraphicsOpenGL p = (PGraphicsOpenGL) clipShape.getRenderer().g;
+                clipShape.drawComponent(p);
 //				*/
                 gl.glDepthMask(true);
                 gl.glColorMask(true, true, true, true);
@@ -222,7 +226,7 @@ public class GLStencilUtil {
 //				gl.glStencilFunc (GL2.GL_EQUAL, currentStencilValue, currentStencilValue);
 //				gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_DECR);
 
-                ((PGraphicsOpenGL) clipShape.getRenderer().g).beginGL();
+                ((PGraphicsOpenGL) clipShape.getRenderer().g).beginPGL();
                 gl.glMatrixMode(GL2.GL_PROJECTION);
                 gl.glPushMatrix();
                 gl.glLoadIdentity();
@@ -244,7 +248,7 @@ public class GLStencilUtil {
                 gl.glPopMatrix();
 
                 gl.glMatrixMode(GL2.GL_MODELVIEW);
-                ((PGraphicsOpenGL) clipShape.getRenderer().g).endGL();
+                ((PGraphicsOpenGL) clipShape.getRenderer().g).endPGL();
 //				*/
 
             }

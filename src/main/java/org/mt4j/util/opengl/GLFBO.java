@@ -109,7 +109,7 @@ public class GLFBO {
     public GLFBO(PApplet pa, int width, int height, boolean attachStencilBuffer) {
         super();
         this.pa = pa;
-        this.gl = ((PGraphicsOpenGL) pa.g).gl;
+        this.gl = Tools3D.getGL();
 
         this.stencilBufferAttached = attachStencilBuffer;
 
@@ -135,33 +135,33 @@ public class GLFBO {
 
     private void initFBO() {
         IntBuffer buffer = ToolsBuffers.createIntBuffer(1);
-        gl.glGenFramebuffersEXT(1, buffer);
+        gl.glGenFramebuffers(1, buffer);
         this.fboID = buffer.get(0);
-        gl.glBindFramebufferEXT(GL2.GL_FRAMEBUFFER_EXT, fboID);
+        gl.glBindFramebuffer(GL2.GL_FRAMEBUFFER, fboID);
 
         //Create depth buffer
         IntBuffer buffer2 = ToolsBuffers.createIntBuffer(1);
-        gl.glGenRenderbuffersEXT(1, buffer2);
+        gl.glGenRenderbuffers(1, buffer2);
         this.depthRBID = buffer2.get(0);
-        gl.glBindRenderbufferEXT(GL2.GL_RENDERBUFFER_EXT, depthRBID);
+        gl.glBindRenderbuffer(GL2.GL_RENDERBUFFER, depthRBID);
 
         if (this.isStencilBufferAttached()) {
             //THIS CREATES A FBO WITH A STENCIL BUFFER! HAS TO BE SUPPORTED ON THE PLATFORM!
-            gl.glRenderbufferStorageEXT(GL2.GL_RENDERBUFFER_EXT, GL2.GL_DEPTH24_STENCIL8_EXT, this.width, this.height);
+            gl.glRenderbufferStorage(GL2.GL_RENDERBUFFER, GL2.GL_DEPTH24_STENCIL8, this.width, this.height);
         } else {
             //Creates a fbo with a depth but without a stencil buffer
-            gl.glRenderbufferStorageEXT(GL2.GL_RENDERBUFFER_EXT, GL2.GL_DEPTH_COMPONENT, this.width, this.height); //orginal
+            gl.glRenderbufferStorage(GL2.GL_RENDERBUFFER, GL2.GL_DEPTH_COMPONENT, this.width, this.height); //orginal
         }
 
         //Attach depth buffer to FBO
-        gl.glFramebufferRenderbufferEXT(GL2.GL_FRAMEBUFFER_EXT, GL2.GL_DEPTH_ATTACHMENT_EXT, GL2.GL_RENDERBUFFER_EXT, depthRBID);
+        gl.glFramebufferRenderbuffer(GL2.GL_FRAMEBUFFER, GL2.GL_DEPTH_ATTACHMENT, GL2.GL_RENDERBUFFER, depthRBID);
 
         if (this.isStencilBufferAttached()) {
             //Attach stencil buffer to FBO - HAS TO BE SUPPORTED ON THE PLATFORM!
-            gl.glFramebufferRenderbufferEXT(GL2.GL_FRAMEBUFFER_EXT, GL2.GL_STENCIL_ATTACHMENT_EXT, GL2.GL_RENDERBUFFER_EXT, depthRBID);
+            gl.glFramebufferRenderbuffer(GL2.GL_FRAMEBUFFER, GL2.GL_STENCIL_ATTACHMENT, GL2.GL_RENDERBUFFER, depthRBID);
         }
 
-        gl.glBindFramebufferEXT(GL2.GL_FRAMEBUFFER_EXT, 0);
+        gl.glBindFramebuffer(GL2.GL_FRAMEBUFFER, 0);
     }
 
 
@@ -237,9 +237,9 @@ public class GLFBO {
 //			gl.glGenerateMipmapEXT(tex.getTextureTarget()); //FIXME seems to crash JVM after app close! //FIXME do this only after drawing finished to fbo texture
 
         //Attach texture to FBO
-        gl.glFramebufferTexture2DEXT(
-                GL2.GL_FRAMEBUFFER_EXT,
-                GL2.GL_COLOR_ATTACHMENT0_EXT,
+        gl.glFramebufferTexture2D(
+                GL2.GL_FRAMEBUFFER,
+                GL2.GL_COLOR_ATTACHMENT0,
                 tex.getTextureTarget(), tex.getTextureID(), 0);
 
         gl.glBindTexture(tex.getTextureTarget(), 0);
@@ -259,23 +259,23 @@ public class GLFBO {
         this.bind();
         gl.glBindTexture(tex.getTextureTarget(), tex.getTextureID());
         /*
-          //F�r OHNE mipmapping
+          //F?r OHNE mipmapping
           gl.glTexParameteri(tex.getTextureTarget(),GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_NEAREST);
           gl.glTexParameteri(tex.getTextureTarget(),GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_NEAREST);
           */
 //		/*
-        //F�r MIIPMAPPING
+        //F?r MIIPMAPPING
 //		gl.glTexParameteri(tex.getTextureTarget(), GL2.GL_GENERATE_MIPMAP, GL2.GL_TRUE); // automatic mipmap
         gl.glTexParameterf(tex.getTextureTarget(), GL2.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP_TO_EDGE);
         gl.glTexParameterf(tex.getTextureTarget(), GL2.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP_TO_EDGE);
         gl.glTexParameteri(tex.getTextureTarget(), GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_LINEAR);
         gl.glTexParameteri(tex.getTextureTarget(), GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_LINEAR);
-        gl.glGenerateMipmapEXT(tex.getTextureTarget());
+        gl.glGenerateMipmap(tex.getTextureTarget());
 //		 */
         //Attach texture to FBO
-        gl.glFramebufferTexture2DEXT(
-                GL2.GL_FRAMEBUFFER_EXT,
-                GL2.GL_COLOR_ATTACHMENT0_EXT,
+        gl.glFramebufferTexture2D(
+                GL2.GL_FRAMEBUFFER,
+                GL2.GL_COLOR_ATTACHMENT0,
                 tex.getTextureTarget(), tex.getTextureID(), 0);
 
         gl.glBindTexture(tex.getTextureTarget(), 0);
@@ -297,7 +297,7 @@ public class GLFBO {
     /*
       In this instance we are creating a normal RGBA image of the same width and height as the renderbuffer we created earlier;
       this is important as ALL attachments to a FBO have to be the same width and height.
-      Note that we don�t upload any data, the space is just reserved by OpenGL so we can use it later.
+      Note that we don?t upload any data, the space is just reserved by OpenGL so we can use it later.
       */
 
     /**
@@ -330,8 +330,8 @@ public class GLFBO {
 
 
     protected void bind() {
-        gl.glBindFramebufferEXT(GL2.GL_FRAMEBUFFER_EXT, fboID);
-        //gl.glBindRenderbufferEXT(GL2.GL_RENDERBUFFER_EXT, depthRBID);
+        gl.glBindFramebuffer(GL2.GL_FRAMEBUFFER, fboID);
+        //gl.glBindRenderbuffer(GL2.GL_RENDERBUFFER, depthRBID);
     }
 
     /**
@@ -345,15 +345,15 @@ public class GLFBO {
         this.fboStack.useFBO(this);
 
         /*
-          //TODO f�r mehrere texturen,
-           - check wieviele buffers (color attachments) m�glich
-           - f�r jede texture ein color attachment binden
+          //TODO f?r mehrere texturen,
+           - check wieviele buffers (color attachments) m?glich
+           - f?r jede texture ein color attachment binden
             => gl.glFramebufferTexture2DEXT(
-                  GL2.GL_FRAMEBUFFER_EXT,
-                  GL2.GL_COLOR_ATTACHMENT0_EXT, //GL2.GL_COLOR_ATTACHMENT1_EXT, ..
+                  GL2.GL_FRAMEBUFFER,
+                  GL2.GL_COLOR_ATTACHMENT0, //GL2.GL_COLOR_ATTACHMENT1, ..
                   tex.getTextureTarget(), tex.getTextureID(), 0);
            - glDrawBuffers aufrufen //und glReadBuffers
-          setDrawBuffer(GL2.GL_NONE); //wenn kein mutliple texture draw m�glich
+          setDrawBuffer(GL2.GL_NONE); //wenn kein mutliple texture draw m?glich
           setReadBuffer(GL2.GL_NONE);
           */
 
@@ -382,8 +382,8 @@ public class GLFBO {
 
 
     protected void unBind() {
-        //gl.glBindRenderbufferEXT(GL2.GL_RENDERBUFFER_EXT, 0);
-        gl.glBindFramebufferEXT(GL2.GL_FRAMEBUFFER_EXT, 0);
+        //gl.glBindRenderbuffer(GL2.GL_RENDERBUFFER, 0);
+        gl.glBindFramebuffer(GL2.GL_FRAMEBUFFER, 0);
     }
 
 
@@ -404,7 +404,7 @@ public class GLFBO {
             final IntBuffer id = ToolsBuffers.createIntBuffer(1);
             id.put(fboID);
             id.rewind();
-            gl.glDeleteFramebuffersEXT(id.limit(), id);
+            gl.glDeleteFramebuffers(id.limit(), id);
             fboID = 0;
         }
 
@@ -412,7 +412,7 @@ public class GLFBO {
             final IntBuffer id = ToolsBuffers.createIntBuffer(1);
             id.put(depthRBID);
             id.rewind();
-            gl.glDeleteRenderbuffersEXT(id.limit(), id);
+            gl.glDeleteRenderbuffers(id.limit(), id);
             depthRBID = 0;
         }
 
@@ -464,11 +464,11 @@ public class GLFBO {
 
          for (int i = 0; i < numDrawBuffersInUse; i++)
          {
-             colorDrawBuffers[i] = GL2.GL_COLOR_ATTACHMENT0_EXT + i;
+             colorDrawBuffers[i] = GL2.GL_COLOR_ATTACHMENT0 + i;
              textureTargets[i] = drawTextures[i].getTextureTarget();
              textureIDs[i] = drawTextures[i].getTextureID();
 
-             gl.glFramebufferTexture2DEXT(GL2.GL_FRAMEBUFFER_EXT, colorDrawBuffers[i], textureTargets[i], textureIDs[i], 0);
+             gl.glFramebufferTexture2DEXT(GL2.GL_FRAMEBUFFER, colorDrawBuffers[i], textureTargets[i], textureIDs[i], 0);
          }
 
          checkFBO();
@@ -480,43 +480,43 @@ public class GLFBO {
     //TODO for  stencil enabled fbo! IMPLEMENT!
     /*
       // Allocating space for multisampled depth buffer
-      gl.glRenderbufferStorageMultisampleEXT(GL2.GL_RENDERBUFFER_EXT, multisampleLevel, GL_DEPTH24_STENCIL8, width, height);
+      gl.glRenderbufferStorageMultisampleEXT(GL2.GL_RENDERBUFFER, multisampleLevel, GL_DEPTH24_STENCIL8, width, height);
 
       // Creating handle for multisampled FBO
       glstate.pushFramebuffer();
       glstate.setFramebuffer(multisampleFBO);
 
-      gl.glFramebufferRenderbufferEXT(GL2.GL_FRAMEBUFFER_EXT, GL2.GL_COLOR_ATTACHMENT0_EXT, GL2.GL_RENDERBUFFER_EXT, colorBufferMulti[0]);
-      gl.glFramebufferRenderbufferEXT(GL2.GL_FRAMEBUFFER_EXT, GL2.GL_DEPTH_ATTACHMENT_EXT, GL2.GL_RENDERBUFFER_EXT, depthStencilBuffer[0]);
-      gl.glFramebufferRenderbufferEXT(GL2.GL_FRAMEBUFFER_EXT, GL2.GL_STENCIL_ATTACHMENT_EXT, GL2.GL_RENDERBUFFER_EXT, depthStencilBuffer[0]);
+      gl.glFramebufferRenderbuffer(GL2.GL_FRAMEBUFFER, GL2.GL_COLOR_ATTACHMENT0, GL2.GL_RENDERBUFFER, colorBufferMulti[0]);
+      gl.glFramebufferRenderbuffer(GL2.GL_FRAMEBUFFER, GL2.GL_DEPTH_ATTACHMENT, GL2.GL_RENDERBUFFER, depthStencilBuffer[0]);
+      gl.glFramebufferRenderbuffer(GL2.GL_FRAMEBUFFER, GL2.GL_STENCIL_ATTACHMENT, GL2.GL_RENDERBUFFER, depthStencilBuffer[0]);
       */
 
     public void checkFBOComplete(GL2 gl, int fboID) {
-        final int framebuffer = gl.glCheckFramebufferStatusEXT(GL2.GL_FRAMEBUFFER_EXT);
+        final int framebuffer = gl.glCheckFramebufferStatus(GL2.GL_FRAMEBUFFER);
         switch (framebuffer) {
-            case GL2.GL_FRAMEBUFFER_COMPLETE_EXT:
+            case GL2.GL_FRAMEBUFFER_COMPLETE:
                 logger.debug("FRAMEBUFFER STATUS COMPLETE!");
                 break;
-            case GL2.GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
-                doError(", has caused a GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT exception", fboID);
+            case GL2.GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+                doError(", has caused a GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT exception", fboID);
                 break;
-            case GL2.GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
-                doError(", has caused a GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT exception", fboID);
+            case GL2.GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+                doError(", has caused a GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT exception", fboID);
                 break;
-            case GL2.GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
-                doError(", has caused a GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT exception", fboID);
+            case GL2.GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
+                doError(", has caused a GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS exception", fboID);
                 break;
-            case GL2.GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT:
-                doError(", has caused a GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT exception", fboID);
+            case GL2.GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
+                doError(", has caused a GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER exception", fboID);
                 break;
-            case GL2.GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:
-                doError(", has caused a GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT exception", fboID);
+            case GL2.GL_FRAMEBUFFER_INCOMPLETE_FORMATS:
+                doError(", has caused a GL_FRAMEBUFFER_INCOMPLETE_FORMATS exception", fboID);
                 break;
-            case GL2.GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT:
-                doError(", has caused a GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT exception", fboID);
+            case GL2.GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
+                doError(", has caused a GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER exception", fboID);
                 break;
-            case GL2.GL_FRAMEBUFFER_UNSUPPORTED_EXT:
-                doError(", has caused a GL_FRAMEBUFFER_UNSUPPORTED_EXT exception", fboID);
+            case GL2.GL_FRAMEBUFFER_UNSUPPORTED:
+                doError(", has caused a GL_FRAMEBUFFER_UNSUPPORTED exception", fboID);
                 break;
             default:
                 doError(", Unexpected reply from glCheckFramebufferStatusEXT: ", fboID);
@@ -554,7 +554,7 @@ public class GLFBO {
      * @return true, if is supported
      */
     public static boolean isSupported(PApplet app) {
-        return Tools3D.isGLExtensionSupported(app, "GL_EXT_framebuffer_object");
+        return Tools3D.isGLExtensionSupported(app, "GL_framebuffer_object");
     }
 
 

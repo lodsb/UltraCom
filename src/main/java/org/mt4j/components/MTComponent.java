@@ -52,7 +52,7 @@ import processing.opengl.PGraphics3D;
 import processing.opengl.PGraphicsOpenGL;
 
 import javax.media.opengl.GL2;
-import java.lang.System;
+import javax.media.opengl.glu.GLU;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -1964,7 +1964,7 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
      *
      * @param g the graphics context
      */
-    public void preDraw(PGraphics g) {
+    public void preDraw(PGraphicsOpenGL g) {
         // push events
         while (!this.deferQueue.isEmpty()) {
             Deferable<Object> def = (Deferable<Object>) this.deferQueue.poll();
@@ -1972,16 +1972,18 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
 
         }
 
+        /* db is broken anyways...
         if (this.isDepthBufferDisabled()) {
             Tools3D.disableDepthBuffer(g);
         }
+        */
 
         g.pushMatrix();
 
         MTLight aLight = this.getLight();
         if (aLight != null) {
 
-            GL2 gl = ((PGraphicsOpenGL) g).gl;
+            GL2 gl = GLU.getCurrentGL().getGL2();
             gl.glEnable(GL2.GL_LIGHTING); //this is expensive
             aLight.enable();
         }
@@ -2005,7 +2007,7 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
      *
      * @param g the graphics context
      */
-    public void drawComponent(PGraphics g) {
+    public void drawComponent(PGraphicsOpenGL g) {
     }
 
 
@@ -2015,7 +2017,7 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
      *
      * @param g the g
      */
-    public void postDraw(PGraphics g) {
+    public void postDraw(PGraphicsOpenGL g) {
         if (this.getClip() != null) {
             this.getClip().disableClip(g);
         }
@@ -2032,7 +2034,7 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
      *
      * @param g the graphics context
      */
-    public void postDrawChildren(PGraphics g) {
+    public void postDrawChildren(PGraphicsOpenGL g) {
         if (this.isDepthBufferDisabled()) {
             Tools3D.restoreDepthBuffer(g);
         }
@@ -2048,7 +2050,7 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
         MTLight aLight = this.getLight();
         if (aLight != null) {
             aLight.disable();
-            GL2 gl = ((PGraphicsOpenGL) g).gl;
+            GL2 gl = GLU.getCurrentGL().getGL2();
             gl.glDisable(GL2.GL_LIGHTING);
         }
     }

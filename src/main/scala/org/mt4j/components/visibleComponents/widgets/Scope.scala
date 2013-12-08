@@ -26,6 +26,7 @@ import org.mt4j.components.visibleComponents.shapes.MTRectangle
 import processing.core.{PGraphics, PApplet}
 import org.lodsb.reakt.sync.VarS
 import org.mt4j.MTApplication
+import processing.opengl.PGraphicsOpenGL
 
 class Scope(applet: PApplet, x: Int, y: Int, width: Int, height: Int, noSigPoints: Int = 100)
 	extends MTRectangle(applet, x, y, width, height) {
@@ -41,7 +42,7 @@ class Scope(applet: PApplet, x: Int, y: Int, width: Int, height: Int, noSigPoint
 		true;
 	})
 
-	override def drawComponent(g: PGraphics): Unit = {
+	override def drawComponent(g: PGraphicsOpenGL): Unit = {
 		val width = this.getWidthLocal();
 		val height = this.getHeightLocal();
 

@@ -40,7 +40,6 @@ import org.mt4j.util.math.Vertex;
 import org.mt4j.util.opengl.GLTexture;
 
 import processing.core.PApplet;
-import processing.core.PGraphics;
 import processing.opengl.PGraphicsOpenGL;
 
 /**
@@ -489,11 +488,11 @@ public class MTTriangleMesh extends AbstractShape {
       * @see org.mt4j.components.visibleComponents.AbstractVisibleComponent#drawComponent(processing.core.PGraphics)
       */
     @Override
-    public void drawComponent(PGraphics g) {
+    public void drawComponent(PGraphicsOpenGL g) {
         PApplet pa = this.getRenderer();
 
         if (this.isUseDirectGL()) {
-            GL2 gl = Tools3D.beginGL(g);
+            GL2 gl = Tools3D.getGL();
             this.drawComponent(gl);
             Tools3D.endGL(g);
         } else { //Draw with pure proccessing...
@@ -944,7 +943,7 @@ public class MTTriangleMesh extends AbstractShape {
             int[] ids = this.getGeometryInfo().getDisplayListIDs();
             //Delete default outline display list, not really usable in a mesh.
             if (MT4jSettings.getInstance().isOpenGlMode()) {
-                GL2 gl = ((PGraphicsOpenGL) this.getRenderer().g).gl;
+                GL2 gl = Tools3D.getGL();
                 if (ids[1] != -1) {
                     gl.glDeleteLists(ids[1], 1);
                 }
@@ -970,7 +969,7 @@ public class MTTriangleMesh extends AbstractShape {
                 && this.outlineContours != null
                 ) {
             if (ids[1] != -1) {
-                GL2 gl = ((PGraphicsOpenGL) this.getRenderer().g).gl;
+                GL2 gl = Tools3D.getGL();
                 gl.glDeleteLists(ids[1], 1);
             }
             //Create outline display list from manually set outline contours if available.
@@ -985,7 +984,7 @@ public class MTTriangleMesh extends AbstractShape {
      * @return the int
      */
     private int generateContoursDisplayList() {
-        GL2 gl = ((PGraphicsOpenGL) this.getRenderer().g).gl;
+        GL2 gl = Tools3D.getGL();
         int listId = gl.glGenLists(1);
         if (listId == 0) {
             System.err.println("Failed to create display list");

@@ -4,7 +4,7 @@ scalaVersion := "2.10.1"
 
 organization := "org.lodsb"
 
-version := "0.2-SNAPSHOT"
+version := "0.2-PROC2"
 
 
 

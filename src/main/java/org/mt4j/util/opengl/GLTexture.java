@@ -32,6 +32,8 @@ import processing.core.PConstants;
 import processing.core.PImage;
 import processing.opengl.PGraphicsOpenGL;
 
+import com.jogamp.common.nio.Buffers;
+
 
 /**
  * This class can only be used in combination with a OpenGL renderer.
@@ -718,7 +720,7 @@ public class GLTexture extends PImage {
 //				gl.glTexParameteri( textureTarget, GL2.GL_GENERATE_MIPMAP, GL2.GL_TRUE );
                     if (this.forcedRectMipMaps) {
                         //Resizes NPOT textures to POT
-                        GLU glu = ((PGraphicsOpenGL) this.parent.g).glu;
+                        GLU glu = GLU.createGLU(gl);
                         glu.gluBuild2DMipmaps(textureTarget, internalFormat, this.width, this.height, glFormat, type, buffer);
                     } else {
                         if (this.fboSupported) { //Naive check if glGenerateMipmapEXT command is supported
@@ -727,7 +729,7 @@ public class GLTexture extends PImage {
                             gl.glGenerateMipmap(textureTarget);  //newer OpenGL 3.x method of creating mip maps //TODO problems on ATI? use gl.glEnable(textureTarget) first?
                         } else {
                             //Old school software method, will resize a NPOT texture to a POT texture
-                            GLU glu = ((PGraphicsOpenGL) this.parent.g).glu;
+                            GLU glu = GLU.createGLU(gl);
                             glu.gluBuild2DMipmaps(textureTarget, internalFormat, this.width, this.height, glFormat, type, buffer);
                         }
                     }
@@ -759,7 +761,7 @@ public class GLTexture extends PImage {
      * (probably because Processings rendering pipeling is used instead of direct OpenGL)
      */
     public void updatePImageFromGLTexture() {
-        IntBuffer buff = BufferUtil.newIntBuffer(this.width * this.height);
+        IntBuffer buff = Buffers.newDirectIntBuffer(this.width * this.height);
         int textureTarget = this.glTextureSettings.target.getGLConstant();
         gl.glBindTexture(textureTarget, this.glTextureID[0]);
         gl.glGetTexImage(textureTarget, 0, GL2.GL_BGRA, GL2.GL_UNSIGNED_BYTE, buff);

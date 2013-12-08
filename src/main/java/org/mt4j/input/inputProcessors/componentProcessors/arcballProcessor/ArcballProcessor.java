@@ -20,6 +20,7 @@ package org.mt4j.input.inputProcessors.componentProcessors.arcballProcessor;
 import java.util.List;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.glu.GLU;
 
 import org.mt4j.components.MTComponent;
 import org.mt4j.components.bounds.BoundingSphere;
@@ -416,12 +417,13 @@ public class ArcballProcessor extends AbstractCursorProcessor {
 
             if (NewPt != null) {
                 PGraphicsOpenGL pgl = ((PGraphicsOpenGL) applet.g);
-                GL2 gl = pgl.beginGL();
+                GL2 gl = Tools3D.getGL();
+                GLU glu = GLU.createGLU(gl);
                 gl.glPushMatrix();
                 gl.glMultMatrixf(shape.getGlobalMatrix().toFloatBuffer());
-                NewPt = Tools3D.projectGL(gl, pgl.glu, NewPt, NewPt);
+                NewPt = Tools3D.projectGL(gl, glu, NewPt, NewPt);
                 gl.glPopMatrix();
-                pgl.endGL();
+                //pgl.endGL();
 
                 this.mapToSphere(NewPt, this.StVec);
             } else {
@@ -445,12 +447,13 @@ public class ArcballProcessor extends AbstractCursorProcessor {
 
             if (NewPt != null) {
                 PGraphicsOpenGL pgl = ((PGraphicsOpenGL) applet.g);
-                GL2 gl = pgl.beginGL();
+                GL2 gl = Tools3D.getGL();
+                GLU glu = GLU.createGLU(gl);
                 gl.glPushMatrix();
                 gl.glMultMatrixf(shape.getGlobalMatrix().toFloatBuffer());
-                NewPt = Tools3D.projectGL(gl, pgl.glu, NewPt, NewPt);
+                NewPt = Tools3D.projectGL(gl, glu, NewPt, NewPt);
                 gl.glPopMatrix();
-                pgl.endGL();
+                //pgl.endGL();
 
                 logger.debug(NewPt);
                 this.drag(NewPt, q);

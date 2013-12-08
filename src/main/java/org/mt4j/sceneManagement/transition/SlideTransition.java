@@ -175,8 +175,8 @@ public class SlideTransition extends SimpleAbstractTransition {
                 nextSceneRectangle.setVisible(true);
 
                 //Draw scenes into texture once!
-                lastSceneWindow.drawComponent(app.g);
-                nextSceneWindow.drawComponent(app.g);
+                lastSceneWindow.drawComponent(app.graphicsOpenGL());
+                nextSceneWindow.drawComponent(app.graphicsOpenGL());
 
                 anim.start();
             }

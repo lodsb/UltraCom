@@ -36,8 +36,6 @@ import org.mt4j.util.math.Vector3D;
 import org.mt4j.util.math.Vertex;
 
 import processing.core.PApplet;
-import processing.core.PGraphics;
-import processing.core.PImage;
 import processing.opengl.PGraphicsOpenGL;
 
 /**
@@ -251,11 +249,11 @@ public class MTLine extends MTCSSStylableShape {
     }
 
     @Override
-    public void drawComponent(PGraphics g) {
+    public void drawComponent(PGraphicsOpenGL g) {
         PApplet renderer = this.getRenderer();
         if (MT4jSettings.getInstance().isOpenGlMode()
                 && this.isUseDirectGL()) {
-            GL2 gl = ((PGraphicsOpenGL) renderer.g).beginGL();
+            GL2 gl = Tools3D.getGL();
 
             //Draw with PURE opengl
             if (this.isUseDisplayList()) {
@@ -266,7 +264,6 @@ public class MTLine extends MTCSSStylableShape {
                 //Use Vertex Arrays or VBOs
                 this.drawPureGl(gl);
             }
-            ((PGraphicsOpenGL) renderer.g).endGL();
         } else {
             //Draw with processing
             MTColor strokeColor = this.getStrokeColor();

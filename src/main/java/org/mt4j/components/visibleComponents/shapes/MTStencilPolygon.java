@@ -29,7 +29,6 @@ import org.mt4j.util.math.Vertex;
 import org.mt4j.util.opengl.GLStencilUtil;
 
 import processing.core.PApplet;
-import processing.core.PGraphics;
 import processing.opengl.PGraphicsOpenGL;
 
 /**
@@ -324,11 +323,10 @@ public class MTStencilPolygon extends MTPolygon {
     }
 
     @Override
-    public void drawComponent(PGraphics g) {
+    public void drawComponent(PGraphicsOpenGL g) {
         if (isUseDirectGL()) {
-            GL2 gl = ((PGraphicsOpenGL) this.getRenderer().g).beginGL();
+            GL2 gl = Tools3D.getGL();
             drawComponent(gl);
-            ((PGraphicsOpenGL) this.getRenderer().g).endGL();
         }
     }
 

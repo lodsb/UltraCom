@@ -138,11 +138,7 @@ import org.mt4j.util.HelperMethods;
 import org.mt4j.util.MT4jSettings;
 import org.mt4j.util.MTColor;
 import org.mt4j.util.SwingTextureRenderer;
-import org.mt4j.util.math.ConvexityUtil;
-import org.mt4j.util.math.Matrix;
-import org.mt4j.util.math.ToolsGeometry;
-import org.mt4j.util.math.Vector3D;
-import org.mt4j.util.math.Vertex;
+import org.mt4j.util.math.*;
 import org.mt4j.util.opengl.GLTexture;
 import org.mt4j.util.opengl.GluTrianglulator;
 import org.w3c.dom.Document;
@@ -1575,7 +1571,8 @@ public class SVGLoader implements SVGConstants {
                         shape.addChild(rectanglePaintedComp);
                      */
             }
-            FillPaint gradStencil = new FillPaint(((PGraphicsOpenGL) pa.g).gl, rectangle);
+
+            FillPaint gradStencil = new FillPaint(Tools3D.getGL(), rectangle);
             return gradStencil;
 //      	return null;
         }
@@ -1779,7 +1776,7 @@ public class SVGLoader implements SVGConstants {
 
 
     private FillPaint setUpRotatedGradientUserSpace(AbstractShape testShape, float angle, List<Stop> stops, Point2D p1, Point2D p2) {
-        GL2 gl = ((PGraphicsOpenGL) pa.g).gl;
+        GL2 gl = Tools3D.getGL();
         float gradAngle = angle;
 
         float invAngle = angle * -1;
@@ -1919,7 +1916,7 @@ public class SVGLoader implements SVGConstants {
 
 
     private FillPaint setUpRotatedGradientBBox(AbstractShape testShape, float angle, List<Stop> stops) {
-        GL2 gl = ((PGraphicsOpenGL) pa.g).gl;
+        GL2 gl = Tools3D.getGL();
         float gradAngle = angle;
 
         //Get copy of shapes vertices

@@ -48,6 +48,7 @@ import org.mt4j.util.math.Vertex;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import org.lodsb.reakt.property.Property;
+import processing.opengl.PGraphicsOpenGL;
 
 /**
  * The Class MTTextArea. This widget allows to display text with a specified font.
@@ -394,7 +395,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
 
 
     @Override
-    public void preDraw(PGraphics graphics) {
+    public void preDraw(PGraphicsOpenGL graphics) {
         super.preDraw(graphics);
 
         //Hack for drawing anti aliased stroke outline over the clipped area
@@ -444,7 +445,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
         if (enableCaret)
             return -1;
 
-        GL2 gl = GLU.getCurrentGL();
+        GL2 gl = GLU.getCurrentGL().getGL2();
         //Delete old one
         if (this.displayListID != 0) {
             gl.glDeleteLists(this.displayListID, 1);
@@ -483,7 +484,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
         super.destroyComponent();
 
         if (MT4jSettings.getInstance().isOpenGlMode() && this.displayListID != 0) {
-            GL2 gl = GLU.getCurrentGL();
+            GL2 gl = GLU.getCurrentGL().getGL2();
             //Delete old one
             if (gl != null) {
                 gl.glDeleteLists(this.displayListID, 1);
@@ -492,7 +493,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
     }
 
     @Override
-    public void drawComponent(PGraphics g) {
+    public void drawComponent(PGraphicsOpenGL g) {
         super.drawComponent(g);
 
 	//	shader.start();
@@ -560,7 +561,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
 //		*/
 
         if (this.isUseDirectGL()) {
-            GL2 gl = Tools3D.beginGL(pa);
+            GL2 gl = Tools3D.getGL();
             if (totalScrollTextX != 0.0f && totalScrollTextY != 0.0f) {
                 gl.glTranslatef(totalScrollTextX, totalScrollTextY + font.getFontMaxAscent(), 0);
             } else {
@@ -690,7 +691,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
     private boolean noStrokeSettingSaved;
 
     @Override
-    public void postDraw(PGraphics graphics) {
+    public void postDraw(PGraphicsOpenGL graphics) {
         super.postDraw(graphics);
         //Hack for drawing anti aliased stroke outline over the clipped area
         if (this.mode == MODE_WRAP && this.getClip() != null && !noStrokeSettingSaved) {
@@ -1335,7 +1336,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
      * @author Christopher Ruff
      */
     protected class ArtificalLineBreak implements IFontCharacter {
-        public void drawComponent(PGraphics g) {
+        public void drawComponent(PGraphicsOpenGL g) {
         }
 
         public void drawComponent(GL2 gl) {

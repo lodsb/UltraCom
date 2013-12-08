@@ -27,7 +27,11 @@ import org.mt4j.util.animation.IAnimation;
 import org.mt4j.util.animation.IAnimationListener;
 import org.mt4j.util.animation.ani.AniAnimation;
 
+import org.mt4j.util.math.Tools3D;
 import processing.core.PGraphics;
+import processing.opengl.PGraphicsOpenGL;
+
+import javax.media.opengl.GL2;
 
 /**
  * The Class BlendTransition.
@@ -134,7 +138,7 @@ public class BlendTransition extends SimpleAbstractTransition {
       * @see org.mt4j.sceneManagement.SimpleAbstractScene#drawAndUpdate(processing.core.PGraphics, long)
       */
     @Override
-    public void drawAndUpdate(PGraphics graphics, long timeDelta) {
+    public void drawAndUpdate(PGraphicsOpenGL graphics, long timeDelta) {
         this.nextScene.drawAndUpdate(graphics, timeDelta);
 //		this.clear(graphics)
         super.drawAndUpdate(graphics, timeDelta);
@@ -170,7 +174,8 @@ public class BlendTransition extends SimpleAbstractTransition {
                 setClear(false);
 
                 //Draw scene into texture once!
-                lastSceneWindow.drawComponent(app.g);
+                //fixme, n
+                lastSceneWindow.drawComponent(app.graphicsOpenGL());
 
                 anim.start();
             }
