@@ -108,9 +108,7 @@ class PitchItScene extends Scene(app, "PitchIt Scene") {
 
 
   // set positions
-  controllerCanvas2.rotate180
   controllerCanvas2.setPositionGlobal(Vec3d(app.center.getX, app.height-150f))
-  slider2.rotateZ(app.center, 180f)
   slider2.setPositionGlobal(Vec3d(app.center.getX, app.height-25f))
 
 
@@ -119,8 +117,12 @@ class PitchItScene extends Scene(app, "PitchIt Scene") {
   // add slider
   val slider3 = Slider(0f, 1f, height=40f, width=300f)
   slider3.value.map { x =>
+    println("within slider3.value.map")
     val percent = x / slider3.getValueRangeVar
-
+    app.allControllerCanvas.foreach( controllerCanvas => {
+      val scaleNumber = math.round(percent * controllerCanvas.synthi.scales.size)
+      controllerCanvas.synthi.activeScale = scaleNumber
+    })
   }
   app.scene.canvas += slider3
 

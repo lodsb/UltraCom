@@ -10,6 +10,10 @@ package PitchIt
 
 import akka.actor.{ActorRef, Props, ActorSystem, Actor}
 import java.lang.Thread
+import org.lodsb.scales.Conversions._
+import org.lodsb.scales.Transformations._
+import org.lodsb.scales._
+import scala.collection.mutable.ArrayBuffer
 
 
 // wrap the unique metronome-thread, which is an akka.Actor, within this object
@@ -43,7 +47,10 @@ class Metronome extends Actor {
   // here takes place the iteration through all controllers for each beat
   def startLoopIteration {
     while (running) {
-      counter++;
+      counter.increment
+      if(counter() == 1) {
+        Harmony.nextHarmony
+      }
       app.allControllerCanvas.foreach( controllerCanvas =>
         controllerCanvas.playNext(counter())
       )
@@ -60,10 +67,37 @@ object counter {
 
   val totalSteps = 16
 
-  def ++ {
+  def increment {
     counter = if(counter==totalSteps) 1 else counter+1
   }
 
-  def apply(): Int = counter
+  def apply(): Int = {
+    counter
+  }
+
+}
+
+object Harmony {
+  var harmonies = new ArrayBuffer[Pitch]()
+  harmonies += Tonic
+  harmonies += Subdominant
+  harmonies += Dominant
+  harmonies += Tonic
+
+  private var _activeHarmony = 0
+  def activeHarmony = harmonies(_activeHarmony)
+  def nextHarmony {
+    _activeHarmony += 1
+    if(_activeHarmony == harmonies.size) {
+      _activeHarmony = 0
+    }
+    println("before app.allControllerCanvas.foreach")
+    app.allControllerCanvas.foreach( controllerCanvas => {
+      println("with app.allControllerCanvas.foreach")
+      controllerCanvas.synthi.activeHarmony = activeHarmony
+    }
+    )
+    println("after app.allControllerCanvas.foreach")
+  }
 
 }

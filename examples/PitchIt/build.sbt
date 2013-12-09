@@ -20,6 +20,8 @@ scalacOptions <++= scalaVersion map { version =>
 
 libraryDependencies += "org.lodsb" %% "ultracom" % "0.2-SNAPSHOT"
 
+libraryDependencies += "org.lodsb" %% "scales" % "0.1-SNAPSHOT"
+
 resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
 
 unmanagedClasspath in Compile += Attributed.blank(new java.io.File("doesnotexist"))
