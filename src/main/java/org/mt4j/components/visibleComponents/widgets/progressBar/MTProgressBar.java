@@ -247,7 +247,7 @@ public class MTProgressBar extends MTRoundRectangle {
         //gl.scissor so text gezts clipped
         GL2 gl = null;
         if (openGl) {
-            gl = Tools3D.getGL();
+            gl = Tools3D.beginGLAndGetGL(pgl);
             GLU glu = GLU.createGLU(gl);
 
             gl.glEnable(GL2.GL_SCISSOR_TEST);
@@ -267,7 +267,7 @@ public class MTProgressBar extends MTRoundRectangle {
 
             gl.glScissor(scissorStartX, scissorStartY, scissorWidth, scissorHeight);
 
-            //pgl.endGL();
+            Tools3D.endGL(pgl);
         }
 
         //Draw component

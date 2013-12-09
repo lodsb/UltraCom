@@ -125,7 +125,7 @@ public abstract class AbstractGlobalInputProcessor<T extends MTInputEvent> exten
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("--- SHIT ! ---");
+            System.err.println("--- Error in processInput Event this shouldnt happen ---");
         }
 
         return true;

@@ -104,7 +104,7 @@ public class DragProcessor extends AbstractCursorProcessor {
     @Override
     public void cursorEnded(InputCursor c, MTFingerInputEvt fe) {
         IMTComponent3D comp = fe.getTarget();
-        logger.debug(this.getName() + " INPUT_ENDED RECIEVED - CURSOR: " + c.getId());
+        logger.debug(this.getName() + " INPUT_ENDED RECEIVED - CURSOR: " + c.getId());
         if (getLockedCursors().contains(c)) { //cursors was a actual gesture cursors
             dc.updateDragPosition();
             //Check if we can resume the gesture with another cursor

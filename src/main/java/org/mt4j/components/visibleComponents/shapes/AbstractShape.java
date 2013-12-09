@@ -1261,12 +1261,15 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
         //FIXME if vbos or display lists are shared, they shouldnt be deleted!
         //right now, destroying of displaylists isnt done. Use disableAndDeleteDisplaylists() instead.
 
+
         if (this.geometryInfo != null) {
             //Delete VBOs
             this.getGeometryInfo().deleteAllVBOs();
         }
 
+
         this.destroyDisplayLists();
+
 
         /*
           //Delete displaylist

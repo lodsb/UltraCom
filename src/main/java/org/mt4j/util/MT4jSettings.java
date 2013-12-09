@@ -458,12 +458,13 @@ public class MT4jSettings {
 
 
     /**
-     * Checks if is open gl mode.
+     * always true, since p3d is deprecated
      *
      * @return true, if is open gl mode
      */
+
     public boolean isOpenGlMode() {
-        return this.getRendererMode() == MT4jSettings.OPENGL_MODE;
+        return true;
     }
 
     /**
@@ -472,7 +473,7 @@ public class MT4jSettings {
      * @return true, if is p3d mode
      */
     public boolean isP3DMode() {
-        return this.getRendererMode() == MT4jSettings.P3D_MODE;
+        return false;
     }
 
 

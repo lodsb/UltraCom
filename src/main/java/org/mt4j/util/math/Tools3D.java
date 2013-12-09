@@ -101,6 +101,8 @@ public class Tools3D {
      * @return the vector3d
      */
     public static Vector3D unprojectScreenCoords(PApplet applet, Icamera camera, float screenX, float screenY) {
+        System.err.println("vam "+camera.getPosition());
+        System.err.println(" x y "+screenX + " "+ screenY);
         Vector3D ret;
         applet.pushMatrix();
         camera.update();
@@ -134,10 +136,9 @@ public class Tools3D {
                 double[] mousePosArr = new double[4];
 
                 try {
-                    GL2 gl = null;
+                    GL2 gl = beginGLAndGetGL(applet.g);
+                    GLU glu = GLU.createGLU(gl);
 
-                    GLU.getCurrentGL().getGL();
-                    GLU glu = new GLUgl2();
 
                     gl.glGetIntegerv(GL2.GL_VIEWPORT, viewport, 0);
                     gl.glGetDoublev(GL2.GL_PROJECTION_MATRIX, proj, 0);
@@ -147,7 +148,8 @@ public class Tools3D {
                     //FIXME test not using glReadpixel to get the depth at the location
                     //instead we have to build a ray with the result, from the camera location going through the resulst and check for hits ourselves
                     glu.gluUnProject((double) screenX, applet.height - (double) screenY, 0, model, 0, proj, 0, viewport, 0, mousePosArr, 0);
-                    ((PGraphicsOpenGL) applet.g).endPGL();
+
+                    endGL(applet.g);
 
                     returnVect = new Vector3D((float) mousePosArr[0], (float) mousePosArr[1], (float) mousePosArr[2]);
                 } catch (Exception e) {
@@ -352,9 +354,10 @@ public class Tools3D {
         switch (MT4jSettings.getInstance().getRendererMode()) {
             case MT4jSettings.OPENGL_MODE:
                 try {
-                    GL2 gl = GLU.getCurrentGL().getGL2();
+                    GL2 gl = beginGLAndGetGL(applet.g);
                     GLU glu = new GLUgl2();
                     Vector3D returnVect = projectGL(gl, glu, point);
+                    endGL(applet.g);
                     return returnVect;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -467,16 +470,18 @@ public class Tools3D {
 
     /**
      * End draw on top.
+     * @deprecated
      *
      * @param g the g
      */
     public static void restoreDepthBuffer(PGraphicsOpenGL g) {
+        // fixme, n
         switch (MT4jSettings.getInstance().getRendererMode()) {
             case MT4jSettings.OPENGL_MODE:
                 GL2 gl = Tools3D.getGL(g);
 //			gl.glDepthFunc(GL2.GL_LEQUAL); //This is used by standart processing..
                 //FIXME TEST
-                gl.glPopAttrib();
+                //gl.glPopAttrib();
                 break;
             case MT4jSettings.P3D_MODE:
                 break;
@@ -500,7 +505,7 @@ public class Tools3D {
     public static void printGLExtensions(PApplet pa) {
         if (!MT4jSettings.getInstance().isOpenGlMode())
             return;
-        GL2 gl = Tools3D.getGL(pa);
+        GL2 gl = Tools3D.beginGLAndGetGL(pa);
         String ext = gl.glGetString(GL2.GL_EXTENSIONS);
         StringTokenizer tok = new StringTokenizer(ext, " ");
         while (tok.hasMoreTokens()) {
@@ -525,6 +530,7 @@ public class Tools3D {
         System.out.println("Depth Buffer bits: " + depthBits[0]);
         System.out.println("Stencil Buffer bits: " + stencilBits[0]);
         //((PGraphicsOpenGL) pa.g).endGL();
+        Tools3D.endGL(pa.g);
     }
 
 
@@ -557,14 +563,14 @@ public class Tools3D {
      */
     public static GL2 getGL(PApplet pa) {
 
-        GL2 gl2 = null;
-        try {
+        GL2 gl2 = GLU.getCurrentGL().getGL2();
+/*        try {
             GL2 gl = GLU.getCurrentGL().getGL2();
         } catch (Exception e) {
             System.err.println("Error while getting GL2 context");
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-
+*/
         return gl2;
     }
 
@@ -575,13 +581,13 @@ public class Tools3D {
 
     public static GL2 getGL(PGraphicsOpenGL g) {
 
-        GL2 gl2 = null;
-        try {
+        GL2 gl2 = getGL();
+        /*try {
             GL2 gl = GLU.getCurrentGL().getGL2();
         } catch (GLException e) {
             System.err.println("Error while getting GL2 context");
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        } */
 
         return gl2;
     }
@@ -609,15 +615,17 @@ public class Tools3D {
 
     public static GL2 beginGLAndGetGL(PGraphics g) {
 
-        GL2 gl2 = null;
-        try {
+        GL2 gl2 = GLU.getCurrentGL().getGL2();
+        /*try {
             GL2 gl = GLU.getCurrentGL().getGL2();
             g.beginPGL();
         } catch (GLException e) {
             System.err.println("Error while getting GL2 context");
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-
+        */
+        //gl2.begin
+        g.beginPGL();
         return gl2;
     }
 
@@ -981,7 +989,7 @@ public class Tools3D {
         gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
         gl.glDisableClientState(GL2.GL_COLOR_ARRAY);
 
-        Tools3D.endGL(pa);
+        Tools3D.endGL(pa.g);
         ////////////////
 
         return returnVal;

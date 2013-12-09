@@ -18,6 +18,7 @@
 package org.mt4j.input.inputSources;
 
 
+import org.mt4j.util.MT4jSettings;
 import processing.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -157,11 +158,16 @@ public class MouseInputSource extends AbstractInputSource<MTFingerInputEvt> {// 
         }
     }
 
+    // argh... processing coordinates differ from the original AWT??
+    private int convertY(MouseEvent e) {
+        return MT4jSettings.getInstance().getWindowHeight() - e.getY();
+    }
 
     /* (non-Javadoc)
       * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
       */
     public void mouseDragged(MouseEvent e) {
+        //System.err.println("mouse dragged");
         try {
             InputCursor m = ActiveCursorPool.getInstance().getActiveCursorByID(lastUsedMouseID);
             if (m != null) {
@@ -181,6 +187,7 @@ public class MouseInputSource extends AbstractInputSource<MTFingerInputEvt> {// 
       * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
       */
     public void mouseReleased(MouseEvent e) {
+        //System.err.println("mouse released");
         if (e.getButton() == mousePressedButton) {
             InputCursor m = ActiveCursorPool.getInstance().getActiveCursorByID(lastUsedMouseID);
             MTFingerInputEvt te = new MTFingerInputEvt(this, e.getX(), e.getY(), MTFingerInputEvt.INPUT_ENDED, m);

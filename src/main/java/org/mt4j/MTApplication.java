@@ -205,95 +205,6 @@ public abstract class MTApplication extends PApplet {
         return (PGraphicsOpenGL) this.g;
     }
 
-//	private static boolean fullscreen;
-    /*
-     public static void main(String[] args){
- //		MTApplication app  = new MTApplication();
-
-         PApplet.main(new String[] {
- //				   "--present",
- //				   "--exclusive",
-                    "--bgcolor=#000000",
-                    "--hide-stop",
-                    "org.mt4j.MTApplication"
-                    }
-                    );
-     }
-     @Override
-     public void setup(){
-         size(800,600, OPENGL); //TODO REMOVE
-         logger.debug("Setup");
-         System.out.println("Setup called");
-
-         smooth();
-         hint(ENABLE_OPENGL_2X_SMOOTH );
-         smooth();
-         noSmooth();
-
-         background(0);
-
-         GL2 gl = Tools3D.getGL(this);
- //		 gl.glEnable(GL2.GL_MULTISAMPLE);
- //	     gl.glEnable(GL2.GL_MULTISAMPLE_EXT);
-     }
-     @Override
-     public void draw(){
- //		background(255);
-
-         fill(250,0,0,255);
-         stroke(250,0,0,255);
-         line(0,10, 280,20);
-
-         GL2 gl = Tools3D.beginGL(this);
- //		GL2 gl =  ((PGraphicsOpenGL)this.g).beginGL();
- //		gl.glEnable(GL2.GL_LINE_SMOOTH );
-         gl.glDisable(GL2.GL_LINE_SMOOTH );
- //		gl.glHint(GL2.GL_LINE_SMOOTH_HINT, GL2.GL_NICEST);
-         // Enable Blending
-         gl.glEnable(GL2.GL_BLEND);
-         // Specifies pixel arithmetic
-         gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
-         gl.glLineWidth(1);
-         gl.glColor4d(0.0, 0.0, 0.0, 1);
-
-         gl.glBegin(GL2.GL_LINE_STRIP);
-         gl.glVertex3d(0, 20, 0);
-         gl.glVertex3d(280, 30, 0);
-         gl.glEnd();
-
-         gl.glBegin(GL2.GL_LINE_STRIP);
-         gl.glVertex3d(0, 20, 0);
-         gl.glVertex3d(711, 230, 0);
-         gl.glVertex3d(200, 300, 0);
-         gl.glVertex3d(100, 330, 0);
-         gl.glEnd();
- //		((PGraphicsOpenGL)this.g).endGL();
-
-         Tools3D.endGL(this);
-
-         if (this.mousePressed){
-             fill(150);
-             rect(mouseX, mouseY, 10,10);
-         }
-     }
-     */
-
-    /*
-     //TODO test to make window undecorated - seems to mess up some textures (maybe because opengl re-initialization)
-     //put frame.setLocation(-1600, 0); at the end of setup() to position the frame
-     public void init(){
-           // to make a frame not displayable, you can
-           // use frame.removeNotify()
-           frame.removeNotify();
-
-           frame.setUndecorated(true);
-
-           // addNotify, here i am not sure if you have
-           // to add notify again.
-           frame.addNotify();
-           super.init();
-         }
-     */
 
 
     /**
@@ -402,33 +313,7 @@ public abstract class MTApplication extends PApplet {
         } else {
             getSettingsFromFile();
 
-            // Launch processing PApplet main() function
-/*            if (MT4jSettings.getInstance().isFullscreen()) {
-                if (MT4jSettings.getInstance().isFullscreenExclusive()) {
-                    PApplet.runSketch(new String[]{
-                            "--display=" + MT4jSettings.getInstance().getDisplay(),
-                            "--present",
-                            "--exclusive",
-                            "--bgcolor=#000000",
-                            "--hide-stop"},
-                            this
-                    );
-                } else {
-                    PApplet.runSketch(new String[]{
-                            "--display=" + MT4jSettings.getInstance().getDisplay(),
-                            "--present",
-                            "--bgcolor=#000000",
-                            "--hide-stop"},
-                            this
-                    );
-                }
-            } else {
-                PApplet.runSketch(new String[]{
-                        "--display=" + MT4jSettings.getInstance().getDisplay()},
-                        this);
-            }
-        }
-*/
+
             PApplet.runSketch(new String[]{"fii"}, this);}
     }
 
@@ -639,14 +524,8 @@ public abstract class MTApplication extends PApplet {
             getSettingsFromFile();
         }
 
-        // Applet size - size() must be the first command in setup() method
-        if (MT4jSettings.getInstance().getRendererMode() == MT4jSettings.OPENGL_MODE)
-            this.size(MT4jSettings.getInstance().getWindowWidth(), MT4jSettings.getInstance().getWindowHeight(), MTApplication.CUSTOM_OPENGL_GRAPHICS);
-        else if (MT4jSettings.getInstance().getRendererMode() == MT4jSettings.P3D_MODE)
-            this.size(MT4jSettings.getInstance().getWindowWidth(), MT4jSettings.getInstance().getWindowHeight(), PApplet.P3D);
-		else if (MT4jSettings.getInstance().getRendererMode() == MT4jSettings.GLGRAPHICS_MODE) {
-			this.size(MT4jSettings.getInstance().getWindowWidth(), MT4jSettings.getInstance().getWindowHeight(), OPENGL);
-		}
+        // P3d is deprecated, so we use opengl
+        this.size(MT4jSettings.getInstance().getWindowWidth(), MT4jSettings.getInstance().getWindowHeight(), MTApplication.OPENGL);
 
         //Switch to different resolution in fullscreen exclusive mode if neccessary
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -676,17 +555,18 @@ public abstract class MTApplication extends PApplet {
         //System.out.println("Current Thread: "+  Thread.currentThread());
 
         // Set frame icon image
-        try {
+        // fixme, n icon ignored for now
+/*        try {
             //Set the window frame's title
             frame.setTitle(MT4jSettings.getInstance().getFrameTitle());
 //			this.mt4jIcon = new ImageIcon(MT4jSettings.getInstance().getDefaultImagesPath() + 
 //					"MT4j.gif");
             this.mt4jIcon = new ImageIcon(Thread.currentThread().getContextClassLoader().getResource(MT4jSettings.getInstance().getDefaultImagesPath() +
-                    "MT4j.gif"));
+                    "src/main/resources/images/MT4j.gif"));
             this.frame.setIconImage(mt4jIcon.getImage());
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
 
         logger.info("MT4j window dimensions: \"" + MT4jSettings.getInstance().getWindowWidth() + " X " + MT4jSettings.getInstance().getWindowHeight() + "\"");
 
@@ -757,7 +637,7 @@ public abstract class MTApplication extends PApplet {
 
             System.err.println("GL ?? "+gl);
 
-            /*
+
             logger.info("OpenGL Version: \"" + gl.glGetString(GL2.GL_VERSION) + "\"" + " - Vendor: \"" + gl.glGetString(GL2.GL_VENDOR) + "\"" + " - Renderer: \"" + gl.glGetString(GL2.GL_RENDERER) + "\"");
 //	    	logger.info("Shading language version: \"" +  gl.glGetString(GL2.GL_SHADING_LANGUAGE_VERSION) + "\"");
             logger.info("Non power of two texture sizes allowed: \"" + Tools3D.supportsNonPowerOfTwoTexture(this) + "\"");
@@ -778,7 +658,7 @@ public abstract class MTApplication extends PApplet {
             }
             gl.glEnable(GL2.GL_LINE_SMOOTH);
 //	    	gl.glDisable(GL2.GL_LINE_SMOOTH);
-*/
+
         }
     }
 
@@ -800,12 +680,12 @@ public abstract class MTApplication extends PApplet {
     @Override
     public void draw() {
 		//GLGraphics renderer = (GLGraphics) g;
-		//renderer.beginGL();
+		Tools3D.beginGL(this);
 		//shader.start(); currently not used :-)
         this.runApplication();
 		//shader.stop(); currently not used :-)
 
-		//renderer.endGL();
+		Tools3D.endGL(this);
     }
 
 

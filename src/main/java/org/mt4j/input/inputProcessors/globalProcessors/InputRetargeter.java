@@ -83,6 +83,12 @@ public class InputRetargeter extends AbstractGlobalInputProcessor<MTInputEvent> 
             AbstractCursorInputEvt posEvt = (AbstractCursorInputEvt) inputEvent;
             InputCursor m = posEvt.getCursor();
 
+            if(posEvt.getId() != AbstractCursorInputEvt.INPUT_UPDATED) {
+                System.err.println("\n\n\n");
+                System.err.println("OBJ "+appInfoProvider.getComponentAt(posEvt.getScreenX(), posEvt.getScreenY())+ " | "+appInfoProvider);
+                System.err.println(" 4 .." + posEvt.getScreenX() + " " + posEvt.getScreenY());
+            }
+
             switch (posEvt.getId()) {
                 case AbstractCursorInputEvt.INPUT_DETECTED: {
 //				logger.debug("Finger DOWN-> " + " ID:" + posEvt.getId() + "; X:" + posEvt.getPosX() + " Y:" + posEvt.getPosY() + "; Source: " + posEvt.getSource());
@@ -100,6 +106,7 @@ public class InputRetargeter extends AbstractGlobalInputProcessor<MTInputEvent> 
                 }
                 break;
                 case AbstractCursorInputEvt.INPUT_UPDATED: {
+
 //				logger.debug("Finger UPDATE-> " + " ID:" + posEvt.getId() + "; X:" + posEvt.getPositionX() + " Y:" + posEvt.getPositionY() + "; Source: " + posEvt.getSource());
                     IMTComponent3D associatedObj = cursorToObjectMap.get(m);
                     if (associatedObj != null) {

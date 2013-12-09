@@ -146,27 +146,27 @@ class listener2 extends TrEventListener[bar] {
 }
 
 
-object EventCoreTest {
-
-  def test(func: Int => Int): Unit = {
-    println(func(4));
-    println(123)
-  }
-
-  def main(args: Array[String]): Unit = {
-    val handler = new EventHandler;
-
-    handler.register(new listener1);
-    handler.register(new listener1);
-    handler.register(new listener2);
-
-    println("handle event of type foo")
-    handler.handle(new foo)
-    println("handle event of type bar")
-    handler.handle(new bar)
-
-  }
-
-  def test(): Unit = {}
-
-}
+//object EventCoreTest {
+//
+//  def test(func: Int => Int): Unit = {
+//    println(func(4));
+//    println(123)
+//  }
+//
+//  def main(args: Array[String]): Unit = {
+//    val handler = new EventHandler;
+//
+//    handler.register(new listener1);
+//    handler.register(new listener1);
+//    handler.register(new listener2);
+//
+//    println("handle event of type foo")
+//    handler.handle(new foo)
+//    println("handle event of type bar")
+//    handler.handle(new bar)
+//
+//  }
+//
+//  def test(): Unit = {}
+//
+//}

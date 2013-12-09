@@ -417,13 +417,13 @@ public class ArcballProcessor extends AbstractCursorProcessor {
 
             if (NewPt != null) {
                 PGraphicsOpenGL pgl = ((PGraphicsOpenGL) applet.g);
-                GL2 gl = Tools3D.getGL();
+                GL2 gl = Tools3D.beginGLAndGetGL(applet.g);
                 GLU glu = GLU.createGLU(gl);
                 gl.glPushMatrix();
                 gl.glMultMatrixf(shape.getGlobalMatrix().toFloatBuffer());
                 NewPt = Tools3D.projectGL(gl, glu, NewPt, NewPt);
                 gl.glPopMatrix();
-                //pgl.endGL();
+                Tools3D.endGL(applet.g);
 
                 this.mapToSphere(NewPt, this.StVec);
             } else {
@@ -453,7 +453,7 @@ public class ArcballProcessor extends AbstractCursorProcessor {
                 gl.glMultMatrixf(shape.getGlobalMatrix().toFloatBuffer());
                 NewPt = Tools3D.projectGL(gl, glu, NewPt, NewPt);
                 gl.glPopMatrix();
-                //pgl.endGL();
+                Tools3D.endGL(applet.g);
 
                 logger.debug(NewPt);
                 this.drag(NewPt, q);

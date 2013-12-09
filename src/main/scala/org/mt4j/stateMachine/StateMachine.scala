@@ -179,24 +179,24 @@ class TestFSM extends StateMachine {
 	}
 }
 
-object Hello {
-	def main(args: Array[String]): Unit = {
-		var fsm = new TestFSM
-
-		fsm.stateMachine ! Command('Test, null);
-		fsm.stateMachine ! new foo;
-		fsm.stateMachine ! new bar;
-		fsm.stateMachine ! "sdfsdfsdf"
-		fsm.stateMachine ! "test"
-		fsm.stateMachine ! 2;
-		fsm.stateMachine ! "death"
-
-		fsm = new TestFSM
-
-		fsm.consume(new foo);
-		fsm.consume(new bar);
-		fsm.consume("test");
-		fsm.consume(2);
-		fsm.consume("death")
-	}
-}
+//object Hello {
+//	def main(args: Array[String]): Unit = {
+//		var fsm = new TestFSM
+//
+//		fsm.stateMachine ! Command('Test, null);
+//		fsm.stateMachine ! new foo;
+//		fsm.stateMachine ! new bar;
+//		fsm.stateMachine ! "sdfsdfsdf"
+//		fsm.stateMachine ! "test"
+//		fsm.stateMachine ! 2;
+//		fsm.stateMachine ! "death"
+//
+//		fsm = new TestFSM
+//
+//		fsm.consume(new foo);
+//		fsm.consume(new bar);
+//		fsm.consume("test");
+//		fsm.consume(2);
+//		fsm.consume("death")
+//	}
+//}

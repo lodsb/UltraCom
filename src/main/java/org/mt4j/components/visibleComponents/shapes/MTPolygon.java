@@ -200,8 +200,8 @@ public class MTPolygon extends MTCSSStylableShape {
         //Draw the shape
         if (MT4jSettings.getInstance().isOpenGlMode()
                 && this.isUseDirectGL()) {
-            GL2 gl = Tools3D.getGL(g);
 
+            GL2 gl = Tools3D.beginGLAndGetGL(g);
             //Draw with PURE opengl
             if (this.isUseDisplayList() /*&& this.getDisplayListIDs() != null && this.getDisplayListIDs()[0] != -1 && this.getDisplayListIDs()[1] != -1*/) {
                 int[] displayLists = this.getGeometryInfo().getDisplayListIDs();

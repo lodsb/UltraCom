@@ -217,6 +217,7 @@ public class MTSlider extends MTRectangle {
 
 //		knob = new MTRectangle(x+innerOffset, y+innerOffset, 	knobWidth, knobHeight, applet);
 		knob = new MTEllipse(applet, new Vector3D(0, 0, 0), knobWidth * 0.5f, knobHeight * 0.5f);
+        knob.setName("MTSlider-Knob");
 		knob.setFillColor(new MTColor(140, 140, 140, 255));
 		AbstractComponentProcessor[] inputPs = knob.getInputProcessors();
 		for (AbstractComponentProcessor p : inputPs) {

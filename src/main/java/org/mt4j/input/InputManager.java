@@ -177,12 +177,15 @@ public class InputManager {
 //	    */
 
         //Check if we run windows 7
+        // fixme, n
+        /* win touch disabled
         if (System.getProperty("os.name").toLowerCase().contains("windows 7")) {
             Win7NativeTouchSource win7NativeInput = new Win7NativeTouchSource(app);
             if (win7NativeInput.isSuccessfullySetup()) {
                 this.registerInputSource(win7NativeInput);
             }
         }
+        */
 
         //check which versions it supports and only start there!
         /*
@@ -192,13 +195,19 @@ public class InputManager {
           */
 
         KeyboardInputSource keyInput = new KeyboardInputSource(app);
+        /* fixme, n
         TuioInputSource tuioInput = new TuioInputSource(app);
+        */
 //		MuitoInputSource muitoInput = new MuitoInputSource(pa, "localhost", 6666);
 
-        this.registerInputSource(new OSCInputSource(app));
+
 
         this.registerInputSource(keyInput);
+
+        /* fixme, n
+        this.registerInputSource(new OSCInputSource(app));
         this.registerInputSource(tuioInput);
+        */
     }
 
 

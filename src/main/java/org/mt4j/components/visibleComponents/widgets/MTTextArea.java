@@ -330,6 +330,8 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
         if (MT4jSettings.getInstance().isOpenGlMode())
             this.setUseDirectGL(true);
 
+
+        System.err.println("FOO font "+font);
         fontHeight = font.getFontAbsoluteHeight();
 
         caretWidth = 0;
@@ -561,7 +563,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
 //		*/
 
         if (this.isUseDirectGL()) {
-            GL2 gl = Tools3D.getGL();
+            GL2 gl = Tools3D.beginGLAndGetGL(g);
             if (totalScrollTextX != 0.0f && totalScrollTextY != 0.0f) {
                 gl.glTranslatef(totalScrollTextX, totalScrollTextY + font.getFontMaxAscent(), 0);
             } else {

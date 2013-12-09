@@ -459,7 +459,7 @@ public class Rotate3DProcessor extends AbstractCursorProcessor {
 			Vector3D rotationPartY = new Vector3D(0.0f,getRotationAxis().y,0.0f);
 			Vector3D rotationPartZ = new Vector3D(0.0f,0.0f,getRotationAxis().z);
 							
-//			Tools3D.endGL(pApplet);
+			//Tools3D.endGL(pApplet.g);
 			
 			float dotX = rotationPartX.dot(getRotationAxis());
 			float dotY = rotationPartY.dot(getRotationAxis());

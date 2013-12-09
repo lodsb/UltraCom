@@ -251,12 +251,13 @@ public class MTKey extends
     public void drawComponent(PGraphicsOpenGL g) {
         if (this.isUseDirectGL()) {
             if (this.isUseDisplayList()) {
-                GL2 gl = Tools3D.getGL();
+                GL2 gl = Tools3D.beginGLAndGetGL(g);
                 int[] pds = buttonBackGround.getGeometryInfo().getDisplayListIDs();
                 //Draw only filling of background polygon, without outer stroke
                 gl.glCallList(pds[0]);
                 super.drawComponent(gl);
                 //((PGraphicsOpenGL) this.getRenderer().g).endGL();
+                Tools3D.endGL(g);
             } else {
                 buttonBackGround.drawComponent(g);
                 super.drawComponent(g);
