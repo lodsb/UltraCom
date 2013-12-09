@@ -93,7 +93,7 @@ public class ScaleProcessor extends AbstractCursorProcessor {
             logger.debug(this.getName() + " Available cursors: " + availableCursors.size());
             if (availableCursors.size() >= 2) {
                 InputCursor otherCursor = getFarthestFreeComponentCursorTo(newCursor);
-//				logger.debug(this.getName() + " already had 1 unused cursor - we can try start gesture! used Cursor ID:" + otherCursor.getId() + " and new cursor ID:" + newCursor.getId());
+//				logger.debug(this.name() + " already had 1 unused cursor - we can try start gesture! used Cursor ID:" + otherCursor.getId() + " and new cursor ID:" + newCursor.getId());
 
                 if (this.canLock(otherCursor, newCursor)) { //TODO remove check, since alreday checked in getAvailableComponentCursors()?
                     sc = new ScaleContext(otherCursor, newCursor, comp);
@@ -314,7 +314,7 @@ public class ScaleProcessor extends AbstractCursorProcessor {
             scalePlaneNormal = new Vector3D(0, 0, 1);
             /*
                newFingerMiddlePos = getMiddlePointBetweenFingers();
-               oldFingerMiddlePos = newFingerMiddlePos.getCopy();
+               oldFingerMiddlePos = newFingerMiddlePos.copy();
                */
         }
 
@@ -368,7 +368,7 @@ public class ScaleProcessor extends AbstractCursorProcessor {
                 Vector3D newSecondFingerPos = getPlaneIntersection(applet, scalePlaneNormal, secondFingerStartPos.getCopy(), secondFingerCursor);
 
 //				//TODO dragplane aus den beiden fingern ableiten -> wenn obj schrÃÂ¯ÃÂ¿ÃÂg im raum, dragplane entsprechend
-//				Vector3D newSecondFingerPos = ToolsIntersection.getRayPlaneIntersection(new Ray(rayStartPoint, newPointInRayDir), scalePlaneNormal, secondFingerStartPos.getCopy());
+//				Vector3D newSecondFingerPos = ToolsIntersection.getRayPlaneIntersection(new Ray(rayStartPoint, newPointInRayDir), scalePlaneNormal, secondFingerStartPos.copy());
 
                 //Update the field
                 if (newSecondFingerPos != null)

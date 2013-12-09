@@ -38,14 +38,14 @@ object VolumePropertyType extends PropertyType {
   }  
   
   override def color = { 
-    new MTColor(this.PropertyColor.getR, this.PropertyColor.getG, this.PropertyColor.getB, this.PropertyColor.getAlpha)
+    new MTColor(this.PropertyColor.getR, this.PropertyColor.getG, this.PropertyColor.getB, this.PropertyColor.getA)
   }  
   
   override def drawSymbol(g: PGraphics, center: (Float, Float), color: MTColor) = {
     val (cx, cy) = center
     g.noFill()
     g.strokeWeight(SymbolWeight)
-    g.stroke(color.getR, color.getG, color.getB, color.getAlpha)
+    g.stroke(color.getR, color.getG, color.getB, color.getA)
     g.beginShape() //drawing a volume-control-like symbol using bezier curves
     
     //closed, hovering volume symbol

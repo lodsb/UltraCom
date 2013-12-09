@@ -78,7 +78,7 @@ class ChannelMenu(app: Application, center: Vector3D, val channelNumber: Int)
       extends MTRoundRectangle(app, center.getX - ChannelMenu.Width/2f, center.getY - ChannelMenu.Height/2f, 0, ChannelMenu.Width, ChannelMenu.Height, ChannelMenu.Width/10f, ChannelMenu.Width/10f) {
         
     this.setFillColor(ChannelMenu.Color)
-    val strokeCol = new MTColor(ChannelMenu.Color.getR, ChannelMenu.Color.getG, ChannelMenu.Color.getB, (ChannelMenu.Color.getAlpha + 20)%255)
+    val strokeCol = new MTColor(ChannelMenu.Color.getR, ChannelMenu.Color.getG, ChannelMenu.Color.getB, (ChannelMenu.Color.getA + 20)%255)
     this.setStrokeColor(strokeCol)
     this.setStrokeWeight(1)
     //this.setNoStroke(true)
@@ -148,7 +148,7 @@ class ChannelMenu(app: Application, center: Vector3D, val channelNumber: Int)
       val cy = center.getY()  
       
       graphics.noStroke()
-      val (r,g,b,a) = (ChannelMenu.Color.getR, ChannelMenu.Color.getG, ChannelMenu.Color.getB, ChannelMenu.Color.getAlpha)
+      val (r,g,b,a) = (ChannelMenu.Color.getR, ChannelMenu.Color.getG, ChannelMenu.Color.getB, ChannelMenu.Color.getA)
       graphics.fill(r, g, b, (a+50)%255)
   
       if (channelNumber == 0) {

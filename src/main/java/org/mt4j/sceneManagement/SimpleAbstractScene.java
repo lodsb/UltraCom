@@ -40,7 +40,6 @@ import org.mt4j.util.camera.Icamera;
 import org.mt4j.util.camera.MTCamera;
 import org.mt4j.util.math.Tools3D;
 
-import processing.core.PGraphics;
 import processing.opengl.PGraphicsOpenGL;
 
 /**
@@ -202,7 +201,7 @@ public abstract class SimpleAbstractScene extends EventHandler implements Iscene
     protected void clear(PGraphicsOpenGL graphics) {
         if (MT4jSettings.getInstance().isOpenGlMode()) {
             GL2 gl = Tools3D.getGL(mtApplication);
-            gl.glClearColor(this.glClearColor.getR(), this.glClearColor.getG(), this.glClearColor.getB(), this.glClearColor.getAlpha());
+            gl.glClearColor(this.glClearColor.getR(), this.glClearColor.getG(), this.glClearColor.getB(), this.glClearColor.getA());
             gl.glClear(
                     GL2.GL_COLOR_BUFFER_BIT
                             |
@@ -211,7 +210,7 @@ public abstract class SimpleAbstractScene extends EventHandler implements Iscene
 //			gl.glDepthMask(false);
 //			gl.glDisable(GL2.GL_DEPTH_TEST);
         } else {
-            graphics.background(this.clearColor.getR(), this.clearColor.getG(), this.clearColor.getB(), this.clearColor.getAlpha());
+            graphics.background(this.clearColor.getR(), this.clearColor.getG(), this.clearColor.getB(), this.clearColor.getA());
         }
     }
 
@@ -223,7 +222,7 @@ public abstract class SimpleAbstractScene extends EventHandler implements Iscene
      */
     public void setClearColor(MTColor clearColor) {
         this.clearColor = clearColor;
-        this.glClearColor = new MTColor(this.clearColor.getR() / 255f, this.clearColor.getG() / 255f, this.clearColor.getB() / 255f, this.clearColor.getAlpha() / 255f);
+        this.glClearColor = new MTColor(this.clearColor.getR() / 255f, this.clearColor.getG() / 255f, this.clearColor.getB() / 255f, this.clearColor.getA() / 255f);
     }
 
 
@@ -297,7 +296,7 @@ public abstract class SimpleAbstractScene extends EventHandler implements Iscene
     }
 
     /* (non-Javadoc)
-      * @see mTouch.sceneManagement.Iscene#getName()
+      * @see mTouch.sceneManagement.Iscene#name()
       */
     public String getName() {
         return name;

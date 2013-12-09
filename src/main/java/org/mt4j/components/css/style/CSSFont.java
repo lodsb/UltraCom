@@ -328,7 +328,7 @@ public class CSSFont {
 
     public CSSFont clone() {
         CSSFont newFont = new CSSFont();
-        newFont.color = this.color.getCopy();
+        newFont.color = this.color.copy();
         newFont.customType = this.customType.substring(0);
         newFont.family = this.family;
         newFont.fontsize = this.fontsize;

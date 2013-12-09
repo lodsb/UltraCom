@@ -246,7 +246,7 @@ public class MTTriangleMesh extends AbstractShape {
         ArrayList<Triangle> tris = new ArrayList<Triangle>();
 
         if (geom.isIndexed()) {
-            //System.out.println("MTTriangleMesh object: \"" + this.getName() + "\" Debug-> Supplied geometry is INDEXED");
+            //System.out.println("MTTriangleMesh object: \"" + this.name() + "\" Debug-> Supplied geometry is INDEXED");
 
             int[] indices = geom.getIndices();
             if (indices.length % 3 != 0) {
@@ -265,7 +265,7 @@ public class MTTriangleMesh extends AbstractShape {
                 tris.add(new Triangle(v0, v1, v2, vertIndex0, vertIndex1, vertIndex2));
             }
         } else {
-            //System.out.println("MTTriangleMesh object: \"" + this.getName() + "\" Debug-> Supplied geometry is NOT INDEXED");
+            //System.out.println("MTTriangleMesh object: \"" + this.name() + "\" Debug-> Supplied geometry is NOT INDEXED");
             if (vertices.length % 3 != 0) {
                 System.err.println("WARNING: the vertices of the mesh geometry:\"" + this.getName() + "\" arent dividable by 3 => probably no TRIANGLES array provided!");
             }
@@ -451,7 +451,7 @@ public class MTTriangleMesh extends AbstractShape {
         }
         /*
           if (returnVect != null){
-              System.out.println("Picked mesh: " + this.getName());
+              System.out.println("Picked mesh: " + this.name());
           }
           */
         return returnVect;
@@ -508,24 +508,24 @@ public class MTTriangleMesh extends AbstractShape {
                 pa.noFill();
             else {
                 MTColor fillColor = this.getFillColor();
-                pa.fill(fillColor.getR(), fillColor.getG(), fillColor.getB(), fillColor.getAlpha());
+                pa.fill(fillColor.getR(), fillColor.getG(), fillColor.getB(), fillColor.getA());
             }
 
             //Set the tint values
             MTColor fillColor = this.getFillColor();
-            pa.tint(fillColor.getR(), fillColor.getG(), fillColor.getB(), fillColor.getAlpha());
+            pa.tint(fillColor.getR(), fillColor.getG(), fillColor.getB(), fillColor.getA());
 
             if (this.isNoStroke())
                 pa.noStroke();
             else {
                 MTColor strokeColor = this.getStrokeColor();
-                pa.stroke(strokeColor.getR(), strokeColor.getG(), strokeColor.getB(), strokeColor.getAlpha());
+                pa.stroke(strokeColor.getR(), strokeColor.getG(), strokeColor.getB(), strokeColor.getA());
             }
 
             if (!this.isNoStroke()) {
                 pa.noFill();
                 MTColor strokeColor = this.getStrokeColor();
-                pa.stroke(strokeColor.getR(), strokeColor.getG(), strokeColor.getB(), strokeColor.getAlpha());
+                pa.stroke(strokeColor.getR(), strokeColor.getG(), strokeColor.getB(), strokeColor.getA());
                 pa.strokeWeight(2);
 
                 if (this.isDrawSmooth())
@@ -539,7 +539,7 @@ public class MTTriangleMesh extends AbstractShape {
             if (!this.isNoFill()) {
                 pa.noStroke();
                 pa.noSmooth();
-                pa.fill(fillColor.getR(), fillColor.getG(), fillColor.getB(), fillColor.getAlpha());
+                pa.fill(fillColor.getR(), fillColor.getG(), fillColor.getB(), fillColor.getA());
                 this.drawWithProcessing(pa, this.getVerticesLocal(), PApplet.TRIANGLES, true);
             }
 
@@ -924,7 +924,7 @@ public class MTTriangleMesh extends AbstractShape {
         this.strokeR = strokeColor.getR() / 255f;
         this.strokeG = strokeColor.getG() / 255f;
         this.strokeB = strokeColor.getB() / 255f;
-        this.strokeA = strokeColor.getAlpha() / 255f;
+        this.strokeA = strokeColor.getA() / 255f;
     }
 
 

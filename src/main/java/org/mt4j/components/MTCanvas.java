@@ -196,9 +196,9 @@ public class MTCanvas extends MTComponent implements IHitTestInfoProvider {
 //					System.out.println("Time for picking the scene: " + (b-a));
                     /*
                          for (MTBaseComponent c : pickResult.getPickList())
-                             System.out.println(c.getName());
+                             System.out.println(c.name());
                          if (closest3DComp != null)
-                             System.out.println("Using: " + closest3DComp.getName());
+                             System.out.println("Using: " + closest3DComp.name());
                          */
                     if (closest3DComp == null) {
                         closest3DComp = this;
@@ -244,7 +244,7 @@ public class MTCanvas extends MTComponent implements IHitTestInfoProvider {
         }
         /*
           if (closest3DComp != null)
-              System.out.println("Picked: '" + closest3DComp.getName() + "' at pos (" + x + "," + y + ")");
+              System.out.println("Picked: '" + closest3DComp.name() + "' at pos (" + x + "," + y + ")");
           else
               System.out.println("Picked: '" + closest3DComp + "' at pos (" + x + "," + y + ")");
           */
@@ -374,7 +374,7 @@ public class MTCanvas extends MTComponent implements IHitTestInfoProvider {
                         }
                     } else {
                         culledObjects++;
-                        //System.out.println("Not visible: " + currentcomp.getName());
+                        //System.out.println("Not visible: " + currentcomp.name());
                     }
                 } else {
                     if (!this.calledFromDrawComponent) { //FIXME TEST
@@ -417,7 +417,7 @@ public class MTCanvas extends MTComponent implements IHitTestInfoProvider {
                         currentcomp.drawComponent(graphics);
                     } else {
                         culledObjects++;
-                        //System.out.println("Not visible: " + currentcomp.getName());
+                        //System.out.println("Not visible: " + currentcomp.name());
                     }
                 } else {
                     // DRAW THE COMPONENT  \\

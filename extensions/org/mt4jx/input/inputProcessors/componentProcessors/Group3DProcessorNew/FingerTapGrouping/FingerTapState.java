@@ -19,7 +19,7 @@ public enum FingerTapState implements FingerTapTransitions, FingerTapStateMethod
                 sel.addComponentToSelection(comp);
                 sel.setState(ONEELEMENTSELECTED);
             } else {
-                ////System.out.println("NOELEMENTSELECTED to CLUSTERSELECTED CursorId " + cursor.getId() + " compname " + comp.getName());
+                ////System.out.println("NOELEMENTSELECTED to CLUSTERSELECTED CursorId " + cursor.getId() + " compname " + comp.name());
                 sel.setFirstCursor(cursor);
                 sel.setFirstCursorComp(comp);
                 sel.setCurrentlySelectedCluster(sel.getClusterDataManager().getClusterForComponent(comp));
@@ -138,7 +138,7 @@ public enum FingerTapState implements FingerTapTransitions, FingerTapStateMethod
 
             if (sel.getCurrentlyPressedCursors().size() == 1) {
                 if (sel.getFirstCursor() != cursor) {
-                    //System.out.println("Cluster selected changing to first Cursor " + cursor.getId() + " compname " + comp.getName());
+                    //System.out.println("Cluster selected changing to first Cursor " + cursor.getId() + " compname " + comp.name());
                     sel.setFirstCursor(cursor);
                     sel.setFirstCursorComp(comp);
                 }
@@ -157,7 +157,7 @@ public enum FingerTapState implements FingerTapTransitions, FingerTapStateMethod
             MTComponent[] children = sel.getCurrentlySelectedCluster().getChildren();
             for (int i = 0; i < children.length; i++) {
                 MTComponent mtComponent = children[i];
-                //System.out.println(mtComponent.getName());
+                //System.out.println(mtComponent.name());
             }
             //DEBUG
 
@@ -178,11 +178,11 @@ public enum FingerTapState implements FingerTapTransitions, FingerTapStateMethod
 
                     //if cluster is still available
                     if (cluster.getChildren().length > 1) {
-                        //System.out.println("Cluster selected Tap Release changing cluster state CLUSTERSELECTED " + cursor.getId() + " compname " + comp.getName() );
+                        //System.out.println("Cluster selected Tap Release changing cluster state CLUSTERSELECTED " + cursor.getId() + " compname " + comp.name() );
                         MTComponent[] children1 = sel.getCurrentlySelectedCluster().getChildren();
                         for (int i = 0; i < children1.length; i++) {
                             MTComponent mtComponent = children1[i];
-                            //System.out.println(mtComponent.getName());
+                            //System.out.println(mtComponent.name());
                         }
 
                         sel.setState(CLUSTERSELECTED);

@@ -174,7 +174,7 @@ public class MTSuggestionTextArea extends MTTextArea {
         suggestionBox.setFillColor(this.getFillColor());
         suggestionBox.setStrokeColor(new MTColor(this.getStrokeColor().getR(),
                 this.getStrokeColor().getG(), this.getStrokeColor().getG(),
-                this.getStrokeColor().getAlpha() * 0.75f));
+                this.getStrokeColor().getA() * 0.75f));
         suggestionBox.setStrokeWeight(0.25f);
     }
 
@@ -408,7 +408,7 @@ public class MTSuggestionTextArea extends MTTextArea {
                         keyboard.setFillColor(ta.getFillColor());
                         keyboard.setStrokeColor(new MTColor(ta.getStrokeColor().getR(),
                                 ta.getStrokeColor().getG(), ta.getStrokeColor().getG(),
-                                ta.getStrokeColor().getAlpha() * 0.75f));
+                                ta.getStrokeColor().getA() * 0.75f));
                         keyboard.setStrokeWeight(ta.getStrokeWeight());
 
 

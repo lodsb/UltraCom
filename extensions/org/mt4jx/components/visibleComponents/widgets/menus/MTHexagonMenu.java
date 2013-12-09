@@ -544,7 +544,7 @@ public class MTHexagonMenu extends MTRectangle {
             } else {
                 // Set Fill Color for Pictures
                 MTColor fillColor = MTColor.WHITE;
-                // fillColor.setAlpha(vss.getOpacity());
+                // fillColor.setA(vss.getOpacity());
                 rect.setFillColor(fillColor);
             }
 

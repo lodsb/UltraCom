@@ -121,7 +121,7 @@ public class MTSvg extends MTComponent {
 //		this.addStateChangeListener(StateChange.ADDED_TO_PARENT, new StateChangeListener(){
 //			@Override
 //			public void stateChanged(StateChangeEvent evt) {
-//				Vector3D widthCopy = widthVect.getCopy();
+//				Vector3D widthCopy = widthVect.copy();
 //				
 //			}
 //		});
@@ -436,7 +436,7 @@ public class MTSvg extends MTComponent {
      * @return the largest svg comp
      */
     private AbstractShape getLargestSvgComp(MTComponent comp, AbstractShape compWithBiggestBoundingRect, float biggestWidth, float biggestHeight) {
-////		System.out.println("Checking: " + comp.getName());
+////		System.out.println("Checking: " + comp.name());
         if (comp instanceof AbstractShape) {
             AbstractShape shape = (AbstractShape) comp;
             float rectWidthGlobal = shape.getWidthXY(TransformSpace.GLOBAL);
@@ -446,17 +446,17 @@ public class MTSvg extends MTComponent {
                     biggestWidth > 0
                             && biggestHeight > 0
                     ) {
-//				System.out.println("Fromer biggest != null, checking if " + comp.getName() + " is bigger.");
+//				System.out.println("Fromer biggest != null, checking if " + comp.name() + " is bigger.");
                 if (rectWidthGlobal >= compWithBiggestBoundingRect.getWidthXY(TransformSpace.GLOBAL)
                         || rectHeightGlobal >= compWithBiggestBoundingRect.getHeightXY(TransformSpace.GLOBAL)
                         ) {
-//					System.out.println(comp.getName() + " is bigger!");
+//					System.out.println(comp.name() + " is bigger!");
                     compWithBiggestBoundingRect = shape;
                 } else {
-//					System.out.println(compWithBiggestBoundingRect.getName() + " is still bigger");
+//					System.out.println(compWithBiggestBoundingRect.name() + " is still bigger");
                 }
             } else {
-//				System.out.println("Reference is null, take " + comp.getName() + " as the new biggest.");
+//				System.out.println("Reference is null, take " + comp.name() + " as the new biggest.");
                 compWithBiggestBoundingRect = shape;
             }
         }

@@ -169,7 +169,7 @@ public class StyleInfo {
      * @param fillAlpha the new fill alpha
      */
     public void setFillAlpha(float fillAlpha) {
-        this.fillColor = fillColor.setAlpha(fillAlpha);
+        this.fillColor = fillColor.setA(fillAlpha);
     }
 
     /**
@@ -178,7 +178,7 @@ public class StyleInfo {
      * @return the fill alpha
      */
     public float getFillAlpha() {
-        return this.fillColor.getAlpha();
+        return this.fillColor.getA();
     }
 
     /**
@@ -300,7 +300,7 @@ public class StyleInfo {
      * @return the stroke alpha
      */
     public float getStrokeAlpha() {
-        return this.strokeColor.getAlpha();
+        return this.strokeColor.getA();
     }
 
     /**
@@ -309,7 +309,7 @@ public class StyleInfo {
      * @param strokeAlpha the new stroke alpha
      */
     public void setStrokeAlpha(float strokeAlpha) {
-        this.strokeColor = fillColor.setAlpha(strokeAlpha);
+        this.strokeColor = fillColor.setA(strokeAlpha);
     }
 
     /**

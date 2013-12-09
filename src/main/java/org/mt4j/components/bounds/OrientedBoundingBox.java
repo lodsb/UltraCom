@@ -627,7 +627,7 @@ public class OrientedBoundingBox implements IBoundingShapeMergable {
                 max.z = point.z;
         }
 
-//		Vector3D center = min.getCopy();
+//		Vector3D center = min.copy();
 //		center.addLocal(max);
 //		center.scale(0.5f);
 //		this.center = center;
@@ -936,7 +936,7 @@ public class OrientedBoundingBox implements IBoundingShapeMergable {
     public Vector3D getWidthXYVectLocal() {
         Vector3D[] boundRectVertsLocal = this.getVectorsLocal();
         Vector3D width = boundRectVertsLocal[1].getSubtracted(boundRectVertsLocal[0]);
-//		System.out.println("Width of " + this.getName()+ " :" + width);
+//		System.out.println("Width of " + this.name()+ " :" + width);
         return width;
     }
 

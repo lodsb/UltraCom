@@ -81,8 +81,8 @@ abstract class Button(app: Application, menu: Actor, center: Vector3D) extends M
     val center = this.getCenterPointLocal()
     val cx = center.getX()
     val cy = center.getY()    
-    g.fill(this.currentColor.getR, this.currentColor.getG, this.currentColor.getB, this.currentColor.getAlpha * this.opacity)
-    g.stroke(this.itemStrokeColor.getR, this.itemStrokeColor.getG, this.itemStrokeColor.getB, this.itemStrokeColor.getAlpha * this.opacity)
+    g.fill(this.currentColor.getR, this.currentColor.getG, this.currentColor.getB, this.currentColor.getA * this.opacity)
+    g.stroke(this.itemStrokeColor.getR, this.itemStrokeColor.getG, this.itemStrokeColor.getB, this.itemStrokeColor.getA * this.opacity)
     g.strokeWeight(this.itemStrokeWeight)
     g.ellipse(cx, cy, 2*this.radius, 2*this.radius)  
   }  

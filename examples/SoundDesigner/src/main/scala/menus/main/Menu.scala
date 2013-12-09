@@ -240,8 +240,8 @@ class Menu(app: Application, val center: Vector3D, val rotationAngle: Float) ext
       def processAnimationEvent(ae: AnimationEvent) {
         val componentFillColor = me.getFillColor()
         val componentStrokeColor = me.getStrokeColor()
-        componentFillColor.setAlpha(ae.getValue)
-        componentStrokeColor.setAlpha(ae.getValue)
+        componentFillColor.setA(ae.getValue)
+        componentStrokeColor.setA(ae.getValue)
       
         me.setStrokeColor(componentStrokeColor)
         me.setFillColor(componentFillColor)
@@ -272,8 +272,8 @@ class Menu(app: Application, val center: Vector3D, val rotationAngle: Float) ext
         else {
           val componentFillColor = me.getFillColor()
           val componentStrokeColor = me.getStrokeColor()
-          componentFillColor.setAlpha(ae.getValue)
-          componentStrokeColor.setAlpha(ae.getValue)
+          componentFillColor.setA(ae.getValue)
+          componentStrokeColor.setA(ae.getValue)
         
           me.setStrokeColor(componentStrokeColor)
           me.setFillColor(componentFillColor)

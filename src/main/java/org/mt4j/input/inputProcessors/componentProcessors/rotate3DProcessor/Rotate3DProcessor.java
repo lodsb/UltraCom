@@ -579,7 +579,7 @@ public class Rotate3DProcessor extends AbstractCursorProcessor {
 			/*Vector3D newRotateFingerPos = ToolsIntersection.getRayPlaneIntersection(
 					Tools3D.getCameraPickRay(pApplet, object,rotateFingerCursor.getCurrentEvent().getPosX(), rotateFingerCursor.getCurrentEvent().getPosY()), 
 					dragPlaneNormal, 
-					rotateFingerStart.getCopy());*/
+					rotateFingerStart.copy());*/
 			//Update the field
 			//if (newRotateFingerPos != null){
 			
@@ -651,7 +651,7 @@ public class Rotate3DProcessor extends AbstractCursorProcessor {
 					}
 				//System.out.println("Rotate legnth" + rotateLineLength + " dir "  + rotationDirection);
 			/*}else{
-				logger.error(getName() + " new newRotateFinger Pos = null at update");
+				logger.error(name() + " new newRotateFinger Pos = null at update");
 			}*/
 		}
 

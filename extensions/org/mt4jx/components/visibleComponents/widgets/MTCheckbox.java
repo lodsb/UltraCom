@@ -83,7 +83,7 @@ public class MTCheckbox extends MTForm implements BooleanForm {
     }
 
     private boolean brightEnough(MTColor color) {
-        return color.getR() + color.getG() + color.getB() > 200 && color.getAlpha() > 200;
+        return color.getR() + color.getG() + color.getB() > 200 && color.getA() > 200;
 
     }
 

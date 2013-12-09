@@ -160,7 +160,6 @@ import org.w3c.dom.svg.SVGPointList;
 import org.w3c.dom.svg.SVGSVGElement;
 
 import processing.core.PApplet;
-import processing.opengl.PGraphicsOpenGL;
 
 
 /**
@@ -556,7 +555,7 @@ public class SVGLoader implements SVGConstants {
                     // Stroke java.awt.Color \\
                     Value strokeIndexValue = CSSUtilities.getComputedStyle(textElement, SVGCSSEngine.STROKE_INDEX);
                     Object stroke = SVGLoader.getFillOrStroke(textElement, strokeIndexValue, computedStrokeOpacity, ctx);
-                    MTColor strokeColor = new MTColor(fillColor.getR(), fillColor.getG(), fillColor.getB(), fillColor.getAlpha());
+                    MTColor strokeColor = new MTColor(fillColor.getR(), fillColor.getG(), fillColor.getB(), fillColor.getA());
                     if (stroke instanceof java.awt.Color) {
                         java.awt.Color color = (Color) stroke;
                         strokeColor = fillColor.setColor(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
@@ -2471,14 +2470,14 @@ public class SVGLoader implements SVGConstants {
 //				Vertex[] v = new Vertex[3];
 //				v[0] = contours.get(0)[0];
 //				v[1] = contours.get(0)[1];
-//				v[2] = (Vertex)contours.get(0)[1].getCopy();
+//				v[2] = (Vertex)contours.get(0)[1].copy();
 //				Vertex[] c = contours.get(0);
 //				c = v;
 //			}else if (contours.get(0).length == 1){
 //				Vertex[] v = new Vertex[3];
 //				v[0] = contours.get(0)[0];
-//				v[1] = (Vertex)contours.get(0)[0].getCopy();
-//				v[2] = (Vertex)contours.get(0)[0].getCopy();
+//				v[1] = (Vertex)contours.get(0)[0].copy();
+//				v[2] = (Vertex)contours.get(0)[0].copy();
 //				Vertex[] c = contours.get(0);
 //				c = v;
 //			}else{

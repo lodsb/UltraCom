@@ -632,7 +632,7 @@ public class TTFontFactory implements IFontFactory {
              character.scale(fontSize , new Vector3D(0,0,0));
                 */
 
-            strokeColor = strokeColor.setAlpha(200);
+            strokeColor = strokeColor.setA(200);
             character.setStrokeColor(new MTColor(strokeColor));
             character.setFillColor(new MTColor(fillColor));
             //character.setNoFill(true);

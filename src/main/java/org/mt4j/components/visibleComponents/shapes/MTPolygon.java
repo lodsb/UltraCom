@@ -223,8 +223,8 @@ public class MTPolygon extends MTCSSStylableShape {
             MTColor fillColor = this.getFillColor();
             MTColor strokeColor = this.getStrokeColor();
 
-            g.fill(fillColor.getR(), fillColor.getG(), fillColor.getB(), fillColor.getAlpha());
-            g.stroke(strokeColor.getR(), strokeColor.getG(), strokeColor.getB(), strokeColor.getAlpha());
+            g.fill(fillColor.getR(), fillColor.getG(), fillColor.getB(), fillColor.getA());
+            g.stroke(strokeColor.getR(), strokeColor.getG(), strokeColor.getB(), strokeColor.getA());
             g.strokeWeight(this.getStrokeWeight());
 
             if (MT4jSettings.getInstance().isOpenGlMode())
@@ -240,7 +240,7 @@ public class MTPolygon extends MTCSSStylableShape {
                 g.noStroke();
 
             //Set the tint values
-            g.tint(fillColor.getR(), fillColor.getG(), fillColor.getB(), fillColor.getAlpha());
+            g.tint(fillColor.getR(), fillColor.getG(), fillColor.getB(), fillColor.getA());
 
             //handles the drawing of the vertices with the texture coordinates
             //try doing a smoothed poly outline with opengl
@@ -258,12 +258,12 @@ public class MTPolygon extends MTCSSStylableShape {
                 // DRAW SMOOTHED THE STROKE outline OF THE POLYGON WIHTOUT FILL OR TEXTURE
                 g.smooth();
                 g.noFill();
-                g.stroke(strokeColor.getR(), strokeColor.getG(), strokeColor.getB(), strokeColor.getAlpha());
+                g.stroke(strokeColor.getR(), strokeColor.getG(), strokeColor.getB(), strokeColor.getA());
                 drawWithProcessing(g);
 
                 g.noSmooth();
 //				//restore fill color
-//				g.fill(fillColor.getR(), fillColor.getG(), fillColor.getB(), fillColor.getAlpha());
+//				g.fill(fillColor.getR(), fillColor.getG(), fillColor.getB(), fillColor.getA());
             } else {
                 drawWithProcessing(g);
             }//end if gl and smooth

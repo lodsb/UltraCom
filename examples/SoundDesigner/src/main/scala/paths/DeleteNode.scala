@@ -25,7 +25,7 @@ class DeleteNode(app: Application, val manipulableNode: ManipulableNode, center:
     super.drawComponent(g)
     
     //draw dotted line from button to node
-    g.stroke(0, 0, 0, LineColor.getAlpha)
+    g.stroke(0, 0, 0, LineColor.getA)
     val deletableNodeVector = this.parentToLocal(manipulableNode.getCenterPointLocal)
     val deletableNodePosition = (deletableNodeVector.getX, deletableNodeVector.getY)
     val deleteNodePosition = (this.getCenterPointLocal.getX, this.getCenterPointLocal.getY)

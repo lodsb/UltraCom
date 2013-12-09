@@ -71,7 +71,7 @@ class Tool(app: Application, center: (Float, Float), pType: PropertyType) extend
     private def setupRepresentation() = {
       this.globalPosition := Vec3d(center._1, center._2)
       val color = this.color //deep copy of color
-      color.setAlpha(Tool.StrokeAlpha)
+      color.setA(Tool.StrokeAlpha)
       this.setVertices(this.shape)
       this.setStrokeWeight(Tool.StrokeWeight)
       this.setStrokeColor(color)
@@ -206,11 +206,11 @@ class Tool(app: Application, center: (Float, Float), pType: PropertyType) extend
     override def drawComponent(g: PGraphics) = {
       import Tool._
       val color = this.color
-      if (this.isEditing) color.setAlpha(ActiveStrokeAlpha) else color.setAlpha(StrokeAlpha)
+      if (this.isEditing) color.setA(ActiveStrokeAlpha) else color.setA(StrokeAlpha)
       this.setStrokeColor(color)
       super.drawComponent(g)  
       g.noFill()
-      g.stroke(color.getR, color.getG, color.getB, color.getAlpha)
+      g.stroke(color.getR, color.getG, color.getB, color.getA)
       g.strokeWeight(StrokeWeight)
       g.arc(this.localTipPoint._1, this.localTipPoint._2 + ArcDelta, ArcWidth, ArcWidth, 5*PI/16, 11*PI/16)
       //TODO maybe add more affordance
@@ -248,7 +248,7 @@ class Tool(app: Application, center: (Float, Float), pType: PropertyType) extend
       val maxR = 200
       val oldG = color.getG
       val oldB = color.getB
-      val oldAlpha = color.getAlpha
+      val oldAlpha = color.getA
       val me = this
       val interpolator = new MultiPurposeInterpolator(oldR, maxR, 150, 0.0f, 1.0f, 1)
       val animation = new Animation("WRONG ACTION FADE IN", interpolator, this)

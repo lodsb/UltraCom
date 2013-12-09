@@ -101,7 +101,7 @@ public class RotateProcessor extends AbstractCursorProcessor {
             logger.debug(this.getName() + " Available cursors: " + availableCursors.size());
             if (availableCursors.size() >= 2) {
                 InputCursor otherCursor = getFarthestFreeComponentCursorTo(newCursor);
-//				logger.debug(this.getName() + " already had 1 unused cursor - we can try start gesture! used Cursor ID:" + otherCursor.getId() + " and new cursor ID:" + newCursor.getId());
+//				logger.debug(this.name() + " already had 1 unused cursor - we can try start gesture! used Cursor ID:" + otherCursor.getId() + " and new cursor ID:" + newCursor.getId());
 
                 if (this.canLock(otherCursor, newCursor)) { //TODO remove check, since alreday checked in getAvailableComponentCursors()?
                     rc = new RotationContext(otherCursor, newCursor, comp);

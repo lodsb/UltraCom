@@ -245,7 +245,7 @@ public class BoundsZPlaneRectangle implements IBoundingShape {
     }
 
     public Vector3D getCenterPointLocal() {
-//		Vector3D tmp0 = this.boundingPointsLocal[0].getCopy();
+//		Vector3D tmp0 = this.boundingPointsLocal[0].copy();
 //		Vector3D tmp1 = this.boundingPointsLocal[1].getSubtracted(this.boundingPointsLocal[0]);
 //		tmp1.scaleLocal(0.5f);
 //		
@@ -447,7 +447,7 @@ public class BoundsZPlaneRectangle implements IBoundingShape {
     public Vector3D getWidthXYVectLocal() {
         Vector3D[] boundRectVertsLocal = this.getVectorsLocal();
         Vector3D width = boundRectVertsLocal[1].getSubtracted(boundRectVertsLocal[0]);
-//		System.out.println("Width of " + this.getName()+ " :" + width);
+//		System.out.println("Width of " + this.name()+ " :" + width);
         return width;
     }
 

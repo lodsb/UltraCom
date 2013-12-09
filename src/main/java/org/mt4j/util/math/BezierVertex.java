@@ -132,7 +132,7 @@ public class BezierVertex extends Vertex {
 
 
     /* (non-Javadoc)
-      * @see util.math.Vertex#getCopy()
+      * @see util.math.Vertex#copy()
       */
     @Override
     public Vector3D getCopy() {

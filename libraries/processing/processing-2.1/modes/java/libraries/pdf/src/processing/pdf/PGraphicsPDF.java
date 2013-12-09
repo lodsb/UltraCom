@@ -432,9 +432,9 @@ public class PGraphicsPDF extends PGraphicsJava2D {
 //                                 "when drawing text using the PDF library.");
 //    }
     // Make sure that this is a font that the PDF library can deal with.
-//    if ((textMode != SHAPE) && !checkFont(which.getName())) {
+//    if ((textMode != SHAPE) && !checkFont(which.name())) {
 //      System.err.println("Use PGraphicsPDF.listFonts() to get a list of available fonts.");
-//      throw new RuntimeException("The font “" + which.getName() + "” cannot be used with PDF Export.");
+//      throw new RuntimeException("The font “" + which.name() + "” cannot be used with PDF Export.");
 //    }
   }
 
@@ -621,7 +621,7 @@ public class PGraphicsPDF extends PGraphicsJava2D {
         //System.out.println("alias for " + name + " = " + mapper.getAliases().get(name));
 //        System.err.println("Use PGraphicsPDF.listFonts() to get a list of " +
 //                           "fonts that can be used with PDF.");
-//        throw new RuntimeException("The font “" + textFont.getName() + "” " +
+//        throw new RuntimeException("The font “" + textFont.name() + "” " +
 //                                   "cannot be used with PDF Export.");
         if (textFont.getName().equals("Lucida Sans")) {
           throw new RuntimeException("Use textMode(SHAPE) with the default " +

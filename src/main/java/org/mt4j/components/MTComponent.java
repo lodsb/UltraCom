@@ -819,7 +819,7 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
      * @param matricesDirty the matrices dirty
      */
     public void setMatricesDirty(boolean matricesDirty) {
-//		System.out.println("Setting matrices dirty->" + matricesDirty + " on: "  + this.getName());
+//		System.out.println("Setting matrices dirty->" + matricesDirty + " on: "  + this.name());
         if (matricesDirty) {
             //FIXME BOUNDS TEST
             this.setBoundsGlobalDirty(true);
@@ -843,7 +843,7 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
      * @param matrixDirty the matrix dirty
      */
     private void propagateMatrixChange(boolean matrixDirty) {
-//		System.out.println("Setting basematrix dirty on obj: " + this.getName());
+//		System.out.println("Setting basematrix dirty on obj: " + this.name());
         synchronized (childComponents) {
             for (MTComponent object : childComponents) {
                 //TEST - only propagate unitil we get to a already dirty component
@@ -855,7 +855,7 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
                 object.setMatricesDirty(matrixDirty);
     //			}
     //			else{
-    //				System.out.println("Stopping matrix changed propagation at: " + object.getName() +  " because both its matrices are already dirty.");
+    //				System.out.println("Stopping matrix changed propagation at: " + object.name() +  " because both its matrices are already dirty.");
     //			}
             }
         }
@@ -880,9 +880,9 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
     private void setGlobalMatrixDirty(boolean globalMatrixDirty) {
 		/*
 				  if (localToGlobalMatrixDirty){
-					  System.out.println(this.getName() + ": Setting global Matrix DIRTY!");
+					  System.out.println(this.name() + ": Setting global Matrix DIRTY!");
 				  }else{
-					  System.out.println(this.getName() + ": Setting global Matrix NOT dirty!");
+					  System.out.println(this.name() + ": Setting global Matrix NOT dirty!");
 				  }
 				  */
         this.globalMatrixDirty = globalMatrixDirty;
@@ -907,9 +907,9 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
     private void setGlobalInverseMatrixDirty(boolean dirty) {
 		/*
 				  if (dirty){
-					  System.out.println(this.getName() + ": Setting global inverse Matrix DIRTY!");
+					  System.out.println(this.name() + ": Setting global inverse Matrix DIRTY!");
 				  }else{
-					  System.out.println(this.getName() + ": Setting global inverse Matrix NOT dirty!");
+					  System.out.println(this.name() + ": Setting global inverse Matrix NOT dirty!");
 				  }
 				  */
         this.globalInverseMatrixDirty = dirty;
@@ -998,17 +998,17 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
         Matrix resMatrix = this.globalMatrix;
         //Calculate the absolute local to global matrix only if necessary
         if (this.isGlobalMatrixDirty()) {
-            //System.out.println(this.getName() + "'s global matrix is dirty! calculate it:");
+            //System.out.println(this.name() + "'s global matrix is dirty! calculate it:");
             resMatrix = new Matrix();
             this.getGlobalMatrixRecursive(this, resMatrix);
-            //System.out.println("Applying Matrix of: '" + this.getName() + "' Matrix: " + this.getLocalBasisMatrix().toString());
+            //System.out.println("Applying Matrix of: '" + this.name() + "' Matrix: " + this.getLocalBasisMatrix().toString());
             resMatrix.multLocal(this.getLocalMatrix());
 
             this.globalMatrix = resMatrix;
 
             this.setGlobalMatrixDirty(false);
         }
-        //System.out.println(this.getName() + "'s global matrix is not dirty!");
+        //System.out.println(this.name() + "'s global matrix is not dirty!");
         return resMatrix;
     }
 
@@ -1021,28 +1021,28 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
      * @return the abs matrix recursive
      */
     private MTComponent getGlobalMatrixRecursive(MTComponent current, Matrix currentMatrix) {
-        //System.out.println("Processing: " + current.getName());
+        //System.out.println("Processing: " + current.name());
         if (current.getParent() != null) {
             if (current.getParent().isGlobalMatrixDirty()) {
-                //System.out.println(">Parent not null: " + current.getParent().getName());
-//				System.out.println(" Recursive loop - " + current.getParent().getName() + "'s global matrix IS dirty");
+                //System.out.println(">Parent not null: " + current.getParent().name());
+//				System.out.println(" Recursive loop - " + current.getParent().name() + "'s global matrix IS dirty");
                 MTComponent res = this.getGlobalMatrixRecursive(current.getParent(), currentMatrix);
                 if (!res.getLocalMatrix().isIdentity()) {
                     currentMatrix.multLocal(res.getLocalMatrix());
                     //We can set
-//					System.out.println(" Recursive loop - setting " + res.getName() + " global matrix");
+//					System.out.println(" Recursive loop - setting " + res.name() + " global matrix");
                     res.globalMatrix = new Matrix(currentMatrix);
                     res.setGlobalMatrixDirty(false);
                 }
-                //System.out.println("Applying Matrix of: '" + res.getName() + "' Matrix: " + res.getLocalBasisMatrix().toString());
+                //System.out.println("Applying Matrix of: '" + res.name() + "' Matrix: " + res.getLocalBasisMatrix().toString());
             } else {
                 //Currents global matrix isnt dirty -> apply the global matrix and stop recursion upwards
-//				System.out.println(" Recursive loop - " + current.getParent().getName() + "'s global matrix is NOT dirty - stop recursion");
+//				System.out.println(" Recursive loop - " + current.getParent().name() + "'s global matrix is NOT dirty - stop recursion");
                 Matrix parentLocalToGlobal = current.getParent().getGlobalMatrix();
                 currentMatrix.multLocal(parentLocalToGlobal);
             }
         } else {
-//			System.out.println(" Recursive loop - " + current.getName() + " has no parent - stop recursion and use its local as its global matrix");
+//			System.out.println(" Recursive loop - " + current.name() + " has no parent - stop recursion and use its local as its global matrix");
             if (current.isGlobalMatrixDirty()) {
                 current.globalMatrix = new Matrix(current.getLocalMatrix());
                 current.setGlobalMatrixDirty(false);
@@ -1064,7 +1064,7 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
         Matrix resMatrix = this.globalToLocalMatrix;
         //Calculate the absolute local to global matrix only if necessary
         if (this.isGlobalInverseMatrixDirty()) {
-//			System.out.println("Getting global inverse of: " + this.getName() + " -its dirty!");
+//			System.out.println("Getting global inverse of: " + this.name() + " -its dirty!");
             if (this.getParent() != null) {
                 resMatrix = new Matrix(this.getLocalInverseMatrix());
                 this.getGlobalInvMatrixRecursive(this.getParent(), resMatrix);
@@ -1090,10 +1090,10 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
      * @return the abs inv matrix recursive
      */
     private void getGlobalInvMatrixRecursive(MTComponent current, Matrix currentMatrix) {
-//		System.out.println("processing: " + current.getName() + " Inverse Matrix: " + current.getLocalInverseMatrix()) ;
+//		System.out.println("processing: " + current.name() + " Inverse Matrix: " + current.getLocalInverseMatrix()) ;
 
         if (current.isGlobalInverseMatrixDirty()) {
-//			System.out.println(" Recursive Loop -> " +  current.getName() + "'s global inverse is dirty - applying it");
+//			System.out.println(" Recursive Loop -> " +  current.name() + "'s global inverse is dirty - applying it");
             if (!current.getLocalInverseMatrix().isIdentity()) {
                 currentMatrix.multLocal(current.getLocalInverseMatrix());
             }
@@ -1101,7 +1101,7 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
                 this.getGlobalInvMatrixRecursive(current.getParent(), currentMatrix);
         } else {
             //current isnt dirty, -> get the current absolute global inverse and apply it and stop recursion
-//			System.out.println(" Recursive Loop -> " +  current.getName() + "'s global inverse is not dirty - get "  + current.getName() + "'s currents global inverse matrix and stop recursion");
+//			System.out.println(" Recursive Loop -> " +  current.name() + "'s global inverse is not dirty - get "  + current.name() + "'s currents global inverse matrix and stop recursion");
             if (!current.getGlobalInverseMatrix().isIdentity()) {
                 currentMatrix.multLocal(current.getGlobalInverseMatrix());
             }
@@ -1154,7 +1154,7 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
             ret.transform(referenceComp.getParent().getGlobalInverseMatrix());
             return ret;
         }
-//		Vector3D ret = point.getCopy(); //OLD WAY
+//		Vector3D ret = point.copy(); //OLD WAY
 //		ret.transform(referenceComp.getAbsoluteWorldToLocalMatrix());
 //		return ret;
     }
@@ -1942,7 +1942,7 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
 					  AbstractShape shape = (AbstractShape) this;
 
 					  Vertex[] localVecs = shape.getVerticesLocal();
-					  Vector3D scalingInv = scalingPoint.getCopy();
+					  Vector3D scalingInv = scalingPoint.copy();
 
 					  //Transform local scalingpoint into object space
 		  //			scalingInv.transform(this.getLocalInverseMatrix());
@@ -2365,7 +2365,7 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
        boolean returnBool = false;
        for (int i = 0; i < tangibleComps.length; i++) {
            TComponent currentComponent = tangibleComps[i];
-           System.out.println(currentComponent.getName());
+           System.out.println(currentComponent.name());
            if (currentComponent.equals(tangibleComp)){
                //return true;
                return true;
@@ -2577,7 +2577,7 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
             if (this.containsDirectChild(child)
                     && !getChildByIndex(getChildCount() - 1).equals(child)
                     ) {
-                //System.out.println("Drawlast: " + tangibleComp.getName());
+                //System.out.println("Drawlast: " + tangibleComp.name());
                 childComponents.add(getChildCount(), child);
                 childComponents.remove(child);
             }
@@ -2624,7 +2624,7 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
     }
 
     /* (non-Javadoc)
-          * @see org.mt4j.components.interfaces.IMTComponent#getName()
+          * @see org.mt4j.components.interfaces.IMTComponent#name()
           */
     public String getName() {
         return this.name;
@@ -2723,7 +2723,7 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
     protected boolean componentContainsPointLocal(Vector3D testPoint) { //TODO rename containPointLocal
 //		return this.containsPointBoundsLocal(testPoint);
         if (this.hasBounds()) {
-//			System.out.println("\"" + this.getName() + "\": -> BOUNDS only check");
+//			System.out.println("\"" + this.name() + "\": -> BOUNDS only check");
             return this.getBounds().containsPointLocal(testPoint);
         } else {
             return false;
@@ -2738,7 +2738,7 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
 //	 */
 //	protected boolean containsPointBoundsLocal(Vector3D testPoint){
 //		if (this.isBoundingShapeSet()){
-////			System.out.println("\"" + this.getName() + "\": -> BOUNDS only check");
+////			System.out.println("\"" + this.name() + "\": -> BOUNDS only check");
 //			return this.getBoundingShape().containsPointLocal(testPoint);
 //		}else{
 //			return false;
@@ -2976,13 +2976,13 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
                     interSP.transform(this.getGlobalMatrix());
                     // Get distance from raystart to the intersecting point
                     objDistance = interSP.getSubtracted(currentRay.getRayStartPoint()).length();
-                    //System.out.println("Pick found: " + this.getName() + " InterSP: " + interSP +  " ObjDist: " + objDistance +  " Mouse Pos: " + pickInfo.getScreenXCoordinate() + "," + pickInfo.getScreenYCoordinate() + " InvRay RS:" + invertedRay.getRayStartPoint() + ",RE: " + invertedRay.getPointInRayDirection());
+                    //System.out.println("Pick found: " + this.name() + " InterSP: " + interSP +  " ObjDist: " + objDistance +  " Mouse Pos: " + pickInfo.getScreenXCoordinate() + "," + pickInfo.getScreenYCoordinate() + " InvRay RS:" + invertedRay.getRayStartPoint() + ",RE: " + invertedRay.getPointInRayDirection());
 
 //					//If the distance is the smallest yet = closest to the raystart: replace the returnObject and current distanceFrom
 //					if ( (objDistance - HIT_TOLERANCE) <= currObjDist /*|| this.isAlwaysDrawnOnTop()*/){//take isDrawnOnTop into account here?? -> OBJDistance auf 0 setzen?
 //					currObjDist = objDistance;
 //					pickResult.addPickedObject(this, interSP, objDistance);
-////					System.out.println("-> Now nearest: " + this.getName());
+////					System.out.println("-> Now nearest: " + this.name());
 //					}
 
                     //TEST - ADD ALL PICKED OBJECTS - SORT LATER
@@ -3013,7 +3013,7 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
 
                         //Add the composites picks to the overall picks
                         if (compositePickRes.getNearestPickResult() != null) {
-    //						System.out.println("In: " + this.getName() + " Composites child picked, pick resultDistance: " + compDistance);
+    //						System.out.println("In: " + this.name() + " Composites child picked, pick resultDistance: " + compDistance);
                             /*//TODO m�sste diese hier nach distanz geordnet in insgesamt pickresult einf�gen..
                                                           ArrayList<MTBaseComponent> pickList = compositePickRes.getPickList();
                                                           for(MTBaseComponent comp : pickList){
@@ -3027,7 +3027,7 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
     //						if (//compDistance <= currObjDist
     //							(compDistance - HIT_TOLERANCE) <= currObjDist
     //						){
-    ////							System.out.println("Composites child picked and now nearest: " + this.getName()+ " dist: " + compDistance);
+    ////							System.out.println("Composites child picked and now nearest: " + this.name()+ " dist: " + compDistance);
     //							pickResult.addPickedObject(this, compositePickRes.getInterSectionPointNearestPickedObj(), compositePickRes.getDistanceNearestPickObj());
     //							currObjDist = compDistance;
     //						}
@@ -3310,7 +3310,7 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
         }
 
         if (this.isEnabled()) {
-//			System.out.println("Comp: " + this.getName() + " Evt: " + inEvt);
+//			System.out.println("Comp: " + this.name() + " Evt: " + inEvt);
             //TODO do only if not handled maybe?
             //THIS IS A HACK TO ALLOW Global GESTURE PROCESSORS to send MTGEstureevents TO WORK
             if (inEvt instanceof MTGestureEvent) {
@@ -3374,7 +3374,7 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
      */
     public boolean processGestureEvent(MTGestureEvent gestureEvent) {
         this.gestureEvtSupport.fireGestureEvt(gestureEvent);
-//		System.out.println("processGestureEvent on obj: " + this.getName() + " gestureEvent source: " + gestureEvent.getSource() +" ID: " +  gestureEvent.getId());
+//		System.out.println("processGestureEvent on obj: " + this.name() + " gestureEvent source: " + gestureEvent.getSource() +" ID: " +  gestureEvent.getId());
         return false;
     }
 

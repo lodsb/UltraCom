@@ -165,7 +165,7 @@ class Node(val app: Application, var typeOfNode: NodeType, var associatedPath: O
       }      
       
       //draw basic node appearance
-      g.fill(fillColor.getR, fillColor.getG, fillColor.getB, fillColor.getAlpha)
+      g.fill(fillColor.getR, fillColor.getG, fillColor.getB, fillColor.getA)
       g.stroke(strokeColor.getR, strokeColor.getG, strokeColor.getB, strokeColor.getAlpha)
       g.strokeWeight(this.nodeType.strokeWeight)
       g.ellipse(cx, cy, this.radius*2, this.radius*2)      

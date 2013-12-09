@@ -81,7 +81,7 @@ trait NodeFeedback extends Feedback {
     val oldR = color.getR
     val oldG = color.getG
     val oldB = color.getB
-    val oldAlpha = color.getAlpha   
+    val oldAlpha = color.getA
     val min = 0.2f
 	  val rDiff = 255 - oldR
 	  val gDiff = 255*min - oldG

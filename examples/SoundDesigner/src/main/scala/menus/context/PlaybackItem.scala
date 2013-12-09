@@ -73,14 +73,14 @@ class PlaybackItem(app: Application, menu: NodeContextMenu, center: Vector3D, va
     val cy = center.getY()    
     val r = this.radius * 0.5f
     
-    g.fill(this.itemBackgroundColor.getR, this.itemBackgroundColor.getG, this.itemBackgroundColor.getB, this.opacity * this.itemBackgroundColor.getAlpha)
+    g.fill(this.itemBackgroundColor.getR, this.itemBackgroundColor.getG, this.itemBackgroundColor.getB, this.opacity * this.itemBackgroundColor.getA)
     g.noStroke()
     g.ellipse(cx, cy, 2*this.radius, 2*this.radius)     
 
     this.nodeType.symbol match {
         case Some(symbol) => {    
           val symbolColor = this.itemForegroundColor  
-          g.fill(symbolColor.getR(), symbolColor.getG(), symbolColor.getB(), this.opacity * symbolColor.getAlpha)    
+          g.fill(symbolColor.getR(), symbolColor.getG(), symbolColor.getB(), this.opacity * symbolColor.getA)
           g.noStroke()
           g.beginShape()
           val precision = 128

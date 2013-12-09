@@ -180,7 +180,7 @@ class ManipulableBezierConnection(app: Application, startNode: Node, controlNode
       this.properties.values.foreach(_.draw(g))
       
       import ManipulableBezierConnection._
-      g.stroke(LineColor.getR, LineColor.getG, LineColor.getB, LineColor.getAlpha)
+      g.stroke(LineColor.getR, LineColor.getG, LineColor.getB, LineColor.getA)
       g.strokeWeight(LineWeight)
       val steps = LineNumber - 1 //number of lines used to approximate each bezier curve on the path
       val p1 = this.nodes(0).position
@@ -196,7 +196,7 @@ class ManipulableBezierConnection(app: Application, startNode: Node, controlNode
       }) 
       
       //draw dotted line from control node to connection
-      g.stroke(0, 0, 0, LineColor.getAlpha)
+      g.stroke(0, 0, 0, LineColor.getA)
       val closestPoint = this.closestPoint(Vec3d(pc._1, pc._2))
       val distance = Vector.euclideanDistance(pc, closestPoint)
       val dots = math.round(distance/Ui.width * MaxDotNumber)

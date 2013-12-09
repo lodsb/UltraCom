@@ -370,7 +370,7 @@ public class MTSceneMenu extends MTRectangle {
      */
     private void highlightButton(AbstractShape shape) {
         MTColor c = shape.getFillColor();
-        c= c.setAlpha(255);
+        c= c.setA(255);
         shape.setFillColor(c);
     }
 
@@ -382,7 +382,7 @@ public class MTSceneMenu extends MTRectangle {
      */
     private void unhighlightButton(AbstractShape shape, float opacity) {
         MTColor c = shape.getFillColor();
-        c= c.setAlpha(opacity);
+        c= c.setA(opacity);
         shape.setFillColor(c);
     }
 
@@ -401,7 +401,7 @@ public class MTSceneMenu extends MTRectangle {
               MTComponent component = children[i];
               if (component instanceof MTOverlayContainer
                       &&
-                  component.getName().equalsIgnoreCase("Cursor Trace group")){
+                  component.name().equalsIgnoreCase("Cursor Trace group")){
                   cursorTraceContainer  = component;
                   component.addChild(0, this); //add to cursor trace overlay container
               }
@@ -432,7 +432,7 @@ public class MTSceneMenu extends MTRectangle {
               MTComponent component = children[i];
               if (component instanceof MTOverlayContainer
                       &&
-                  component.getName().equalsIgnoreCase("Cursor Trace group")){
+                  component.name().equalsIgnoreCase("Cursor Trace group")){
                   cursorTraceContainer  = component;
                   if (cursorTraceContainer.containsChild(this)){
                       cursorTraceContainer.removeChild(this);

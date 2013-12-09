@@ -134,7 +134,7 @@ public class Vector3D {
 
     /**
      * Gets the deep vertex array copy.
-     * Uses the getCopy() method on each vector.
+     * Uses the copy() method on each vector.
      *
      * @param vertices the vertices
      * @return the deep vertex array copy
@@ -761,8 +761,8 @@ public class Vector3D {
      */
 //  FIXME this produces an not 0.0 angle for equal vectors sometimes..why?
     public static float angleBetween(Vector3D v1, Vector3D v2) {
-//    	Vector3D v1Copy = v1.getCopy();
-//    	Vector3D v2Copy = v2.getCopy();
+//    	Vector3D v1Copy = v1.copy();
+//    	Vector3D v2Copy = v2.copy();
 //    	
 //    	v1Copy.normalize();
 //    	v2Copy.normalize();

@@ -103,7 +103,7 @@ public class Animation extends AbstractAnimation implements IAnimationManagerLis
         AnimationManager.getInstance().registerAnimation(this);
         AnimationManager.getInstance().addAnimationManagerListener(this);
 
-        //		System.out.println("Animation STARTED: " + this.getName());
+        //		System.out.println("Animation STARTED: " + this.name());
         //		fireAnimationEvent(new AnimationEvent(this, AnimationEvent.ANIMATION_STARTED, this, this.getTargetObject()));
     }
 
@@ -118,7 +118,7 @@ public class Animation extends AbstractAnimation implements IAnimationManagerLis
         AnimationManager.getInstance().registerAnimation(this);
         AnimationManager.getInstance().addAnimationManagerListener(this);
 
-//		System.out.println("Animation RESTARTED: " + this.getName());
+//		System.out.println("Animation RESTARTED: " + this.name());
 //		fireAnimationEvent(new AnimationEvent(this, AnimationEvent.ANIMATION_STARTED, this, this.getTargetObject()));
     }
 
@@ -130,7 +130,7 @@ public class Animation extends AbstractAnimation implements IAnimationManagerLis
         AnimationManager.getInstance().unregisterAnimation(this);
         AnimationManager.getInstance().removeAnimationManagerListener(this);
 
-//		System.out.println("Animation FINISHED: " + this.getName());
+//		System.out.println("Animation FINISHED: " + this.name());
         //TODO fire?
 //		fireAnimationEvent(new AnimationEvent(this, AnimationEvent.ANIMATION_ENDED, this, this.getTargetObject()));
     }
@@ -142,7 +142,7 @@ public class Animation extends AbstractAnimation implements IAnimationManagerLis
      * @param ev the ev
      */
     public void updateAnimation(AnimationUpdateEvent ev) {
-        //System.out.println("animating " + a.getName());
+        //System.out.println("animating " + a.name());
 
         if (triggerTime != 0) {//If trigger is set
             triggerCountDown -= ev.getDeltaTime(); //if !<0?

@@ -271,7 +271,7 @@ public class MTLine extends MTCSSStylableShape {
         } else {
             //Draw with processing
             MTColor strokeColor = this.getStrokeColor();
-            pContext.stroke(strokeColor.getR(), strokeColor.getG(), strokeColor.getB(), strokeColor.getAlpha());
+            pContext.stroke(strokeColor.getR(), strokeColor.getG(), strokeColor.getB(), strokeColor.getA());
             pContext.strokeWeight(this.getStrokeWeight());
 
             if (this.isDrawSmooth())

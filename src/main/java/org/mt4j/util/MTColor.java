@@ -135,7 +135,7 @@ public class MTColor {
      * @param color the color
      */
     public MTColor(MTColor color) {
-        this(color.getR(), color.getG(), color.getB(), color.getAlpha());
+        this(color.getR(), color.getG(), color.getB(), color.getA());
     }
 
     /**
@@ -234,7 +234,7 @@ public class MTColor {
      */
 
     public MTColor setR(float r)  {
-        MTColor c = this.getCopy();
+        MTColor c = this.copy();
         c._setR(r);
         return c;
     }
@@ -253,7 +253,7 @@ public class MTColor {
     }
 
     public MTColor setG(float r)  {
-        MTColor c = this.getCopy();
+        MTColor c = this.copy();
         c._setG(r);
         return c;
     }
@@ -286,7 +286,7 @@ public class MTColor {
     }
 
     public MTColor setB(float r)  {
-        MTColor c = this.getCopy();
+        MTColor c = this.copy();
         c._setB(r);
         return c;
     }
@@ -296,7 +296,7 @@ public class MTColor {
      *
      * @return the alpha
      */
-    public float getAlpha() {
+    public float getA() {
         return alpha;
     }
 
@@ -305,13 +305,13 @@ public class MTColor {
      *
      * @param alpha the new alpha
      */
-    private void _setAlpha(float alpha) {
+    private void _setA(float alpha) {
         this.alpha = alpha;
     }
 
-    public MTColor setAlpha(float r)  {
-        MTColor c = this.getCopy();
-        c._setAlpha(r);
+    public MTColor setA(float r)  {
+        MTColor c = this.copy();
+        c._setA(r);
         return c;
     }
 
@@ -359,7 +359,7 @@ public class MTColor {
      *
      * @return the name
      */
-    public String getName() {
+    public String name() {
         return name;
     }
 
@@ -368,8 +368,8 @@ public class MTColor {
      *
      * @return the copy
      */
-    public MTColor getCopy() {
-        return new MTColor(this.getName(), this.getR(), this.getG(), this.getB(), this.getAlpha());
+    public MTColor copy() {
+        return new MTColor(this.name(), this.getR(), this.getG(), this.getB(), this.getA());
     }
 
     /*

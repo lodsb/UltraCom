@@ -67,11 +67,11 @@ public class SampleProgressProv extends AbstractProgressThread implements Runnab
                 */
             this.setCurrent(this.getCurrent() + 1);
 
-//			System.out.println(this.getName() + ": " + current);
+//			System.out.println(this.name() + ": " + current);
         }
 
         this.setFinished(true); //richtig?
-//		System.out.println(this.getName() + " thread exiting.");
+//		System.out.println(this.name() + " thread exiting.");
     }
 
 }

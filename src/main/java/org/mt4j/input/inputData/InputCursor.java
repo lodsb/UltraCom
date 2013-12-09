@@ -154,7 +154,7 @@ public class InputCursor {
     public boolean getLock(AbstractCursorProcessor ia) {
 //		if (ia instanceof AbstractCursorProcessor){
 //			AbstractCursorProcessor a = (AbstractCursorProcessor)ia;
-//			System.out.println(a.getName() + " trying to LOCK cursor: " + this.getId());
+//			System.out.println(a.name() + " trying to LOCK cursor: " + this.getId());
         logger.debug(ia.getName() + " trying to LOCK cursor: " + this.getId());
 //		}
 
@@ -230,7 +230,7 @@ public class InputCursor {
 //                	processor.cursorLocked(this, ia);
                     processor.cursorLostLock(this, ia);
 
-//                	System.out.println("cursor " + this.getId() + " now locked by " + ia.getName() + " was Locked By( " + processor.getName() + " target: " + getTarget() + " currenttarget: " + this.getCurrentEvent().getCurrentTarget());
+//                	System.out.println("cursor " + this.getId() + " now locked by " + ia.name() + " was Locked By( " + processor.name() + " target: " + getTarget() + " currenttarget: " + this.getCurrentEvent().getCurrentTarget());
 
                     if (this.getTarget() != null) {
                         //TODO send lockLostEvent extends MTInputEvent so that we can use lockLostEvt.getCurrentTarget
@@ -245,7 +245,7 @@ public class InputCursor {
                         //TODO invoke processor.cursorLocked(this, ia); directly
                     }
                 } else {
-//                	System.out.println("cursor " + this.getId() + " now locked by " + ia.getName() + " was NOT Locked By( " + processor.getName() + " target: " + getTarget() + " currenttarget: " + this.getCurrentEvent().getCurrentTarget());
+//                	System.out.println("cursor " + this.getId() + " now locked by " + ia.name() + " was NOT Locked By( " + processor.name() + " target: " + getTarget() + " currenttarget: " + this.getCurrentEvent().getCurrentTarget());
                 }
 //                processor.cursorLocked(this, ia);
             }

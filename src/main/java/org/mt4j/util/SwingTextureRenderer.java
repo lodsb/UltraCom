@@ -267,7 +267,7 @@ public class SwingTextureRenderer {
         }
         /*
           if (!c.isLightweight()){
-              System.err.println("Component to paint (" + c.getName() + ") is not lightweight -> undeterministic behaviour!");
+              System.err.println("Component to paint (" + c.name() + ") is not lightweight -> undeterministic behaviour!");
           }
           */
 

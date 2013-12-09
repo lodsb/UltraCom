@@ -23,14 +23,12 @@ import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
-import org.mt4j.components.MTComponent;
 import org.mt4j.components.TransformSpace;
 import org.mt4j.components.bounds.IBoundingShape;
 import org.mt4j.components.bounds.OrientedBoundingBox;
 import org.mt4j.components.visibleComponents.AbstractVisibleComponent;
 import org.mt4j.components.visibleComponents.GeometryInfo;
 import org.mt4j.components.visibleComponents.ScalaPropertyBindings;
-import org.mt4j.components.visibleComponents._genSetterGetterHelper;
 import org.mt4j.input.gestureAction.DefaultDragAction;
 import org.mt4j.input.gestureAction.DefaultRotateAction;
 import org.mt4j.input.gestureAction.DefaultScaleAction;
@@ -38,7 +36,6 @@ import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProc
 import org.mt4j.input.inputProcessors.componentProcessors.rotateProcessor.RotateProcessor;
 import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleProcessor;
 
-import org.lodsb.reakt.property.Attribute;
 import org.lodsb.reakt.property.Property;
 
 import org.mt4j.util.MT4jSettings;
@@ -50,7 +47,6 @@ import org.mt4j.util.animation.IAnimation;
 import org.mt4j.util.animation.IAnimationListener;
 import org.mt4j.util.animation.MultiPurposeInterpolator;
 import org.mt4j.util.animation.ani.AniAnimation;
-import org.mt4j.util.math.Matrix;
 import org.mt4j.util.math.Ray;
 import org.mt4j.util.math.Tools3D;
 import org.mt4j.util.math.Vector3D;
@@ -359,7 +355,7 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
         if (baseMatrixDirty) {
             this.globalVerticesDirty = true;
         }
-//		System.out.println("Set baseMatrixDirty dirty on obj: " + this.getName());
+//		System.out.println("Set baseMatrixDirty dirty on obj: " + this.name());
         super.setMatricesDirty(baseMatrixDirty);
     }
 
@@ -445,7 +441,7 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
             if (geometryInfo.getVertices().length >= 3) {
                 this.setBounds(this.computeDefaultBounds());
             } else {
-//				logger.error("Warning: could not compute bounds because too few vertices were supplied: " + this.getName() + " in " + this + " -> Setting boundingShape to null.");
+//				logger.error("Warning: could not compute bounds because too few vertices were supplied: " + this.name() + " in " + this + " -> Setting boundingShape to null.");
                 this.setBounds(null);
             }
         } else {
@@ -488,7 +484,7 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
             if (geometryInfo.getVertices().length >= 3) {
                 this.setBounds(this.computeDefaultBounds());
             } else {
-//				logger.error("Warning: could not compute bounds because too few vertices were supplied: " + this.getName() + " in " + this + " -> Setting boundingShape to null.");
+//				logger.error("Warning: could not compute bounds because too few vertices were supplied: " + this.name() + " in " + this + " -> Setting boundingShape to null.");
                 this.setBounds(null);
             }
         } else {
@@ -722,7 +718,7 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
         super.setFillColor(color);
 
 		if(this.getGeometryInfo() != null && color != null) // TODO: FIXME!
-        	this.getGeometryInfo().setVerticesColorAll(color.getR(), color.getG(), color.getB(), color.getAlpha());
+        	this.getGeometryInfo().setVerticesColorAll(color.getR(), color.getG(), color.getB(), color.getA());
     }
 
 
@@ -730,7 +726,7 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
     public void setStrokeColor(MTColor strokeColor) {
         super.setStrokeColor(strokeColor);
         if (MT4jSettings.getInstance().isOpenGlMode() && this.isUseDirectGL())
-            this.getGeometryInfo().setStrokeColorAll(strokeColor.getR(), strokeColor.getG(), strokeColor.getB(), strokeColor.getAlpha());
+            this.getGeometryInfo().setStrokeColorAll(strokeColor.getR(), strokeColor.getG(), strokeColor.getB(), strokeColor.getA());
     }
 
 
@@ -947,19 +943,19 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
 
         switch (this.getBoundsBehaviour()) {
             case AbstractShape.BOUNDS_DONT_USE:
-//			System.out.println("\"" + this.getName() + "\": -> GEOMETRY only check");
+//			System.out.println("\"" + this.name() + "\": -> GEOMETRY only check");
                 return this.getGeometryIntersectionLocal(ray);
             case AbstractShape.BOUNDS_ONLY_CHECK:
                 if (this.hasBounds()) {
-//				System.out.println("\"" + this.getName() + "\": -> BOUNDS only check");
+//				System.out.println("\"" + this.name() + "\": -> BOUNDS only check");
                     return this.getBounds().getIntersectionLocal(ray);
                 } else {
-//				System.out.println("\"" + this.getName() + "\": -> GEOMETRY only check");
+//				System.out.println("\"" + this.name() + "\": -> GEOMETRY only check");
                     return this.getGeometryIntersectionLocal(ray);
                 }
             case AbstractShape.BOUNDS_CHECK_THEN_GEOMETRY_CHECK:
                 if (this.hasBounds()) {
-//				System.out.println("\"" + this.getName() + "\": -> BOUNDS check then GEOMETRY check");
+//				System.out.println("\"" + this.name() + "\": -> BOUNDS check then GEOMETRY check");
                     Vector3D boundsIntersection = this.getBounds().getIntersectionLocal(ray);
                     if (boundsIntersection != null) {
                         return this.getGeometryIntersectionLocal(ray);
@@ -980,19 +976,19 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
     protected boolean componentContainsPointLocal(Vector3D testPoint) {
         switch (this.getBoundsBehaviour()) {
             case AbstractShape.BOUNDS_DONT_USE:
-//			System.out.println("\"" + this.getName() + "\": -> GEOMETRY only check");
+//			System.out.println("\"" + this.name() + "\": -> GEOMETRY only check");
                 return this.isGeometryContainsPointLocal(testPoint);
             case AbstractShape.BOUNDS_ONLY_CHECK:
                 if (this.hasBounds()) {
-//				System.out.println("\"" + this.getName() + "\": -> BOUNDS only check");
+//				System.out.println("\"" + this.name() + "\": -> BOUNDS only check");
                     return this.getBounds().containsPointLocal(testPoint);
                 } else {
-//				System.out.println("\"" + this.getName() + "\": -> GEOMETRY only check");
+//				System.out.println("\"" + this.name() + "\": -> GEOMETRY only check");
                     return this.isGeometryContainsPointLocal(testPoint);
                 }
             case AbstractShape.BOUNDS_CHECK_THEN_GEOMETRY_CHECK:
                 if (this.hasBounds()) {
-//				System.out.println("\"" + this.getName() + "\": -> BOUNDS check then GEOMETRY check");
+//				System.out.println("\"" + this.name() + "\": -> BOUNDS check then GEOMETRY check");
                     if (this.getBounds().containsPointLocal(testPoint)) {
                         return this.isGeometryContainsPointLocal(testPoint);
                     } else {

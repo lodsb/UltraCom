@@ -52,28 +52,28 @@ abstract class NodeType{
     * Returns the background color of a node.
     */
     def backgroundColor = {
-      Color(NodeType.BackgroundColor.getR, NodeType.BackgroundColor.getG, NodeType.BackgroundColor.getB, NodeType.BackgroundColor.getAlpha)
+      Color(NodeType.BackgroundColor.getR, NodeType.BackgroundColor.getG, NodeType.BackgroundColor.getB, NodeType.BackgroundColor.getA)
     }
     
     /**
     * Returns the foreground color of a node.
     */
     def foregroundColor = {
-      Color(NodeType.ForegroundColor.getR, NodeType.ForegroundColor.getG, NodeType.ForegroundColor.getB, NodeType.ForegroundColor.getAlpha)
+      Color(NodeType.ForegroundColor.getR, NodeType.ForegroundColor.getG, NodeType.ForegroundColor.getB, NodeType.ForegroundColor.getA)
     }
     
     /**
     * Returns the stroke color of a node.
     */
     def strokeColor = {
-      Color(NodeType.StrokeColor.getR, NodeType.StrokeColor.getG, NodeType.StrokeColor.getB, NodeType.StrokeColor.getAlpha)
+      Color(NodeType.StrokeColor.getR, NodeType.StrokeColor.getG, NodeType.StrokeColor.getB, NodeType.StrokeColor.getA)
     }
     
     /**
     * Returns the tap color of a node.
     */
     def tapColor = {
-      Color(NodeType.TapColor.getR, NodeType.TapColor.getG, NodeType.TapColor.getB, NodeType.TapColor.getAlpha)
+      Color(NodeType.TapColor.getR, NodeType.TapColor.getG, NodeType.TapColor.getB, NodeType.TapColor.getA)
     
     }
     

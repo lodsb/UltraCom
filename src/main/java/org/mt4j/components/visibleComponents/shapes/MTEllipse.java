@@ -163,7 +163,7 @@ public class MTEllipse extends MTPolygon {
             float y = (float) (centerPoint.y - (radiusX * Math.cos(t) * sinTheta)
                     - (radiusY * Math.sin(t) * cosTheta));
 
-            verts[i] = new Vertex(x, y, centerPoint.z, fillColor.getR(), fillColor.getG(), fillColor.getB(), fillColor.getAlpha());
+            verts[i] = new Vertex(x, y, centerPoint.z, fillColor.getR(), fillColor.getG(), fillColor.getB(), fillColor.getA());
         }
         verts[verts.length - 1] = (Vertex) verts[0].getCopy(); //NEED TO USE COPY BECAUSE TEX COORDS MAY GET SCALED DOUBLE IF SAME VERTEX OBJECT!
         //System.out.println("Points: " + verts.length);

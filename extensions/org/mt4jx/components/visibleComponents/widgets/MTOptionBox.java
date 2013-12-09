@@ -94,9 +94,9 @@ public class MTOptionBox extends MTForm implements BooleanForm {
             else optionBox.setStrokeColor(MTColor.WHITE);
 
             if (vss.isModifiedBackgroundColor() && brightEnough(vss.getBackgroundColor())) {
-                if (vss.getBackgroundColor().getAlpha() < 220) {
-                    MTColor color = vss.getBackgroundColor().getCopy();
-                    color.setAlpha(220);
+                if (vss.getBackgroundColor().getA() < 220) {
+                    MTColor color = vss.getBackgroundColor().copy();
+                    color.setA(220);
                     optionBox.setFillColor(color);
                 } else optionBox.setFillColor(vss.getBackgroundColor());
             } else optionBox.setFillColor(MTColor.YELLOW);
@@ -114,7 +114,7 @@ public class MTOptionBox extends MTForm implements BooleanForm {
     }
 
     private boolean brightEnough(MTColor color) {
-        return color.getR() + color.getG() + color.getB() > 200 && color.getAlpha() > 200;
+        return color.getR() + color.getG() + color.getB() > 200 && color.getA() > 200;
 
 
     }

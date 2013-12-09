@@ -353,8 +353,8 @@ public class SvgFontFactory extends DefaultHandler implements IFontFactory {
             character.setUseDirectGL(true);
 
         //Color
-        character.setStrokeColor(new MTColor(strokeColor.getR(), strokeColor.getG(), strokeColor.getB(), strokeColor.getAlpha()));
-        character.setFillColor(new MTColor(fillColor.getR(), fillColor.getG(), fillColor.getB(), fillColor.getAlpha()));
+        character.setStrokeColor(new MTColor(strokeColor.getR(), strokeColor.getG(), strokeColor.getB(), strokeColor.getA()));
+        character.setFillColor(new MTColor(fillColor.getR(), fillColor.getG(), fillColor.getB(), fillColor.getA()));
 
         character.setStrokeWeight(0.7f);
         character.setPickable(false);

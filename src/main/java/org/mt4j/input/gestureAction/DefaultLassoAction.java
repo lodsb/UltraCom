@@ -146,7 +146,7 @@ public class DefaultLassoAction implements IGestureEventListener {
                                                 //Remvove the component from its former selection
                                                 clusterOfComponent.removeChild(sourceComp);
 
-                                                //System.out.println("Comp destroyed and removed from cluster: " + sourceComp.getName());
+                                                //System.out.println("Comp destroyed and removed from cluster: " + sourceComp.name());
 
                                                 //remove the former selection from the selectionmanager if it consists only of 1 less components
                                                 if (clusterOfComponent.getChildCount() <= 2) {

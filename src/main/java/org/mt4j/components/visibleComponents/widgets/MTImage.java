@@ -251,10 +251,10 @@ public class MTImage extends MTRectangle implements IdragClusterable {
                                         MTComponent currentComp = comps[i];
                                         //Call destroy which fires a destroy state change event
                                         currentComp.destroy();
-                                        //System.out.println("destroyed: " + currentComp.getName());
+                                        //System.out.println("destroyed: " + currentComp.name());
                                     }
                                     destroy();
-                                    //System.out.println("destroyed: " + getName());
+                                    //System.out.println("destroyed: " + name());
                                     break;
                                 default:
                                     destroy();

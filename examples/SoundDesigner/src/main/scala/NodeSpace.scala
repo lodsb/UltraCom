@@ -132,7 +132,7 @@ class NodeSpace(app: Application) extends MTRectangle(app, Menu.Space, Menu.Spac
   
   
   private def colorToArgb(color: MTColor): Int = {
-    (color.getAlpha.toInt << 24) | (color.getR.toInt << 16) | (color.getG.toInt << 8) | color.getB.toInt
+    (color.getA.toInt << 24) | (color.getR.toInt << 16) | (color.getG.toInt << 8) | color.getB.toInt
   }  
   
   

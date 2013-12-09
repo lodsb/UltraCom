@@ -198,7 +198,7 @@ public class MultipleDragProcessor extends AbstractCursorProcessor {
 
 
     /* (non-Javadoc)
-      * @see org.mt4j.input.inputProcessors.componentProcessors.AbstractComponentProcessor#getName()
+      * @see org.mt4j.input.inputProcessors.componentProcessors.AbstractComponentProcessor#name()
       */
     @Override
     public String getName() {

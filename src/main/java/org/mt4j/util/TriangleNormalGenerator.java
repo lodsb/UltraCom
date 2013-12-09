@@ -399,7 +399,7 @@ public class TriangleNormalGenerator {
 
             //Get the faces normal
 //				Vector3D faceNormal = Tools3D.getNormal(v0, v1, v2, true); //myFace.normal;//
-//				Vector3D faceNormal = myFace.normal.getCopy();
+//				Vector3D faceNormal = myFace.normal.copy();
 //				faceNormal.normalizeLocal();
 
             Vector3D faceNormal = myFace.normalNormalized;
@@ -1269,7 +1269,7 @@ public class TriangleNormalGenerator {
                 //For each face point, calc vertex normal by adding up all
                 //smooth connected neighbors + this faces' normal and normalize in the end
                 ArrayList<Vector3D> alreadyAddedInP0 = new ArrayList<Vector3D>();
-//					vertexNormalP0 = this.normal.getCopy(); //Init with own faces face normal
+//					vertexNormalP0 = this.normal.copy(); //Init with own faces face normal
                 vertexNormalP0 = normalizedFaceNormal.getCopy();
                 for (MyFace neighborFaceP0 : smoothNeighborsP0) {
                     Vector3D nextSmoothNeighborNormal = neighborFaceP0.normal;
@@ -1308,7 +1308,7 @@ public class TriangleNormalGenerator {
                 //For each face point, calc vertex normalby adding up all
                 //smooth connected neighbors + this faces' normal and normalize in the end
                 ArrayList<Vector3D> alreadyAddedInP1 = new ArrayList<Vector3D>();
-//					vertexNormalP1 = this.normal.getCopy(); //Init with own faces face normal
+//					vertexNormalP1 = this.normal.copy(); //Init with own faces face normal
                 vertexNormalP1 = normalizedFaceNormal.getCopy();
                 for (MyFace neighborFaceP1 : smoothNeighborsP1) {
                     Vector3D nextSmoothNeighborNormal = neighborFaceP1.normal;
@@ -1348,7 +1348,7 @@ public class TriangleNormalGenerator {
                 //For each face point, calc vertex normalby adding up all
                 //smooth connected neighbors + this faces' normal and normalize in the end
                 ArrayList<Vector3D> alreadyAddedInP2 = new ArrayList<Vector3D>();
-//					vertexNormalP2 = this.normal.getCopy(); //Init with own faces face normal
+//					vertexNormalP2 = this.normal.copy(); //Init with own faces face normal
                 vertexNormalP2 = normalizedFaceNormal.getCopy();
                 for (MyFace neighborFaceP2 : smoothNeighborsP2) {
                     Vector3D nextSmoothNeighborNormal = neighborFaceP2.normal;

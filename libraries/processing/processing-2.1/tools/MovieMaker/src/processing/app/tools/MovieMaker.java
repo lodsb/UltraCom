@@ -874,7 +874,7 @@ public class MovieMaker extends JFrame implements Tool {
   /*
     private void writeVideoOnlyFFR(File movieFile, File[] imgFiles, int width, int height, double fps, QuickTimeWriter.VideoFormat videoFormat, boolean passThrough, String streaming) throws IOException {
         File tmpFile = streaming.equals("none") ? movieFile : new File(movieFile.getPath() + ".tmp");
-        ProgressMonitor p = new ProgressMonitor(MovieMaker.this, "Creating " + movieFile.getName(), "Creating Output File...", 0, imgFiles.length);
+        ProgressMonitor p = new ProgressMonitor(MovieMaker.this, "Creating " + movieFile.name(), "Creating Output File...", 0, imgFiles.length);
         Graphics2D g = null;
         BufferedImage imgBuffer = null;
         QuickTimeWriter qtOut = null;
@@ -892,7 +892,7 @@ public class MovieMaker extends JFrame implements Tool {
             }
             for (int i = 0; i < imgFiles.length && !p.isCanceled(); i++) {
                 File f = imgFiles[i];
-                p.setNote("Processing " + f.getName());
+                p.setNote("Processing " + f.name());
                 p.setProgress(i);
 
                 if (passThrough) {

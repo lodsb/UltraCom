@@ -62,7 +62,7 @@ import processing.core.PGraphics;
  * @author Mark Powell, Christopher Ruff
  */
 public class BoundingSphere implements IBoundingShapeMergable {
-//	    private static final Logger logger = Logger.getLogger(BoundingSphere.class.getName());
+//	    private static final Logger logger = Logger.getLogger(BoundingSphere.class.name());
 
     public float radius;
 
@@ -1108,7 +1108,7 @@ public class BoundingSphere implements IBoundingShapeMergable {
         } else {
             return this.centerPointWorld;
         }
-//			Vector3D tmp = center.getCopy();
+//			Vector3D tmp = center.copy();
 //			tmp.transform(this.peerComponent.getAbsoluteLocalToWorldMatrix());
 //			return tmp;
     }
@@ -1163,7 +1163,7 @@ public class BoundingSphere implements IBoundingShapeMergable {
             return this.worldVecs;
         }
 
-//			Vector3D tmp = center.getCopy();
+//			Vector3D tmp = center.copy();
 //			tmp.transform(this.peerComponent.getAbsoluteLocalToWorldMatrix());
 //			return new Vector3D[]{tmp};
     }

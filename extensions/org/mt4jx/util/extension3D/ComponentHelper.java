@@ -50,7 +50,7 @@ public class ComponentHelper {
         //TEST, Wenns probleme gibt das wieder aktivieren
 //		currObjDist = pickResult.getDistanceNearestPickObj();
 
-//		System.out.println("At: " + comp.getName() + " Current Distance: " + currObjDist);
+//		System.out.println("At: " + comp.name() + " Current Distance: " + currObjDist);
         if (comp.isVisible() &&
                 ((onlyPickables && comp.isPickable()) || !onlyPickables)
                 ) {
@@ -82,18 +82,18 @@ public class ComponentHelper {
             if (clip == null || (clip != null && clip.getClipShapeIntersectionLocal(invertedRay) != null)) {
                 interSP = comp.getIntersectionLocal(invertedRay);
                 if (interSP != null) {
-                    //FIXME TRIAL - muss für die distance messung der world ray genommen
+                    //FIXME TRIAL - muss fï¿½r die distance messung der world ray genommen
                     //werden oder geht der invertierte ray? -> musss wohl der world ray sein
                     interSP.transform(comp.getGlobalMatrix());
                     // Get distance from raystart to the intersecting point
                     objDistance = interSP.getSubtracted(currentRay.getRayStartPoint()).length();
-                    //System.out.println("Pick found: " + comp.getName() + " InterSP: " + interSP +  " ObjDist: " + objDistance +  " Mouse Pos: " + pickInfo.getScreenXCoordinate() + "," + pickInfo.getScreenYCoordinate() + " InvRay RS:" + invertedRay.getRayStartPoint() + ",RE: " + invertedRay.getPointInRayDirection());
+                    //System.out.println("Pick found: " + comp.name() + " InterSP: " + interSP +  " ObjDist: " + objDistance +  " Mouse Pos: " + pickInfo.getScreenXCoordinate() + "," + pickInfo.getScreenYCoordinate() + " InvRay RS:" + invertedRay.getRayStartPoint() + ",RE: " + invertedRay.getPointInRayDirection());
 
 //					//If the distance is the smallest yet = closest to the raystart: replace the returnObject and current distanceFrom
 //					if ( (objDistance - HIT_TOLERANCE) <= currObjDist /*|| comp.isAlwaysDrawnOnTop()*/){//take isDrawnOnTop into account here?? -> OBJDistance auf 0 setzen?
 //					currObjDist = objDistance;
 //					pickResult.addPickedObject(comp, interSP, objDistance);
-////					System.out.println("-> Now nearest: " + comp.getName());
+////					System.out.println("-> Now nearest: " + comp.name());
 //					}
 
                     //FIXME TEST - ADD ALL PICKED OBJECTS - SORT LATER
@@ -120,8 +120,8 @@ public class ComponentHelper {
 
                     //Add the composites picks to the overall picks
                     if (compositePickRes.getNearestPickResult() != null) {
-//						System.out.println("In: " + comp.getName() + " Composites child picked, pick resultDistance: " + compDistance);
-                        /*//TODO müsste diese hier nach distanz geordnet in insgesamt pickresult einfügen..
+//						System.out.println("In: " + comp.name() + " Composites child picked, pick resultDistance: " + compDistance);
+                        /*//TODO mï¿½sste diese hier nach distanz geordnet in insgesamt pickresult einfï¿½gen..
                               ArrayList<MTBaseComponent> pickList = compositePickRes.getPickList();
                               for(MTBaseComponent comp : pickList){
                                   pickResult.addPickedObject(comp, compositePickRes.getInterSectionPointOfPickedObj(comp), compositePickRes.getDistanceOfPickedObj(comp));
@@ -134,7 +134,7 @@ public class ComponentHelper {
 //						if (//compDistance <= currObjDist 
 //							(compDistance - HIT_TOLERANCE) <= currObjDist
 //						){
-////							System.out.println("Composites child picked and now nearest: " + comp.getName()+ " dist: " + compDistance);
+////							System.out.println("Composites child picked and now nearest: " + comp.name()+ " dist: " + compDistance);
 //							pickResult.addPickedObject(comp, compositePickRes.getInterSectionPointNearestPickedObj(), compositePickRes.getDistanceNearestPickObj());
 //							currObjDist = compDistance;
 //						}
@@ -237,7 +237,7 @@ public class ComponentHelper {
             if (clip == null || (clip != null && clip.getClipShapeIntersectionLocal(invertedRay) != null)) {
                 interSP = comp.getIntersectionLocal(invertedRay);
                 if (interSP != null) {
-                    //FIXME TRIAL - muss für die distance messung der world ray genommen
+                    //FIXME TRIAL - muss fï¿½r die distance messung der world ray genommen
                     //werden oder geht der invertierte ray?
                     interSP.transform(comp.getGlobalMatrix());
                     //Get distance from raystart to the intersecting point

@@ -75,11 +75,11 @@ class ToolItem(app: Application, menu: ToolContextMenu, center: Vector3D, val pr
     val center = this.getCenterPointLocal()
     val cx = center.getX()
     val cy = center.getY()    
-    g.fill(this.itemBackgroundColor.getR, this.itemBackgroundColor.getG, this.itemBackgroundColor.getB, this.opacity * this.itemBackgroundColor.getAlpha)
+    g.fill(this.itemBackgroundColor.getR, this.itemBackgroundColor.getG, this.itemBackgroundColor.getB, this.opacity * this.itemBackgroundColor.getA)
     g.noStroke()
     g.ellipse(cx, cy, 2*this.radius, 2*this.radius)  
     
-    val symbolColor = new MTColor(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.opacity * this.itemForegroundColor.getAlpha)
+    val symbolColor = new MTColor(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.opacity * this.itemForegroundColor.getA)
     this.propertyType.drawSymbol(g, (cx, cy), symbolColor)
   }    
   

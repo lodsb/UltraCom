@@ -209,7 +209,7 @@ public class MTRoundRectangle extends MTPolygon {
                 vertex.setTexCoordV((vertex.y - y) / height);
                 //System.out.println("TexU:" + vertex.getTexCoordU() + " TexV:" + vertex.getTexCoordV());
             }
-            vertex.setRGBA(currentFillColor.getR(), currentFillColor.getG(), currentFillColor.getB(), currentFillColor.getAlpha());
+            vertex.setRGBA(currentFillColor.getR(), currentFillColor.getG(), currentFillColor.getB(), currentFillColor.getA());
         }
         return newVertices;
     }

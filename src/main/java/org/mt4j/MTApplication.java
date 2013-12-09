@@ -122,7 +122,7 @@ public abstract class MTApplication extends PApplet {
 
     public void initFromScala(String name) {
         initialize();
-        //initialize(this.getClass().getName());
+        //initialize(this.getClass().name());
     }
 
     public static String CUSTOM_OPENGL_GRAPHICS = "org.mt4j.util.opengl.CustomPGraphicsOpenGL"; //PApplet.OPENGL
