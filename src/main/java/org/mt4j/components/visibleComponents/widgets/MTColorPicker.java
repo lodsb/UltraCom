@@ -133,6 +133,7 @@ public class MTColorPicker extends MTRectangle {
      * Inits the.
      */
     private void init() {
+        this.registerAttribute(colorPicked);
         this.currentColor = new MTColor(255, 255, 255, 255);
 //	    this.setNoFill(true);
 

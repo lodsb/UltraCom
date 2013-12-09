@@ -198,12 +198,14 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
 																	 ScalaPropertyBindings.setVertices(this),
 																	 ScalaPropertyBindings.getVertices(this)
 																	 );
+        this.registerProperty(vertices);
 
 		texture = new Property<PImage>(this, "texture",
 																	 this.getTexture(),
 																	 ScalaPropertyBindings.setTexture(this),
 																	 ScalaPropertyBindings.getTexture(this)
 																	 );
+        this.registerProperty(texture);
     }
 
     /*

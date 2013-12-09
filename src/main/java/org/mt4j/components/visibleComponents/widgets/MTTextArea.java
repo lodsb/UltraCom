@@ -46,12 +46,11 @@ import org.mt4j.util.math.Vector3D;
 import org.mt4j.util.math.Vertex;
 
 import processing.core.PApplet;
-import processing.core.PGraphics;
 import org.lodsb.reakt.property.Property;
 import processing.opengl.PGraphicsOpenGL;
 
 /**
- * The Class MTTextArea. This widget allows to display text with a specified font.
+ * The Class MTTextArea. This widget allows to display text with a specified _font.
  * If the constructor with no fixed text are dimensions is used, the text area will
  * expand itself to fit the text in.
  * <br>
@@ -83,6 +82,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
 
 	public final Property<String> text;
 	public final Property<Float> padding;
+    public final Property<IFont> font;
 
     /**
      * The pa.
@@ -95,12 +95,12 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
     private ArrayList<IFontCharacter> characterList;
 
     /**
-     * The font.
+     * The _font.
      */
-    private IFont font;
+    private IFont _font;
 
     /**
-     * The font b box height.
+     * The _font b box height.
      */
     private int fontHeight;
 
@@ -135,8 +135,8 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
     private float totalScrollTextX;
     private float totalScrollTextY;
 
-    //TODO set font color on the fly
-    //TODO different font sizes in one textarea?
+    //TODO set _font color on the fly
+    //TODO different _font sizes in one textarea?
     //TODO (create mode : expand vertically but do word wrap horizontally?)
 
     private static final int MODE_EXPAND = 0;
@@ -152,7 +152,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
     /**
      * Instantiates a new text area. This constructor creates
      * a text area with variable dimensions that expands itself when text is added.
-     * A default font is used.
+     * A default _font is used.
      *
      * @param pApplet the applet
      */
@@ -168,7 +168,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
      * a text area with variable dimensions that expands itself when text is added.
      *
      * @param pApplet the applet
-     * @param font    the font
+     * @param font    the _font
      */
     public MTTextArea(MTApplication pApplet, CSSFont font) {
         this(pApplet, FontManager.getInstance().getDefaultFont(pApplet));
@@ -181,7 +181,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
      * a text area with variable dimensions that expands itself when text is added.
      *
      * @param pApplet the applet
-     * @param font    the font
+     * @param font    the _font
      */
     public MTTextArea(PApplet pApplet, IFont font) {
         super(pApplet, 0,     //upper left corner
@@ -198,11 +198,15 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
         this.setHeightLocal(this.getTotalLinesHeight());
         this.setWidthLocal(getMaxLineWidth());
 
-        //Disable font being overwritten by CSS
+        //Disable _font being overwritten by CSS
         this.ignoreCSSFont = true;
 
 		this.text = new Property<String>(this,"text", "", ScalaPropertyBindings.setText(this), ScalaPropertyBindings.getText(this));
+        this.registerProperty(text);
 		this.padding = new Property(this,"padding", 5f , ScalaPropertyBindings.setPadding(this), ScalaPropertyBindings.getPadding(this));
+        this.registerProperty(padding);
+        this.font = new Property(this,"font", FontManager.getInstance().getDefaultFont(pApplet) , ScalaPropertyBindings.setFont(this), ScalaPropertyBindings.getFont(this));
+        this.registerProperty(this.font);
     }
 
 
@@ -224,7 +228,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
      * Instantiates a new mT text area.
      * This constructor creates a textarea with fixed dimensions.
      * If the text exceeds the dimensions the text is clipped.
-     * A default font is used.
+     * A default _font is used.
      *
      * @param pApplet the applet
      * @param x       the x
@@ -244,7 +248,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
      * @param y       the y
      * @param width   the width
      * @param height  the height
-     * @param font    the font
+     * @param font    the _font
      * @param pApplet the applet
      * @deprecated constructor will be deleted! Please , use the constructor with the PApplet instance as the first parameter.
      */
@@ -262,7 +266,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
      * @param y       the y
      * @param width   the width
      * @param height  the height
-     * @param font    the font
+     * @param font    the _font
      */
     public MTTextArea(PApplet pApplet, float x, float y, float width, float height, IFont font) {
         super(pApplet, 0,     //upper left corner
@@ -276,11 +280,15 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
         this.setUpperLeftPos(new Vector3D(x, y, 0));
         this.setUpperLeftPos(new Vector3D(x, y, 0));
 
-        //Disable font being overwritten by CSS
+        //Disable _font being overwritten by CSS
         this.ignoreCSSFont = true;
 
 		this.text = new Property<String>(this, "text", "", ScalaPropertyBindings.setText(this), ScalaPropertyBindings.getText(this));
+        this.registerProperty(text);
 		this.padding = new Property(this, "padding", 5f , ScalaPropertyBindings.setPadding(this), ScalaPropertyBindings.getPadding(this));
+        this.registerProperty(padding);
+        this.font = new Property(this,"font", FontManager.getInstance().getDefaultFont(pApplet) , ScalaPropertyBindings.setFont(this), ScalaPropertyBindings.getFont(this));
+        this.registerProperty(this.font);
     }
 
 
@@ -307,7 +315,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
 
     private void init(PApplet pApplet, IFont font, int mode) {
         this.pa = pApplet;
-        this.font = font;
+        this._font = font;
         this.expandDirection = ExpandDirection.DOWN;
 
         this.mode = mode;
@@ -331,7 +339,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
             this.setUseDirectGL(true);
 
 
-        System.err.println("FOO font "+font);
+        System.err.println("FOO _font "+font);
         fontHeight = font.getFontAbsoluteHeight();
 
         caretWidth = 0;
@@ -366,13 +374,13 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
 
 
     /**
-     * Sets the font.
+     * Sets the _font.
      *
-     * @param font the new font
+     * @param font the new _font
      */
     public void setFont(IFont font) {
         if (this.characterList != null) {
-            this.font = font;
+            this._font = font;
             this.fontHeight = font.getFontAbsoluteHeight();
             this.isBitmapFont = (font instanceof BitmapFont);
             this.updateLayout();
@@ -566,9 +574,9 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
         if (this.isUseDirectGL()) {
             GL2 gl = Tools3D.beginGLAndGetGL(g);
             if (totalScrollTextX != 0.0f && totalScrollTextY != 0.0f) {
-                gl.glTranslatef(totalScrollTextX, totalScrollTextY + font.getFontMaxAscent(), 0);
+                gl.glTranslatef(totalScrollTextX, totalScrollTextY + _font.getFontMaxAscent(), 0);
             } else {
-                gl.glTranslatef(0, font.getFontMaxAscent(), 0);
+                gl.glTranslatef(0, _font.getFontMaxAscent(), 0);
             }
 
             /*
@@ -580,7 +588,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
                */
 
             //TODO avoid many stateChanges
-            //in bitmap font mode for example:
+            //in bitmap _font mode for example:
             //enable textures, enable vertex arrays and color only once!
 
             if (!enableCaret && useDisplayList && this.displayListID != 0) {
@@ -592,7 +600,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
             Tools3D.endGL(pa);
         } else { //P3D rendering
             g.pushMatrix(); //FIXME TEST text scrolling - but IMHO better done with parent list/scroll container
-            g.translate(totalScrollTextX, totalScrollTextY + font.getFontMaxAscent(), 0);
+            g.translate(totalScrollTextX, totalScrollTextY + _font.getFontMaxAscent(), 0);
 
             for (int i = 0; i < charListSize; i++) {
                 IFontCharacter character = characterList.get(i);
@@ -727,16 +735,16 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
     //FIXME TEST ?
 
     /**
-     * Changes the texture filtering for the textarea's bitmap font.
-     * (if a bitmap font is used).
+     * Changes the texture filtering for the textarea's bitmap _font.
+     * (if a bitmap _font is used).
      * If the parameter is "true" this will allow the text being scaled without getting
      * too pixelated. If the text isnt going to be scaled ever, it is best to leave or
      * set this to "false" for a sharper text.
-     * <br>NOTE: Only applies if OpenGL is the renderer and the textarea uses a bitmap font.
-     * <br>NOTE: This affects the whole bitmap font so if it is used elsewhere it is changed
+     * <br>NOTE: Only applies if OpenGL is the renderer and the textarea uses a bitmap _font.
+     * <br>NOTE: This affects the whole bitmap _font so if it is used elsewhere it is changed
      * there, too.
      *
-     * @param scalable the new bitmap font scalable
+     * @param scalable the new bitmap _font scalable
      */
     public void setBitmapFontTextureFiltered(boolean scalable) {
         if (MT4jSettings.getInstance().isOpenGlMode() && this.getFont() instanceof BitmapFont) {
@@ -932,11 +940,11 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
      * @param characterName the character name
      */
     synchronized public void appendCharByName(String characterName) {
-        //Get the character from the font
-        IFontCharacter character = font.getFontCharacterByName(characterName);
+        //Get the character from the _font
+        IFontCharacter character = _font.getFontCharacterByName(characterName);
         if (character == null) {
-            System.err.println("Error adding character with name '" + characterName + "' to the textarea. The font couldnt find the character. -> Trying to use 'missing glyph'");
-            character = font.getFontCharacterByName("missing-glyph");
+            System.err.println("Error adding character with name '" + characterName + "' to the textarea. The _font couldnt find the character. -> Trying to use 'missing glyph'");
+            character = _font.getFontCharacterByName("missing-glyph");
             if (character != null)
                 addCharacter(character);
         } else {
@@ -949,11 +957,11 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
       * @see org.mt4j.components.visibleComponents.widgets.keyboard.ITextInputListener#appendCharByUnicode(java.lang.String)
       */
     synchronized public void appendCharByUnicode(String unicode) {
-        //Get the character from the font
-        IFontCharacter character = font.getFontCharacterByUnicode(unicode);
+        //Get the character from the _font
+        IFontCharacter character = _font.getFontCharacterByUnicode(unicode);
         if (character == null) {
-//			System.err.println("Error adding character with unicode '" + unicode + "' to the textarea. The font couldnt find the character. ->Trying to use 'missing glyph'");
-            character = font.getFontCharacterByUnicode("missing-glyph");
+//			System.err.println("Error adding character with unicode '" + unicode + "' to the textarea. The _font couldnt find the character. ->Trying to use 'missing glyph'");
+            character = _font.getFontCharacterByUnicode("missing-glyph");
             if (character != null)
                 addCharacter(character);
         } else {
@@ -1012,11 +1020,11 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
 
                 if (this.characterList.size() > 0 && maxLineWidth > localWidth) {
 //			if (this.characterList.size() > 0 && maxLineWidth > (localWidth - 2 * this.getInnerPaddingLeft())) {
-//				this.characterList.add(this.characterList.size() -1 , this.font.getFontCharacterByUnicode("\n"));
+//				this.characterList.add(this.characterList.size() -1 , this._font.getFontCharacterByUnicode("\n"));
                     try {
                         int lastSpacePos = getLastWhiteSpace();
                         if (lastSpacePos != -1) { //&& !this.characterList.get(characterList.size()-1).getUnicode().equals("\n")
-//						this.characterList.add(lastSpacePos + 1, this.font.getFontCharacterByUnicode("\n"));
+//						this.characterList.add(lastSpacePos + 1, this._font.getFontCharacterByUnicode("\n"));
                             this.characterList.add(lastSpacePos + 1, MTTextArea.artificialLineBreak);
                         } else {
                             return;
@@ -1254,12 +1262,12 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
 
 
     /**
-     * Gets the font.
+     * Gets the _font.
      *
-     * @return the font
+     * @return the _font
      */
     public IFont getFont() {
-        return font;
+        return _font;
     }
 
     /**
@@ -1314,7 +1322,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
                 this.setWidthLocal(this.getMaxLineWidth());
             }
         } else {
-            System.err.println("Cant enable caret for this textfield, the font doesent include the letter '|'");
+            System.err.println("Cant enable caret for this textfield, the _font doesent include the letter '|'");
         }
 
         this.setContentDisplayListDirty(true);

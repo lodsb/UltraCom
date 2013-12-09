@@ -318,7 +318,9 @@ public class MTSlider extends MTRectangle {
 		this.setValue(currVal);
 
 		this.value = new Property(this,"value", new java.lang.Float(currVal), ScalaPropertyBindings.setValue(this), ScalaPropertyBindings.getValue(this));
+        this.registerProperty(this.value);
 		this.valueRange = new Attribute<Float>("valueRange", this.getValueRangeVar());
+        this.registerAttribute(valueRange);
 	}
 
     private void updateBarAndText(){

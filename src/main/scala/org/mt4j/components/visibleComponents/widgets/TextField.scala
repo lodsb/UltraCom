@@ -26,7 +26,7 @@ import org.mt4j.MTApplication
 import org.mt4j.util.math.Vector3D
 import org.mt4j.MTApplication
 import org.mt4j.util.math.Vector3D
-import org.mt4j.components.visibleComponents.font.FontManager
+import org.mt4j.components.visibleComponents.font.{Font, FontManager}
 import org.mt4j.util.MTColor
 
 
@@ -36,8 +36,7 @@ object TextField {
 		val x = app.width / 2f;
 		val y = app.height / 2f;
 
-		val font = FontManager.getInstance().createFont(app, "arial.ttf", 35, MTColor.WHITE, MTColor.WHITE);
-		val textArea = new MTTextField(app,x,y,100,50,font);
+		val textArea = new MTTextField(app,x,y,100,50, Font());
 		textArea.setPositionGlobal(new Vector3D(app.width / 2f, app.height / 2f));
 		textArea.setNoFill(true);
 

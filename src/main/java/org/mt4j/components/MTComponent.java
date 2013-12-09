@@ -71,7 +71,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  * @author Christopher Ruff                                                                                   z
  */
-public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDeferor {
+public class MTComponent extends BaseComponent implements IMTComponent3D, IGestureEventListener {
 
     /**
      * The Constant logger.
@@ -416,15 +416,19 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
                 _globalRot.setter(),
                 _globalRot.getter());
 
+        this.registerProperty(this.globalRotation);
+
         this.localRotation = new Property(this, "rotate3DLocal",
                 new Rotation(Vector3D.ZERO_VECTOR, 0f, 0f, 0f),
                 _localRot.setter(),
                 _localRot.getter());
+        this.registerProperty(this.localRotation);
 
         this.relativeRotationToParent = new Property(this, "rotate3DRelativeToParent",
                 new Rotation(Vector3D.ZERO_VECTOR, 0f, 0f, 0f),
                 _relRot.setter(),
                 _relRot.getter());
+        this.registerProperty(relativeRotationToParent);
 
 
         this.globalPosition = new Property<Vector3D>(this, "globalPosition",
@@ -433,11 +437,15 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
                 _glblPosHlpr.getter()
         );
 
+        this.registerProperty(globalPosition);
+
         this.relativePositionToParent = new Property<Vector3D>(this, "relativePositionToParent",
                 new Vector3D(0f, 0f, 0f),
                 _relPosParHlpr.setter(),
                 _relPosParHlpr.getter()
         );
+
+        this.registerProperty(this.relativePositionToParent);
 
     }
 

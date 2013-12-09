@@ -57,6 +57,7 @@ import processing.opengl.PGraphicsOpenGL;
 public class MTPolygon extends MTCSSStylableShape {
 
 	public Attribute<Double> polygonArea2D = new Attribute<Double>("polygonArea2D", 0.0);
+
 	public Attribute<Vector3D> centerOfMass2D = new Attribute<Vector3D>("centerOfMass2D", new Vector3D());
 
     /**
@@ -110,6 +111,8 @@ public class MTPolygon extends MTCSSStylableShape {
 
 		this.polygonArea2D.update(this.get2DPolygonArea());
 		this.centerOfMass2D.update(this.getCenterOfMass2DLocal());
+        this.registerAttribute(polygonArea2D);
+        this.registerAttribute(centerOfMass2D);
     }
 
 

@@ -42,34 +42,34 @@ public class MT4jSettings {
     /**
      * Screen Size X.
      */
-    private int windowWidth = 1024;
+    public  int windowWidth = 1024;
 
     /**
      * Screen Size Y.
      */
-    private int windowHeight = 768;
+    public int windowHeight = 768;
 
     //Draw Modes
     /**
      * The Constant OPENGL_MODE.
      */
-    private static final int OPENGL_MODE = 1;
+    public static final int OPENGL_MODE = 1;
 
     /**
      * The Constant P3D_MODE.
      */
-    private static final int P3D_MODE = 2;
-	    public static final int GLGRAPHICS_MODE = 3;
+    public static final int P3D_MODE = 2;
+    public static final int GLGRAPHICS_MODE = 3;
 
     /**
      * Current DrawMode.
      */
-    private int renderer = P3D_MODE;
+    public int renderer = P3D_MODE;
 
     /**
      * The num samples.
      */
-    private int numSamples = 0;
+    public int numSamples = 0;
 
     /**
      * Frame Title.
@@ -79,7 +79,7 @@ public class MT4jSettings {
     /**
      * Maximum FrameRate.
      */
-    private int maxFrameRate = 60;
+    public int maxFrameRate = 60;
 
     /**
      * Start time of the app.
@@ -104,22 +104,22 @@ public class MT4jSettings {
     /**
      * The v sync.
      */
-    private boolean vSync = false;
+    public boolean vSync = false;
 
     /**
      * The fullscreen.
      */
-    private static boolean fullscreen = false;
+    public static boolean fullscreen = false;
 
     /**
      * The display.
      */
-    private int display = 1;
+    public int display = 1;
 
     /**
      * The fullscreen exclusive.
      */
-    private boolean fullscreenExclusive = false;
+    public boolean fullscreenExclusive = false;
 
 
     /**

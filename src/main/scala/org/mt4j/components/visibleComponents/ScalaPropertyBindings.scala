@@ -29,6 +29,7 @@ import shapes.{MTLine, MTEllipse, MTRectangle, AbstractShape}
 import widgets.{MTTextArea, MTSlider, MTColorPicker}
 import org.mt4j.types.Rotation
 import org.mt4j.components.MTComponent
+import org.mt4j.components.visibleComponents.font.IFont
 
 class _genSetterGetterHelper[T](set: (T) => Unit, initVal:T) {
 	var setVal: T = initVal;
@@ -203,12 +204,20 @@ object ScalaPropertyBindings {
 	}
 
 	def setPadding(z: MTTextArea): Float => Unit = {
-		z.setInnerPadding
-	}
+    z.setInnerPadding
+  }
 
-	def getPadding(z: MTTextArea): () => Float = {
-		z.getInnerPaddingTop
-	}
+  def getPadding(z: MTTextArea): () => Float = {
+    z.getInnerPaddingTop
+  }
+
+  def setFont(z: MTTextArea): IFont => Unit = {
+    z.setFont
+  }
+
+  def getFont(z: MTTextArea): () => IFont = {
+    z.getFont
+  }
 
 
 }

@@ -114,11 +114,15 @@ public class MTLine extends MTCSSStylableShape {
                 ScalaPropertyBindings.getStartPosition(this)
                 );
 
+        this.registerProperty(startPosition);
+
         endPosition = new Property<Vector3D>(this, "endPosition",
                 this.getEndPoint(),
                 ScalaPropertyBindings.setEndPosition(this),
                 ScalaPropertyBindings.getEndPosition(this)
                 );
+
+        this.registerProperty(endPosition);
 
 
     }

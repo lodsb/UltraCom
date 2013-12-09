@@ -101,6 +101,7 @@ public class MTImageButton extends MTRectangle implements IclickableButton {
         this.setDepthBufferDisabled(true);
 
         this.pressed = new Attribute<Boolean>("pressed",false);
+        this.registerAttribute(pressed);
     }
 
 

@@ -148,6 +148,8 @@ public class MTRectangle extends MTPolygon {
 
         this.setTexture(texture);
         this.setTextureEnabled(true);
+        this.registerProperty(width);
+        this.registerProperty(height);
     }
 
 

@@ -98,17 +98,22 @@ public abstract class AbstractVisibleComponent extends MTComponent {
 															ScalaPropertyBindings.getStrokeWeight(this)
 														);
 
+        this.registerProperty(strokeWeight);
+
 		strokeColor = new Property<MTColor>(this, "strokeColor",
 															styleInfo.getStrokeColor(),
 															ScalaPropertyBindings.setStrokeColor(this),
 															ScalaPropertyBindings.getStrokeColor(this)
 														);
 
+        this.registerProperty(strokeColor);
+
 		fillColor = new Property<MTColor>(this, "fillColor",
 															styleInfo.getFillColor(),
 															ScalaPropertyBindings.setFillColor(this),
 															ScalaPropertyBindings.getFillColor(this)
 														);
+        this.registerProperty(fillColor);
     }
 
 
