@@ -42,49 +42,49 @@ public class MT4jSettings {
     /**
      * Screen Size X.
      */
-    public int windowWidth = 1024;
+    private int windowWidth = 1024;
 
     /**
      * Screen Size Y.
      */
-    public int windowHeight = 768;
+    private int windowHeight = 768;
 
     //Draw Modes
     /**
      * The Constant OPENGL_MODE.
      */
-    public static final int OPENGL_MODE = 1;
+    private static final int OPENGL_MODE = 1;
 
     /**
      * The Constant P3D_MODE.
      */
-    public static final int P3D_MODE = 2;
+    private static final int P3D_MODE = 2;
 	    public static final int GLGRAPHICS_MODE = 3;
 
     /**
      * Current DrawMode.
      */
-    public int renderer = P3D_MODE;
+    private int renderer = P3D_MODE;
 
     /**
      * The num samples.
      */
-    public int numSamples = 0;
+    private int numSamples = 0;
 
     /**
      * Frame Title.
      */
-    public String frameTitle = "MT-Application";
+    private String frameTitle = "MT-Application";
 
     /**
      * Maximum FrameRate.
      */
-    public int maxFrameRate = 60;
+    private int maxFrameRate = 60;
 
     /**
      * Start time of the app.
      */
-    public long programStartTime = 0;
+    public  long programStartTime = 0;
 
     /**
      * The Constant ARCHITECTURE_32_BIT.
@@ -104,43 +104,43 @@ public class MT4jSettings {
     /**
      * The v sync.
      */
-    public boolean vSync = false;
+    private boolean vSync = false;
 
     /**
      * The fullscreen.
      */
-    public static boolean fullscreen = false;
+    private static boolean fullscreen = false;
 
     /**
      * The display.
      */
-    public int display = 1;
+    private int display = 1;
 
     /**
      * The fullscreen exclusive.
      */
-    public boolean fullscreenExclusive = false;
+    private boolean fullscreenExclusive = false;
 
 
     /**
      * The DEFAUL t_ fon t_ path.
      */
-    public static String DEFAULT_SETTINGS_PATH = "";
+    private static String DEFAULT_SETTINGS_PATH = "";
 
     /**
      * The DEFAUL t_ dat a_ folde r_ path.
      */
-    public static String DEFAULT_DATA_FOLDER_PATH = "resources" + MTApplication.separator;
+    private static String DEFAULT_DATA_FOLDER_PATH = "resources" + MTApplication.separator;
 
     /**
      * The DEFAUL t_ fon t_ path.
      */
-    public static String DEFAULT_FONT_PATH = DEFAULT_DATA_FOLDER_PATH;
+    private static String DEFAULT_FONT_PATH = DEFAULT_DATA_FOLDER_PATH;
 
     /**
      * The DEFAUL t_ image s_ path.
      */
-    public static String DEFAULT_IMAGES_PATH = "data" + MTApplication.separator + "images" + MTApplication.separator;
+    private static String DEFAULT_IMAGES_PATH = "data" + MTApplication.separator + "images" + MTApplication.separator;
 
 
 //	public static String DEFAULT_VIDEOS_PATH = new String(System.getProperty("user.dir") + File.separator + "data" /*+ File.separator + "videos"  */ +  File.separator);
@@ -148,17 +148,17 @@ public class MT4jSettings {
     /**
      * The DEFAUL t_ video s_ path.
      */
-    public static String DEFAULT_VIDEOS_PATH = "";
+    private static String DEFAULT_VIDEOS_PATH = "";
 
     /**
      * The DEFAUL t_ sv g_ path.
      */
-    public static String DEFAULT_SVG_PATH = "data" + MTApplication.separator + "svg" + MTApplication.separator;
+    private static String DEFAULT_SVG_PATH = "data" + MTApplication.separator + "svg" + MTApplication.separator;
 
     /**
      * The DEFAUL t_3 d_ mode l_ path.
      */
-    public static String DEFAULT_3D_MODEL_PATH = "data" + MTApplication.separator + "models" + MTApplication.separator;
+    private static String DEFAULT_3D_MODEL_PATH = "data" + MTApplication.separator + "models" + MTApplication.separator;
 
 
     /**
@@ -391,22 +391,28 @@ public class MT4jSettings {
         return frameTitle;
     }
 
-    public String defaultScSynthPath = "/usr/local/bin/scsynth";
+    private String defaultScSynthPath = "/usr/local/bin/scsynth";
     public String getScSynthPath() {
+        if(System.getProperty("os.name").toLowerCase().contains("windows")) {
+            return defaultWinScSynth;
+        } else {
         return defaultScSynthPath;
+        }
     }
 
-    public String defaultAudioDevice = "UltraCom Output";
+    public String defaultWinScSynth = "C:\\Programm Files(x86)\\SuperCollider\\scsynth.exe";
+
+    private String defaultAudioDevice = "UltraCom Output";
     public String getDefaultAudioDevice() {
         return defaultAudioDevice;
     }
 
-    public static String defaultSessionLogName = "defaultSessionLog_";
+    private static String defaultSessionLogName = "defaultSessionLog_";
     public String getDefaultSessionLogName() {
         return defaultSessionLogName;
     }
 
-    public static Boolean enableLimiter = false;
+    private static Boolean enableLimiter = false;
     public Boolean isLimiterEnabled() {
         return enableLimiter;
     }
@@ -599,6 +605,9 @@ public class MT4jSettings {
 
             String scsynthPath = properties.getProperty("ScSynthPath", MT4jSettings.getInstance().getScSynthPath().trim());
             MT4jSettings.getInstance().defaultScSynthPath = scsynthPath;
+            // used so configs wont be messed up too much
+            scsynthPath = properties.getProperty("ScSynthPathWin", defaultWinScSynth);
+            MT4jSettings.getInstance().defaultWinScSynth = scsynthPath;
 
             String defaultAudio = properties.getProperty("DefaultAudioDevice", MT4jSettings.getInstance().getDefaultAudioDevice().trim());
             MT4jSettings.getInstance().defaultAudioDevice = defaultAudio;
