@@ -51,14 +51,14 @@ private object Implicits {
 }
 
 trait Color
-class RgbC(r: Int, g: Int, b: Int, a: Int) extends MTColor(r,g,b,a)
+class RgbC(val r: Int, val g: Int, val b: Int, val a: Int) extends MTColor(r,g,b,a)
 
 case class Alpha(alpha: Int) extends RgbC(0,0,0,alpha)
 case class Red(red: Int) extends RgbC(red,0,0,0)
 case class Green(green: Int) extends RgbC(0,green,0,0)
 case class Blue(blue: Int) extends RgbC(0,0, blue,0)
 
-case class Rgb(r: Int, g: Int, b: Int, a: Int) extends RgbC(r,g,b,a) with Color {
+case class Rgb(override val r: Int, override val g: Int, override val b: Int, override val a: Int) extends RgbC(r,g,b,a) with Color {
   val range = 0 to 255
   r :: g :: b :: Nil map(d => require((0 to 255).contains(d), "%s must be between 0..255" format d))
 
@@ -82,6 +82,14 @@ case class Rgb(r: Int, g: Int, b: Int, a: Int) extends RgbC(r,g,b,a) with Color 
   }
 
   def -(rgb: Rgb) = {
+    Rgb(rgb.r-this.r, rgb.b- this.b, rgb.g- this.g, rgb.a - this.a)
+  }
+
+  def +(rgb: RgbC) = {
+    Rgb(rgb.r+this.r, rgb.b+ this.b, rgb.g+ this.g, rgb.a + this.a)
+  }
+
+  def -(rgb: RgbC) = {
     Rgb(rgb.r-this.r, rgb.b- this.b, rgb.g- this.g, rgb.a - this.a)
   }
 
@@ -112,6 +120,16 @@ case class Rgb(r: Int, g: Int, b: Int, a: Int) extends RgbC(r,g,b,a) with Color 
     scala.math.abs(cc(this) - cc(that))
   }
 
+  def moreOpaque(step: Double) = {
+    println(this)
+    Rgb(r,g,b, (step).toInt)
+  }
+
+  def moreTransparent(step: Double) = {
+    Rgb(r,g,b, (a - step).toInt)
+  }
+
+
 }
 
 case class Hsv(h: Double, s: Double, v: Double, a: Double) extends Color  {
@@ -129,7 +147,7 @@ case class Hsv(h: Double, s: Double, v: Double, a: Double) extends Color  {
     else List(c, 0.0, x)
 
     val m = v-c
-    val rgb = rgbList.map( x=> ((x + m) * 255.0).toInt)
+    val rgb = rgbList.map( x=> ((x + m) * 255.0).toInt).map(x => scala.math.min(scala.math.max(x, 0),255))
     Rgb(rgb(0), rgb(1), rgb(2), (a*255.0).toInt)
   }
 
@@ -141,12 +159,12 @@ case class Hsv(h: Double, s: Double, v: Double, a: Double) extends Color  {
     rgb.cmyk
   }
 
-  def lighten(step: Double = 0.1) = {
+  def darken(step: Double = 0.1) = {
     Hsv(h, s, v-step, a)
   }
 
-  def darken(step: Double = 0.1) = {
-    lighten(-step)
+  def lighten(step: Double = 0.1) = {
+    darken(-step)
   }
 
   def saturate(step: Double = 0.1) = {
@@ -216,9 +234,22 @@ object Color {
   def apply(r:Int) = Rgb(r,r,r, 255)
   def apply(r:Int, a:Int) = Rgb(r,r,a, 255)
 	def apply(r:Int,g:Int,b:Int,a:Int) = Rgb(r,g,b,a)
-	//def apply(name:String, r:Int,g:Int,b:Int) = Rgb(r,g,b, 255)
-	//def apply(name:String, r:Int,g:Int,b:Int,a:Int) = Rgb(r,g,b,a)
-	//def apply(name:String, r:Int,g:Int,b:Int) = Rgb(r,g,b, 255)
-	//def apply(name:String, r:Int,g:Int,b:Int,a:Int) = Rgb(r,g,b,a)
 
+  def fromMtColor(c: MTColor) : Rgb = {
+    Rgb(c.getR.toInt, c.getG.toInt, c.getB.toInt, c.getA.toInt)
+  }
+	//def apply(name:String, r:Int,g:Int,b:Int) = Rgb(r,g,b, 255)
+	//def apply(name:String, r:Int,g:Int,b:Int,a:Int) = Rgb(r,g,b,a)
+	//def apply(name:String, r:Int,g:Int,b:Int) = Rgb(r,g,b, 255)
+	//def apply(name:String, r:Int,g:Int,b:Int,a:Int) = Rgb(r,g,b,a)
 }
+
+abstract class ColorTransformation
+case class Saturation(value: Double) extends ColorTransformation
+case class Opacity(value: Double) extends ColorTransformation
+case class Lightness(value: Double) extends ColorTransformation
+case class Invert(angle: Double) extends ColorTransformation
+case class Colorize(r : Int, g: Int, b: Int) extends ColorTransformation
+object PushColorState extends ColorTransformation
+object PopColorState extends ColorTransformation
+

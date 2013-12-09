@@ -93,7 +93,7 @@ public abstract class AbstractVisibleComponent extends MTComponent {
         super(pApplet, name, /*globalCamera,*/ objectCamera);
 		this.setStyleInfo(new StyleInfo());
 		strokeWeight = new Property(this, "strokeWeight",
-															styleInfo.getStrokeWeight(),
+															this.getStrokeWeight(),
 															ScalaPropertyBindings.setStrokeWeight(this),
 															ScalaPropertyBindings.getStrokeWeight(this)
 														);
@@ -101,7 +101,7 @@ public abstract class AbstractVisibleComponent extends MTComponent {
         this.registerProperty(strokeWeight);
 
 		strokeColor = new Property<MTColor>(this, "strokeColor",
-															styleInfo.getStrokeColor(),
+															this.getStrokeColor(),
 															ScalaPropertyBindings.setStrokeColor(this),
 															ScalaPropertyBindings.getStrokeColor(this)
 														);
@@ -109,7 +109,7 @@ public abstract class AbstractVisibleComponent extends MTComponent {
         this.registerProperty(strokeColor);
 
 		fillColor = new Property<MTColor>(this, "fillColor",
-															styleInfo.getFillColor(),
+															this.getFillColor(),
 															ScalaPropertyBindings.setFillColor(this),
 															ScalaPropertyBindings.getFillColor(this)
 														);

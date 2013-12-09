@@ -42,6 +42,7 @@ import org.mt4j.input.inputProcessors.IInputProcessor;
 import org.mt4j.input.inputProcessors.MTGestureEvent;
 import org.mt4j.input.inputProcessors.componentProcessors.AbstractComponentProcessor;
 import org.mt4j.types.Rotation;
+import org.mt4j.util.ColorTransformation;
 import org.mt4j.util.MT4jSettings;
 import org.mt4j.util.camera.IFrustum;
 import org.mt4j.util.camera.Icamera;
@@ -3633,5 +3634,12 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
     }
 
 
-
+    @Override
+    public void propagateColorTransformationToChildren(ColorTransformation ctrans) {
+        synchronized(childComponents) {
+            for(MTComponent child: childComponents) {
+                child.colorTransformation(ctrans);
+            }
+        }
+    }
 }

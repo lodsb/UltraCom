@@ -3,10 +3,12 @@ package org.mt4j.components
 import org.lodsb.reakt.property.{Attribute, Property, VarDeferor}
 import org.mt4j.components.PropertyAndAttributeWrappers.PropertyAndAttributeWrapper
 import org.mt4j.util.math.{Vertex, Vector3D}
-import org.mt4j.types.Rotation
-import org.mt4j.util.MTColor
 import org.mt4j.components.visibleComponents.font.IFont
 import processing.core.PImage
+import org.mt4j.util._
+import org.mt4j.types.Rotation
+import org.mt4j.types.Rotation
+import scala.unchecked
 
 
 /**
@@ -212,6 +214,72 @@ abstract class BaseComponent extends VarDeferor {
     }
   }
 
+  private var colorStack: List[MTColor] = List[org.mt4j.util.MTColor]()
+
+  protected def propagateColorTransformationToChildren(ctrans: ColorTransformation)
+
+  def colorTransformation(ctrans: ColorTransformation) = {
+    // this is dirty, but there should be also some typesafe and direct way to do this
+
+    propertiesAndAttributes.foreach { pa =>
+      if(pa.name.toLowerCase.contains("color")) {
+        pa match {
+        case x:PropertyWrapper[MTColor] => {
+          val currentColor = x.property.get()
+          ctrans match {
+            case PushColorState => {
+              colorStack = colorStack :+ (currentColor)
+            }
+
+            case PopColorState => {
+              if(!colorStack.isEmpty) {
+                val oldColor = colorStack.head
+                colorStack = colorStack.tail
+
+                x.property() = oldColor
+              }
+            }
+
+            case Saturation(v) => {
+              val w = scala.math.min(scala.math.max(v, 0), 255)
+              val newColor = Color.fromMtColor(currentColor).hsv.saturate(w).rgb
+              x.property() = newColor
+            }
+
+            case Lightness(v) => {
+              val w = scala.math.min(scala.math.max(v, 0), 255)
+              val newColor = Color.fromMtColor(currentColor).hsv.lighten(w).rgb
+              x.property() = newColor
+            }
+
+            case Invert(v) => {
+
+              val newColor = currentColor;//Color.fromMtColor(currentColor).hsv.rotate(v*180).rgb
+              x.property() = newColor
+            }
+
+            case Opacity(v) => {
+              println(x.property.name)
+              println("c "+currentColor)
+              println("comp "+this)
+              val newColor = Color.fromMtColor(currentColor);//.moreOpaque(v*254)
+              x.property.set(currentColor)
+            }
+
+            case Colorize(r,g,b) => {
+              val newColor = Color.fromMtColor(currentColor) + Red(r) + Green(g) + Blue(b)
+              x.property() = newColor
+            }
+
+
+          }
+        }
+        case _ =>
+      }
+    }
+    }
+    propagateColorTransformationToChildren(ctrans)
+  }
 }
 
 object PropertyAndAttributeWrappers {
