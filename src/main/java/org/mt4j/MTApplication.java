@@ -635,8 +635,6 @@ public abstract class MTApplication extends PApplet {
         if (MT4jSettings.getInstance().isOpenGlMode()) {
             GL2 gl = Tools3D.getGL(this);
 
-            System.err.println("GL ?? "+gl);
-
 
             logger.info("OpenGL Version: \"" + gl.glGetString(GL2.GL_VERSION) + "\"" + " - Vendor: \"" + gl.glGetString(GL2.GL_VENDOR) + "\"" + " - Renderer: \"" + gl.glGetString(GL2.GL_RENDERER) + "\"");
 //	    	logger.info("Shading language version: \"" +  gl.glGetString(GL2.GL_SHADING_LANGUAGE_VERSION) + "\"");

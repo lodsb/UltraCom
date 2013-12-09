@@ -2880,10 +2880,7 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
     public PickResult pick(float x, float y) {
         PickResult pickResult = new PickResult();
         PickInfo pickInfo = new PickInfo(x, y, Tools3D.getCameraPickRay(this.getRenderer(), this, x, y));
-        System.err.println(x+ " --- " + y);
-        System.err.println("renderoroooror "+this.getRenderer());
-        System.err.println("eggman "+this);
-        System.err.println("camera pick ray" + Tools3D.getCameraPickRay(this.getRenderer(), this, x, y));
+
         this.pickRecursive(pickInfo, pickResult, Float.MAX_VALUE, pickInfo.getPickRay(), true);
 //		pickResult.printList();
         return pickResult;
@@ -2940,7 +2937,6 @@ public class MTComponent implements IMTComponent3D, IGestureEventListener, VarDe
         //TEST, Wenns probleme gibt das wieder aktivieren
 		//currObjDist = pickResult.getDistanceNearestPickObj();
 
-		System.out.println("At: " + this.getName() + " Current Distance: " + currObjDist);
 
         if (this.isVisible() &&
                 ((onlyPickables && this.isPickable()) || !onlyPickables)

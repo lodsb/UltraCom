@@ -1,4 +1,6 @@
 *************
+Update: uses processing 2.1 now
+
 ## How to build:
 
 ###First,you need:  

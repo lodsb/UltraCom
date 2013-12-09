@@ -379,6 +379,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
         }
     }
 
+    //fixme, n should use center alignment
 
     @Override
     public void updateComponent(long timeDelta) {

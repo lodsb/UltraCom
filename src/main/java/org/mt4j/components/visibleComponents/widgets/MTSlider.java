@@ -23,6 +23,7 @@ import java.beans.PropertyChangeSupport;
 import org.mt4j.components.TransformSpace;
 import org.mt4j.components.visibleComponents.ScalaPropertyBindings;
 import org.mt4j.components.visibleComponents.StyleInfo;
+import org.mt4j.components.visibleComponents.font.FontManager;
 import org.mt4j.components.visibleComponents.shapes.AbstractShape;
 import org.mt4j.components.visibleComponents.shapes.MTEllipse;
 import org.mt4j.components.visibleComponents.shapes.MTRectangle;
@@ -64,7 +65,9 @@ public class MTSlider extends MTRectangle {
 	/**
 	 * The outer shape.
 	 */
-	private AbstractShape outerShape;
+	private MTRoundRectangle outerShape;
+    private MTRoundRectangle innerShape;
+    private MTTextField text;
 
 	/**
 	 * The slider.
@@ -85,6 +88,9 @@ public class MTSlider extends MTRectangle {
 	 * The value range.
 	 */
 	private float valueRangeVar;
+
+    private float height;
+    private float width;
 
 	/**
 	 * The x.
@@ -149,6 +155,9 @@ public class MTSlider extends MTRectangle {
 			System.err.println("Minimum value is bigger than the maximum value in " + this);
 		}
 
+        this.height = height;
+        this.width = height;
+
 		this.x = _x;
 		this.y = _y;
 		this.minValue = minValue;
@@ -185,7 +194,7 @@ public class MTSlider extends MTRectangle {
 		}
 
 //		outerShape = new MTRectangle(x,y, width, height, applet);
-		outerShape = new MTRoundRectangle(applet, x, y, 0, width, height, knobWidth / 2f + innerPadding, knobHeight / 2f + innerPadding);
+		outerShape = new MTRoundRectangle(applet, x, y+height/4f, 0, width, height/2f, knobWidth / 4f + innerPadding, knobHeight / 4f + innerPadding);
 		outerShape.unregisterAllInputProcessors();
 		//When we click on the outershape move the knob in that direction a certain step
 		outerShape.registerInputProcessor(new TapProcessor(applet, 35));
@@ -215,10 +224,11 @@ public class MTSlider extends MTRectangle {
 			}
 		});
 
+
 //		knob = new MTRectangle(x+innerOffset, y+innerOffset, 	knobWidth, knobHeight, applet);
 		knob = new MTEllipse(applet, new Vector3D(0, 0, 0), knobWidth * 0.5f, knobHeight * 0.5f);
         knob.setName("MTSlider-Knob");
-		knob.setFillColor(new MTColor(140, 140, 140, 255));
+		knob.setFillColor(new MTColor(32, 140, 80, 255));
 		AbstractComponentProcessor[] inputPs = knob.getInputProcessors();
 		for (AbstractComponentProcessor p : inputPs) {
 			if (!(p instanceof DragProcessor)) {
@@ -227,8 +237,23 @@ public class MTSlider extends MTRectangle {
 		}
 		knob.removeAllGestureEventListeners(DragProcessor.class);
 
-		outerShape.addChild(knob);
-		this.addChild(outerShape);
+        innerShape = new MTRoundRectangle(applet, x, y+height/4f, 0, width/2f, height/2f, knobWidth / 4f + innerPadding, knobHeight / 4f + innerPadding);
+        innerShape.setFillColor(new MTColor(72, 180, 120, 255));
+        innerShape.setPickable(false);
+
+        outerShape.addChild(innerShape);
+        outerShape.addChild(knob);
+        this.addChild(outerShape);
+
+        text = new MTTextField(applet, x,y+height, height+20,height+20, FontManager.getInstance().getDefaultFont(applet, this.getFillColor(), getStrokeColor()));
+        text.setNoFill(true);
+        text.setPickable(false);
+        text.setNoStroke(true);
+        this.addChild(text);
+
+
+
+
 
 		//TODO these have to be updated if knob or outershape are changed
 //		final float knobWidthRelParent = knob.getWidthXY(TransformSpace.RELATIVE_TO_PARENT);
@@ -240,6 +265,7 @@ public class MTSlider extends MTRectangle {
 			public boolean processGestureEvent(MTGestureEvent ge) {
 				DragEvent de = (DragEvent) ge;
 				Vector3D dir = new Vector3D(de.getTranslationVect());
+
 				//Transform the global direction vector into knob local coordiante space
 				dir.transformDirectionVector(knob.getGlobalInverseMatrix());
 
@@ -250,6 +276,7 @@ public class MTSlider extends MTRectangle {
 					float knobWidthRelParent = knob.getWidthXY(TransformSpace.RELATIVE_TO_PARENT);
 					float knobHeightRelParent = knob.getHeightXY(TransformSpace.RELATIVE_TO_PARENT);
 					float outerWidthLocal = outerShape.getWidthXY(TransformSpace.LOCAL);
+                    float knoby = knob.getCenterPointRelativeToParent().getX();
 
 					Vector3D knobCenterRelToParent = knob.getCenterPointRelativeToParent();
 					//Cap the movement at both ends of the slider
@@ -273,6 +300,7 @@ public class MTSlider extends MTRectangle {
 //					System.out.println("Slider value: " + getValue());
 
 					value.update(getValue())   ;
+                    updateBarAndText();
 
 					//Fire property change event
 					if (propertyChangeSupport.hasListeners("value")) {
@@ -292,6 +320,28 @@ public class MTSlider extends MTRectangle {
 		this.value = new Property(this,"value", new java.lang.Float(currVal), ScalaPropertyBindings.setValue(this), ScalaPropertyBindings.getValue(this));
 		this.valueRange = new Attribute<Float>("valueRange", this.getValueRangeVar());
 	}
+
+    private void updateBarAndText(){
+        float outerShapeWidthLocal = outerShape.getWidthXY(TransformSpace.LOCAL);
+        float knobWidthRelParent = knob.getWidthXY(TransformSpace.RELATIVE_TO_PARENT);
+
+        float leftMostPossibleKnobPosX = x + innerPadding + knobWidthRelParent * 0.5f;
+        float rightMostPossibleKnobPosX = x + outerShapeWidthLocal - innerPadding - knobWidthRelParent * 0.5f;
+        float slideableArea = rightMostPossibleKnobPosX - leftMostPossibleKnobPosX;
+        float knobPosX = knob.getCenterPointRelativeToParent().x;
+
+
+        float knobCurr = knobPosX - leftMostPossibleKnobPosX+height-3;
+        innerShape.setSizeLocal(knobCurr, MTSlider.this.height/2 );
+        text.setText(String.format("%.2f", getValue()));
+        float offset = text.getMaxLineWidth();
+        Vector3D pos = new Vector3D(knobPosX, y+height+25, 0);
+        text.setPositionRelativeToParent(pos);
+    }
+
+    public AbstractShape getBar() {
+        return innerShape;
+    }
 
 	/**
 	 * Gets the value.
@@ -386,6 +436,8 @@ public class MTSlider extends MTRectangle {
 		if (propertyChangeSupport.hasListeners("value")) {
 			this.propertyChangeSupport.firePropertyChange("value", oldValue, this.getValue());
 		}
+
+        updateBarAndText();
 	}
 
 	/**
@@ -481,6 +533,10 @@ public class MTSlider extends MTRectangle {
 		return propertyChangeSupport.getPropertyChangeListeners(propertyName);
 	}
 
+    public void setNumberDisplayVisible(boolean visible) {
+        this.text.setVisible(visible);
+    }
+
 	/**
 	 * Removes the property change listener.
 	 *
@@ -495,9 +551,19 @@ public class MTSlider extends MTRectangle {
 	// DELEGATE APPEARANCE TO OUTERSHAPE SINCE THE SLIDER ITSELF ISNT DISPLAYED!
 	@Override
 	public void setFillColor(MTColor color) {
-		super.setFillColor(color);
-		if (this.getOuterShape() != null)
-			this.getOuterShape().setFillColor(color);
+
+        if(innerShape != null && knob != null) {
+            float r = ToolsMath.clamp(color.getR() - 40, 0, 255);
+            float b = ToolsMath.clamp(color.getB() - 40, 0, 255);
+            float g = ToolsMath.clamp(color.getG() - 40, 0, 255);
+
+
+
+            innerShape.setFillColor(color);
+
+            knob.setFillColor(new MTColor(r,g,b));
+        }
+
 	}
 
 	@Override

@@ -73,7 +73,6 @@ public class DefaultDragAction implements IGestureEventListener, ICollisionActio
       * @see org.mt4j.input.inputProcessors.IGestureEventListener#processGestureEvent(org.mt4j.input.inputProcessors.MTGestureEvent)
       */
     public boolean processGestureEvent(MTGestureEvent g) {
-        System.err.println("drag action " + g);
         if (g instanceof DragEvent) {
             DragEvent dragEvent = (DragEvent) g;
             lastEvent = dragEvent;

@@ -53,7 +53,7 @@ public class FontManager {
     private static final int CACHE_MAX_SIZE = 10;
 
 
-    public static String DEFAULT_FONT = "SansSerif";
+    public static String DEFAULT_FONT = "data/fonts/arvo/Arvo-Regular.ttf";
     public static int DEFAULT_FONT_SIZE = 16;
     public static MTColor DEFAULT_FONT_FILL_COLOR = MTColor.BLACK;
     public static MTColor DEFAULT_FONT_STROKE_COLOR = MTColor.BLACK;
@@ -111,6 +111,10 @@ public class FontManager {
      */
     public IFont getDefaultFont(PApplet app) {
         return createFont(app, DEFAULT_FONT, DEFAULT_FONT_SIZE, new MTColor(DEFAULT_FONT_FILL_COLOR), new MTColor(DEFAULT_FONT_STROKE_COLOR), DEFAULT_FONT_ANTIALIASING);
+    }
+
+    public IFont getDefaultFont(PApplet app, MTColor fill, MTColor stroke) {
+        return createFont(app, DEFAULT_FONT, DEFAULT_FONT_SIZE, fill, stroke, DEFAULT_FONT_ANTIALIASING);
     }
 
 

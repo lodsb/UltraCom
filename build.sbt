@@ -26,6 +26,7 @@ libraryDependencies += "de.sciss" %% "scalaosc" % "1.1.2+"
 
 libraryDependencies += "org.lodsb" %% "reakt" % "0.2-SNAPSHOT"
 
+
 unmanagedClasspath in Compile += Attributed.blank(new java.io.File("doesnotexist"))
 
 //unmanagedBase <<= baseDirectory { base => base / "libraries/misc" }

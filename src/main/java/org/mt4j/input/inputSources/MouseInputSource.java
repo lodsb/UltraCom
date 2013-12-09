@@ -147,14 +147,18 @@ public class MouseInputSource extends AbstractInputSource<MTFingerInputEvt> {// 
 
             InputCursor m = new InputCursor();
             MTFingerInputEvt touchEvt = new MTFingerInputEvt(this, e.getX(), e.getY(), MTFingerInputEvt.INPUT_DETECTED, m);
-//			m.addEvent(touchEvt);
+//			m.addEvent(touchEvt)
+            touchEvt.setOriginMouse(true);
 
             lastUsedMouseID = m.getId();
             ActiveCursorPool.getInstance().putActiveCursor(lastUsedMouseID, m);
+
+            touchEvt.setMouseButtonsAndModifiers(e.getButton(), e.getModifiers());
 //			
 //			System.out.println("MouseSource Finger DOWN, Motion ID: " + m.getId());
             //FIRE
             this.enqueueInputEvent(touchEvt);
+
         }
     }
 
@@ -172,9 +176,11 @@ public class MouseInputSource extends AbstractInputSource<MTFingerInputEvt> {// 
             InputCursor m = ActiveCursorPool.getInstance().getActiveCursorByID(lastUsedMouseID);
             if (m != null) {
                 MTFingerInputEvt te = new MTFingerInputEvt(this, e.getX(), e.getY(), MTFingerInputEvt.INPUT_UPDATED, m);
+                te.setMouseButtonsAndModifiers(e.getButton(), e.getModifiers());
 //				m.addEvent(te);
 //				System.out.println("MouseSource Finger UPDATE, Motion ID: " + m.getId());
                 //FIRE
+                te.setOriginMouse(true);
                 this.enqueueInputEvent(te);
             }
         } catch (Exception err) {
@@ -191,8 +197,9 @@ public class MouseInputSource extends AbstractInputSource<MTFingerInputEvt> {// 
         if (e.getButton() == mousePressedButton) {
             InputCursor m = ActiveCursorPool.getInstance().getActiveCursorByID(lastUsedMouseID);
             MTFingerInputEvt te = new MTFingerInputEvt(this, e.getX(), e.getY(), MTFingerInputEvt.INPUT_ENDED, m);
+            te.setMouseButtonsAndModifiers(e.getButton(), e.getModifiers());
 //			m.addEvent(te);
-
+            te.setOriginMouse(true);
             //System.out.println("MouseSource Finger UP, Motion ID: " + m.getId());
             this.enqueueInputEvent(te);
 

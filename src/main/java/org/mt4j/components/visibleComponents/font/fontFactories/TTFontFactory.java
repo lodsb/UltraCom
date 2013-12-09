@@ -47,6 +47,9 @@ import java.util.ArrayList;
  * A factory for creating vector font objects.
  *
  * @author Christopher Ruff
+ *
+ * as it seems some of this code has been lifted from the gemorative library
+ * so also (C) Ricard Marxer
  */
 public class TTFontFactory implements IFontFactory {
     /**
@@ -592,18 +595,23 @@ public class TTFontFactory implements IFontFactory {
             if (MT4jSettings.getInstance().isOpenGlMode())
                 character.setUseDirectGL(true);
 
-            character.setStrokeWeight(0.7f);
+            character.setStrokeWeight(0.11f);
             character.setPickable(false);
 
 //			//FIXME TEST -> dont use a font outline if we use multi-sampling and outlineColor=fillcolor
             if (!this.antiAliasing) {
                 character.setNoStroke(true);
             } else {
-                if (MT4jSettings.getInstance().isMultiSampling() && fillColor.equals(strokeColor)) {
+
+                // might make sense but looks disgusting...
+                /*if (MT4jSettings.getInstance().isMultiSampling() && fillColor.equals(strokeColor)) {
                     character.setNoStroke(true);
                 } else {
                     character.setNoStroke(false);
-                }
+                } */
+
+                character.setDrawSmooth(true);
+                character.setNoStroke(false);
             }
 
 //			for(Vertex[] contour: character.getContours()){
@@ -624,8 +632,10 @@ public class TTFontFactory implements IFontFactory {
              character.scale(fontSize , new Vector3D(0,0,0));
                 */
 
+            strokeColor.setAlpha(200);
             character.setStrokeColor(new MTColor(strokeColor));
             character.setFillColor(new MTColor(fillColor));
+            //character.setNoFill(true);
 
             if (MT4jSettings.getInstance().isOpenGlMode())
                 character.generateAndUseDisplayLists();

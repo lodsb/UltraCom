@@ -4,7 +4,7 @@ organization := "org.lodsb"
 
 version := "0.1-SNAPSHOT"
 
-scalaVersion := "2.9.2"
+scalaVersion := "2.10.1"
 
 scalacOptions ++= Seq("-unchecked", "-deprecation") //, "-Xprint:typer")
 
@@ -17,18 +17,21 @@ scalacOptions <++= scalaVersion map { version =>
  	else Nil
 }
 
+unmanagedBase <<= baseDirectory { base => base / "../../libraries/" }
 
-libraryDependencies += "org.lodsb" %% "ultracom" % "0.2-SNAPSHOT"
+unmanagedJars in Compile <++= baseDirectory map { base =>
+    val baseDirectories = (base / "../../libraries/misc") +++ (base / "../../libraries/processing")
+    val customJars = (baseDirectories ** "*.jar")
+    customJars.classpath
+}
+
+libraryDependencies += "org.lodsb" %% "ultracom" % "0.2-PROC2"
 
 resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
-
-addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "1.3.0-SNAPSHOT")
 
 unmanagedClasspath in Compile += Attributed.blank(new java.io.File("doesnotexist"))
 
 unmanagedBase <<= baseDirectory { base => base / "../../libraries/misc" }
-
-resolvers += "Twitter repo" at "http://maven.twttr.com/"
  
 libraryDependencies ++= Seq(
     "com.twitter" % "util-eval" % "1.12.13"

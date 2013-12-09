@@ -181,13 +181,12 @@ public class MTCanvas extends MTComponent implements IHitTestInfoProvider {
      * @return the object at that position or this MTCanvas instance if no component was hit
      */
     public IMTComponent3D getComponentAt(float x, float y) {
-        System.err.println("FUFUFUFUFUFU");
+
         IMTComponent3D closest3DComp = null;
         try {
             long now = System.currentTimeMillis();
-            System.err.println("getat");
 
-            if (useHitTestCache) {  System.err.println("???");
+            if (useHitTestCache) {
                 if (now - lastTimeHitTest > cacheTimeDelta) { //If the time since last check surpassed => do new hit-test!
                     //Benchmark the picking
 //					long a = System.nanoTime();
@@ -220,7 +219,6 @@ public class MTCanvas extends MTComponent implements IHitTestInfoProvider {
                     }
                 }
             } else {//IF no hittest cache is being used
-                System.err.println("hittest");
                 closest3DComp = this.pick(x, y).getNearestPickResult();
                 if (closest3DComp == null) {
                     closest3DComp = this;
@@ -462,7 +460,6 @@ public class MTCanvas extends MTComponent implements IHitTestInfoProvider {
         //handle in superclass
 
         //The MTCanvas get events targeted at him AND events that have no target!
-        System.err.println("CANVAS "+inEvt);
 
         return super.processInputEvent(inEvt);
     }

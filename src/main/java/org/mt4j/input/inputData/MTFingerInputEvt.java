@@ -76,6 +76,31 @@ public class MTFingerInputEvt extends AbstractCursorInputEvt {
         return new MTFingerInputEvt((AbstractInputSource) this.getSource(), this.getPosX(), this.getPosY(), this.getId(), this.getCursor());
     }
 
+    private boolean moused = false;
+    public boolean isMouseOrigin() {
+        return moused;
+    }
+
+
+    public void setOriginMouse(boolean m)  {
+        moused = m;
+    }
+
+    private int button = 0;
+    private int modifiers=0;
+
+    public void setMouseButtonsAndModifiers(int b, int m) {
+        button = b;
+        modifiers = m;
+    }
+
+    public int getButtons() {
+        return button;
+    }
+
+    public int getModifiers() {
+        return modifiers;
+    }
 
 //	/** The Constant FINGER_DOWN. */
 //	public static final int FINGER_DOWN = 0;

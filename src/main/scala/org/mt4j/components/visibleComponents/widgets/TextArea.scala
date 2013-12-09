@@ -24,6 +24,11 @@ package org.mt4j.components.visibleComponents.widgets
 
 import org.mt4j.MTApplication
 import org.mt4j.util.math.Vector3D
+import com.jogamp.graph.font.FontFactory
+import org.mt4j.components.visibleComponents.font.FontManager
+import java.io.File
+import org.mt4j.components.MTComponent
+import processing.opengl.PGraphicsOpenGL
 
 /*
  ++1>>  This source code is licensed as GPLv3 if not stated otherwise.

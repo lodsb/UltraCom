@@ -101,8 +101,6 @@ public class Tools3D {
      * @return the vector3d
      */
     public static Vector3D unprojectScreenCoords(PApplet applet, Icamera camera, float screenX, float screenY) {
-        System.err.println("vam "+camera.getPosition());
-        System.err.println(" x y "+screenX + " "+ screenY);
         Vector3D ret;
         applet.pushMatrix();
         camera.update();

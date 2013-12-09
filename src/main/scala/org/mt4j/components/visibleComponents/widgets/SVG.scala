@@ -25,7 +25,7 @@ package org.mt4j.components.visibleComponents.widgets
 import org.mt4j.MTApplication
 import org.mt4j.util.math.Vector3D
 
-object SVG {
+object Svg {
 	def apply(filename:String): MTSvg = {
 		val app = MTApplication.getInstance();
 		val x = app.width / 2f;
