@@ -169,7 +169,7 @@ public class StyleInfo {
      * @param fillAlpha the new fill alpha
      */
     public void setFillAlpha(float fillAlpha) {
-        this.fillColor.setAlpha(fillAlpha);
+        this.fillColor = fillColor.setAlpha(fillAlpha);
     }
 
     /**
@@ -196,7 +196,7 @@ public class StyleInfo {
      * @param fillBlue the new fill blue
      */
     public void setFillBlue(float fillBlue) {
-        this.fillColor.setB(fillBlue);
+        this.fillColor = fillColor.setB(fillBlue);
     }
 
     /**
@@ -214,7 +214,7 @@ public class StyleInfo {
      * @param fillGreen the new fill green
      */
     public void setFillGreen(float fillGreen) {
-        this.fillColor.setG(fillGreen);
+        this.fillColor = fillColor.setG(fillGreen);
     }
 
     /**
@@ -232,7 +232,7 @@ public class StyleInfo {
      * @param fillRed the new fill red
      */
     public void setFillRed(float fillRed) {
-        this.fillColor.setR(fillRed);
+        this.fillColor = fillColor.setR(fillRed);
     }
 
     /**
@@ -309,7 +309,7 @@ public class StyleInfo {
      * @param strokeAlpha the new stroke alpha
      */
     public void setStrokeAlpha(float strokeAlpha) {
-        this.strokeColor.setAlpha(strokeAlpha);
+        this.strokeColor = fillColor.setAlpha(strokeAlpha);
     }
 
     /**
@@ -327,7 +327,7 @@ public class StyleInfo {
      * @param strokeBlue the new stroke blue
      */
     public void setStrokeBlue(float strokeBlue) {
-        this.strokeColor.setB(strokeBlue);
+        this.strokeColor = fillColor.setB(strokeBlue);
     }
 
     /**
@@ -345,7 +345,7 @@ public class StyleInfo {
      * @param strokeGreen the new stroke green
      */
     public void setStrokeGreen(float strokeGreen) {
-        this.strokeColor.setG(strokeGreen);
+        this.strokeColor = fillColor.setG(strokeGreen);
     }
 
     /**
@@ -363,7 +363,7 @@ public class StyleInfo {
      * @param strokeRed the new stroke red
      */
     public void setStrokeRed(float strokeRed) {
-        this.strokeColor.setR(strokeRed);
+        this.strokeColor = fillColor.setR(strokeRed);
     }
 
     /**

@@ -370,7 +370,7 @@ public class MTSceneMenu extends MTRectangle {
      */
     private void highlightButton(AbstractShape shape) {
         MTColor c = shape.getFillColor();
-        c.setAlpha(255);
+        c= c.setAlpha(255);
         shape.setFillColor(c);
     }
 
@@ -382,7 +382,7 @@ public class MTSceneMenu extends MTRectangle {
      */
     private void unhighlightButton(AbstractShape shape, float opacity) {
         MTColor c = shape.getFillColor();
-        c.setAlpha(opacity);
+        c= c.setAlpha(opacity);
         shape.setFillColor(c);
     }
 

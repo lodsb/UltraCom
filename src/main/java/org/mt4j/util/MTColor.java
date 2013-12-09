@@ -146,7 +146,7 @@ public class MTColor {
      * @param b the b
      */
     public MTColor(float r, float g, float b) {
-        this.setColor(r, g, b, 255);
+        this._setColor(r, g, b, 255);
         this.name = "undefined";
     }
 
@@ -159,7 +159,7 @@ public class MTColor {
      * @param alpha the alpha
      */
     public MTColor(float r, float g, float b, float alpha) {
-        this.setColor(r, g, b, alpha);
+        this._setColor(r, g, b, alpha);
         this.name = "undefined";
     }
 
@@ -173,7 +173,7 @@ public class MTColor {
      * @param alpha the alpha
      */
     public MTColor(String name, float r, float g, float b, float alpha) {
-        this.setColor(r, g, b, alpha);
+        this._setColor(r, g, b, alpha);
         this.name = name;
     }
 
@@ -186,7 +186,7 @@ public class MTColor {
      * @param b    the b
      */
     public MTColor(String name, float r, float g, float b) {
-        this.setColor(r, g, b, 255f);
+        this._setColor(r, g, b, 255f);
         this.name = name;
     }
 
@@ -200,7 +200,7 @@ public class MTColor {
      * @param alpha the alpha
      */
     public MTColor(String name, int r, int g, int b, int alpha) {
-        this.setColor((float) r, (float) g, (float) b, (float) alpha);
+        this._setColor((float) r, (float) g, (float) b, (float) alpha);
         this.name = name;
     }
 
@@ -213,7 +213,7 @@ public class MTColor {
      * @param b    the b
      */
     public MTColor(String name, int r, int g, int b) {
-        this.setColor((float) r, (float) g, (float) b, 255f);
+        this._setColor((float) r, (float) g, (float) b, 255f);
         this.name = name;
     }
 
@@ -232,7 +232,14 @@ public class MTColor {
      *
      * @param r the new r
      */
-    public void setR(float r) {
+
+    public MTColor setR(float r)  {
+        MTColor c = this.getCopy();
+        c._setR(r);
+        return c;
+    }
+
+    private void _setR(float r) {
         this.r = r;
     }
 
@@ -245,12 +252,18 @@ public class MTColor {
         return g;
     }
 
+    public MTColor setG(float r)  {
+        MTColor c = this.getCopy();
+        c._setG(r);
+        return c;
+    }
+
     /**
      * Sets the g.
      *
      * @param g the new g
      */
-    public void setG(float g) {
+    private void _setG(float g) {
         this.g = g;
     }
 
@@ -268,8 +281,14 @@ public class MTColor {
      *
      * @param b the new b
      */
-    public void setB(float b) {
+    private void _setB(float b) {
         this.b = b;
+    }
+
+    public MTColor setB(float r)  {
+        MTColor c = this.getCopy();
+        c._setB(r);
+        return c;
     }
 
     /**
@@ -286,8 +305,14 @@ public class MTColor {
      *
      * @param alpha the new alpha
      */
-    public void setAlpha(float alpha) {
+    private void _setAlpha(float alpha) {
         this.alpha = alpha;
+    }
+
+    public MTColor setAlpha(float r)  {
+        MTColor c = this.getCopy();
+        c._setAlpha(r);
+        return c;
     }
 
     /**
@@ -298,11 +323,15 @@ public class MTColor {
      * @param b     the b
      * @param alpha the alpha
      */
-    public void setColor(float r, float g, float b, float alpha) {
+    private void _setColor(float r, float g, float b, float alpha) {
         this.r = r;
         this.g = g;
         this.b = b;
         this.alpha = alpha;
+    }
+
+    public MTColor setColor(float r, float g, float b, float alpha) {
+        return new MTColor(r,g,b,alpha);
     }
 
     /**
@@ -312,11 +341,8 @@ public class MTColor {
      * @param g the g
      * @param b the b
      */
-    public void setColor(float r, float g, float b) {
-        this.r = r;
-        this.g = g;
-        this.b = b;
-        this.alpha = 255;
+    private void setColor(float r, float g, float b) {
+        _setColor(r,g,b,255);
     }
 
     /**
@@ -324,11 +350,8 @@ public class MTColor {
      *
      * @param f the new color
      */
-    public void setColor(float f) {
-        this.r = f;
-        this.g = f;
-        this.b = f;
-        this.alpha = 255;
+    private void setColor(float f) {
+       _setColor(r,r,r,255);
     }
 
     /**

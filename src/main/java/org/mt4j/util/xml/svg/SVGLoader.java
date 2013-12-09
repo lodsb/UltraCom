@@ -546,7 +546,7 @@ public class SVGLoader implements SVGConstants {
                     MTColor fillColor = new MTColor(150, 150, 150, 255);
                     if (fill instanceof java.awt.Color) {
                         java.awt.Color color = (Color) fill;
-                        fillColor.setColor(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
+                        fillColor = fillColor.setColor(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
                     }
 
                     //Get STROKE
@@ -559,7 +559,7 @@ public class SVGLoader implements SVGConstants {
                     MTColor strokeColor = new MTColor(fillColor.getR(), fillColor.getG(), fillColor.getB(), fillColor.getAlpha());
                     if (stroke instanceof java.awt.Color) {
                         java.awt.Color color = (Color) stroke;
-                        strokeColor.setColor(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
+                        strokeColor = fillColor.setColor(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
                     }
 
                     //Get the font family
@@ -631,11 +631,11 @@ public class SVGLoader implements SVGConstants {
                                 TextPaintInfo texInfo = (TextPaintInfo) paintInfo;
                                 if (texInfo.fillPaint instanceof java.awt.Color) {
                                     java.awt.Color color = (Color) texInfo.fillPaint;
-                                    newFillColor.setColor(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
+                                    newFillColor= newFillColor.setColor(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
                                 }
                                 if (texInfo.strokePaint instanceof java.awt.Color) {
                                     java.awt.Color color = (Color) texInfo.strokePaint;
-                                    newStrokeColor.setColor(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
+                                    newStrokeColor= newFillColor.setColor(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
                                 }
                             }
 

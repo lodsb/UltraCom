@@ -40,10 +40,14 @@ import org.mt4j.util.math.ToolsMath;
 import org.mt4j.util.math.Tools3D;
 import org.mt4j.util.math.Vector3D;
 
+import org.omg.PortableServer.POAOperations;
 import processing.core.PApplet;
 import processing.core.PImage;
 import org.lodsb.reakt.property.Attribute;
 import org.lodsb.reakt.property.Property;
+import processing.opengl.PGraphicsOpenGL;
+
+import javax.media.opengl.GL2;
 
 /**
  * A slider widget. Allows to select a value between the specified minnimum and maximum values.
@@ -323,6 +327,7 @@ public class MTSlider extends MTRectangle {
         this.registerAttribute(valueRange);
 	}
 
+
     private void updateBarAndText(){
         float outerShapeWidthLocal = outerShape.getWidthXY(TransformSpace.LOCAL);
         float knobWidthRelParent = knob.getWidthXY(TransformSpace.RELATIVE_TO_PARENT);
@@ -560,10 +565,9 @@ public class MTSlider extends MTRectangle {
             float g = ToolsMath.clamp(color.getG() - 40, 0, 255);
 
 
-
             innerShape.setFillColor(color);
 
-            knob.setFillColor(new MTColor(r,g,b));
+            knob.setFillColor(new MTColor(r,g,b, color.getAlpha()));
         }
 
 	}

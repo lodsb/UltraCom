@@ -508,7 +508,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
         super.drawComponent(g);
 
 	//	shader.start();
-
+        //fixme, n "snap" to grid pixels makes sense, maybe that helps the ttf as well
         //FIXME snapping wont be useful if textarea is created at non-integer value!? and if Camera isnt default camera
         //if global matrix set dirty and comp not scaled -> calculate new diff vector -> apply
         //if snap enabled -> apply diff vector

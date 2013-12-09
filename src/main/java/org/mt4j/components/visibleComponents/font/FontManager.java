@@ -302,8 +302,7 @@ public class FontManager {
      */
     public IFont getCachedFont(String fontAbsoultePath, int fontSize, MTColor fillColor, MTColor strokeColor, boolean antiAliased) {
         for (IFont font : fonts) {
-            if (fontsAreEqual(font, fontAbsoultePath, fontSize, fillColor, strokeColor, antiAliased)
-                    ) {
+            if (font.getFontFileName().equals(fontAbsoultePath) && font.getFillColor().equals(fillColor) && font.getStrokeColor().equals(strokeColor)) {
                 System.out.println("Using cached font: " + fontAbsoultePath + " Fontsize: " + Math.round(fontSize) +
                         " FillColor: " + fillColor +
                         " StrokeColor: " + strokeColor);

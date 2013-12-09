@@ -157,9 +157,9 @@ public class MTColorPicker extends MTRectangle {
                       float r = app.red(col);
                       float g = app.green(col);
                       float b = app.blue(col);
-                      currentColor.setR(r);
-                      currentColor.setG(g);
-                      currentColor.setB(b);
+                      currentColor = currentColor.setR(r);
+                      currentColor= currentColor.setG(g);
+                      currentColor= currentColor.setB(b);
                       //System.out.println("New Color: " + currentColor);
                       selectionRect.setPositionRelativeToParent(new Vector3D(hitPointLocal));
 
