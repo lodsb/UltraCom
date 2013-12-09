@@ -3,15 +3,15 @@ Update:
     * uses processing 2.1 now
     * all components can now be treated with Style, this works as all reakt properties can be looked up at runtime
     and properly matched to the Style description
-    '''scala
+    ```scala
       val slider = new Slider
 
       slider use Style(
-        "fillColor" := MTColor.RED,
+        "fillColor" := Color.WHITE,
         "strokeColor":= Color.TEAL
       )
       canvas += slider
-      '''
+      ```
 
 
 
@@ -59,7 +59,7 @@ In examples/ are small project files, you can build/execute them by running sbt 
 This lenghty example is taken from examples/tutorial_one and shows how the API looks like and how it can be used
 Note: Settings, such as the application name, display properties, etc are set in Settings.txt
 
-'''scala
+```scala
 class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 
 	// Show touches
@@ -253,10 +253,10 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 	button.pressed.observe({ x => myFSM.consume(x); true })
 	slider.value.observe({ x => myFSM.consume(x); true })
 	slider3.value.observe({ x => myFSM.consume("Some val "+x); true })
-}   '''
+}   ```
 
 ###Audio
-'''scala
+```scala
 	//Define a synthesizer (using ScalaCollider)
 	val mySynthDef = SynthDef("mySynth"){
 
@@ -323,4 +323,4 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 
 		// faster update, to see more of the waveform
 		mySynth.setAmplitudeUpdateDivisions(1)
-	}) '''
+	}) ```
