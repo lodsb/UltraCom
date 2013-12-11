@@ -283,7 +283,11 @@ object Color {
 	def apply(r:Int,g:Int,b:Int) = Rgb(r,g,b, 255)
   def apply(r:Int) = Rgb(r,r,r, 255)
   def apply(r:Int, a:Int) = Rgb(r,r,a, 255)
-	def apply(r:Int,g:Int,b:Int,a:Int) = Rgb(r,g,b,a)
+	def apply(r:Int,g:Int,b:Int,a:Int) = Rgb(r.toInt,g.toInt,b.toInt,a.toInt)
+  def apply(r:Float,g:Float,b:Float) = Rgb(r.toInt,g.toInt,b.toInt, 255)
+  def apply(r:Float) = Rgb(r.toInt,r.toInt,r.toInt, 255)
+  def apply(r:Float, a:Float) = Rgb(r.toInt,r.toInt,a.toInt, 255)
+  def apply(r:Float,g:Float,b:Float,a:Float) = Rgb(r.toInt,g.toInt,b.toInt,a.toInt)
 
   def fromMtColor(c: MTColor) : Rgb = {
     Rgb(c.getR.toInt, c.getG.toInt, c.getB.toInt, c.getA.toInt)

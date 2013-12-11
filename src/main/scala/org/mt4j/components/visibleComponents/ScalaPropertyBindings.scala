@@ -41,7 +41,7 @@ class _genSetterGetterHelper[T](set: (T) => Unit, initVal:T) {
 	};
 
 	def setter() = {
-		x: T => setVal = x; set(x)
+		x: T => {setVal = x; set(x);}
 	}
 }
 

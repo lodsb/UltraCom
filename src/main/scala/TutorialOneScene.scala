@@ -26,7 +26,12 @@ import org.mt4j.input.inputData.{AbstractCursorInputEvt, MTFingerInputEvt}
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.{DragProcessor, DragEvent}
 import org.mt4j.input.inputProcessors.globalProcessors.{CameraProcessor, AbstractGlobalInputProcessor}
 import org.mt4j.input.inputProcessors.{MTGestureEvent, IGestureEventListener}
-import org.mt4j.util.animation.{Tween, InfLoopRepetitions}
+import org.mt4j.util.animation._
+import org.mt4j.util.ColorInterpolation
+import org.mt4j.util.ColorLightness
+import org.mt4j.util.ColorOpacity
+import org.mt4j.util.ColorRotation
+import org.mt4j.util.ColorSaturation
 import org.mt4j.{Scene, Application}
 import org.mt4j.util._
 import org.mt4j.util.math.{Tools3D, Vector3D}
@@ -153,13 +158,17 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 
 
   //button.globalPosition <~ tween.step.map(x=> Vec3d(100,200,150f*x._2))
-  slider.globalPosition <~ tween.step.map(x=> Vec3d(100,200,150-150f*x._2))
+  //val a = rect.globalPosition()
+  var a = Vec3d(10,10)
+  val myEasing = BounceOut()
+  slider.globalPosition <~ tween.step.map({x=> myEasing.map({y => Interpolation(y, Vec3d(100,100,0), rect.globalPosition())})(x._2)})
 
   tween.start <~ button2.pressed
   button.pressed.observe{x=> tween.animation.start();true}
 
   textField.text <~ slider.value+"dd"
 
+  //rect.globalPosition.observe({x => println(x + " | "+ rect.globalPosition.get()); a = x; true})
 
 
 

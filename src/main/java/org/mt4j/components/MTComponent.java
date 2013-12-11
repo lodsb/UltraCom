@@ -1402,7 +1402,10 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
     }
 
     protected void emitGlobalPosition() {
-        this.globalPosition.emit(this.getCenterPointGlobal());
+        Vector3D center = this.getCenterPointGlobal();
+        // no update to circumvent recursion (property usually calls setter then)
+        this._glblPosHlpr.setVal_$eq(center);
+        this.globalPosition.emit(center);
         this.updateChildrenGlobalPosition();
     }
 
@@ -1449,6 +1452,7 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
 
                 case RELATIVE_TO_PARENT:
                     relaPos = this.getCenterPointRelativeToParent();
+                    this._relPosParHlpr.setVal_$eq(relaPos);
                     this.relativePositionToParent.emit(relaPos);
                     break;
 
@@ -1601,16 +1605,22 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
         if(this.triggerPropertyUpdate){
             switch (transformSpace) {
                 case LOCAL:
-                        this.localRotation.emit(new Rotation(origRotation, degree, 0f, 0f));
+                        Rotation nrot = new Rotation(origRotation, degree, 0f, 0f);
+                        this._localRot.setVal_$eq(nrot);
+                        this.localRotation.emit(nrot);
                     break;
                 case RELATIVE_TO_PARENT:
                     //default
-                        this.relativeRotationToParent.emit(new Rotation(origRotation, degree, 0f, 0f));
+                        Rotation nprot = new Rotation(origRotation, degree, 0f, 0f);
+                        this._relRot.setVal_$eq(nprot);
+                        this.relativeRotationToParent.emit(nprot);
 
                     break;
                 case GLOBAL:
                     //rotationPoint = MTComponent.getGlobalVecToParentRelativeSpace(this, rotationPoint);
-                        this.globalRotation.emit(new Rotation(origRotation, degree, 0f, 0f));
+                        Rotation ngrot = new Rotation(origRotation, degree, 0f, 0f);
+                        this._globalRot.setVal_$eq(ngrot);
+                        this.globalRotation.emit(ngrot);
                     break;
                 default:
                     break;
@@ -1692,16 +1702,21 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
         if(this.triggerPropertyUpdate){
             switch (transformSpace) {
                 case LOCAL:
-                        this.localRotation.emit(new Rotation(origRotation, 0f, degree, 0f));
+                        Rotation nrot = new Rotation(origRotation, degree, 0f, 0f);
+                        this._localRot.setVal_$eq(nrot);
+                        this.localRotation.emit(nrot);
                     break;
                 case RELATIVE_TO_PARENT:
                     //default
-                        this.relativeRotationToParent.emit(new Rotation(origRotation, 0f, degree, 0f));
+                    Rotation nprot = new Rotation(origRotation, degree, 0f, 0f);
+                    this._relRot.setVal_$eq(nprot);
+                    this.relativeRotationToParent.emit(nprot);
 
                     break;
                 case GLOBAL:
-                    //rotationPoint = MTComponent.getGlobalVecToParentRelativeSpace(this, rotationPoint);
-                        this.globalRotation.emit(new Rotation(origRotation, 0f, degree, 0f));
+                    Rotation ngrot = new Rotation(origRotation, degree, 0f, 0f);
+                    this._globalRot.setVal_$eq(ngrot);
+                    this.globalRotation.emit(ngrot);
                     break;
                 default:
                     break;
@@ -1783,16 +1798,22 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
         if(this.triggerPropertyUpdate){
             switch (transformSpace) {
                 case LOCAL:
-                        this.localRotation.emit(new Rotation(origRotation, 0f, 0f, degree));
+                    Rotation nrot = new Rotation(origRotation, degree, 0f, 0f);
+                    this._localRot.setVal_$eq(nrot);
+                    this.localRotation.emit(nrot);
                     break;
                 case RELATIVE_TO_PARENT:
                     //default
-                        this.relativeRotationToParent.emit(new Rotation(origRotation, 0f, 0f, degree));
+                    Rotation nprot = new Rotation(origRotation, degree, 0f, 0f);
+                    this._relRot.setVal_$eq(nprot);
+                    this.relativeRotationToParent.emit(nprot);
 
                     break;
                 case GLOBAL:
                     //rotationPoint = MTComponent.getGlobalVecToParentRelativeSpace(this, rotationPoint);
-                        this.globalRotation.emit(new Rotation(origRotation, 0f, 0f, degree));
+                    Rotation ngrot = new Rotation(origRotation, degree, 0f, 0f);
+                    this._globalRot.setVal_$eq(ngrot);
+                    this.globalRotation.emit(ngrot);
                     break;
                 default:
                     break;

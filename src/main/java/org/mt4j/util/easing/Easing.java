@@ -50,6 +50,7 @@ public abstract class Easing extends EasingFunction implements AniConstants {
 	 * @param d the duration
 	 * @return the float
 	 */
+    @Override
 	public final float calcEasing(float t, float b, float c, float d){
 		float out;
 		switch( easingMode ){

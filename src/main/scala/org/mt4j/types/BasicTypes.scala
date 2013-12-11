@@ -50,5 +50,6 @@ object Vec3d {
 	def apply(x: Float, y:Float,z:Float) = new Vector3D(x,y,z)
 	def apply(x: Float, y:Float,z:Float, w:Float) = new Vector3D(x,y,z,w)
 	def copy(v:Vector3D) = new Vector3D(v)
+
 }
 

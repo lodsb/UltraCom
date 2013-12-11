@@ -37,8 +37,8 @@ trait Tweening[T] {
 // generic interpolation classes?
 
 class Tween(tweenName: String, from: Float, to: Float, duration: Float,
-            reps: Repetitions, accelerationEndTime: Float = 0.1f,
-            decelerationStartTime: Float = 0.1f)
+            reps: Repetitions, accelerationEndTime: Float = 0.0f,
+            decelerationStartTime: Float = 0.0f)
             extends Tweening[Float] with IAnimationListener {
 
   def startValue = from
@@ -50,7 +50,7 @@ class Tween(tweenName: String, from: Float, to: Float, duration: Float,
   val animation = new Animation(name, interpolator, this)
   animation.addAnimationListener(this)
 
-  start.observe({x => println(x); if(x) animation.start; true})
+  start.observe({x => if(x) animation.start; true})
   stop.observe({x => if(x) animation.stop; true})
 
   def processAnimationEvent(ae: AnimationEvent): Unit = {
@@ -60,7 +60,6 @@ class Tween(tweenName: String, from: Float, to: Float, duration: Float,
       case AnimationEvent.ANIMATION_ENDED => TweenStop(name)
     }
 
-    println(ae.getValue)
     step.emit((te, ae.getValue))
   }
 
