@@ -30,6 +30,10 @@ import org.mt4j.util.opengl.GLMaterial;
  */
 public class StyleInfo {
 
+    public static StyleInfo defaultStyleInfo() {
+        return new StyleInfo();
+    }
+
     private MTColor fillColor;
 
     private MTColor strokeColor;

@@ -511,7 +511,7 @@ public abstract class MTApplication extends PApplet {
         //Create a new inputsourcePool
         this.setInputManager(new InputManager(this));
 
-        AniAnimation.init(this); //Initialize Ani animation library
+        //AniAnimation.init(this); //Initialize Ani animation library
 
         this.startUp();
 

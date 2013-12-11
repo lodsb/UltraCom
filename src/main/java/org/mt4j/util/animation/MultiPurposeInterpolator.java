@@ -107,8 +107,9 @@ public class MultiPurposeInterpolator implements Iinterpolator {
      * @param loopCount             how often to loop the interpolation, Value of "-1" loops infinitely
      */
     public MultiPurposeInterpolator(float from, float to, float interpolationDuration, float accelerationEndTime, float decelerationStartTime, int loopCount) {
+        interpolationDuration = interpolationDuration*1000f;
         if (interpolationDuration <= 0) {
-            throw new RuntimeException("You have to specify a time value greater than 0ms");
+            throw new RuntimeException("You have to specify a time value greater than 0s");
         } else if (loopCount == 0) {
             throw new RuntimeException("You have to specify a loopCount value that is not '0'");
         } else if (this.t1 > this.t2) {

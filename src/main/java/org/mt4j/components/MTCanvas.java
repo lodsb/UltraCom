@@ -22,6 +22,8 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.media.opengl.GL2;
+import javax.media.opengl.glu.GLU;
 import javax.swing.Timer;
 
 import org.mt4j.components.clusters.Cluster;
@@ -36,6 +38,7 @@ import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProces
 import org.mt4j.util.camera.Icamera;
 import org.mt4j.util.math.Matrix;
 
+import org.mt4j.util.math.Tools3D;
 import processing.core.PApplet;
 import processing.opengl.PGraphics3D;
 import processing.opengl.PGraphicsOpenGL;
@@ -324,7 +327,9 @@ public class MTCanvas extends MTComponent implements IHitTestInfoProvider {
         for (Cluster cluster : clusters) {
             cluster.updateComponent(updateTime);
         }
-
+        GL2 gl = GLU.getCurrentGL().getGL2();
+        gl.glDisable(GL2.GL_DEPTH_TEST);
+        gl.glEnable(gl.GL_ALPHA_TEST);
         this.drawUpdateRecursive(this, updateTime, graphics);
 //		System.out.println("Culled objects: " + culledObjects);
     }

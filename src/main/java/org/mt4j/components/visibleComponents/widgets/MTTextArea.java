@@ -48,6 +48,8 @@ import org.mt4j.util.math.Vertex;
 import processing.core.PApplet;
 import org.lodsb.reakt.property.Property;
 import processing.opengl.PGraphicsOpenGL;
+import scala.reflect.Manifest;
+import scala.runtime.BoxedUnit;
 
 /**
  * The Class MTTextArea. This widget allows to display text with a specified _font.
@@ -201,11 +203,11 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
         //Disable _font being overwritten by CSS
         this.ignoreCSSFont = true;
 
-		this.text = new Property<String>(this,"text", "", ScalaPropertyBindings.setText(this), ScalaPropertyBindings.getText(this));
+		this.text = Property.ofType(String.class,this,"text", "", ScalaPropertyBindings.setText(this), ScalaPropertyBindings.getText(this));
         this.registerProperty(text);
-		this.padding = new Property(this,"padding", 5f , ScalaPropertyBindings.setPadding(this), ScalaPropertyBindings.getPadding(this));
+		this.padding =new Property(this,"padding", 5f , ScalaPropertyBindings.setPadding(this), ScalaPropertyBindings.getPadding(this), Property.genManifest(Float.class));
         this.registerProperty(padding);
-        this.font = new Property(this,"font", FontManager.getInstance().getDefaultFont(pApplet) , ScalaPropertyBindings.setFont(this), ScalaPropertyBindings.getFont(this));
+        this.font = Property.ofType(IFont.class,this,"font", FontManager.getInstance().getDefaultFont(pApplet) , ScalaPropertyBindings.setFont(this), ScalaPropertyBindings.getFont(this));
         this.registerProperty(this.font);
     }
 
@@ -283,11 +285,11 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
         //Disable _font being overwritten by CSS
         this.ignoreCSSFont = true;
 
-		this.text = new Property<String>(this, "text", "", ScalaPropertyBindings.setText(this), ScalaPropertyBindings.getText(this));
+		this.text = Property.ofType(String.class, this, "text", "", ScalaPropertyBindings.setText(this), ScalaPropertyBindings.getText(this));
         this.registerProperty(text);
-		this.padding = new Property(this, "padding", 5f , ScalaPropertyBindings.setPadding(this), ScalaPropertyBindings.getPadding(this));
+		this.padding = new Property(this, "padding", 5f , ScalaPropertyBindings.setPadding(this), ScalaPropertyBindings.getPadding(this), Property.genManifest(Object.class));
         this.registerProperty(padding);
-        this.font = new Property(this,"font", FontManager.getInstance().getDefaultFont(pApplet) , ScalaPropertyBindings.setFont(this), ScalaPropertyBindings.getFont(this));
+        this.font = Property.ofType(IFont.class,this,"font", FontManager.getInstance().getDefaultFont(pApplet) , ScalaPropertyBindings.setFont(this), ScalaPropertyBindings.getFont(this));
         this.registerProperty(this.font);
     }
 

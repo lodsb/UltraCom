@@ -29,7 +29,7 @@ import org.mt4j.components.css.style.CSSStyle;
 import org.mt4j.components.visibleComponents.GeometryInfo;
 import org.mt4j.components.visibleComponents.StyleInfo;
 
-import org.lodsb.reakt.property.Attribute;
+import org.lodsb.reakt.property.*;
 
 import org.mt4j.util.MT4jSettings;
 import org.mt4j.util.MTColor;
@@ -56,9 +56,9 @@ import processing.opengl.PGraphicsOpenGL;
  */
 public class MTPolygon extends MTCSSStylableShape {
 
-	public Attribute<Double> polygonArea2D = new Attribute<Double>("polygonArea2D", 0.0);
+	public Attribute<Double> polygonArea2D = Attribute.ofType(Double.class,"polygonArea2D", 0.0);
 
-	public Attribute<Vector3D> centerOfMass2D = new Attribute<Vector3D>("centerOfMass2D", new Vector3D());
+	public Attribute<Vector3D> centerOfMass2D = Attribute.ofType(Vector3D.class, "centerOfMass2D", new Vector3D());
 
     /**
      * The normal.

@@ -24,7 +24,7 @@ import org.mt4j.components.bounds.IBoundingShape;
 import org.mt4j.components.css.style.CSSStyle;
 import org.mt4j.components.visibleComponents.ScalaPropertyBindings;
 
-import org.lodsb.reakt.property.Property;
+import org.lodsb.reakt.property.*;
 import org.mt4j.util.MT4jSettings;
 import org.mt4j.util.math.Tools3D;
 import org.mt4j.util.math.Vector3D;
@@ -32,6 +32,7 @@ import org.mt4j.util.math.Vertex;
 
 import processing.core.PApplet;
 import processing.core.PImage;
+import scala.*;
 
 /**
  * A simple rectangular shape.
@@ -48,12 +49,12 @@ public class MTRectangle extends MTPolygon {
 	public final Property<scala.Float> width = new Property(this,"width",
 													0f,
 													ScalaPropertyBindings.setWidth(this),
-													ScalaPropertyBindings.getWidth(this)
+													ScalaPropertyBindings.getWidth(this), Property.genManifest(scala.Float.class)
 												);
-	public final Property<scala.Float> height = new Property(this, "height",
+	public final Property<scala.Float> height = new Property( this, "height",
 													0f,
 													ScalaPropertyBindings.setHeight(this),
-													ScalaPropertyBindings.getHeight(this)
+													ScalaPropertyBindings.getHeight(this), Property.genManifest(scala.Float.class)
 												);
 
     /**

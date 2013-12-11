@@ -78,7 +78,7 @@ public class MTSvgButton extends MTSvg implements IclickableButton {
         //Draw this component and its children above
         //everything previously drawn and avoid z-fighting
         this.setDepthBufferDisabled(true);
-        this.pressed = new Attribute<Boolean>("pressed",false);
+        this.pressed = Attribute.ofType(Boolean.class,"pressed",false);
         this.registerAttribute(pressed);
     }
 

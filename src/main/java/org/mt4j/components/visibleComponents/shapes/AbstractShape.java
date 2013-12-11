@@ -189,14 +189,14 @@ public abstract class AbstractShape extends AbstractVisibleComponent {
 
         this.setDefaultGestureActions();
 
-		vertices = new Property<Vertex[]>(this, "vertices",
+		vertices = new Property(this, "vertices",
 																	 this.getVerticesLocal(),
 																	 ScalaPropertyBindings.setVertices(this),
-																	 ScalaPropertyBindings.getVertices(this)
+																	 ScalaPropertyBindings.getVertices(this) , Property.genManifest(Vertex.class)
 																	 );
         this.registerProperty(vertices);
 
-		texture = new Property<PImage>(this, "texture",
+		texture = Property.ofType(PImage.class,this, "texture",
 																	 this.getTexture(),
 																	 ScalaPropertyBindings.setTexture(this),
 																	 ScalaPropertyBindings.getTexture(this)

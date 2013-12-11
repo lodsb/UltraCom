@@ -56,14 +56,14 @@ public class MTTextButton extends MTTextArea implements IclickableButton {
 
     public MTTextButton(PApplet pApplet, String label) {
         super(pApplet);
-        this.pressed = new Attribute<Boolean>("pressed", false);
+        this.pressed = Attribute.ofType(Boolean.class, "pressed", false);
         this.registerAttribute(pressed);
         _init(pApplet, label);
     }
 
     public MTTextButton(PApplet pApplet, String label, float x, float y, float width, float height) {
         super(pApplet, x, y, width, height);
-        this.pressed = new Attribute<Boolean>("pressed", false);
+        this.pressed = Attribute.ofType(Boolean.class,"pressed", false);
         this.registerAttribute(pressed);
 
         _init(pApplet, label);

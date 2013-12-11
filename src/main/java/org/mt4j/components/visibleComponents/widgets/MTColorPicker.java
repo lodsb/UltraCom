@@ -46,7 +46,7 @@ public class MTColorPicker extends MTRectangle {
 		SCALA Properties
 	 */
 
-	final public Attribute<MTColor> colorPicked = new Attribute("colorPicked",MTColor.WHITE);
+	final public Attribute<MTColor> colorPicked = Attribute.ofType(MTColor.class, "colorPicked",MTColor.WHITE);
 
 
     /**

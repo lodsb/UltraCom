@@ -412,27 +412,27 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
         this.inversePrecisionErrors = 0;
         this.orthogonalityErrors = 0;
 
-        this.globalRotation = new Property(this, "rotate3DGlobal",
+        this.globalRotation = Property.ofType(Rotation.class, this, "rotate3DGlobal",
                 new Rotation(Vector3D.ZERO_VECTOR, 0f, 0f, 0f),
                 _globalRot.setter(),
                 _globalRot.getter());
 
         this.registerProperty(this.globalRotation);
 
-        this.localRotation = new Property(this, "rotate3DLocal",
+        this.localRotation = Property.ofType(Rotation.class,this,  "rotate3DLocal",
                 new Rotation(Vector3D.ZERO_VECTOR, 0f, 0f, 0f),
                 _localRot.setter(),
                 _localRot.getter());
         this.registerProperty(this.localRotation);
 
-        this.relativeRotationToParent = new Property(this, "rotate3DRelativeToParent",
+        this.relativeRotationToParent = Property.ofType(Rotation.class,this, "rotate3DRelativeToParent",
                 new Rotation(Vector3D.ZERO_VECTOR, 0f, 0f, 0f),
                 _relRot.setter(),
                 _relRot.getter());
         this.registerProperty(relativeRotationToParent);
 
 
-        this.globalPosition = new Property<Vector3D>(this, "globalPosition",
+        this.globalPosition = Property.ofType(Vector3D.class,this, "globalPosition",
                 new Vector3D(0f, 0f, 0f),
                 _glblPosHlpr.setter(),
                 _glblPosHlpr.getter()
@@ -440,7 +440,7 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
 
         this.registerProperty(globalPosition);
 
-        this.relativePositionToParent = new Property<Vector3D>(this, "relativePositionToParent",
+        this.relativePositionToParent = Property.ofType(Vector3D.class,this, "relativePositionToParent",
                 new Vector3D(0f, 0f, 0f),
                 _relPosParHlpr.setter(),
                 _relPosParHlpr.getter()

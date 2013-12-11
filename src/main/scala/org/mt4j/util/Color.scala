@@ -50,7 +50,12 @@ private object Implicits {
   }
 }
 
-trait Color
+trait Color { // maybe statemonad with reset? for transformations to be resetable?
+  def hex : Hex
+  def cmyk : Cmyk
+  def hsv : Hsv
+  def rgb : Rgb
+}
 class RgbC(val r: Int, val g: Int, val b: Int, val a: Int) extends MTColor(r,g,b,a)
 
 case class Alpha(alpha: Int) extends RgbC(0,0,0,alpha)
@@ -58,155 +63,200 @@ case class Red(red: Int) extends RgbC(red,0,0,0)
 case class Green(green: Int) extends RgbC(0,green,0,0)
 case class Blue(blue: Int) extends RgbC(0,0, blue,0)
 
-case class Rgb(override val r: Int, override val g: Int, override val b: Int, override val a: Int) extends RgbC(r,g,b,a) with Color {
+case class Rgb(override val r: Int, override val g: Int, override val b: Int, override val a: Int) extends RgbC(r,g,b,a)
+with Color {
+
   val range = 0 to 255
-  r :: g :: b :: Nil map(d => require((0 to 255).contains(d), "%s must be between 0..255" format d))
+  //r :: g :: b :: Nil map(d => require((0 to 255).contains(d), "%s must be between 0..255" format d))
+  override def rgb = this
 
-  def hex = Hex(r :: g :: b :: Nil map(Integer.toHexString(_)) map(s => if(s.size==1) s * 2 else s) mkString(""))
+  override def hex = Hex(r :: g :: b :: Nil map(Integer.toHexString(_)) map(s => if(s.size==1) s * 2 else s) mkString(""))
 
-  def cmyk = {
-    if((r :: g :: b :: Nil).forall(_ == 0)) CMYK(0, 0, 0, 1)
+  override def cmyk = {
+    if((r :: g :: b :: Nil).forall(_ == 0)) Cmyk(0, 0, 0, 1, a/255)
     else {
-      (r :: g :: b :: Nil).map(v => 1 - (v.toDouble / 255)) match {
+      (r :: g :: b :: Nil).map(v => 1 - (v.toFloat / 255)) match {
         case c :: m :: y :: Nil =>
           val black = Math.min(c, Math.min(m, y))
           (c  :: m :: y :: Nil).map(v => v - black / (1 - black)) match {
-            case c1 :: m1 :: y1 :: Nil => CMYK(c1, m1, y1, black)
+            case c1 :: m1 :: y1 :: Nil => Cmyk(c1, m1, y1, black, a/255)
           }
       }
     }
   }
 
+  private def cl(v: Int) = {
+    scala.math.min(scala.math.max(0, v),255)
+  }
+
+  private def cl(v: Float) : Int = {
+    scala.math.min(scala.math.max(0, v),255).toInt
+  }
+
   def +(rgb: Rgb) = {
-    Rgb(rgb.r+this.r, rgb.b+ this.b, rgb.g+ this.g, rgb.a + this.a)
+    Rgb(cl(rgb.r+this.r), cl(rgb.b+ this.b), cl(rgb.g+ this.g), cl(rgb.a + this.a))
   }
 
   def -(rgb: Rgb) = {
-    Rgb(rgb.r-this.r, rgb.b- this.b, rgb.g- this.g, rgb.a - this.a)
+    Rgb(cl(rgb.r-this.r), cl(rgb.b- this.b), cl(rgb.g- this.g), cl(rgb.a - this.a))
   }
 
   def +(rgb: RgbC) = {
-    Rgb(rgb.r+this.r, rgb.b+ this.b, rgb.g+ this.g, rgb.a + this.a)
+    Rgb(cl(rgb.r+this.r), cl(rgb.b+ this.b), cl(rgb.g+ this.g), cl(rgb.a + this.a))
   }
 
   def -(rgb: RgbC) = {
-    Rgb(rgb.r-this.r, rgb.b- this.b, rgb.g- this.g, rgb.a - this.a)
+    Rgb(cl(rgb.r-this.r), cl(rgb.b- this.b), cl(rgb.g- this.g), cl(rgb.a - this.a))
+  }
+
+  def *(v: Float) = {
+    Rgb(cl(v*this.r), cl(v*this.b), cl(v* this.g), cl(v* this.a))
+  }
+
+  def interpolate(step: Float=0.01f, that: Rgb) : Rgb = {
+    (this*(1-step)) + (that*step)
   }
 
 
-  def hsv = {
-    (r :: g :: b :: Nil).map(_.toDouble / 255) match {
+
+  override def hsv = {
+    (r :: g :: b :: Nil).map(_.toFloat / 255) match {
       case r2 :: g2 :: b2 :: Nil =>
         val (min, max) = (Math.min(r2, Math.min(g2, b2)), Math.max(r2, Math.max(g2, b2)))
         val delta = max - min
         if(min == max) {
-          Hsv(0, 0, min,a/255.0) // monochrome
+          Hsv(0, 0, min,a/255.0f) // monochrome
         } else {
           Hsv((max match {
             case n if(n == r2) => (g2 - b2) / delta + (if(g2 < b2) 6 else 0)
             case n if(n == g2) => (b2 - r2) / delta + 2
             case n => (r2 - g2) / delta + 4
-          }) * 60, if(max == 0)  0 else delta / max , max, a/255.0)
+          }) * 60, if(max == 0)  0 else delta / max , max, a/255.0f)
         }
     }
   }
   // based on : http://www.w3.org/TR/AERT#color-contrast
   // the higher the more contrast
   def colorContrast(that: Rgb) = {
-    def cc(vv: Rgb) : Double = {
-      ((vv.r/255.0)*299.0 + (vv.g/255.0)*587.0 + (vv.b/255.0)*114)/100.0
+    def cc(vv: Rgb) : Float = {
+      (((vv.r/255.0)*299.0 + (vv.g/255.0)*587.0 + (vv.b/255.0)*114)/100.0).toFloat
     }
 
     scala.math.abs(cc(this) - cc(that))
   }
 
-  def moreOpaque(step: Double) = {
-    println(this)
-    Rgb(r,g,b, (step).toInt)
+  def moreOpaque(step: Float) = {
+    Rgb(r,g,b, cl((a+step).toInt))
   }
 
-  def moreTransparent(step: Double) = {
-    Rgb(r,g,b, (a - step).toInt)
+  def moreTransparent(step: Float) = {
+    Rgb(r,g,b, cl((a - step).toInt))
+  }
+
+  def opacity(v: Float) = {
+    Rgb(r,g,b, cl((v*255).toInt) )
   }
 
 
 }
 
-case class Hsv(h: Double, s: Double, v: Double, a: Double) extends Color  {
+case class Hsv(h: Float, s: Float, v: Float, a: Float) extends Color  {
   def rgb = {
     val c = s*v
 
     val h1 = h / 60.0
-    val x = c*(1.0-((h1 % 2)-1.0).abs)
+    val x = c*(1.0f-((h1 % 2)-1.0f).abs).toFloat
 
-    val rgbList = if (h1 < 1.0) List(c, x, 0.0)
-    else if (h1 < 2.0) List(x, c, 0.0)
-    else if (h1 < 3.0) List(0.0, c, x)
-    else if (h1 < 4.0) List(0.0, x, c)
-    else if (h1 < 5.0) List(x, 0.0, c)
-    else List(c, 0.0, x)
+    val rgbList = if (h1 < 1.0) List(c, x, 0.0f)
+    else if (h1 < 2.0f) List(x, c, 0.0f)
+    else if (h1 < 3.0f) List(0.0f, c, x)
+    else if (h1 < 4.0f) List(0.0f, x, c)
+    else if (h1 < 5.0f) List(x, 0.0f, c)
+    else List(c, 0.0f, x)
 
-    val m = v-c
+    val m = (v-c)
     val rgb = rgbList.map( x=> ((x + m) * 255.0).toInt).map(x => scala.math.min(scala.math.max(x, 0),255))
     Rgb(rgb(0), rgb(1), rgb(2), (a*255.0).toInt)
   }
 
-  def hex = {
+  override def hex = {
     rgb.hex
   }
 
-  def cmyk = {
+  override def cmyk = {
     rgb.cmyk
   }
 
-  def darken(step: Double = 0.1) = {
-    Hsv(h, s, v-step, a)
+  override def hsv = this
+
+  private def cl(v: Float) = {
+    scala.math.min(scala.math.max(v,0), 1.0).toFloat
   }
 
-  def lighten(step: Double = 0.1) = {
+  def darken(step: Float = 0.1f) = {
+    Hsv(h, s, cl(v-step), a)
+  }
+
+  def lighten(step: Float = 0.1f) = {
     darken(-step)
   }
 
-  def saturate(step: Double = 0.1) = {
-    Hsv(h, s+step, v, a)
+  def lightness(r: Float) = {
+    Hsv(h, s, r, a)
   }
 
-  def desaturate(step: Double = 0.1) = {
+  def saturation(r: Float) = {
+    Hsv(h, r, v, a)
+  }
+
+  def desaturate(step: Float = 0.1f) = {
     saturate(-step)
   }
 
-  def rotate(angle: Double) = {
+  def saturate(step: Float = 0.1f) = {
+    Hsv(h, cl(s+step), v, a)
+  }
+
+  def rotate(angle: Float=1f) = {
     Hsv((h+angle) % 360, s, v, a)
   }
 
-
+  def rotation(angle: Float=1f) = {
+    Hsv(angle % 360, s, v, a)
+  }
 
 }
 
-case class Hex(hex: String) extends Color {
+case class Hex(hexs: String) extends Color {
+  // FIXME , bogus, length??? recheck!
   val range = ((0 to 11) ++ ('a' to 'f')).map(_.toString.charAt(0))
 
-  require((3 :: 6 :: Nil).contains(hex.size), "invalid length")
+  require((3 :: 6 :: Nil).contains(hexs.size), "invalid length")
 
-  hex.toList.foreach(l => require(range.contains(l.toLower), "%s must be one of %s" format(l, range)))
+  hexs.toList.foreach(l => require(range.contains(l.toLower), "%s must be one of %s" format(l, range)))
 
   import Implicits._
-  def rgb = hex.size match {
-    case 3 => hex.partionsOf(1).map(_*2).map(Integer.parseInt(_, 16)) match {
+  def rgb = hexs.size match {
+    case 3 => hexs.partionsOf(1).map(_*2).map(Integer.parseInt(_, 16)) match {
       case List(r, g, b,a) => Rgb(r, g, b,a)
     }
-    case 6 => hex.partionsOf(2).map(Integer.parseInt(_, 16)) match {
+    case 6 => hexs.partionsOf(2).map(Integer.parseInt(_, 16)) match {
       case List(r, g, b,a) => Rgb(r, g, b,a)
     }
   }
 
-  def cmyk = rgb.cmyk
+  override def cmyk = rgb.cmyk
 
-  def hsv = rgb.hsv
+  override def hsv = rgb.hsv
+
+  override def hex = this
+
+
 
 }
 
-case class CMYK(c: Double, m: Double, y: Double, k: Double) extends Color
+//FIXME !!!
+case class Cmyk(c: Float, m: Float, y: Float, k: Float, alpha: Float)// extends Color
 
 object Color {
 
@@ -245,11 +295,20 @@ object Color {
 }
 
 abstract class ColorTransformation
-case class Saturation(value: Double) extends ColorTransformation
-case class Opacity(value: Double) extends ColorTransformation
-case class Lightness(value: Double) extends ColorTransformation
-case class Invert(angle: Double) extends ColorTransformation
-case class Colorize(r : Int, g: Int, b: Int) extends ColorTransformation
-object PushColorState extends ColorTransformation
-object PopColorState extends ColorTransformation
+case class ColorSaturation(value: Float) extends ColorTransformation
+case class ColorOpacity(value: Float) extends ColorTransformation
+case class ColorLightness(value: Float) extends ColorTransformation
+case class ColorRotation(angle: Float) extends ColorTransformation
+case class ColorColorize(color: Color) extends ColorTransformation
+case class ColorInterpolateTo(step: Float=0.1f, destination: Color) extends ColorTransformation
+case class ColorInterpolation(step: Float, source: Color, destination: Color) extends ColorTransformation
+case class ColorDesaturate(step: Float=0.1f) extends ColorTransformation
+case class ColorSaturate(step: Float=0.1f) extends ColorTransformation
+case class ColorLighten(step: Float=0.1f) extends ColorTransformation
+case class ColorDarken(step: Float=0.1f) extends ColorTransformation
+case class ColorMoreOpaque(step: Float=0.1f) extends ColorTransformation
+case class ColorMoreTransparent(step: Float=0.1f) extends ColorTransformation
+case class ColorRotate(step: Float=0.01f) extends ColorTransformation
+object ColorPushState extends ColorTransformation
+object ColorPopState extends ColorTransformation
 

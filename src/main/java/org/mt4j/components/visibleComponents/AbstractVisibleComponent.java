@@ -28,6 +28,7 @@ import org.mt4j.util.opengl.GLMaterial;
 
 import processing.core.PApplet;
 import processing.opengl.PGraphicsOpenGL;
+import scala.*;
 
 /**
  * The Class AbstractVisibleComponent. Abstract class for creating visible
@@ -42,7 +43,7 @@ public abstract class AbstractVisibleComponent extends MTComponent {
     /**
      * The style info.
      */
-    private StyleInfo styleInfo;
+    private StyleInfo styleInfo = StyleInfo.defaultStyleInfo();
 
     /**
      * The fill paint.
@@ -55,11 +56,24 @@ public abstract class AbstractVisibleComponent extends MTComponent {
 	    ================
 	*/
 
-	public final Property<scala.Float> strokeWeight ;
+	public final Property<scala.Float> strokeWeight=  new Property(this, "strokeWeight",
+            this.getStrokeWeight(),
+            ScalaPropertyBindings.setStrokeWeight(this),
+            ScalaPropertyBindings.getStrokeWeight(this), Property.genManifest(scala.Float.class)
+    );
 
-	public final Property<MTColor> strokeColor ;
 
-	public final Property<MTColor> fillColor;
+    public final Property<MTColor> strokeColor  = Property.ofType(MTColor.class,this, "strokeColor",
+            this.getStrokeColor(),
+            ScalaPropertyBindings.setStrokeColor(this),
+            ScalaPropertyBindings.getStrokeColor(this)
+    );
+
+	public final Property<MTColor> fillColor= Property.ofType(MTColor.class,this, "fillColor",
+            this.getFillColor(),
+            ScalaPropertyBindings.setFillColor(this),
+            ScalaPropertyBindings.getFillColor(this)
+    );
 
 
     /**
@@ -82,6 +96,7 @@ public abstract class AbstractVisibleComponent extends MTComponent {
         this(pApplet, "unnamed visible component",/* globalCamera,*/ objectCamera);
     }
 
+
     /**
      * Instantiates a new abstract visible component.
      *
@@ -91,28 +106,10 @@ public abstract class AbstractVisibleComponent extends MTComponent {
      */
     public AbstractVisibleComponent(PApplet pApplet, String name, /*Icamera globalCamera,*/ Icamera objectCamera) {
         super(pApplet, name, /*globalCamera,*/ objectCamera);
-		this.setStyleInfo(new StyleInfo());
-		strokeWeight = new Property(this, "strokeWeight",
-															this.getStrokeWeight(),
-															ScalaPropertyBindings.setStrokeWeight(this),
-															ScalaPropertyBindings.getStrokeWeight(this)
-														);
+		this.setStyleInfo(this.styleInfo);
 
         this.registerProperty(strokeWeight);
-
-		strokeColor = new Property<MTColor>(this, "strokeColor",
-															this.getStrokeColor(),
-															ScalaPropertyBindings.setStrokeColor(this),
-															ScalaPropertyBindings.getStrokeColor(this)
-														);
-
         this.registerProperty(strokeColor);
-
-		fillColor = new Property<MTColor>(this, "fillColor",
-															this.getFillColor(),
-															ScalaPropertyBindings.setFillColor(this),
-															ScalaPropertyBindings.getFillColor(this)
-														);
         this.registerProperty(fillColor);
     }
 
@@ -368,7 +365,7 @@ public abstract class AbstractVisibleComponent extends MTComponent {
      * @return the stroke weight
      * @see org.mt4j.components.visibleComponents.StyleInfo#getStrokeWeight()
      */
-    public float getStrokeWeight() {
+    public java.lang.Float getStrokeWeight() {
         return styleInfo.getStrokeWeight();
     }
 

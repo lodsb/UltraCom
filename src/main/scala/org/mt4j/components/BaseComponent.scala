@@ -9,6 +9,7 @@ import org.mt4j.util._
 import org.mt4j.types.Rotation
 import org.mt4j.types.Rotation
 import scala.unchecked
+import org.mt4j.components.visibleComponents.AbstractVisibleComponent
 
 
 /**
@@ -19,6 +20,7 @@ import scala.unchecked
  * To change this template use File | Settings | File Templates.
  */
 abstract class BaseComponent extends VarDeferor {
+
   protected var propertiesAndAttributes = List[PropertyAndAttributeWrapper]()
 
   import org.mt4j.components.PropertyAndAttributeWrappers._
@@ -32,26 +34,48 @@ abstract class BaseComponent extends VarDeferor {
   }
 
   def use(styles: StyleSpecification) = {
+    // fixme, n goddamn type erasure, how to fix this code?
     styles.foreach{style =>
       propertiesAndAttributes.foreach { pa =>
         if(style.n == pa.name) {
-          pa match {
+          // since this cant be made typesafe for now
+          style match {
+            case x:StylePropertyT[_] => {
+              pa match {
+                case y: AttributeWrapper[_] => {
+                  y.attribute.asInstanceOf[Attribute[Any]]() = x.value.asInstanceOf[Any]
+                }
+
+                case y: PropertyWrapper[_] => {
+                  y.property.asInstanceOf[Property[Any]]() = x.value.asInstanceOf[Any]
+                }
+
+              }}
+          }
+
+          /*
+          style match {
+            case x:StylePropertyT[_] => {
+              println(pa.m.erasure+ " | "+ x.value.getClass+ " " + pa.m.equals(x.value.getClass) + " | " + pa.m.erasure.equals(x.value.getClass))
+            }
+          }
+          (pa: @unchecked) match {
             case x:AttributeWrapper[Vector3D] => {
-              style match {
+              (style: @unchecked) match {
                 case y:StylePropertyT[Vector3D] => {
                   x.attribute() = y.value
                 }
               }
             }
             case x:PropertyWrapper[Vector3D] => {
-              style match {
+              (style: @unchecked) match {
                 case y:StylePropertyT[Vector3D] => {
                   x.property() = y.value
                 }
               }
             }
             case x:AttributeWrapper[Rotation] => {
-              style match {
+              (style: @unchecked) match {
                 case y:StylePropertyT[Rotation] => {
                   x.attribute() = y.value
                 }
@@ -137,6 +161,7 @@ abstract class BaseComponent extends VarDeferor {
             case x:AttributeWrapper[MTColor] => {
               style match {
                 case y:StylePropertyT[MTColor] => {
+                  println(x.attribute.manifest.erasure == y.value.getClass)
                   x.attribute() = y.value
                 }
               }
@@ -144,6 +169,7 @@ abstract class BaseComponent extends VarDeferor {
             case x:PropertyWrapper[MTColor] => {
               style match {
                 case y:StylePropertyT[MTColor] => {
+                  println(x.property.manifest.erasure == y.value.getClass)
                   x.property() = y.value
                 }
               }
@@ -209,7 +235,7 @@ abstract class BaseComponent extends VarDeferor {
             }
 
           }
-        }
+        */}
       }
     }
   }
@@ -222,16 +248,17 @@ abstract class BaseComponent extends VarDeferor {
     // this is dirty, but there should be also some typesafe and direct way to do this
 
     propertiesAndAttributes.foreach { pa =>
+      // ARRRGGHHHGDFFDSFGDSFGSDFGSDFG
       if(pa.name.toLowerCase.contains("color")) {
-        pa match {
+      (pa: @unchecked)  match {
         case x:PropertyWrapper[MTColor] => {
-          val currentColor = x.property.get()
+          val currentColor = x.property.get().asInstanceOf[MTColor]
           ctrans match {
-            case PushColorState => {
+            case ColorPushState => {
               colorStack = colorStack :+ (currentColor)
             }
 
-            case PopColorState => {
+            case ColorPopState => {
               if(!colorStack.isEmpty) {
                 val oldColor = colorStack.head
                 colorStack = colorStack.tail
@@ -240,36 +267,74 @@ abstract class BaseComponent extends VarDeferor {
               }
             }
 
-            case Saturation(v) => {
+            case ColorSaturation(v) => {
               val w = scala.math.min(scala.math.max(v, 0), 255)
-              val newColor = Color.fromMtColor(currentColor).hsv.saturate(w).rgb
+              val newColor = Color.fromMtColor(currentColor).hsv.saturation(w).rgb
               x.property() = newColor
             }
 
-            case Lightness(v) => {
+            case ColorLightness(v) => {
               val w = scala.math.min(scala.math.max(v, 0), 255)
-              val newColor = Color.fromMtColor(currentColor).hsv.lighten(w).rgb
+              val newColor = Color.fromMtColor(currentColor).hsv.lightness(w).rgb
               x.property() = newColor
             }
 
-            case Invert(v) => {
-
-              val newColor = currentColor;//Color.fromMtColor(currentColor).hsv.rotate(v*180).rgb
+            case ColorRotation(v) => {
+              val newColor = Color.fromMtColor(currentColor).hsv.rotation(v).rgb
               x.property() = newColor
             }
 
-            case Opacity(v) => {
-              println(x.property.name)
-              println("c "+currentColor)
-              println("comp "+this)
-              val newColor = Color.fromMtColor(currentColor);//.moreOpaque(v*254)
-              x.property.set(currentColor)
+            case ColorOpacity(v) => {
+              val newColor = Color.fromMtColor(currentColor).opacity(v)
+              x.property.set(newColor)
             }
 
-            case Colorize(r,g,b) => {
-              val newColor = Color.fromMtColor(currentColor) + Red(r) + Green(g) + Blue(b)
+            case ColorColorize(c) => {
+              val newColor = Color.fromMtColor(currentColor) + c.rgb
               x.property() = newColor
             }
+
+            case ColorInterpolateTo(v, c2) => {
+              // slightly bogus?
+              val newColor = Color.fromMtColor(currentColor).interpolate(v, c2.rgb)
+              x.property() = newColor
+            }
+
+            case ColorInterpolation(v, c1, c2) => {
+              val newColor = c1.rgb.interpolate(v, c2.rgb)
+              x.property() = newColor
+            }
+
+            case ColorSaturate(v) => {
+              val newColor = Color.fromMtColor(currentColor).hsv.saturate(v).rgb
+              x.property() = newColor
+            }
+
+            case ColorDesaturate(v) => {
+              val newColor = Color.fromMtColor(currentColor).hsv.desaturate(v).rgb
+              x.property() = newColor
+            }
+
+            case ColorLighten(v) => {
+              val newColor = Color.fromMtColor(currentColor).hsv.lighten(v).rgb
+              x.property() = newColor
+            }
+
+            case ColorMoreOpaque(v) => {
+              val newColor = Color.fromMtColor(currentColor).rgb.moreOpaque(v).rgb
+              x.property() = newColor
+            }
+
+            case ColorMoreTransparent(v) => {
+              val newColor = Color.fromMtColor(currentColor).rgb.moreTransparent(v).rgb
+              x.property() = newColor
+            }
+
+            case ColorDarken(v) => {
+              val newColor = Color.fromMtColor(currentColor).hsv.lighten(v).rgb
+              x.property() = newColor
+            }
+
 
 
           }
@@ -283,8 +348,10 @@ abstract class BaseComponent extends VarDeferor {
 }
 
 object PropertyAndAttributeWrappers {
-  abstract class PropertyAndAttributeWrapper(val name: String)
-  case class PropertyWrapper[T](property: Property[T]) extends PropertyAndAttributeWrapper(property.name)
-  case class AttributeWrapper[T](attribute: Attribute[T]) extends PropertyAndAttributeWrapper(attribute.name)
+  import reflect.runtime.universe._
+
+  abstract class PropertyAndAttributeWrapper(val name: String, val m: Manifest[_])
+  case class PropertyWrapper[T](property: Property[T]) extends PropertyAndAttributeWrapper(property.name, property.manifest)
+  case class AttributeWrapper[T](attribute: Attribute[T]) extends PropertyAndAttributeWrapper(attribute.name, attribute.manifest)
 
 }

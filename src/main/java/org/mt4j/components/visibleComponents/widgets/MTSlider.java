@@ -245,7 +245,7 @@ public class MTSlider extends MTRectangle {
         outerShape.addChild(knob);
         this.addChild(outerShape);
 
-        text = new MTTextField(applet, x,y+height, height+20,height+20, FontManager.getInstance().getDefaultFont(applet, this.getFillColor(), getStrokeColor()));
+        text = new MTTextField(applet, x,y+height, height+20,height+20, FontManager.getInstance().getDefaultFont(applet, MTColor.WHITE, MTColor.WHITE));
         text.setNoFill(true);
         text.setPickable(false);
         text.setNoStroke(true);
@@ -317,9 +317,9 @@ public class MTSlider extends MTRectangle {
 		float currVal = (minValue + maxValue) / 2f;
 		this.setValue(currVal);
 
-		this.value = new Property(this,"value", new java.lang.Float(currVal), ScalaPropertyBindings.setValue(this), ScalaPropertyBindings.getValue(this));
+		this.value = new Property(this, "value", new java.lang.Float(currVal), ScalaPropertyBindings.setValue(this), ScalaPropertyBindings.getValue(this), Property.genManifest(Float.class));
         this.registerProperty(this.value);
-		this.valueRange = new Attribute<Float>("valueRange", this.getValueRangeVar());
+		this.valueRange = Attribute.ofType(Float.class,"valueRange", this.getValueRangeVar());
         this.registerAttribute(valueRange);
 	}
 
@@ -554,19 +554,42 @@ public class MTSlider extends MTRectangle {
 	// DELEGATE APPEARANCE TO OUTERSHAPE SINCE THE SLIDER ITSELF ISNT DISPLAYED!
 	@Override
 	public void setFillColor(MTColor color) {
+        //super.setFillColor(color);
 
         if(innerShape != null && knob != null) {
             float r = ToolsMath.clamp(color.getR() - 40, 0, 255);
             float b = ToolsMath.clamp(color.getB() - 40, 0, 255);
             float g = ToolsMath.clamp(color.getG() - 40, 0, 255);
 
-
             innerShape.setFillColor(color);
 
             knob.setFillColor(new MTColor(r,g,b, color.getA()));
+
+            outerShape.setFillColor(outerShape.getFillColor().setA(color.getA()));
         }
+         
 
 	}
+
+    @Override
+    public MTColor getFillColor() {
+        MTColor ret = MTColor.BLUE;
+        if(innerShape != null) {
+            ret = innerShape.getFillColor();
+        }
+
+        return ret;
+    }
+
+    @Override
+    public MTColor getStrokeColor() {
+        MTColor ret = MTColor.BLUE;
+        if(innerShape != null) {
+            ret = innerShape.getStrokeColor();
+        }
+
+        return ret;
+    }
 
 	@Override
 	public void setStrokeColor(MTColor strokeColor) {

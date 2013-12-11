@@ -108,7 +108,7 @@ public class MTLine extends MTCSSStylableShape {
 
         this.setName("unnamed MTLine");
 
-        startPosition = new Property<Vector3D>(this, "startPosition",
+        startPosition = Property.ofType(Vector3D.class,this, "startPosition",
                 this.getStartPoint(),
                 ScalaPropertyBindings.setStartPosition(this),
                 ScalaPropertyBindings.getStartPosition(this)
@@ -116,7 +116,7 @@ public class MTLine extends MTCSSStylableShape {
 
         this.registerProperty(startPosition);
 
-        endPosition = new Property<Vector3D>(this, "endPosition",
+        endPosition = Property.ofType(Vector3D.class,this, "endPosition",
                 this.getEndPoint(),
                 ScalaPropertyBindings.setEndPosition(this),
                 ScalaPropertyBindings.getEndPosition(this)

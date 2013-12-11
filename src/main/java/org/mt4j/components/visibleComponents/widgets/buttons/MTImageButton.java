@@ -100,7 +100,7 @@ public class MTImageButton extends MTRectangle implements IclickableButton {
         //everything previously drawn and avoid z-fighting
         this.setDepthBufferDisabled(true);
 
-        this.pressed = new Attribute<Boolean>("pressed",false);
+        this.pressed = Attribute.ofType(Boolean.class,"pressed",false);
         this.registerAttribute(pressed);
     }
 
