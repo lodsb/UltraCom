@@ -132,7 +132,7 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
     "fillColor" := Color.BLACK
   )
 
-  val group = new Group(app, 10f,10f)
+  val group = Group(vertical = false)
   canvas += group
 
   val tt = TextArea("some sliders")

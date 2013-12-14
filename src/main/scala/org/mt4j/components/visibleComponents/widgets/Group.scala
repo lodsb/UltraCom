@@ -10,6 +10,13 @@ import org.mt4j.types.Vec3d
 /**
  * Created by lodsb on 12/9/13.
  */
+
+object Group {
+  def apply(minWidth: Float=10, minHeight: Float=10, vertical: Boolean = true) : Group = {
+    new Group(MTApplication.getInstance(), minWidth, minHeight, vertical)
+  }
+}
+
 class Group(app: MTApplication, minWidth: Float=10, minHeight: Float=10, vertical: Boolean = true) extends MTRectangle(app, 0f, 0f, minWidth, minHeight)
 with StateChangeListener {
 
@@ -72,7 +79,8 @@ with StateChangeListener {
 
     var yInc = Vec3d(0, yPadding(), 0)
     var xInc = Vec3d(xPadding(), 0, 0)
-    val justify = Vec3d((this.width()/2f).toFloat,0f,0f,0f)
+    val justifyW = Vec3d((this.width()/2f).toFloat,0f,0f,0f)
+    val justifyH = Vec3d(0f,(this.height()/2f).toFloat,0f,0f)
 
     if (vertical) {
       children.foreach {
@@ -88,7 +96,7 @@ with StateChangeListener {
           //val centerpos = child.getCenterPointRelativeToParent
           //val xpos = Vec3d(cbounds.getWidthXY(TransformSpace.RELATIVE_TO_PARENT),0,0)
           // todo proper justification, not only centering
-          child.relativePositionToParent() = currentPosition.getAdded(justify)
+          child.relativePositionToParent() = currentPosition.getAdded(justifyW)
       }
     } else {
       children.foreach {
@@ -101,8 +109,7 @@ with StateChangeListener {
           currentPosition = currentPosition.getAdded(xInc).getAdded(cwidth)
           child.relativePositionToParent() = currentPosition
 
-          val justify = (this.height())
-          child.relativePositionToParent() = currentPosition.getAdded(Vec3d(0f, justify.toFloat + yInc.getY, 0f))
+          child.relativePositionToParent() = currentPosition.getAdded(justifyH)
       }
     }
   }
