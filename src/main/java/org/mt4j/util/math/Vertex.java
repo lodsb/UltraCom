@@ -17,6 +17,8 @@
  ***********************************************************************/
 package org.mt4j.util.math;
 
+import org.mt4j.util.MTColor;
+
 import java.util.ArrayList;
 
 /**
@@ -131,6 +133,22 @@ public class Vertex extends Vector3D {
     public Vertex(float x, float y, float z, float r, float g, float b, float a) {
         this(x, y, z, 0, 0, r, g, b, a);
     }
+
+    public Vertex(Vector3D srcV, MTColor color) {
+        this(srcV.getX(), srcV.getY(), srcV.getZ(), 0, 0, color.getR(), color.getG(), color.getB(), color.getA());
+    }
+
+    public Vertex(Vector3D srcV, float textureX, float textureY, MTColor color) {
+        this(srcV.getX(), srcV.getY(), srcV.getZ(), textureX, textureY, color.getR(), color.getG(), color.getB(), color.getA());
+    }
+
+    public MTColor getColor() {
+        return new MTColor(this.r, this.g, this.b, this.a);
+    }
+
+
+
+
 
     /**
      * Instantiates a new vertex.

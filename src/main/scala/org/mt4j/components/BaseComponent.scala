@@ -10,6 +10,7 @@ import org.mt4j.types.Rotation
 import org.mt4j.types.Rotation
 import scala.unchecked
 import org.mt4j.components.visibleComponents.AbstractVisibleComponent
+import org.lodsb.reakt.TVal
 
 
 /**
@@ -32,6 +33,16 @@ abstract class BaseComponent extends VarDeferor {
   protected def registerProperty[T](property: Property[T]) = {
     propertiesAndAttributes  = propertiesAndAttributes :+ PropertyWrapper(property)
   }
+
+  /*
+  protected def registerTVal[T](tval: TVal[T]) = {
+    propertiesAndAttributes  = propertiesAndAttributes :+ TValWrapper(tval)
+  }
+
+  protected def registerTVar[T](tval: TVal[T]) = {
+    propertiesAndAttributes  = propertiesAndAttributes :+ TVarWrapper(tval)
+  } */
+
 
   def use(styles: StyleSpecification) = {
     // fixme, n goddamn type erasure, how to fix this code?
@@ -353,5 +364,4 @@ object PropertyAndAttributeWrappers {
   abstract class PropertyAndAttributeWrapper(val name: String, val m: Manifest[_])
   case class PropertyWrapper[T](property: Property[T]) extends PropertyAndAttributeWrapper(property.name, property.manifest)
   case class AttributeWrapper[T](attribute: Attribute[T]) extends PropertyAndAttributeWrapper(attribute.name, attribute.manifest)
-
 }

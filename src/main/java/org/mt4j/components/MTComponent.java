@@ -2519,6 +2519,7 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
                 comp.searchViewingCamera();
 
                 comp.fireStateChange(StateChange.REMOVED_FROM_PARENT);
+                this.fireStateChange(StateChange.CHILD_REMOVED);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -2585,6 +2586,8 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
         if (this.getParent() != null) {
             this.getParent().sendChildToFront(this);
         }
+
+        System.err.println(parent);
     }
 
     /**
@@ -2599,7 +2602,7 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
             if (this.containsDirectChild(child)
                     && !getChildByIndex(getChildCount() - 1).equals(child)
                     ) {
-                //System.out.println("Drawlast: " + tangibleComp.name());
+                System.err.println("Drawlast: " + child);
                 childComponents.add(getChildCount(), child);
                 childComponents.remove(child);
             }

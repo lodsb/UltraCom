@@ -35,11 +35,13 @@ import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProc
 import org.mt4j.input.inputProcessors.componentProcessors.rotateProcessor.RotateProcessor;
 import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleProcessor;
 import org.mt4j.input.inputProcessors.componentProcessors.tapProcessor.TapProcessor;
+import org.mt4j.util.Util;
 import org.mt4j.util.camera.Icamera;
 import org.mt4j.util.math.Matrix;
 
 import org.mt4j.util.math.Tools3D;
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.opengl.PGraphics3D;
 import processing.opengl.PGraphicsOpenGL;
 
@@ -327,9 +329,12 @@ public class MTCanvas extends MTComponent implements IHitTestInfoProvider {
         for (Cluster cluster : clusters) {
             cluster.updateComponent(updateTime);
         }
-        GL2 gl = GLU.getCurrentGL().getGL2();
-        gl.glDisable(GL2.GL_DEPTH_TEST);
-        gl.glEnable(gl.GL_ALPHA_TEST);
+//        gl.glDisable(GL2.GL_DEPTH_TEST);
+  //      gl.glEnable(gl.GL_ALPHA_TEST);
+//        gl.glDepthFunc(GL2.GL_NEVER);
+//        gl.glAlphaFunc(GL2.GL_GREATER, 0.5f);
+//        gl.glEnable(GL2.GL_ALPHA_TEST);
+
         this.drawUpdateRecursive(this, updateTime, graphics);
 //		System.out.println("Culled objects: " + culledObjects);
     }
@@ -375,6 +380,7 @@ public class MTCanvas extends MTComponent implements IHitTestInfoProvider {
                     if (currentcomp.isContainedIn(currentcomp.getViewingCamera().getFrustum())) {
                         if (!this.calledFromDrawComponent) { //FIXME TEST
                             // DRAW THE COMPONENT  \\
+
                             currentcomp.drawComponent(graphics);
                         }
                     } else {
@@ -395,11 +401,14 @@ public class MTCanvas extends MTComponent implements IHitTestInfoProvider {
 //					drawUpdateRecursive(child, updateTime, graphics);
 
                 synchronized (currentcomp.getChildList()) {
-                    List<MTComponent> childs = currentcomp.getChildList();
-                    int childCount = childs.size();
-                    for (int i = 0; i < childCount; i++) {
-                        drawUpdateRecursive(childs.get(i), updateTime, graphics);
+                    MTComponent[] children = Util.zSort(currentcomp.getChildren());
+                    for(MTComponent child: children) {
+                        drawUpdateRecursive(child, updateTime, graphics);
                     }
+                    //int childCount = childs.size();
+                    /*for (int i = 0; i < childCount; i++) {
+                        drawUpdateRecursive(childs.get(i), updateTime, graphics);
+                    } */
                 }
 
                 currentcomp.postDrawChildren(graphics);
@@ -434,12 +443,17 @@ public class MTCanvas extends MTComponent implements IHitTestInfoProvider {
 //				for (MTComponent child : currentcomp.getChildList()) //FIXME for each loop sometimes throws concurrentmodification error because of fail-fast iterator
 //					drawUpdateRecursive(child, updateTime, graphics);
 
+
+
                 synchronized (currentcomp.getChildList()) {
-                    List<MTComponent> childs = currentcomp.getChildList();
-                    int childCount = childs.size();
-                    for (int i = 0; i < childCount; i++) {
-                        drawUpdateRecursive(childs.get(i), updateTime, graphics);
+                    MTComponent[] children = Util.zSort(currentcomp.getChildren());
+                    for(MTComponent child: children) {
+                        drawUpdateRecursive(child, updateTime, graphics);
                     }
+                    //int childCount = childs.size();
+                    /*for (int i = 0; i < childCount; i++) {
+                        drawUpdateRecursive(childs.get(i), updateTime, graphics);
+                    } */
                 }
 
                 currentcomp.postDrawChildren(graphics);

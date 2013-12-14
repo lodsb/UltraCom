@@ -106,7 +106,7 @@ with Color {
   }
 
   def -(rgb: RgbC) = {
-    Rgb(cl(rgb.r-this.r), cl(rgb.b- this.b), cl(rgb.g- this.g), cl(rgb.a - this.a))
+    Rgb(cl(this.r-rgb.r), cl(this.b-rgb.b), cl(this.g-rgb.g), cl(this.a-rgb.a))
   }
 
   def *(v: Float) = {
@@ -291,6 +291,10 @@ object Color {
 
   def fromMtColor(c: MTColor) : Rgb = {
     Rgb(c.getR.toInt, c.getG.toInt, c.getB.toInt, c.getA.toInt)
+  }
+
+  def toMTColor(rgb: Rgb) : MTColor = {
+    new MTColor(rgb.r, rgb.g, rgb.b, rgb.a)
   }
 	//def apply(name:String, r:Int,g:Int,b:Int) = Rgb(r,g,b, 255)
 	//def apply(name:String, r:Int,g:Int,b:Int,a:Int) = Rgb(r,g,b,a)

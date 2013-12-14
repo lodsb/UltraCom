@@ -515,6 +515,7 @@ public class MTRectangle extends MTPolygon {
                 new Vertex(v[3].x, v[1].y + height, v[3].z, v[3].getTexCoordU(), v[3].getTexCoordV(), v[3].getR(), v[3].getG(), v[3].getB(), v[3].getA()),
                 new Vertex(v[4].x, v[4].y, v[4].z, v[4].getTexCoordU(), v[4].getTexCoordV(), v[4].getR(), v[4].getG(), v[4].getB(), v[4].getA()),
         });
+        this._height = height;
     }
 
 
@@ -540,10 +541,14 @@ public class MTRectangle extends MTPolygon {
                     new Vertex(v[3].x, v[3].y, v[3].z, v[3].getTexCoordU(), v[3].getTexCoordV(), v[3].getR(), v[3].getG(), v[3].getB(), v[3].getA()),
                     new Vertex(v[4].x, v[4].y, v[4].z, v[4].getTexCoordU(), v[4].getTexCoordV(), v[4].getR(), v[4].getG(), v[4].getB(), v[4].getA()),
             });
+             System.err.println(this+ " SET WIDTH TO " + width);
+            this._width = width;
         }
+
     }
 
 	public float getWidthLocal() {
+        System.err.println(this + "GET WIDTH "+_width);
 		return _width;
 	}
 

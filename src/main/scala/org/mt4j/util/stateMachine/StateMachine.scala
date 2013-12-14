@@ -20,12 +20,14 @@
     >>  Made in Bavaria by fat little elves - since 1983.
  */
 
-package org.mt4j.stateMachine
+package org.mt4j.util.stateMachine
 
 import org.mt4j.commandSystem.Command
 import org.mt4j.eventSystem.{foo, bar}
 import scala.actors.Actor._
 import actors.SchedulerAdapter
+import sun.misc.Signal
+import org.lodsb.reakt.TSignal
 
 object StateMachine {
 	def apply(body: => Unit): StateMachine = {
@@ -110,6 +112,13 @@ trait StateMachine {
 	'End is {}
 
 	var sameThreadContext = true;
+
+  def dependsOn[T](sig: TSignal[T]) = {
+    sig.observe({ x: T =>
+      this.consume(x)
+      true
+    })
+  }
 
 	def statemachine(body: => Unit): Unit = fsm(this.sameThreadContext)(body);
 

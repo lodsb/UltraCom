@@ -16,30 +16,46 @@ abstract class Repetitions(val repetitions: Int)
 case class LoopRepetitions(override val repetitions: Int) extends Repetitions(repetitions)
 case object InfLoopRepetitions extends Repetitions(-1)
 
-abstract class TweenEvent
-case class TweenStart(name: String) extends TweenEvent
-case class TweenStop(name: String)  extends TweenEvent
-case class TweenUpdate(name: String) extends TweenEvent
-
-trait Tweening[T] {
+trait Tweening {
   val start : VarA[Boolean] = new VarA[Boolean](false)
   val stop : VarA[Boolean] = new VarA[Boolean](true)
-
+  val restart : VarA[Boolean] = new VarA[Boolean](true)
   def name : String
 
-  def startValue: T
+  protected var successor : Option[Tweening] = None
 
-  val step: org.lodsb.reakt.TVar[(TweenEvent, T)] = {
-    new org.lodsb.reakt.async.VarA[(TweenEvent,T)]((TweenStop(name),startValue))
+  def before(successor: Tweening): Tweening = {
+    this.synchronized {
+      this.successor = Some(successor)
+    }
+
+    successor
+  }
+
+  def unchain: Unit = {
+    this.synchronized {
+      this.successor = None
+    }
+  }
+
+  def destroy
+}
+
+trait GenericTweening[T] extends Tweening {
+
+  def startValue: T
+  val step: org.lodsb.reakt.TVar[T] = {
+    new org.lodsb.reakt.async.VarA[T](startValue)
   }
 }
 
 // generic interpolation classes?
+// playmodes? pendulum etc...
 
 class Tween(tweenName: String, from: Float, to: Float, duration: Float,
             reps: Repetitions, accelerationEndTime: Float = 0.0f,
             decelerationStartTime: Float = 0.0f)
-            extends Tweening[Float] with IAnimationListener {
+            extends GenericTweening[Float] with IAnimationListener {
 
   def startValue = from
   def name = tweenName
@@ -50,21 +66,50 @@ class Tween(tweenName: String, from: Float, to: Float, duration: Float,
   val animation = new Animation(name, interpolator, this)
   animation.addAnimationListener(this)
 
-  start.observe({x => if(x) animation.start; true})
-  stop.observe({x => if(x) animation.stop; true})
+  private var running = false;
+  start.observe({x => if(x && ! running) animation.start; true})
+  stop.observe({x => if(x && running){
+    running = false
+    println("STOPPED")
+    animation.stop
+  }; true})
+
+  restart.observe({x => if(x) animation.restart(); true})
+
+  private var doneRepetitions = 0;
 
   def processAnimationEvent(ae: AnimationEvent): Unit = {
-    val te =ae.getId match {
-      case AnimationEvent.ANIMATION_STARTED => TweenStart(name)
-      case AnimationEvent.ANIMATION_UPDATED => TweenUpdate(name)
-      case AnimationEvent.ANIMATION_ENDED => TweenStop(name)
+    ae.getId match {
+      case AnimationEvent.ANIMATION_STARTED => {
+        doneRepetitions = 0;
+        this.running = true;
+      }
+      case AnimationEvent.ANIMATION_ENDED =>
+      if(reps != InfLoopRepetitions){
+        doneRepetitions = doneRepetitions + 1
+
+        if(reps.repetitions == doneRepetitions){
+          this.stop() = true;
+
+          this.synchronized {
+            if(successor.isDefined) {
+              successor.get.start() = true
+            }
+          }
+        }
+      }
+      case _ =>
     }
 
-    step.emit((te, ae.getValue))
+    step.emit( ae.getValue)
   }
-
-  // playmodes? pendulum etc...
-
+  def destroy: Unit = {
+    if(!running) {
+      start.disconnectAll
+      stop.disconnectAll
+      animation.removeAllAnimationListeners()
+    }
+  }
 }
 
 object Tween {

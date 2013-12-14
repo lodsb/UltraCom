@@ -66,6 +66,13 @@ object TextArea {
 		textArea
 	}
 
+  def apply(s: String): MTTextArea = {
+    val t = this.apply()
+    t.setText(s)
+
+    t
+  }
+
 	//TODO: add textarea with fixed size and textclipping
 
 }

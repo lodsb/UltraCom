@@ -43,4 +43,11 @@ object TextField {
 		textArea
 	}
 
+  def apply(s: String): MTTextField = {
+    val t = this.apply()
+    t.setText(s)
+
+    t
+  }
+
 }

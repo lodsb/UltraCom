@@ -26,22 +26,30 @@ import org.mt4j.input.inputData.{AbstractCursorInputEvt, MTFingerInputEvt}
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.{DragProcessor, DragEvent}
 import org.mt4j.input.inputProcessors.globalProcessors.{CameraProcessor, AbstractGlobalInputProcessor}
 import org.mt4j.input.inputProcessors.{MTGestureEvent, IGestureEventListener}
+import org.mt4j.util.Alpha
 import org.mt4j.util.animation._
+import org.mt4j.util.animation.LoopRepetitions
+import org.mt4j.util.animation.Vector3DTransition
+import org.mt4j.util.ColorInterpolation
 import org.mt4j.util.ColorInterpolation
 import org.mt4j.util.ColorLightness
+import org.mt4j.util.ColorLightness
+import org.mt4j.util.ColorOpacity
 import org.mt4j.util.ColorOpacity
 import org.mt4j.util.ColorRotation
+import org.mt4j.util.ColorRotation
+import org.mt4j.util.ColorSaturation
 import org.mt4j.util.ColorSaturation
 import org.mt4j.{Scene, Application}
 import org.mt4j.util._
 import org.mt4j.util.math.{Tools3D, Vector3D}
 import org.mt4j.components.ComponentImplicits._
-import org.mt4j.stateMachine.StateMachine
+import org.mt4j.util.stateMachine.StateMachine
 import org.mt4j.components.visibleComponents.widgets._
 import org.mt4j.types.{Vec3d, Rotation}
 import org.lodsb.reakt.Implicits._
 import scala.actors.Actor._
-import org.mt4j.components.visibleComponents.shapes.{MTRectangle, Line, MTLine}
+import org.mt4j.components.visibleComponents.shapes._
 import java.util.Random
 
 
@@ -103,10 +111,8 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 
   val testColor = Color.MAROON
 
-  val rect = new MTRectangle(app, 20f, 20f, 100f, 100f)
+  val rect = Slider(0,1)
   rect.globalPosition() = Vec3d(100,100,-50)
-
-  canvas += rect
 
   val slider3 = Slider(0,1)
   slider3 use Style(
@@ -123,10 +129,17 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
   val slider5 = Slider(0,1)
   slider5 use Style(
     "globalPosition" := Vec3d(200,500),
-    "fillColor" := Color.FUCHSIA
+    "fillColor" := Color.BLACK
   )
 
-  canvas += slider3 ++ slider4 ++ slider5
+  val group = new Group(app, 10f,10f)
+  canvas += group
+
+  val tt = TextArea("some sliders")
+
+  group += tt++slider3 ++ slider4 ++ slider5
+
+  //canvas += slider3 ++ slider4 ++ slider5
 
   slider2.value.observe{x=> rect.colorTransformation(ColorLightness(x));true }
   slider.value.observe{x=> rect.colorTransformation(ColorSaturation(x));true }
@@ -151,24 +164,43 @@ class TutorialOneScene(app: Application, name: String) extends Scene(app,name) {
 
   canvas += button2
 
-  val tween = Tween(2.0f, InfLoopRepetitions)
+  val tween = Tween(2.0f, LoopRepetitions(1))
  // tween.step.observe({ x => button.colorTransformation(ColorOpacity(x._2)); true})
-  tween.step.observe({ x => slider.colorTransformation(ColorOpacity(x._2)); true})
-  textField.text <~ tween.step.map(x => Color((x._2*255).toInt, 0,0))+""
+  tween.step.observe({ x => slider.colorTransformation(ColorOpacity(x)); true})
+  textField.text <~ tween.step.map(x => Color((x*255).toInt, 0,0))+""
+
+  val otherEasing = QuartInOut()
+  val tween2 = Tween(3f, LoopRepetitions(1))
+  slider.globalPosition <~ tween2.step.map(x=>otherEasing.map(y=>Interpolation(y, rect.globalPosition(), Vec3d(100,100,100)))(x))
+
 
 
   //button.globalPosition <~ tween.step.map(x=> Vec3d(100,200,150f*x._2))
   //val a = rect.globalPosition()
   var a = Vec3d(10,10)
   val myEasing = BounceOut()
-  slider.globalPosition <~ tween.step.map({x=> myEasing.map({y => Interpolation(y, Vec3d(100,100,0), rect.globalPosition())})(x._2)})
 
-  tween.start <~ button2.pressed
+  // loop this
+  tween before tween2 before tween
+
+
+  val transition = Vector3DTransition(slider2.globalPosition, Vec3d(0,0), Vec3d(400,400), 4f)
+  transition.start <~ button2.pressed
   button.pressed.observe{x=> tween.animation.start();true}
 
   textField.text <~ slider.value+"dd"
 
   //rect.globalPosition.observe({x => println(x + " | "+ rect.globalPosition.get()); a = x; true})
+
+  canvas += rect
+  rect.setPickable(true)
+
+  val rr = Rectangle(100,100)
+  canvas += rr
+
+  group use Style(
+    "fillColor" := Color.GRAY - Alpha(80)
+  )
 
 
 
