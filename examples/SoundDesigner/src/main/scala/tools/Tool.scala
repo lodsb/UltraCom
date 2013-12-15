@@ -25,7 +25,7 @@ import org.mt4j.util.animation.AnimationEvent
 import org.mt4j.util.animation.IAnimationListener
 import org.mt4j.util.animation.MultiPurposeInterpolator
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 import processing.core.PConstants._
 
 import ui._
@@ -35,6 +35,7 @@ import ui.properties.types._
 import ui.util._
 import ui.events._
 import ui.usability._
+import processing.opengl.PGraphicsOpenGL
 
 /**
 * Companion object defining the basic look of tools.
@@ -93,7 +94,7 @@ class Tool(app: Application, center: (Float, Float), pType: PropertyType) extend
     * Returns a deep copy of this tool's current color.
     */
     def color() = {
-      new MTColor(this.currentColor.getR, this.currentColor.getG, this.currentColor.getB, this.currentColor.getAlpha)
+      new MTColor(this.currentColor.getR, this.currentColor.getG, this.currentColor.getB, this.currentColor.getA)
     }
     
     protected def setColor(col: MTColor) = {
@@ -203,7 +204,7 @@ class Tool(app: Application, center: (Float, Float), pType: PropertyType) extend
     /**
     * Draws this tool.
     */
-    override def drawComponent(g: PGraphics) = {
+    override def drawComponent(g: PGraphicsOpenGL) = {
       import Tool._
       val color = this.color
       if (this.isEditing) color.setA(ActiveStrokeAlpha) else color.setA(StrokeAlpha)

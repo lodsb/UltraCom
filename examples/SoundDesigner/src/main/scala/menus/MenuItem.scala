@@ -16,7 +16,7 @@ import org.mt4j.util.math.Vector3D
 import org.mt4j.util.math.Vertex
 import org.mt4j.types.{Vec3d}
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 
 import scala.actors._
 

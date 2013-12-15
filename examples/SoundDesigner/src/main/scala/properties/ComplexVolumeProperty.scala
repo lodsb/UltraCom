@@ -2,7 +2,7 @@ package ui.properties
 
 import org.mt4j.util.MTColor
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 import processing.core.PConstants._
 
 import ui._
@@ -33,7 +33,7 @@ class ComplexVolumeProperty(connection: ManipulableBezierConnection, numberOfBuc
   * As a technical side note, this method uses many small rectangles aligned with the associated bezier curve to represent this property,
   * as opposed to a single complex polygon. This is due to Processing not being able to reliably fill complex polygons correctly.
   */
-  override def draw(g: PGraphics) = {
+  override def draw(g: PGraphicsOpenGL) = {
     import ComplexVolumeProperty._
     
     val (playbackIndex, playbackT) = this.connection.associatedPath match {case Some(path) => path.playbackPosition case None => (0,0.0f)} //playback position as (connection, curve parameter) pair

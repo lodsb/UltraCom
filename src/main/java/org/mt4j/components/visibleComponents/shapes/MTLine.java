@@ -254,6 +254,48 @@ public class MTLine extends MTCSSStylableShape {
 
     @Override
     public void drawComponent(PGraphicsOpenGL g) {
+        if (MT4jSettings.getInstance().isOpenGlMode()
+                && this.isUseDirectGL()) {
+            GL2 gl = Tools3D.getGL();
+
+            //Draw with PURE opengl
+            if (this.isUseDisplayList()) {
+                //Use Display Lists
+                if (!this.isNoStroke())
+                    gl.glCallList(this.getGeometryInfo().getDisplayListIDs()[0]); //Draw line
+            } /* else {
+                //Use Vertex Arrays or VBOs
+                this.drawPureGl(gl);
+            }   */
+        }
+
+
+        //opengl drawing is broken?
+
+        MTColor strokeColor = this.getStrokeColor();
+        g.stroke(strokeColor.getR(), strokeColor.getG(), strokeColor.getB(), strokeColor.getA());
+        if (this.isDrawSmooth())
+            g.smooth();
+        else
+            g.noSmooth();
+        g.strokeWeight(this.getStrokeWeight());
+        Vertex[] verts = this.getVerticesLocal();
+        g.line(verts[0].x, verts[0].y, verts[0].z, verts[1].x, verts[1].y, verts[1].z);
+
+        /*
+        if (this.isDrawSmooth())
+            g.smooth();
+        else
+            g.noSmooth();
+
+        //Do the line
+
+
+        if (this.isDrawSmooth()) //Reset to no smoothing because of the smooth bug (visible triangle lines in shapes)
+            g.noSmooth();
+            */
+        /*
+
         PApplet renderer = this.getRenderer();
         if (MT4jSettings.getInstance().isOpenGlMode()
                 && this.isUseDirectGL()) {
@@ -285,7 +327,7 @@ public class MTLine extends MTCSSStylableShape {
 
             if (this.isDrawSmooth()) //Reset to no smoothing because of the smooth bug (visible triangle lines in shapes)
                 pContext.noSmooth();
-        }
+        }   */
     }
 
 
@@ -319,7 +361,7 @@ public class MTLine extends MTCSSStylableShape {
 //		if (this.isDrawSmooth())
 //			gl.glEnable(GL2.GL_LINE_SMOOTH);
         //FIXME TEST
-        Tools3D.setLineSmoothEnabled(gl, true);
+        //Tools3D.setLineSmoothEnabled(gl, true);
 
         //SET LINE STIPPLE
         short lineStipple = this.getLineStipple();
@@ -340,7 +382,7 @@ public class MTLine extends MTCSSStylableShape {
 //	    if (this.isDrawSmooth())
 //			gl.glDisable(GL2.GL_LINE_SMOOTH);
         //FIXME TEST
-        Tools3D.setLineSmoothEnabled(gl, false);
+        //Tools3D.setLineSmoothEnabled(gl, false);
 
         gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
         gl.glDisableClientState(GL2.GL_COLOR_ARRAY);

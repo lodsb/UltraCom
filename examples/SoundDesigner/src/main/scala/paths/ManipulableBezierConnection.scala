@@ -20,7 +20,7 @@ import org.mt4j.util.math.Vector3D
 import org.mt4j.util.math.Vertex
 import org.mt4j.types.Vec3d
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 import processing.core.PConstants._
 
 import ui._
@@ -174,7 +174,7 @@ class ManipulableBezierConnection(app: Application, startNode: Node, controlNode
   /**
   * Draws this connection.
   */
-  override def drawComponent(g: PGraphics) = {
+  override def drawComponent(g: PGraphicsOpenGL) = {
     val sync = this.associatedPath match {case Some(path) => path case None => this}
     sync.synchronized {
       this.properties.values.foreach(_.draw(g))

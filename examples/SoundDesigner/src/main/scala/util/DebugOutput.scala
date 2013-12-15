@@ -10,7 +10,7 @@ import org.mt4j.util.math.Vector3D
 import org.mt4j.util.math.Vertex
 import org.mt4j.types.Vec3d
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 
 import ui._
 
@@ -25,7 +25,7 @@ object DebugOutput extends AbstractVisibleComponent(Ui) {
   /**
   * Draws debugging output.
   */
-  override def drawComponent(g: PGraphics) = {
+  override def drawComponent(g: PGraphicsOpenGL) = {
     g.stroke(255, 0, 0)
     g.fill(255, 0, 0)
     points.values.foreach(position => 

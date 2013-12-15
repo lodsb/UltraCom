@@ -19,7 +19,7 @@ import org.mt4j.types.Vec3d
 import org.mt4j.util.math.Vector3D
 import org.mt4j.util.math.ToolsGeometry
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 
 import ui._
 import ui.tools._

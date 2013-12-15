@@ -8,7 +8,7 @@ import org.mt4j.util.math.Vector3D
 import org.mt4j.util.math.Vertex
 import org.mt4j.types.{Vec3d}
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 import processing.core.PConstants._
 
 import ui.menus._
@@ -65,7 +65,7 @@ class PlaybackItem(app: Application, menu: NodeContextMenu, center: Vector3D, va
     PlaybackItem.StrokeWeight
   }
   
-  override def drawComponent(g: PGraphics) = {
+  override def drawComponent(g: PGraphicsOpenGL) = {
     val center = this.getCenterPointLocal
     val nodeCenter = menu.node.getCenterPointLocal
     val gradient = Functions.gradient((center.getX, center.getY), (nodeCenter.getX, nodeCenter.getY))

@@ -9,7 +9,7 @@ import org.mt4j.util.math.Vertex
 import org.mt4j.types.{Vec3d}
 import org.mt4j.util.SessionLogger
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 
 import ui.menus._
 import ui.paths.types._
@@ -71,7 +71,7 @@ class ToolItem(app: Application, menu: ToolContextMenu, center: Vector3D, val pr
     ToolItem.StrokeWeight
   }
   
-  override def drawComponent(g: PGraphics) = {
+  override def drawComponent(g: PGraphicsOpenGL) = {
     val center = this.getCenterPointLocal()
     val cx = center.getX()
     val cy = center.getY()    

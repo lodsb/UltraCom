@@ -9,7 +9,7 @@ import org.mt4j.input.inputProcessors.MTGestureEvent
 import org.mt4j.util.Color
 import org.mt4j.types.{Vec3d}
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 import processing.core.PConstants._
 
 import ui._

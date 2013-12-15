@@ -8,7 +8,7 @@ import org.mt4j.util.math.Vector3D
 import org.mt4j.util.math.Vertex
 import org.mt4j.types.{Vec3d}
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 
 import scala.actors._
 
@@ -76,7 +76,7 @@ class OutputChannelItem(app: Application, menu: NodeContextMenu, center: Vector3
     OutputChannelItem.StrokeWeight
   }
   
-  override def drawComponent(g: PGraphics) = {
+  override def drawComponent(g: PGraphicsOpenGL) = {
     val channelOn = menu.node.associatedPath match {
       case Some(path) => {
         path.isOutputChannelOpen(channelNumber)

@@ -1,6 +1,6 @@
 package ui.properties
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 import org.mt4j.util.MTColor
 
 import ui.persistence._
@@ -15,7 +15,7 @@ abstract class Property extends Persistability {
   /**
   * Draws this property.
   */
-  def draw(g: PGraphics)
+  def draw(g: PGraphicsOpenGL)
 
 
   /**

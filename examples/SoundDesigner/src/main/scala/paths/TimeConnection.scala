@@ -20,7 +20,7 @@ import org.mt4j.util.math.Vector3D
 import org.mt4j.util.math.Vertex
 import org.mt4j.types.Vec3d
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 
 import ui.paths.types._
 import ui._
@@ -96,7 +96,7 @@ class TimeConnection(app: Application, val timeNode: TimeNode, val connectionNod
   /**
   * Draws this connection.
   */
-  override def drawComponent(g: PGraphics) = {
+  override def drawComponent(g: PGraphicsOpenGL) = {
     val (x1, y1) = this.timeNode.position
     val (x2, y2) = this.startNode.position
 

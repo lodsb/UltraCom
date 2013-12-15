@@ -11,7 +11,7 @@ import org.mt4j.input.inputProcessors.MTGestureEvent
 
 import org.mt4j.util.{SessionLogger, Color}
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 import processing.core.PConstants._
 
 import scala.actors._

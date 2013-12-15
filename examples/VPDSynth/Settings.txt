@@ -3,6 +3,7 @@ Frametitle=VPDSynthScene
 DefaultAudioDevice=MOTU Audio ASIO
 #ScSynthPath=/usr/local/bin/scsynth
 ScSynthPath=C:\\Program Files (x86)\\SuperCollider\\scsynth.exe
+ScSynthPathWin=C:\\Program Files (x86)\\SuperCollider-3.6.3\\scsynth.exe
 #Renderer: OpenGL: 1 P3D: 2
 Renderer=1
 #Fullscreen:'true' or 'false'

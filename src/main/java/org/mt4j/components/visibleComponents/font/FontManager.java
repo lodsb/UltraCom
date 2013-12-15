@@ -53,7 +53,7 @@ public class FontManager {
     private static final int CACHE_MAX_SIZE = 10;
 
 
-    public static String DEFAULT_FONT = "data/fonts/arvo/Arvo-Regular.ttf";
+    public static String DEFAULT_FONT = "SansSerif";
     public static int DEFAULT_FONT_SIZE = 16;
     public static MTColor DEFAULT_FONT_FILL_COLOR = MTColor.BLACK;
     public static MTColor DEFAULT_FONT_STROKE_COLOR = MTColor.BLACK;

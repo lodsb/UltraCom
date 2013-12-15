@@ -26,7 +26,7 @@ import org.mt4j.util.animation.AnimationEvent
 import org.mt4j.util.animation.IAnimationListener
 import org.mt4j.util.animation.MultiPurposeInterpolator
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 import processing.core.PConstants._
 
 import ui._
@@ -150,7 +150,7 @@ class Node(val app: Application, var typeOfNode: NodeType, var associatedPath: O
       this.nodeType.size
     }
     
-    override def drawComponent(g: PGraphics) = {
+    override def drawComponent(g: PGraphicsOpenGL) = {
       val center = this.getCenterPointLocal()
       val cx = center.getX()
       val cy = center.getY()
@@ -166,7 +166,7 @@ class Node(val app: Application, var typeOfNode: NodeType, var associatedPath: O
       
       //draw basic node appearance
       g.fill(fillColor.getR, fillColor.getG, fillColor.getB, fillColor.getA)
-      g.stroke(strokeColor.getR, strokeColor.getG, strokeColor.getB, strokeColor.getAlpha)
+      g.stroke(strokeColor.getR, strokeColor.getG, strokeColor.getB, strokeColor.getA)
       g.strokeWeight(this.nodeType.strokeWeight)
       g.ellipse(cx, cy, this.radius*2, this.radius*2)      
       
@@ -180,7 +180,7 @@ class Node(val app: Application, var typeOfNode: NodeType, var associatedPath: O
       this.drawSymbol(g)
     }
     
-    private def drawSymbol(g: PGraphics) = {
+    private def drawSymbol(g: PGraphicsOpenGL) = {
       this.nodeType.symbol match {
         case Some(symbol) => {
           val center = this.getCenterPointLocal()
@@ -194,7 +194,7 @@ class Node(val app: Application, var typeOfNode: NodeType, var associatedPath: O
           }
           
           val symbolColor = this.nodeType.foregroundColor  
-          g.fill(symbolColor.getR(), symbolColor.getG(), symbolColor.getB(), symbolColor.getAlpha())    
+          g.fill(symbolColor.getR(), symbolColor.getG(), symbolColor.getB(), symbolColor.getA())
           g.noStroke()
           g.beginShape()
           val precision = 256 
@@ -293,11 +293,11 @@ class Node(val app: Application, var typeOfNode: NodeType, var associatedPath: O
     * Returns a deep copy of this node's current color.
     */
     def color() = {
-      new MTColor(this.currentColor.getR, this.currentColor.getG, this.currentColor.getB, this.currentColor.getAlpha)
+      new MTColor(this.currentColor.getR, this.currentColor.getG, this.currentColor.getB, this.currentColor.getA)
     }
     
     def setColor(col: MTColor) = {
-      this.currentColor = col
+      this.currentColor = Color.fromMtColor(col)
     }
     
     def setClock(value: Int) = {

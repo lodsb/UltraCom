@@ -17,7 +17,7 @@ import org.mt4j.util.math.Vector3D
 import org.mt4j.util.math.Vertex
 import org.mt4j.types.{Vec3d}
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 import processing.core.PConstants._
 
 import ui.menus._
@@ -39,14 +39,14 @@ class SaveProjectButton(app: Application, menu: Menu, center: Vector3D) extends 
 
   //this.setTexture(Ui.loadImage(MT4jSettings.getInstance.getDefaultImagesPath + "save.png"))
   
-  override def drawComponent(g: PGraphics) = {
+  override def drawComponent(g: PGraphicsOpenGL) = {
     super.drawComponent(g)
     val center = this.getCenterPointLocal()
     val cx = center.getX()
     val cy = center.getY()              
     val r = 0.5f * this.radius
     g.noStroke()
-    g.fill(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.itemForegroundColor.getAlpha * this.opacity)
+    g.fill(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.itemForegroundColor.getA * this.opacity)
     
     g.beginShape()
     g.vertex(cx - r, cy - r)

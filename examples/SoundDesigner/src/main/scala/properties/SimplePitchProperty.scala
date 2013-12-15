@@ -2,7 +2,7 @@ package ui.properties
 
 import org.mt4j.util.MTColor
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 import processing.core.PConstants._
 
 import ui._
@@ -24,7 +24,7 @@ object SimplePitchProperty{
 */
 class SimplePitchProperty(node: ManipulableNode) extends SimpleProperty {
   
-  override def draw(g: PGraphics) = {
+  override def draw(g: PGraphicsOpenGL) = {
     val playbackT = node.playbackPosition
     val isHighlighted = node.toolRegistryEntries.exists(entry => entry._1.propertyType == this.propertyType)
     

@@ -6,7 +6,7 @@ import org.mt4j.types.{Vec3d}
 
 import org.mt4j.util.Color
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 
 import ui.paths.types._
 import ui._
@@ -21,7 +21,7 @@ class DeleteNode(app: Application, val manipulableNode: ManipulableNode, center:
   private val LineColor = Color(0, 130, 130, 150)  
   private val DotNumber = 15
     
-  override def drawComponent(g: PGraphics) = {
+  override def drawComponent(g: PGraphicsOpenGL) = {
     super.drawComponent(g)
     
     //draw dotted line from button to node

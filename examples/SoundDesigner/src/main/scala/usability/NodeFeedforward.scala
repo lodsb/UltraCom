@@ -52,7 +52,7 @@ trait NodeFeedforward extends Feedforward {
 		  val oldR = color.getR
 		  val oldG = color.getG
 		  val oldB = color.getB          
-		  val oldAlpha = color.getAlpha
+		  val oldAlpha = color.getA
 		  
 		  if (normalEvent.name == "LEGAL ACTION") {
 		    val factor = if (this.feedforwardValue < 1) this.feedforwardValue/2 else 1 //realizing a visual gap between 1 and any value less than 1

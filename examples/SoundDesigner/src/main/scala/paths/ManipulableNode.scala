@@ -11,7 +11,7 @@ import org.mt4j.input.inputProcessors.MTGestureEvent
 
 import org.mt4j.util.{SessionLogger, Color}
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 import processing.core.PConstants._
 
 import scala.actors._
@@ -305,7 +305,7 @@ class ManipulableNode(app: Application, nodeType: NodeType, center: Vector3D) ex
   /**
   * Draws this node.
   */
-  override def drawComponent(g: PGraphics) = {
+  override def drawComponent(g: PGraphicsOpenGL) = {
     this.synchronized {
       super.drawComponent(g)
       this.properties.values.foreach(_.draw(g))

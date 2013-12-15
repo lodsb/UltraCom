@@ -20,7 +20,7 @@ import org.mt4j.util.math.Vector3D
 import org.mt4j.util.math.Vertex
 import org.mt4j.types.Vec3d
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 
 import ui.paths.types._
 
@@ -73,7 +73,7 @@ class SimpleConnection(app: Application, node1: Node, node2: Node) extends Conne
   /**
   * Draws this connection.
   */
-  override def drawComponent(g: PGraphics) = {
+  override def drawComponent(g: PGraphicsOpenGL) = {
     //g.fill(0,0,0)
     g.noFill()
     g.strokeWeight(1)

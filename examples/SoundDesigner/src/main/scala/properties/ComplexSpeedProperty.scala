@@ -2,7 +2,7 @@ package ui.properties
 
 import org.mt4j.util.MTColor
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 import processing.core.PConstants._
 
 import ui._
@@ -30,7 +30,7 @@ class ComplexSpeedProperty(connection: ManipulableBezierConnection, numberOfBuck
   /**
   * Draws this property.
   */ 
-  override def draw(g: PGraphics) = {
+  override def draw(g: PGraphicsOpenGL) = {
     import ComplexSpeedProperty._
  
     val (playbackIndex, playbackT) = this.connection.associatedPath match {case Some(path) => path.playbackPosition case None => (0,0.0f)} //playback position as (connection, curve parameter) pair

@@ -9,7 +9,7 @@ import org.mt4j.types.{Vec3d}
 import org.mt4j.components.bounds.BoundsZPlaneRectangle
 import org.mt4j.components.visibleComponents.shapes.MTRoundRectangle
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 
 import scala.actors._
 
@@ -84,7 +84,7 @@ class InputChannelItem(app: Application, menu: NodeContextMenu, center: Vector3D
     InputChannelItem.StrokeWeight
   }
   
-  override def drawComponent(g: PGraphics) = {
+  override def drawComponent(g: PGraphicsOpenGL) = {
     val channelOn = menu.node.associatedPath match {
       case Some(path) => {
         path.isInputChannelActive(channelNumber)

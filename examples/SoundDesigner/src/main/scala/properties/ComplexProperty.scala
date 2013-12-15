@@ -1,6 +1,6 @@
 package ui.properties
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 import org.mt4j.util.MTColor
 
 import ui.paths._

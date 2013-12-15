@@ -17,7 +17,7 @@ import org.mt4j.util.math.Vertex
 import org.mt4j.types.{Vec3d}
 import org.mt4j.util.SessionLogger
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 
 import ui.menus._
 import ui.paths.types._
@@ -44,32 +44,32 @@ class InputChannelButton(app: Application, menu: Menu, center: Vector3D, channel
   
   this.setOpacity(InputChannelButton.OffOpacity)
   
-  override def drawComponent(g: PGraphics) = {
+  override def drawComponent(g: PGraphicsOpenGL) = {
     this.drawComponentImpl(g)
     this.drawSymbol(g)
   }  
   
-  def drawComponentImpl(g: PGraphics) = {
+  def drawComponentImpl(g: PGraphicsOpenGL) = {
     //super.drawComponent(g)
     val center = this.getCenterPointLocal()
     val cx = center.getX()
     val cy = center.getY() 
     val visibility = if (ChannelMenu.isMenuVisible(channelNumber)) InputChannelButton.OnOpacity else InputChannelButton.OffOpacity
     
-    g.fill(this.currentColor.getR, this.currentColor.getG, this.currentColor.getB, this.currentColor.getAlpha * this.opacity * visibility)
-    g.stroke(this.itemStrokeColor.getR, this.itemStrokeColor.getG, this.itemStrokeColor.getB, this.itemStrokeColor.getAlpha * this.opacity * visibility)
+    g.fill(this.currentColor.getR, this.currentColor.getG, this.currentColor.getB, this.currentColor.getA * this.opacity * visibility)
+    g.stroke(this.itemStrokeColor.getR, this.itemStrokeColor.getG, this.itemStrokeColor.getB, this.itemStrokeColor.getA * this.opacity * visibility)
     g.strokeWeight(this.itemStrokeWeight)
     g.ellipse(cx, cy, 2*this.radius, 2*this.radius)  
   }    
 
-  def drawSymbol(g: PGraphics) = {
+  def drawSymbol(g: PGraphicsOpenGL) = {
     val center = this.getCenterPointLocal()
     val cx = center.getX()
     val cy = center.getY()  
     val visibility = if (ChannelMenu.isMenuVisible(channelNumber)) InputChannelButton.OnOpacity else InputChannelButton.OffOpacity
     
     g.noStroke()
-    g.fill(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.itemForegroundColor.getAlpha * this.opacity * visibility)
+    g.fill(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.itemForegroundColor.getA * this.opacity * visibility)
 
     if (channelNumber == 0) {
       g.ellipse(cx, cy, InputChannelButton.DotWidth, InputChannelButton.DotWidth)

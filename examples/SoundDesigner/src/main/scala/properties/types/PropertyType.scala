@@ -2,7 +2,7 @@ package ui.properties.types
 
 import org.mt4j.util.MTColor
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 
 import ui.tools.Tool
 
@@ -28,5 +28,5 @@ abstract class PropertyType {
   /**
   * Draws the symbol associated with this property type at the specified position using the given color.
   */
-  def drawSymbol(g: PGraphics, center: (Float, Float), color: MTColor)
+  def drawSymbol(g: PGraphicsOpenGL, center: (Float, Float), color: MTColor)
 }

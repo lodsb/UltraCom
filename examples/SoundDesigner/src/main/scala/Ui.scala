@@ -203,7 +203,7 @@ object Ui extends Application with Persistability {
    *
    * @param e The key event
    */
-  override protected def handleKeyEvent(e: KeyEvent) {
+  override protected def handleKeyEvent(e: processing.event.KeyEvent) {
     if (keyPressed && keyCode == VK_ESCAPE) {
       AudioServer.quit // quit supercollider server scsynth
       Runtime.getRuntime.halt(0) // quit java runtime environment

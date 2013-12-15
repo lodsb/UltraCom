@@ -18,7 +18,7 @@ import org.mt4j.util.math.Vector3D
 import org.mt4j.util.math.Vertex
 import org.mt4j.types.{Vec3d}
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 
 import ui.menus._
 import ui.paths.types._
@@ -37,7 +37,7 @@ object FastForwardButton {
 
 class FastForwardButton(app: Application, menu: Menu, center: Vector3D) extends Button(app, menu, center) {
   
-  override def drawComponent(g: PGraphics) = {
+  override def drawComponent(g: PGraphicsOpenGL) = {
     super.drawComponent(g)
     val center = this.getCenterPointLocal()
     val r = 0.4f * this.radius
@@ -59,7 +59,7 @@ class FastForwardButton(app: Application, menu: Menu, center: Vector3D) extends 
     val (p6x, p6y) = (c2x + h - segment, c2y)     
 
     g.noStroke()
-    g.fill(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.itemForegroundColor.getAlpha * this.opacity)
+    g.fill(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.itemForegroundColor.getA * this.opacity)
     g.triangle( p1x, p1y,
                 p2x, p2y,
                 p3x, p3y)

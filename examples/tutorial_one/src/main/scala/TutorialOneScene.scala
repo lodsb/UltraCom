@@ -26,13 +26,13 @@ import org.mt4j.{Scene, Application}
 import org.mt4j.util.Color
 import org.mt4j.util.math.Vector3D
 import org.mt4j.components.ComponentImplicits._
-import org.mt4j.stateMachine.StateMachine
 import org.mt4j.components.visibleComponents.widgets._
 import org.mt4j.types.{Vec3d, Rotation}
 import org.lodsb.reakt.Implicits._
 import scala.actors.Actor._
 import org.mt4j.components.visibleComponents.shapes.{Line, MTLine}
 import java.util.Random
+import org.mt4j.util.stateMachine.StateMachine
 
 
 object TutorialOne extends Application {

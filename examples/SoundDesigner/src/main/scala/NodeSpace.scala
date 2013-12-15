@@ -9,10 +9,11 @@ import org.mt4j.util.MTColor
 import org.mt4j.util.math.Vector3D
 import org.mt4j.util.math.Vertex
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 import processing.core.PImage
 
 import ui.menus.main._
+import processing.opengl.PGraphicsOpenGL
 
 object NodeSpace {
   
@@ -55,7 +56,7 @@ class NodeSpace(app: Application) extends MTRectangle(app, Menu.Space, Menu.Spac
    vector.getX >= Menu.Space && vector.getX <= app.width - Menu.Space && vector.getY >= Menu.Space && vector.getY <= app.height - Menu.Space
   }
   
-  override def drawComponent(g: PGraphics) = {
+  override def drawComponent(g: PGraphicsOpenGL) = {
     super.drawComponent(g)
   }
 

@@ -1,6 +1,6 @@
 package ui.paths.types
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 import org.mt4j.Application
 import org.mt4j.input.ComponentInputProcessorSupport
 import org.mt4j.input.GestureEventSupport

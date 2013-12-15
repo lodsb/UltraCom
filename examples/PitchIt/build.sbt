@@ -18,15 +18,29 @@ scalacOptions <++= scalaVersion map { version =>
 }
 
 
-libraryDependencies += "org.lodsb" %% "ultracom" % "0.2-SNAPSHOT"
+
+libraryDependencies += "org.lodsb" %% "ultracom" % "0.2-PROC2"
+
+resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
+
+resolvers += "Sonatype OSS Releases" at "http://oss.sonatype.org/content/repositories/releases/"
+
+libraryDependencies += "com.thesamet" %% "kdtree" % "1.0.1"
+
+
+unmanagedBase <<= baseDirectory { base => base / "../../libraries/" }
+
+unmanagedJars in Compile <++= baseDirectory map { base =>
+  val baseDirectories = (base / "../../libraries/misc") +++ (base / "../../libraries/processing")
+  val customJars = (baseDirectories ** "*.jar")
+  customJars.classpath
+}
 
 libraryDependencies += "org.lodsb" %% "scales" % "0.1-SNAPSHOT"
 
 resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
 
 unmanagedClasspath in Compile += Attributed.blank(new java.io.File("doesnotexist"))
-
-unmanagedBase <<= baseDirectory { base => base / "../../libraries/misc" }
 
 
 //seq(com.github.retronym.SbtOneJar.oneJarSettings: _*)

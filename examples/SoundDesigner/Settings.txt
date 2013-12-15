@@ -3,8 +3,8 @@ DefaultAudioDevice=MOTU Audio ASIO
 Frametitle=UI
 
 #ScSynthPath=/Applications/SuperCollider/SuperCollider.app/Contents/Resources/scsynth
-#ScSynthPath=C:\\Program Files\\SuperCollider-3.6.5\\scsynth.exe
-ScSynthPath=C:\\Program Files (x86)\\SuperCollider\\scsynth.exe
+ScSynthPathWin=C:\\Program Files (x86)\\SuperCollider-3.6.5\\scsynth.exe
+ScSynthPath=C:/Program Files (x86)/SuperCollider/scsynth.exe
 #ScSynthPath=/usr/local/bin/scsynth
 #Renderer: OpenGL: 1 P3D: 2
 Renderer=1

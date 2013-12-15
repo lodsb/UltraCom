@@ -12,7 +12,7 @@ import org.mt4j.sceneManagement.Iscene
 import org.mt4j.components.TransformSpace
 import org.mt4j.types.Vec3d
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 
 import ui._
 import ui.tools._

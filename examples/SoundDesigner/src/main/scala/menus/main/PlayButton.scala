@@ -16,7 +16,7 @@ import org.mt4j.util.math.Vector3D
 import org.mt4j.util.math.Vertex
 import org.mt4j.types.{Vec3d}
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 
 import ui.menus._
 import ui.paths.types._
@@ -36,12 +36,12 @@ object PlayButton {
 
 class PlayButton(app: Application, menu: Menu, center: Vector3D) extends Button(app, menu, center) {
   
-  override def drawComponent(g: PGraphics) = {
+  override def drawComponent(g: PGraphicsOpenGL) = {
     super.drawComponent(g)
     if (Playback.isPlaying) drawPauseSymbol(g) else drawPlaySymbol(g)
   }  
 
-  def drawPlaySymbol(g: PGraphics) = {
+  def drawPlaySymbol(g: PGraphicsOpenGL) = {
     val center = this.getCenterPointLocal()
     val cx = center.getX()
     val cy = center.getY()  
@@ -56,14 +56,14 @@ class PlayButton(app: Application, menu: Menu, center: Vector3D) extends Button(
     val (p3x, p3y) = (cx + h - segment, cy)   
 
     g.noStroke()
-    g.fill(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.itemForegroundColor.getAlpha * this.opacity)
+    g.fill(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.itemForegroundColor.getA * this.opacity)
     g.triangle( p1x, p1y,
                 p2x, p2y,
                 p3x, p3y)
   }
 
   
-  def drawPauseSymbol(g: PGraphics) = {
+  def drawPauseSymbol(g: PGraphicsOpenGL) = {
     val center = this.getCenterPointLocal()
     val cx = center.getX()
     val cy = center.getY()              
@@ -80,7 +80,7 @@ class PlayButton(app: Application, menu: Menu, center: Vector3D) extends Button(
     val (q4x, q4y) = (cx + r, cy + r)  
            
     g.noStroke()
-    g.fill(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.itemForegroundColor.getAlpha * this.opacity)
+    g.fill(this.itemForegroundColor.getR, this.itemForegroundColor.getG, this.itemForegroundColor.getB, this.itemForegroundColor.getA * this.opacity)
     g.quad(p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y)
     g.quad(q1x, q1y, q2x, q2y, q3x, q3y, q4x, q4y)
   }

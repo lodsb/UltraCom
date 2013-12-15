@@ -29,7 +29,7 @@ import org.mt4j.util.animation.IAnimationListener
 import org.mt4j.util.animation.MultiPurposeInterpolator
 import org.mt4j.util.SessionLogger
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 
 import scala.actors._
 
@@ -38,6 +38,7 @@ import ui._
 import ui.util._
 import ui.audio._
 import ui.input._
+import processing.opengl.PGraphicsOpenGL
 
 
 object ChannelMenu {
@@ -137,12 +138,12 @@ class ChannelMenu(app: Application, center: Vector3D, val channelNumber: Int)
     }    
 
     
-    override def drawComponent(g: PGraphics) = {
+    override def drawComponent(g: PGraphicsOpenGL) = {
       super.drawComponent(g)
       this.drawSymbol(g)
     }  
   
-    def drawSymbol(graphics: PGraphics) = {
+    def drawSymbol(graphics: PGraphicsOpenGL) = {
       val center = this.getCenterPointLocal()
       val cx = center.getX()
       val cy = center.getY()  

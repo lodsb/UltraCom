@@ -2,7 +2,7 @@ package ui.properties.types
 
 import org.mt4j.util.MTColor
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 import processing.core.PConstants._
 
 import ui._
@@ -41,7 +41,7 @@ object VolumePropertyType extends PropertyType {
     new MTColor(this.PropertyColor.getR, this.PropertyColor.getG, this.PropertyColor.getB, this.PropertyColor.getA)
   }  
   
-  override def drawSymbol(g: PGraphics, center: (Float, Float), color: MTColor) = {
+  override def drawSymbol(g: PGraphicsOpenGL, center: (Float, Float), color: MTColor) = {
     val (cx, cy) = center
     g.noFill()
     g.strokeWeight(SymbolWeight)

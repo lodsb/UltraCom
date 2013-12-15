@@ -17,13 +17,19 @@ scalacOptions <++= scalaVersion map { version =>
  	else Nil
 }
 
+unmanagedBase <<= baseDirectory { base => base / "../../libraries/" }
 
-libraryDependencies += "org.lodsb" %% "ultracom" % "0.2-SNAPSHOT"
+unmanagedJars in Compile <++= baseDirectory map { base =>
+  val baseDirectories = (base / "../../libraries/misc") +++ (base / "../../libraries/processing")
+  val customJars = (baseDirectories ** "*.jar")
+  customJars.classpath
+}
+
+libraryDependencies += "org.lodsb" %% "ultracom" % "0.2-PROC2"
 
 resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
 
 unmanagedClasspath in Compile += Attributed.blank(new java.io.File("doesnotexist"))
 
-unmanagedBase <<= baseDirectory { base => base / "../../libraries/misc" }
 
 

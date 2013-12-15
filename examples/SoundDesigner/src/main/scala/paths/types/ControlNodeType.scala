@@ -19,7 +19,7 @@ import org.mt4j.input.gestureAction.InertiaDragAction
 
 import org.mt4j.util.math.Vector3D
 import org.mt4j.util.math.Vertex
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 import processing.core.PConstants._
 
 import org.mt4j.util.Color

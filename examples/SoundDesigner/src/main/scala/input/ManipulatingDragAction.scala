@@ -13,7 +13,7 @@ import org.mt4j.components.TransformSpace
 import org.mt4j.types.Vec3d
 import org.mt4j.util.math.Vector3D
 
-import processing.core.PGraphics
+import processing.opengl.PGraphicsOpenGL
 
 import scala.actors._
 

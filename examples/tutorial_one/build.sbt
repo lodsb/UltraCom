@@ -26,8 +26,6 @@ unmanagedJars in Compile <++= baseDirectory map { base =>
     customJars.classpath
 }
 
-
-
 libraryDependencies += "org.lodsb" %% "ultracom" % "0.2-PROC2"
 
 //libraryDependencies += "com.assembla.scala-incubator" % "graph-core_2.9.2" % "1.5.1"
