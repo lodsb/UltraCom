@@ -55,7 +55,7 @@ class Controller(var widthValue: Float, var heightValue: Float)
   def parent = getParent.asInstanceOf[ControllerContainer]
 
   def getHeight: Float = {
-    val vertices = getVerticesLocal//getVerticesGlobal
+    val vertices: Array[Vertex] = getVerticesLocal.clone()//getVerticesGlobal
     var upperCorners = new ArrayBuffer[Vertex]()
     upperCorners += vertices(0)
     var lowerCorners = new ArrayBuffer[Vertex]()
@@ -66,7 +66,11 @@ class Controller(var widthValue: Float, var heightValue: Float)
         lowerCorners += vertices(i)
       }
     }
-    lowerCorners(0).getY - upperCorners(0).getY
+    try {
+      lowerCorners(0).getY - upperCorners(0).getY
+    } catch {
+      case e: IndexOutOfBoundsException => 0f
+    }
   }
 
 }

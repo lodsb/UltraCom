@@ -21,35 +21,14 @@ import org.lodsb.scales._
 
 class Synthi {
 
-  val scales = new ArrayBuffer[Scale]()
-  scales += Scale("Phrygian").get
-  scales += Scale("Aeolian Flat 1").get
-  scales += Scale("Dorian").get
-  scales += Scale("Mixolydian").get
-  scales += Scale("Ionian Sharp 5").get
-  scales += Scale("Lydian").get
-
-  val tuning = Tuning("Equal").get
-
-  private var _activeScale = 0
-  def activeScale = scales(_activeScale)
-  def activeScale_=(value: Int) {
-    if(0 <= value && value < scales.size) {
-      _activeScale = value
-    }
-  }
-
   private var _activeHarmony : org.lodsb.scales.Pitch = org.lodsb.scales.Pitch(0)
   def activeHarmony_=(value: org.lodsb.scales.Pitch) {
     _activeHarmony = value
-    println("_activeHarmony"+_activeHarmony)
   }
-  def activeHarmony = tune(scale(Tetrad(_activeHarmony),activeScale),tuning)
 
   def frequency(height: Float): Double = {
     var degree = math.round(4*height+4)
     var factor = 1d
-    //tuning(activeScale(org.lodsb.scales.Pitch(degree))).asInstanceOf[ConcretePitch].frequency
 
     if (4 <= degree) {
       degree -= 4
@@ -60,7 +39,9 @@ class Synthi {
       }
     }
 
-    factor * activeHarmony(degree).asInstanceOf[ConcretePitch].frequency
+    var bassFactor: Float = bass()
+    bassFactor = if(bassFactor<1/3f) 0.5f else if(2/3f<bassFactor) 2f else 1f
+    bassFactor * factor * Harmony.activeChord(degree).frequency
   }
 
   // synthesizer definition
@@ -72,6 +53,7 @@ class Synthi {
     val pitch = "pitch".kr(0)
     val activity = "activity".kr(0)
     val frequency = "frequency".kr(0)
+    val bass = "bass".kr(0)
 
 
     // further parameters
@@ -81,13 +63,6 @@ class Synthi {
     // harmony is the scale degree as number
     // the actual chord is determined by this
     val harmony = "harmony".kr(0)
-
-
-    def getFrequency: Scale = {
-      val something = (0 sig_== scale)
-      scales
-      null
-    }
 
 
     def pitch2Tone = {
@@ -205,6 +180,13 @@ class Synthi {
   // 1 = staccato / short
   val activity = new VarS[Float](1f)
   bind(activity, "activity")
+
+  // the bass value in percent (0-1)
+  // its about how deep the tonality/pitch is
+  // 0 = bass
+  // 1 = high / treble
+  val bass = new VarS[Float](1f)
+  bind(bass, "bass")
 
   def bind (value: VarS[Float], parameter: String, function: Float => Float = (x:Float) => {x}) {
     value.map( z => {

@@ -115,19 +115,38 @@ class PitchItScene extends Scene(app, "PitchIt Scene") {
   // -- add global slider in the middle
 
   // add slider
-  val slider3 = Slider(0f, 1f, height=40f, width=300f)
+  val slider3 = Slider(0f, 1f, height=40f, width=400f)
   slider3.value.map { x =>
-    println("within slider3.value.map")
     val percent = x / slider3.getValueRangeVar
-    app.allControllerCanvas.foreach( controllerCanvas => {
-      val scaleNumber = math.round(percent * controllerCanvas.synthi.scales.size)
-      controllerCanvas.synthi.activeScale = scaleNumber
-    })
+
+    // set complexity of harmonies
+    Harmony.complexity(percent)
+
+    // set the active scale, depending on how valence was adjusted
+    val index = math.round(percent * Scales.size)
+    Scales.activeScale(index)
   }
+
+  // add slider to canvas
   app.scene.canvas += slider3
 
   // set position
   slider3.setPositionGlobal(app.center)
+
+
+  // add bass slider for selecting who plays bass melody
+  val bassSlider = Slider(0f, 1f, height=40f, width=400f)
+  bassSlider.value.map { x =>
+    val percent = x / bassSlider.getValueRangeVar
+    var i = 0
+    app.allControllerCanvas.foreach( controllerCanvas => {
+      controllerCanvas.synthi.bass() = if(i==0) percent else 1-percent
+      i += 1
+    })
+  }
+  app.scene.canvas += bassSlider
+  bassSlider.rotateZGlobal(app.center, 90f)
+  bassSlider.setPositionGlobal(Vec3d(200f, app.height/2))
 
   // start Metronome
   Metronome() ! "start"

@@ -78,26 +78,73 @@ object counter {
 }
 
 object Harmony {
-  var harmonies = new ArrayBuffer[Pitch]()
+  private var harmonies = new ArrayBuffer[Pitch]()
   harmonies += Tonic
   harmonies += Subdominant
   harmonies += Dominant
   harmonies += Tonic
 
   private var _activeHarmony = 0
-  def activeHarmony = harmonies(_activeHarmony)
+  def activeHarmony: Pitch = {
+    try {
+      harmonies(_activeHarmony)
+    } catch {
+      case e: IndexOutOfBoundsException => {
+        _activeHarmony %= harmonies.size
+      }
+    }
+    harmonies(_activeHarmony)
+  }
   def nextHarmony {
     _activeHarmony += 1
     if(_activeHarmony == harmonies.size) {
       _activeHarmony = 0
     }
-    println("before app.allControllerCanvas.foreach")
-    app.allControllerCanvas.foreach( controllerCanvas => {
-      println("with app.allControllerCanvas.foreach")
-      controllerCanvas.synthi.activeHarmony = activeHarmony
-    }
-    )
-    println("after app.allControllerCanvas.foreach")
   }
 
+  def activeChord: Chord[TunedPitch] = {
+    tune(scale(Tetrad(Harmony.activeHarmony),Scales.activeScale),Scales.tuning)
+  }
+
+  /**
+   * 0 - low compexity
+   * 1 - high complexity
+   * @param value
+   */
+  def complexity(value: Float) {
+    var numberOfHarmonies = math.round(value * 7f)
+    harmonies = new ArrayBuffer[Pitch]()
+    while (0 <= numberOfHarmonies) {
+      harmonies += Pitch((numberOfHarmonies*4)%7)
+      numberOfHarmonies -= 1
+    }
+    harmonies.size match {
+      case 3 => harmonies += Pitch(0)
+      case 5 => harmonies += Pitch(0)
+      case 7 => harmonies += Pitch(0)
+      case _ =>
+    }
+  }
+
+}
+
+object Scales {
+  val scales = new ArrayBuffer[Scale]()
+  scales += Scale("Lydian").get
+  scales += Scale("Major").get
+  scales += Scale("Mixolydian").get
+  scales += Scale("Dorian").get
+  scales += Scale("Minor").get
+  scales += Scale("Phrygian").get
+
+  val tuning = Tuning("Equal").get
+
+  private var _activeScale = 0
+  def activeScale = scales(_activeScale)
+  def activeScale(value: Int) {
+    if(0 <= value && value < scales.size) {
+      _activeScale = value
+    }
+  }
+  def size = scales.size
 }
