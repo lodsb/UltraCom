@@ -1,4 +1,4 @@
-package PitchIt
+package de.ghagerer.FugueGenerator
 
 import org.mt4j.components.visibleComponents.shapes.MTRectangle
 import org.mt4j.util.MTColor._

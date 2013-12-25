@@ -1,4 +1,4 @@
-package PitchIt
+package de.ghagerer.FugueGenerator
 
 
 import org.mt4j.components.visibleComponents.shapes.{MTLine, MTRectangle}
@@ -144,13 +144,13 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
   /**
    * Activates the right controller (i.e. switches its color)
    * for a passed step.
-   * @param step The step number to be activated
+   * @param step The step number to be activated (step/16th)
    * @return The height of the controller to be activated
    */
-  def playNext(step: Int): Float = {
+  def playNext(step: Int, really: Boolean = true): Boolean = {
 
     // find the number of the new active controller
-    var stepLength = null.asInstanceOf[Int]
+    var stepLength = 0
     containers.synchronized {
       stepLength = Metronome.totalSteps/containers.length
     }
@@ -159,28 +159,117 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
       i += 1
     }
 
+    if (!decide(step, containers.length)) return false
+    //if (!really) return true
+
+    // if the same controller is still active -> exit
+    val tmp = containers(i-1).controller
+    if (tmp eq activeController) return false
+
+
     // make the current activeController visibly inactive
     if (activeController != null) {
       activeController.triggerActive
     }
 
     // replace the current activeController with the following one
-    activeController = containers(i-1).controller
+    activeController = tmp
+
+    // make the new activeController visibly active
     activeController.triggerActive
 
     // get the height of the new activeController as percent
-    // ratio of
     val height = (-1f) * activeController.getHeight / (this.height().toFloat/2f)
 
-    synthi.play(height)
+    val toneDuration = Metronome.duration() //* stepsToNextController(step)
 
-    height
+
+    synthi.play(height, toneDuration)
+
+    true
+  }
+
+  /**
+   * this method contains the logic for rhythm complexity (~arousal/activity)
+   * if arousal/activity for this ControllerCanvas instance is high the regarding rhythm complexity is also high
+   * high rhythm complexity means high meanWnbd value
+   * this method is a decision maker, whether this ControllerCanvas should play a sound on the regarding 32th beat or not
+   * for beat logic see Metronome.scala respectively Metronome- and counter-object
+   * @param step actual 32th beat
+   * @param timeSignature essentially how many controllers are within the actual ControllerCanvas
+   * @return Boolean: yes or no
+   */
+  private def decide(step: Int, timeSignature: Int): Boolean = {
+    var act = synthi.activity() % 0.25
+    timeSignature match {
+      case  4 => {
+        val complexity = (act * 8).toInt
+        if (
+          complexity == 0 ||
+          complexity == 1 && (step == 1 || step == 17 || step == 13 || step == 29)
+        ) {return true}
+      }
+      case  8 => {
+        val complexity = (act * 12).toInt
+        if (
+          ((step-1)/4)%2 == 0 ||
+          //step == 1 2 3 4  9 10 11 12  17 18 19 20  25 26 27 28
+          complexity == 0 ||
+          complexity == 1 && (step == 5 || step == 15 || step == 21 || step == 31) ||
+          complexity == 2 && (step == 7 || step == 15 || step == 23 || step == 31)
+        ) {return true}
+      }
+      case 16 => {
+        val complexity = (act * 16).toInt
+        if (
+          ((step-1)/2)%2 == 0 ||
+          //step == 1 2  5 6  9 10  13 14  17 18  21 22  25 26  29 30
+          complexity == 0 ||
+          complexity == 1 && (step == 3 || step == 7 || step == 11 || step == 16 || step == 19 || step == 23 || step == 27 || step == 32) ||
+          complexity == 2 && (step == 3 || step == 8 || step == 11 || step == 16 || step == 19 || step == 24 || step == 27 || step == 32) ||
+          (complexity == 3 || synthi.activity() == 1) && (step == 4 || step == 8 || step == 12 || step == 16 || step == 20 || step == 24 || step == 28 || step == 32)
+        ) {return true}
+      }
+      case  _ => return true
+    }
+    false
+  }
+
+  private def stepsToNextController(actualStep: Int): Int = {
+    var i = 0
+    try {
+      while (!playNext(step = actualStep+i, really = false)) {
+        i += 1
+      }
+    } catch { case e: IndexOutOfBoundsException => {
+      var j = 0
+      while (!playNext(step = j, really = false)) {
+        i += 1
+        j += 1
+      }
+    }}
+    i
   }
 
 
   def rotate180 {
     rotateZ(app.center, 180f)
     signum *= -1
+  }
+
+  /**
+   * set the activity respective the arousal
+   * @param value a float-value between 0 and 1
+   */
+  def activity(value: Float) {
+    // reset the number of controllers corresponding to arousal value
+    val numberOfControllers = math.pow(2,1+(value / 0.25).toInt).toInt
+    initializeControllers(numberOfControllers)
+
+    // pass the arousal value to the SC synthesizer
+    synthi.activity() = value
+
+
   }
 
 }

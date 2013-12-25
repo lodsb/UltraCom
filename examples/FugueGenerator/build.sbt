@@ -1,4 +1,4 @@
-name := "PitchIt"
+name := "FugueGenerator"
 
 organization := "org.lodsb"
 

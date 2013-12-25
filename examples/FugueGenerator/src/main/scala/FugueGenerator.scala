@@ -20,7 +20,7 @@
     >>  Made in Bavaria by fat little elves - since 1983.
  */
 
-package PitchIt
+package de.ghagerer.FugueGenerator
 
 import org.mt4j.{Scene, Application}
 import org.mt4j.types.Vec3d
@@ -29,7 +29,7 @@ import org.mt4j.util.MTColor
 import scala.collection.mutable.ArrayBuffer
 import org.mt4j.components.visibleComponents.widgets.Slider
 import org.mt4j.output.audio.AudioServer
-import org.mt4j.components.MTComponent
+import java.beans.{PropertyChangeEvent, PropertyChangeListener}
 
 
 object app extends Application {
@@ -43,17 +43,17 @@ object app extends Application {
   val allControllerCanvas = new ArrayBuffer[ControllerCanvas]()
 
 	def main(args: Array[String]): Unit = {
-		this.execute(false)
+		execute(false)
 	}
 
 	override def startUp() = {
-		addScene(new PitchItScene)
+		addScene(new FugueGeneratorScene)
 	}
 
 }
 
 
-class PitchItScene extends Scene(app, "PitchIt Scene") {
+class FugueGeneratorScene extends Scene(app, "FugueGenerator") {
 
   // setting scene for global access
   app.scene = this
@@ -64,6 +64,9 @@ class PitchItScene extends Scene(app, "PitchIt Scene") {
 	// Show touches
 	showTracer(show = true)
 
+  // set harmony complexity
+  //Harmony.progressionComplexity(0.57f)
+
 
   // -- add first player modules
 
@@ -72,13 +75,16 @@ class PitchItScene extends Scene(app, "PitchIt Scene") {
   app.scene.canvas += controllerCanvas1
   app.allControllerCanvas += controllerCanvas1
 
-  // add slider
+  // add local arousal slider for this ControllerCanvas
   val slider1 = Slider(0f, 1f, height=20f)
   slider1.value.map { x =>
+
+    // get a value between 0 and 1
     val percent = x / slider1.getValueRangeVar
-    val numberOfControllers = math.pow(2,1+(percent / 0.25).toInt).toInt
-    controllerCanvas1.initializeControllers(numberOfControllers)
-    controllerCanvas1.synthi.activity() = percent
+
+    // set the arousal/activity of the corresponding ControllerCanvas
+    controllerCanvas1.activity(percent)
+
   }
   app.scene.canvas += slider1
 
@@ -96,20 +102,39 @@ class PitchItScene extends Scene(app, "PitchIt Scene") {
   app.scene.canvas += controllerCanvas2
   app.allControllerCanvas += controllerCanvas2
 
-  // add slider
+  // add local arousal slider for this ControllerCanvas
   val slider2 = Slider(0f, 1f, height=20f)
   slider2.value.map { x =>
+    // get a value between 0 and 1
     val percent = x / slider2.getValueRangeVar
-    val numberOfControllers = math.pow(2,1+(percent / 0.25).toInt).toInt
-    controllerCanvas2.initializeControllers(numberOfControllers)
-    controllerCanvas2.synthi.activity() = percent
+    // set the arousal/activity of the corresponding ControllerCanvas
+    controllerCanvas2.activity(percent)
   }
   app.scene.canvas += slider2
-
 
   // set positions
   controllerCanvas2.setPositionGlobal(Vec3d(app.center.getX, app.height-150f))
   slider2.setPositionGlobal(Vec3d(app.center.getX, app.height-25f))
+
+
+  val durationVotingListener = new PropertyChangeListener {
+    override def propertyChange(evt: PropertyChangeEvent) {
+      synchronized {
+
+        // 0.0 -> 50, 0.5 -> 100, 1.0 -> 150
+
+        val newValue = 50 + 100 * (1-evt.getNewValue.asInstanceOf[Float])
+        val oldValue = 50 + 100 * (1-evt.getOldValue.asInstanceOf[Float])
+        val otherValue = 2*Metronome.duration() - oldValue
+        Metronome.duration() = (newValue + otherValue) / 2
+        println("newValue="+newValue+", oldValue="+oldValue+", otherValue="+otherValue+", duration="+Metronome.duration())
+      }
+    }
+  }
+  slider1.addPropertyChangeListener("value", durationVotingListener)
+  slider2.addPropertyChangeListener("value", durationVotingListener)
+
+
 
 
   // -- add global slider in the middle
@@ -120,7 +145,7 @@ class PitchItScene extends Scene(app, "PitchIt Scene") {
     val percent = x / slider3.getValueRangeVar
 
     // set complexity of harmonies
-    Harmony.complexity(percent)
+    //Harmony.complexity(percent)
 
     // set the active scale, depending on how valence was adjusted
     val index = math.round(percent * Scales.size)
@@ -134,7 +159,8 @@ class PitchItScene extends Scene(app, "PitchIt Scene") {
   slider3.setPositionGlobal(app.center)
 
 
-  // add bass slider for selecting who plays bass melody
+  // -- add bass slider for selecting who plays bass melody
+
   val bassSlider = Slider(0f, 1f, height=40f, width=400f)
   bassSlider.value.map { x =>
     val percent = x / bassSlider.getValueRangeVar

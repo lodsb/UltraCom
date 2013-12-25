@@ -1,4 +1,4 @@
-package PitchIt
+package de.ghagerer.FugueGenerator
 
 import org.mt4j.components.visibleComponents.shapes.MTRectangle
 import org.mt4j.util.MTColor._
@@ -19,9 +19,9 @@ class ControllerContainer(val widthValue: Float, var heightValue: Float)
   removeAllGestureEventListeners()
 
   // add a controller
-  val controller = new Controller(widthValue, heightValue/4f)
+  val controller = new Controller(widthValue, 0f)
   addChild(controller)
-  controller.setPositionRelativeToParent(Vec3d(widthValue/2f, 5*heightValue/8f))
+  controller.setPositionRelativeToParent(Vec3d(widthValue/2f, heightValue/2f))
 
   // color stuff
   setStrokeColor(RED)

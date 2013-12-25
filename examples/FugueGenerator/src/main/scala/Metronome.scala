@@ -6,7 +6,7 @@
  */
 
 
-package PitchIt
+package de.ghagerer.FugueGenerator
 
 import akka.actor.{ActorRef, Props, ActorSystem, Actor}
 import java.lang.Thread
@@ -14,6 +14,8 @@ import org.lodsb.scales.Conversions._
 import org.lodsb.scales.Transformations._
 import org.lodsb.scales._
 import scala.collection.mutable.ArrayBuffer
+import org.lodsb.reakt.sync.VarS
+import org.mt4j.components.visibleComponents.widgets.MTSlider
 
 
 // wrap the unique metronome-thread, which is an akka.Actor, within this object
@@ -22,6 +24,10 @@ object Metronome {
   private val metronome = system.actorOf(Props[Metronome], name = "metronome")
   def apply(): ActorRef = metronome
   def totalSteps = counter.totalSteps
+
+  // how much time between 16th steps
+  val duration = new VarS[Float](100f)
+
 }
 
 
@@ -30,9 +36,6 @@ class Metronome extends Actor {
 
   // with this variable the Metronome can be stopped
   private var running = false
-
-  // how much time between 16th steps
-  private var duration = 100
 
   // this is the metronome thread/actor actually
   def receive = {
@@ -54,7 +57,7 @@ class Metronome extends Actor {
       app.allControllerCanvas.foreach( controllerCanvas =>
         controllerCanvas.playNext(counter())
       )
-      Thread.sleep(duration)
+      Thread.sleep(Metronome.duration().toInt)
     }
   }
 }
@@ -65,7 +68,7 @@ object counter {
   // 0 means inactive, 1 to 16 are the possible steps
   private var counter = 0
 
-  val totalSteps = 16
+  val totalSteps = 32
 
   def increment {
     counter = if(counter==totalSteps) 1 else counter+1
@@ -80,19 +83,13 @@ object counter {
 object Harmony {
   private var harmonies = new ArrayBuffer[Pitch]()
   harmonies += Tonic
+  harmonies += Tonic
   harmonies += Subdominant
   harmonies += Dominant
-  harmonies += Tonic
 
   private var _activeHarmony = 0
   def activeHarmony: Pitch = {
-    try {
-      harmonies(_activeHarmony)
-    } catch {
-      case e: IndexOutOfBoundsException => {
-        _activeHarmony %= harmonies.size
-      }
-    }
+    _activeHarmony %= harmonies.size
     harmonies(_activeHarmony)
   }
   def nextHarmony {
@@ -103,7 +100,7 @@ object Harmony {
   }
 
   def activeChord: Chord[TunedPitch] = {
-    tune(scale(Tetrad(Harmony.activeHarmony),Scales.activeScale),Scales.tuning)
+    tune(scale(Triad(Harmony.activeHarmony),Scales.activeScale),Scales.tuning)
   }
 
   /**
@@ -111,7 +108,7 @@ object Harmony {
    * 1 - high complexity
    * @param value
    */
-  def complexity(value: Float) {
+  def progressionComplexity(value: Float) {
     var numberOfHarmonies = math.round(value * 7f)
     harmonies = new ArrayBuffer[Pitch]()
     while (0 <= numberOfHarmonies) {
@@ -120,10 +117,19 @@ object Harmony {
     }
     harmonies.size match {
       case 3 => harmonies += Pitch(0)
-      case 5 => harmonies += Pitch(0)
+      case 5 => harmonies += Pitch(0);harmonies += Pitch(0);harmonies += Pitch(0);
       case 7 => harmonies += Pitch(0)
       case _ =>
     }
+  }
+
+  /**
+   * 0 - low compexity
+   * 1 - high complexity
+   * @param value
+   */
+  def tonalComplexity(value: Float) {
+
   }
 
 }
