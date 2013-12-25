@@ -8,6 +8,7 @@ import org.mt4j.util.math.Vertex
 import org.mt4j.input.inputProcessors.{MTGestureEvent, IGestureEventListener}
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent
 import scala.collection.mutable.ArrayBuffer
+import org.lodsb.reakt.sync.VarS
 
 /**
  * This is the class, which contains the pitch-controllers
@@ -22,6 +23,7 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
 
   // initialize sound/synthesizer for this canvas
   val synthi = new Synthi()
+
 
   // containers are all ControllerContainers. Needed for their sequential ordering
   var containers = null.asInstanceOf[ArrayBuffer[ControllerContainer]]
@@ -98,6 +100,9 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
         containers(i).controller.height() = oldHeights(j)
       }
     }
+
+    synthi.timeSignature() = containers.size.toFloat
+
   }
 
   /**

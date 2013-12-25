@@ -76,7 +76,7 @@ class Synthi {
     val frequency = "frequency".kr(0)
     val bass = "bass".kr(0)
     val beatDuration = "beatDuration".kr(0)
-    //val toneDuration = "toneDuration".kr(0)
+    val timeSignature = "timeSignature".kr(0)
 
     // tone
     val dec = 1.35
@@ -117,6 +117,12 @@ class Synthi {
   val bass = new VarS[Float](1f)
   bind(bass, "bass")
 
+  // witch time signature does the rhythm have
+  // 2, 4, 8 or 16
+  var timeSignature = new VarS[Float](1f)
+  bind(timeSignature, "timeSignature")
+
+  // beat duration is the duration between two 32th beats
   bind(Metronome.duration, "beatDuration")
 
   def bind (value: VarS[Float], parameter: String, function: Float => Float = (x:Float) => {x}) {
