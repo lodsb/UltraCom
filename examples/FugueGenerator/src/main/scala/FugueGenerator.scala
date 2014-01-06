@@ -140,9 +140,9 @@ class FugueGeneratorScene extends Scene(app, "FugueGenerator") {
   // -- add global slider in the middle
 
   // add slider
-  val slider3 = Slider(0f, 1f, height=40f, width=400f)
-  slider3.value.map { x =>
-    val percent = x / slider3.getValueRangeVar
+  val valenceSlider = Slider(0f, 1f, height=40f, width=400f)
+  valenceSlider.value.map { x =>
+    val percent = x / valenceSlider.getValueRangeVar
 
     // set complexity of harmonies
     //Harmony.complexity(percent)
@@ -150,13 +150,16 @@ class FugueGeneratorScene extends Scene(app, "FugueGenerator") {
     // set the active scale, depending on how valence was adjusted
     val index = math.round(percent * Scales.size)
     Scales.activeScale(index)
+
+    controllerCanvas1.valence(x)
+    controllerCanvas2.valence(x)
   }
 
   // add slider to canvas
-  app.scene.canvas += slider3
+  app.scene.canvas += valenceSlider
 
   // set position
-  slider3.setPositionGlobal(app.center)
+  valenceSlider.setPositionGlobal(app.center)
 
 
   // -- add bass slider for selecting who plays bass melody

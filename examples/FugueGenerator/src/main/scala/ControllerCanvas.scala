@@ -277,4 +277,15 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
 
   }
 
+  /**
+   * sets valence for synthesis
+   * happy = 0, sad = 1
+   */
+
+  def valence(value: Float) = {
+    if(synthi != null) {
+      synthi.valence() = value;
+    }
+  }
+
 }

@@ -1,6 +1,6 @@
 name := "UltraCom"
 
-scalaVersion := "2.10.1"
+scalaVersion := "2.10.3"
 
 organization := "org.lodsb"
 
@@ -26,6 +26,7 @@ libraryDependencies += "de.sciss" %% "scalaosc" % "1.1.2+"
 
 libraryDependencies += "org.lodsb" %% "reakt" % "0.2-SNAPSHOT"
 
+libraryDependencies += "org.scala-lang" % "scala-reflect" % "2.10.3"
 
 unmanagedClasspath in Compile += Attributed.blank(new java.io.File("doesnotexist"))
 

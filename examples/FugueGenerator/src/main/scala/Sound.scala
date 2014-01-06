@@ -72,16 +72,33 @@ class Synthi {
     val gate = "gate".kr(1)
     val volume = "volume".kr(0.9)
     val pitch = "pitch".kr(0)
-    val activity = "activity".kr(0)
+    val activity = "activity".kr(0.5)
+    val valence = "valence".kr(0.5)+0.0001
     val frequency = "frequency".kr(0)
     val bass = "bass".kr(0)
-    val beatDuration = "beatDuration".kr(0)
+    val beatDuration = ( "beatDuration".kr(0) / 1000.0 ) // beat duration in seconds
     val timeSignature = "timeSignature".kr(0)
 
-    // tone
-    val dec = 1.35
-    var bing = volume * SinOsc.ar(frequency).madd(0.5,0) * EnvGen.kr(Env.perc(attack=0.01, release=dec), Changed1.kr(gate), doneAction=1)
-    bing = Pan2.ar(SplayAz.ar(2, bing/0.325))
+    // note length is set by activity + step size
+    //
+    val invActivity = (2.0 - activity)   // > 1.0 so the decay wont be too short and we get overlapping tones on low
+                                          // activity
+    val noteLength = ( beatDuration*(32.0/timeSignature) ) // slightly overlapping notes
+    val dec = ( noteLength * invActivity );
+    val atk = (0.02 * invActivity)
+
+    // adds a slight slur/legato playing to the notes if valence is high (sad)
+    val slurTime = LinLin(valence+0.1, 0.1, 1.4, 0.0, noteLength*0.125); //valence,0,1, 0,noteLength)
+
+    val freq = Lag.kr(frequency, slurTime)
+    val invValence = 1-valence
+
+
+    // fm synthesis
+    var modulator = (5*freq* (activity+2*invValence)/3  )*SinOsc.ar(freq * ( 4*invValence + 1 ).roundTo(1.0) )+0.01
+    var osc = SinOsc.ar(freq+modulator).madd(0.5,0)
+    var bing = volume * osc * EnvGen.kr(Env.perc(atk, dec), Changed1.kr(gate), doneAction=1)
+    bing = LeakDC.ar(Pan2.ar(SplayAz.ar(2, bing/0.325)))
 
     bing = Limiter.ar(0.1f*bing)
 
@@ -110,6 +127,10 @@ class Synthi {
   val activity = new VarS[Float](1f)
   bind(activity, "activity")
 
+  val valence = new VarS[Float](1f)
+  bind(valence, "valence")
+
+
   // the bass value in percent (0-1)
   // its about how deep the tonality/pitch is
   // 0 = bass
@@ -121,16 +142,20 @@ class Synthi {
   // 2, 4, 8 or 16
   var timeSignature = new VarS[Float](1f)
   bind(timeSignature, "timeSignature")
+  timeSignature.observe({x=> println("sig "+x); true})
+  activity.observe({x=> println("act "+x); true})
+  valence.observe({x=> println("val "+x); true})
+
 
   // beat duration is the duration between two 32th beats
   bind(Metronome.duration, "beatDuration")
 
   def bind (value: VarS[Float], parameter: String, function: Float => Float = (x:Float) => {x}) {
-    value.map( z => {
+    value.observe( z => {
       if(synthesizer != null) {
         synthesizer.synth.set(parameter -> function(z))
       }
-    })
+    true })
   }
 
 }

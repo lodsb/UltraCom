@@ -359,7 +359,7 @@ abstract class BaseComponent extends VarDeferor {
 }
 
 object PropertyAndAttributeWrappers {
-  import reflect.runtime.universe._
+  import scala.reflect.runtime.universe._
 
   abstract class PropertyAndAttributeWrapper(val name: String, val m: Manifest[_])
   case class PropertyWrapper[T](property: Property[T]) extends PropertyAndAttributeWrapper(property.name, property.manifest)
