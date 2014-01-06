@@ -91,7 +91,7 @@ public class TuioInputSource extends AbstractInputSource<AbstractCursorInputEvt>
      * @param pa the pa
      */
     public TuioInputSource(MTApplication pa) {
-        this(pa, 3335);
+        this(pa, 3333);
     }
 
     /**
