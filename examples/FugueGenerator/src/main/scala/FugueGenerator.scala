@@ -27,9 +27,10 @@ import org.mt4j.types.Vec3d
 import org.mt4j.components.ComponentImplicits._
 import org.mt4j.util.MTColor
 import scala.collection.mutable.ArrayBuffer
-import org.mt4j.components.visibleComponents.widgets.Slider
+import org.mt4j.components.visibleComponents.widgets.{MTImage, MTBackgroundImage, Slider}
 import org.mt4j.output.audio.AudioServer
 import java.beans.{PropertyChangeEvent, PropertyChangeListener}
+import org.mt4j.components.visibleComponents.shapes.MTRectangle
 
 
 object app extends Application {
@@ -173,6 +174,15 @@ class FugueGeneratorScene extends Scene(app, "FugueGenerator") {
   app.scene.canvas += bassSlider
   bassSlider.rotateZGlobal(app.center, 90f)
   bassSlider.setPositionGlobal(Vec3d(200f, app.height/2))
+
+
+  canvas += Icon("arousal_low.png",   Vec3d(app.width/2f-130, app.height-20f),  0.1f)
+  canvas += Icon("arousal_high.png",  Vec3d(app.width/2f+130, app.height-20f),  0.1f)
+  canvas += Icon("arousal_low.png",   Vec3d(app.width/2f+130, 20f),             0.1f, true)
+  canvas += Icon("arousal_high.png",  Vec3d(app.width/2f-130, 20f),             0.1f, true)
+  canvas += Icon("valence_low.png",  Vec3d(app.width/2f+230f, app.height/2f),  0.15f)
+  canvas += Icon("valence_high.png",   Vec3d(app.width/2f-230f, app.height/2f),  0.15f)
+
 
   // start Metronome
   Metronome() ! "start"
