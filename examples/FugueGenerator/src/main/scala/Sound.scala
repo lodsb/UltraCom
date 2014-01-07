@@ -20,6 +20,8 @@ import org.lodsb.scales._
 
 
 class Synthi {
+  val r = new scala.util.Random
+  def rrand(l: Double, h: Double) = (r.nextFloat()*(h-l))+l
 
   private var _activeHarmony : org.lodsb.scales.Pitch = org.lodsb.scales.Pitch(0)
   def activeHarmony_=(value: org.lodsb.scales.Pitch) {
@@ -98,7 +100,28 @@ class Synthi {
     var modulator = (5*freq* (activity+2*invValence)/3  )*SinOsc.ar(freq * ( 4*invValence + 1 ).roundTo(1.0) )+0.01
     var osc = SinOsc.ar(freq+modulator).madd(0.5,0)
     var bing = volume * osc * EnvGen.kr(Env.perc(atk, dec), Changed1.kr(gate), doneAction=1)
-    bing = LeakDC.ar(Pan2.ar(SplayAz.ar(2, bing/0.325)))
+
+    //distortion
+    val numChorusDelays = 36;
+    val chorusIn = bing* 1.0/numChorusDelays;
+    val chorusModulators = (0 to numChorusDelays).map {i => LFPar.kr(0.5* rrand(0.64, 1.06), 0.5 * i)* 0.5 + 0.08}
+    val	chorusSig = (bing+2*Mix.mono(DelayC.ar(chorusIn, chorusModulators)))/3;
+
+    val distFade = (activity-0.01)*(valence-0.01)
+    val distIn = HPF.ar(chorusSig, activity*440+10)*8
+    val amount = distFade
+    val amCoef = 2.0*amount/(1.0-amount)
+    var dist = MidEQ.ar(LPF.ar((amCoef+1.0)*distIn/((amCoef*distIn.abs)+1.0), Seq(3800, 3900))*0.5, 120, 0.7, 8);
+    dist = MidEQ.ar(LPF.ar((amCoef+1.0)*dist/((amCoef*dist.abs)+1.0), Seq(1800, 1900))*0.5, 120, 0.7, 8);
+    dist = MidEQ.ar(LPF.ar((amCoef+1.0)*dist/((amCoef*dist.abs)+1.0), Seq(2500, 2600))*0.5, 120, 0.7, 8);
+    val distOut = (dist + dist.tanh + dist.cos)/6
+
+
+    bing = XFade2.ar(SplayAz.ar(2, bing/0.325), SplayAz.ar(2, distOut/0.325), 2*(distFade)-1)
+
+    bing = LeakDC.ar(Pan2.ar(bing))
+
+
 
     bing = Limiter.ar(0.1f*bing)
 
