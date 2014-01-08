@@ -69,6 +69,11 @@ class FugueGeneratorScene extends Scene(app, "FugueGenerator") {
   //Harmony.progressionComplexity(0.57f)
 
 
+
+  //app.getInputManager.registerInputSource()
+
+
+
   // -- add first player modules
 
   // add a ControllerCanvas, which contains the sound-controller
@@ -138,7 +143,7 @@ class FugueGeneratorScene extends Scene(app, "FugueGenerator") {
 
 
 
-  // -- add global slider in the middle
+  // -- add global slider for valence in the middle
 
   // add slider
   val valenceSlider = Slider(0f, 1f, height=40f, width=400f)
