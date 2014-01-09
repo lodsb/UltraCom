@@ -1,6 +1,5 @@
 package de.ghagerer.FugueGenerator
 
-
 import org.mt4j.components.visibleComponents.shapes.{MTLine, MTRectangle}
 import org.mt4j.types.Vec3d
 import org.mt4j.util.MTColor._
@@ -205,17 +204,18 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
    * @return Boolean: yes or no
    */
   private def decide(step: Int, timeSignature: Int): Boolean = {
-    var act = synthi.activity() % 0.25
+    val act = synthi.activity() % 0.25
+    val valence = 1 - synthi.valence()
     timeSignature match {
       case  4 => {
-        val complexity = (act * 8).toInt
+        val complexity = math.round((act * 8).toInt * valence)
         if (
           complexity == 0 ||
           complexity == 1 && (step == 1 || step == 17 || step == 13 || step == 29)
         ) {return true}
       }
       case  8 => {
-        val complexity = (act * 12).toInt
+        val complexity = math.round((act * 12).toInt * valence)
         if (
           ((step-1)/4)%2 == 0 ||
           //step == 1 2 3 4  9 10 11 12  17 18 19 20  25 26 27 28
@@ -225,7 +225,7 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
         ) {return true}
       }
       case 16 => {
-        val complexity = (act * 16).toInt
+        val complexity = math.round((act * 16).toInt * valence)
         if (
           ((step-1)/2)%2 == 0 ||
           //step == 1 2  5 6  9 10  13 14  17 18  21 22  25 26  29 30
