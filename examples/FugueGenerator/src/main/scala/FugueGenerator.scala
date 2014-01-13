@@ -27,10 +27,10 @@ import org.mt4j.types.Vec3d
 import org.mt4j.components.ComponentImplicits._
 import org.mt4j.util.MTColor
 import scala.collection.mutable.ArrayBuffer
-import org.mt4j.components.visibleComponents.widgets.{MTImage, MTBackgroundImage, Slider}
+import org.mt4j.components.visibleComponents.widgets.Slider
 import org.mt4j.output.audio.AudioServer
 import java.beans.{PropertyChangeEvent, PropertyChangeListener}
-import org.mt4j.components.visibleComponents.shapes.MTRectangle
+import java.net.{InetAddress, InetSocketAddress}
 
 
 object app extends Application {
@@ -122,7 +122,6 @@ class FugueGeneratorScene extends Scene(app, "FugueGenerator") {
   controllerCanvas2.setPositionGlobal(Vec3d(app.center.getX, app.height-150f))
   slider2.setPositionGlobal(Vec3d(app.center.getX, app.height-25f))
 
-
   val durationVotingListener = new PropertyChangeListener {
     override def propertyChange(evt: PropertyChangeEvent) {
       synchronized {
@@ -133,7 +132,7 @@ class FugueGeneratorScene extends Scene(app, "FugueGenerator") {
         val oldValue = 50 + 100 * (1-evt.getOldValue.asInstanceOf[Float])
         val otherValue = 2*Metronome.duration() - oldValue
         Metronome.duration() = (newValue + otherValue) / 2
-        println("newValue="+newValue+", oldValue="+oldValue+", otherValue="+otherValue+", duration="+Metronome.duration())
+        //println("newValue="+newValue+", oldValue="+oldValue+", otherValue="+otherValue+", duration="+Metronome.duration())
       }
     }
   }
@@ -186,8 +185,8 @@ class FugueGeneratorScene extends Scene(app, "FugueGenerator") {
 
   canvas += Icon("arousal_low.png",   Vec3d(app.width/2f-130, app.height-20f),  0.1f)
   canvas += Icon("arousal_high.png",  Vec3d(app.width/2f+130, app.height-20f),  0.1f)
-  canvas += Icon("arousal_low.png",   Vec3d(app.width/2f+130, 20f),             0.1f, true)
-  canvas += Icon("arousal_high.png",  Vec3d(app.width/2f-130, 20f),             0.1f, true)
+  canvas += Icon("arousal_low.png",   Vec3d(app.width/2f+130, 20f),             0.1f, rotate180 = true)
+  canvas += Icon("arousal_high.png",  Vec3d(app.width/2f-130, 20f),             0.1f, rotate180 = true)
   canvas += Icon("valence_low.png",  Vec3d(app.width/2f+230f, app.height/2f),  0.15f)
   canvas += Icon("valence_high.png",   Vec3d(app.width/2f-230f, app.height/2f),  0.15f)
 
@@ -195,4 +194,36 @@ class FugueGeneratorScene extends Scene(app, "FugueGenerator") {
   // start Metronome
   Metronome() ! "start"
 
+
+
+  app.getInputManager.registerInputSource(new KinectInputSource())
+
+  /*
+  private val localhost = InetAddress.getLocalHost()
+  private val port = 3336
+  private val socketAddress = new InetSocketAddress(localhost, port)
+  val oscReceive: SignalingOSCReceiver = OSCCommunication.createOSCReceiver(UDP, socketAddress)
+
+  var textField2 = TextArea()
+  textField2.globalPosition := Vec3d(100,300)
+  var zaehler = 0
+  oscReceive.receipt.observe(
+    ((x: (Message, InetSocketAddress)) => {
+      try {
+        println("zaehler=" + zaehler+ ", " + x._1.toString())
+      } catch {
+        case e: ClassCastException => {
+          val bundle = x._1.asInstanceOf[de.sciss.osc.Bundle]
+          println("zaehler=" + zaehler + ", " + bundle.toString())
+        }
+      }
+      zaehler += 1
+      true
+    })
+  )
+  textField2.text := "bar"
+
+  canvas() += textField2
+
+  */
 }

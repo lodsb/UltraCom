@@ -165,9 +165,9 @@ class Synthi {
   // 2, 4, 8 or 16
   var timeSignature = new VarS[Float](1f)
   bind(timeSignature, "timeSignature")
-  timeSignature.observe({x=> println("sig "+x); true})
-  activity.observe({x=> println("act "+x); true})
-  valence.observe({x=> println("val "+x); true})
+  //timeSignature.observe({x=> println("sig "+x); true})
+  //activity.observe({x=> println("act "+x); true})
+  //valence.observe({x=> println("val "+x); true})
 
 
   // beat duration is the duration between two 32th beats
