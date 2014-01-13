@@ -84,16 +84,16 @@ class Synthi {
     // note length is set by activity + step size
     //
     val invActivity = (2.0 - activity)   // > 1.0 so the decay wont be too short and we get overlapping tones on low
+    val invValence = 1-valence
                                           // activity
     val noteLength = ( beatDuration*(32.0/timeSignature) ) // slightly overlapping notes
-    val dec = ( noteLength * invActivity );
+    val dec = ( noteLength * invActivity * LinLin(invValence, 0,1,0.5,2.0));
     val atk = (0.02 * invActivity)
 
     // adds a slight slur/legato playing to the notes if valence is high (sad)
     val slurTime = LinLin(valence+0.1, 0.1, 1.4, 0.0, noteLength*0.125); //valence,0,1, 0,noteLength)
 
     val freq = Lag.kr(frequency, slurTime)
-    val invValence = 1-valence
 
 
     // fm synthesis
