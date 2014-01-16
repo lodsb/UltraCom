@@ -204,9 +204,11 @@ public class InputManager {
 
         this.registerInputSource(keyInput);
 
+        TuioInputSource tuioInput = new TuioInputSource(app);
+        this.registerInputSource(tuioInput);
+
         /* fixme, n
         this.registerInputSource(new OSCInputSource(app));
-        this.registerInputSource(tuioInput);
         */
     }
 
