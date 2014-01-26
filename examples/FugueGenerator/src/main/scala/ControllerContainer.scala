@@ -109,7 +109,18 @@ class ControllerContainer(val widthValue: Float, var heightValue: Float)
     var newHeight = heightValue/2f - distance.toFloat
 
     // take the correct signum
-    newHeight *= parent.signum * parent.getPosition(GLOBAL).getSubtracted(point).getY.signum
+    if (parent.degrees%180 == 0) {
+      // the canvas lies horizontally
+      newHeight *= parent.signum * parent.getPosition(GLOBAL).getSubtracted(point).getY.signum
+    } else {
+      // the canvas lies vertically
+      if (parent.getPosition(GLOBAL).getX < point.getX) {
+        newHeight *= -1
+      }
+      if (parent.degrees%270 == 0) {
+        newHeight *= -1
+      }
+    }
 
     newHeight
   }

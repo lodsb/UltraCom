@@ -77,12 +77,12 @@ class FugueGeneratorScene extends Scene(app, "FugueGenerator") {
   // -- add first player modules
 
   // add a ControllerCanvas, which contains the sound-controller
-  val controllerCanvas1: ControllerCanvas = new ControllerCanvas(300f, 200f, 16)
+  val controllerCanvas1 = new ControllerCanvas(600f, 400f, 16)
   app.scene.canvas += controllerCanvas1
   app.allControllerCanvas += controllerCanvas1
 
   // add local arousal slider for this ControllerCanvas
-  val slider1 = Slider(0f, 1f, height=20f)
+  val slider1 = Slider(0f, 1f, width=400f)
   slider1.value.map { x =>
 
     // get a value between 0 and 1
@@ -95,21 +95,21 @@ class FugueGeneratorScene extends Scene(app, "FugueGenerator") {
   app.scene.canvas += slider1
 
   // set positions and rotate
-  controllerCanvas1.rotate180
-  controllerCanvas1.setPositionGlobal(Vec3d(app.center.getX, 150f))
-  slider1.rotateZ(app.center, 180f)
-  slider1.setPositionGlobal(Vec3d(app.center.getX, 25f))
+  controllerCanvas1.rotate90
+  controllerCanvas1.setPositionGlobal(Vec3d(300, app.center.getY))
+  slider1.rotateZ(app.center, 90f)
+  slider1.setPositionGlobal(Vec3d(60f, app.center.getY))
 
 
   // -- add second player modules
 
   // add a ControllerCanvas, which contains the sound-controller
-  val controllerCanvas2: ControllerCanvas = new ControllerCanvas(300f, 200f, 16)
+  val controllerCanvas2 = new ControllerCanvas(600f, 400f, 16)
   app.scene.canvas += controllerCanvas2
   app.allControllerCanvas += controllerCanvas2
 
   // add local arousal slider for this ControllerCanvas
-  val slider2 = Slider(0f, 1f, height=20f)
+  val slider2 = Slider(0f, 1f, width=400f)
   slider2.value.map { x =>
     // get a value between 0 and 1
     val percent = x / slider2.getValueRangeVar
@@ -119,20 +119,22 @@ class FugueGeneratorScene extends Scene(app, "FugueGenerator") {
   app.scene.canvas += slider2
 
   // set positions
-  controllerCanvas2.setPositionGlobal(Vec3d(app.center.getX, app.height-150f))
-  slider2.setPositionGlobal(Vec3d(app.center.getX, app.height-25f))
+  controllerCanvas2.globalPosition() = Vec3d(app.width-300, app.center.getY)
+  controllerCanvas2.rotate180
+  controllerCanvas2.rotate90
+  slider2.globalPosition() = Vec3d(app.width-60, app.center.getY)
+  slider2.rotateZ(app.center, 270f)
 
+
+  // create the logic for democratic tempo setting
+  // (the tempo is averaged between the two arousal settings)
   val durationVotingListener = new PropertyChangeListener {
     override def propertyChange(evt: PropertyChangeEvent) {
       synchronized {
-
-        // 0.0 -> 50, 0.5 -> 100, 1.0 -> 150
-
         val newValue = 50 + 100 * (1-evt.getNewValue.asInstanceOf[Float])
         val oldValue = 50 + 100 * (1-evt.getOldValue.asInstanceOf[Float])
         val otherValue = 2*Metronome.duration() - oldValue
         Metronome.duration() = (newValue + otherValue) / 2
-        //println("newValue="+newValue+", oldValue="+oldValue+", otherValue="+otherValue+", duration="+Metronome.duration())
       }
     }
   }
@@ -165,6 +167,7 @@ class FugueGeneratorScene extends Scene(app, "FugueGenerator") {
 
   // set position
   valenceSlider.setPositionGlobal(app.center)
+  valenceSlider.rotateZ(app.center, 90f)
 
 
   // -- add bass slider for selecting who plays bass melody
@@ -179,16 +182,15 @@ class FugueGeneratorScene extends Scene(app, "FugueGenerator") {
     })
   }
   app.scene.canvas += bassSlider
-  bassSlider.rotateZGlobal(app.center, 90f)
-  bassSlider.setPositionGlobal(Vec3d(200f, app.height/2))
+  bassSlider.setPositionGlobal(Vec3d(app.width/2, 40f))
 
 
-  canvas += Icon("arousal_low.png",   Vec3d(app.width/2f-130, app.height-20f),  0.1f)
-  canvas += Icon("arousal_high.png",  Vec3d(app.width/2f+130, app.height-20f),  0.1f)
-  canvas += Icon("arousal_low.png",   Vec3d(app.width/2f+130, 20f),             0.1f, rotate180 = true)
-  canvas += Icon("arousal_high.png",  Vec3d(app.width/2f-130, 20f),             0.1f, rotate180 = true)
-  canvas += Icon("valence_low.png",  Vec3d(app.width/2f+230f, app.height/2f),  0.15f)
-  canvas += Icon("valence_high.png",   Vec3d(app.width/2f-230f, app.height/2f),  0.15f)
+  canvas += Icon("arousal_low.png",   Vec3d(65, app.height/2-230), 0.1f, 90f)
+  canvas += Icon("arousal_high.png",  Vec3d(65, app.height/2+230), 0.1f, 90f)
+  canvas += Icon("arousal_low.png",   Vec3d(app.width-65, app.height/2+230), 0.1f, 270f)
+  canvas += Icon("arousal_high.png",  Vec3d(app.width-65, app.height/2-230), 0.1f, 270f)
+  canvas += Icon("valence_low_mirrored.png",   Vec3d(app.width/2f, app.height/2f+230), 0.1f, 90f)
+  canvas += Icon("valence_high_mirrored.png",  Vec3d(app.width/2f, app.height/2f-230), 0.1f, 90f)
 
 
   // start Metronome

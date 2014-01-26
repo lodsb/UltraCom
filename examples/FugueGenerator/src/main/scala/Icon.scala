@@ -15,17 +15,15 @@ import org.mt4j.util.math.Vector3D
 
 
 object Icon {
-  def apply(filename: String, position: Vector3D, scaleFactor: Float, rotate180: Boolean = false) = new Icon("pictures/"+filename, position, scaleFactor, rotate180)
+  def apply(filename: String, position: Vector3D, scaleFactor: Float, rotationDegrees: Float = 0f) = new Icon("pictures/"+filename, position, scaleFactor, rotationDegrees)
 }
 
-class Icon(val filename: String, position: Vector3D, scaleFactor: Float, rotate180: Boolean) extends MTRectangle(app, app.loadImage(filename)) {
+class Icon(val filename: String, position: Vector3D, scaleFactor: Float, rotationDegrees: Float) extends MTRectangle(app, app.loadImage(filename)) {
 
   setStrokeColor(new MTColor(255,255,255,0))
   scale(scaleFactor)
   setPositionGlobal(position)
-  if (rotate180) {
-    rotateZGlobal(globalPosition(), 180f)
-  }
+  rotateZGlobal(globalPosition(), rotationDegrees)
 
   def scale(factor: Float) {
     setHeightLocal(getHeightLocal*factor)

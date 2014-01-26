@@ -73,13 +73,12 @@ class Synthi {
     // parameters
     val gate = "gate".kr(1)
     val volume = "volume".kr(0.9)
-    val pitch = "pitch".kr(0)
     val activity = "activity".kr(0.5)
     val valence = "valence".kr(0.5)+0.0001
     val frequency = "frequency".kr(0)
-    val bass = "bass".kr(0)
-    val beatDuration = ( "beatDuration".kr(0) / 1000.0 ) // beat duration in seconds
-    val timeSignature = "timeSignature".kr(0)
+    val bass = "bass".kr(0.5)
+    val beatDuration = ( "beatDuration".kr(100) / 1000.0 ) // beat duration in seconds
+    val timeSignature = "timeSignature".kr(8)
 
     // note length is set by activity + step size
     //
@@ -147,10 +146,10 @@ class Synthi {
   // the staccato value in percent (0-1)
   // 0 = legato / long
   // 1 = staccato / short
-  val activity = new VarS[Float](1f)
+  val activity = new VarS[Float](0.5f)
   bind(activity, "activity")
 
-  val valence = new VarS[Float](1f)
+  val valence = new VarS[Float](0.5f)
   bind(valence, "valence")
 
 
@@ -158,12 +157,12 @@ class Synthi {
   // its about how deep the tonality/pitch is
   // 0 = bass
   // 1 = high / treble
-  val bass = new VarS[Float](1f)
+  val bass = new VarS[Float](0.5f)
   bind(bass, "bass")
 
   // witch time signature does the rhythm have
   // 2, 4, 8 or 16
-  var timeSignature = new VarS[Float](1f)
+  var timeSignature = new VarS[Float](8f)
   bind(timeSignature, "timeSignature")
   //timeSignature.observe({x=> println("sig "+x); true})
   //activity.observe({x=> println("act "+x); true})

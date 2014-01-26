@@ -17,6 +17,9 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
 
   // -- attributes
 
+  // this value tells how much the canvas was rotated
+  var degrees = 0
+
   // rotation/orientation factor
   var signum = -1
 
@@ -204,7 +207,12 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
    * @return Boolean: yes or no
    */
   private def decide(step: Int, timeSignature: Int): Boolean = {
-    val act = synthi.activity() % 0.25
+    val act: Double =
+    if (synthi.activity() == 1d) {
+      24.99999999
+    } else {
+      synthi.activity() % 0.25
+    }
     val valence = 1 - synthi.valence()
     timeSignature match {
       case  4 => {
@@ -229,7 +237,7 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
         if (
           ((step-1)/2)%2 == 0 ||
           //step == 1 2  5 6  9 10  13 14  17 18  21 22  25 26  29 30
-          complexity == 0 ||
+          (complexity == 0 && valence != 1) ||
           complexity == 1 && (step == 3 || step == 7 || step == 11 || step == 16 || step == 19 || step == 23 || step == 27 || step == 32) ||
           complexity == 2 && (step == 3 || step == 8 || step == 11 || step == 16 || step == 19 || step == 24 || step == 27 || step == 32) ||
           (complexity == 3 || synthi.activity() == 1) && (step == 4 || step == 8 || step == 12 || step == 16 || step == 20 || step == 24 || step == 28 || step == 32)
@@ -258,8 +266,14 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
 
 
   def rotate180 {
+    degrees += 180
     rotateZ(app.center, 180f)
     signum *= -1
+  }
+  def rotate90 {
+    degrees += 90
+    rotateZ(app.center, 90f)
+    //signum *= -1
   }
 
   /**
@@ -273,9 +287,7 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
 
     // pass the arousal value to the SC synthesizer
     synthi.activity() = value
-
-
-  }
+}
 
   /**
    * sets valence for synthesis
