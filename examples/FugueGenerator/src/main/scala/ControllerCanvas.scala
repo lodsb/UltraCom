@@ -8,6 +8,7 @@ import org.mt4j.input.inputProcessors.{MTGestureEvent, IGestureEventListener}
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent
 import scala.collection.mutable.ArrayBuffer
 import org.lodsb.reakt.sync.VarS
+import org.mt4j.util.SessionLogger
 
 /**
  * This is the class, which contains the pitch-controllers
@@ -130,6 +131,7 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
    **/
   override def processGestureEvent(ge: MTGestureEvent): Boolean = {
     val drag = ge.asInstanceOf[DragEvent]
+
     if(containsPointGlobal(drag.getTo)) {
       getChildren.foreach( child => {
         if(child.containsPointGlobal(drag.getTo)) {
@@ -143,8 +145,12 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
             case _ =>
           }
         }
+
       })
     }
+
+
+
     true
   }
 
@@ -160,6 +166,31 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
     var stepLength = 0
     containers.synchronized {
       stepLength = Metronome.totalSteps/containers.length
+
+
+        // Logging (disgusting hack) , taking place every bar
+        if(step == stepLength -1) {
+
+          var min = Float.MaxValue
+          var max = Float.MinValue
+          var cnt = 0
+          var avg = 0.0
+
+          containers.foreach({ container =>
+
+            val h = container.controller.getHeight
+
+            if(min  > h) min = h
+            if(max  < h) max = h
+
+            avg = avg + h
+            cnt = cnt + 1
+          })
+
+          avg = avg / cnt
+
+          SessionLogger.log("Steps ", SessionLogger.SessionEvent.Event, this, this, (min, max, avg))
+      }
     }
     var i = 1
     while (i*stepLength < step) {

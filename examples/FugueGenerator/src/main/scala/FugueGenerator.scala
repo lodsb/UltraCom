@@ -25,7 +25,7 @@ package de.ghagerer.FugueGenerator
 import org.mt4j.{Scene, Application}
 import org.mt4j.types.Vec3d
 import org.mt4j.components.ComponentImplicits._
-import org.mt4j.util.MTColor
+import org.mt4j.util.{SessionLogger, MTColor}
 import scala.collection.mutable.ArrayBuffer
 import org.mt4j.components.visibleComponents.widgets.Slider
 import org.mt4j.output.audio.AudioServer
@@ -97,6 +97,7 @@ class FugueGeneratorScene extends Scene(app, "FugueGenerator") {
   // set positions and rotate
   controllerCanvas1.rotate90
   controllerCanvas1.setPositionGlobal(Vec3d(300, app.center.getY))
+  controllerCanvas1.setName("Canvas1")
   slider1.rotateZ(app.center, 90f)
   slider1.setPositionGlobal(Vec3d(60f, app.center.getY))
 
@@ -122,6 +123,7 @@ class FugueGeneratorScene extends Scene(app, "FugueGenerator") {
   controllerCanvas2.globalPosition() = Vec3d(app.width-300, app.center.getY)
   controllerCanvas2.rotate180
   controllerCanvas2.rotate90
+  controllerCanvas2.setName("Canvas2")
   slider2.globalPosition() = Vec3d(app.width-60, app.center.getY)
   slider2.rotateZ(app.center, 270f)
 
@@ -199,6 +201,35 @@ class FugueGeneratorScene extends Scene(app, "FugueGenerator") {
 
 
   app.getInputManager.registerInputSource(new KinectInputSource())
+
+  // Logging
+  //
+  //
+    // Arousal
+
+    slider1.value.observe({ x=>
+      SessionLogger.log("Arousal 1", SessionLogger.SessionEvent.Event, this, slider1, x)
+      true
+    })
+
+    slider2.value.observe({ x=>
+      SessionLogger.log("Arousal 2", SessionLogger.SessionEvent.Event, this, slider2, x)
+      true
+    })
+
+    // Valence
+
+    valenceSlider.value.observe({ x=>
+      SessionLogger.log("Valence", SessionLogger.SessionEvent.Event, this, valenceSlider, x)
+      true
+    })
+
+    // Octaving
+    bassSlider.value.observe({ x=>
+      SessionLogger.log("Octave", SessionLogger.SessionEvent.Event, this, bassSlider, x)
+      true
+    })
+
 
   /*
   private val localhost = InetAddress.getLocalHost()
