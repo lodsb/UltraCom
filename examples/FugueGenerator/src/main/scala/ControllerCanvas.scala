@@ -4,11 +4,14 @@ import org.mt4j.components.visibleComponents.shapes.{MTLine, MTRectangle}
 import org.mt4j.types.Vec3d
 import org.mt4j.util.MTColor._
 import org.mt4j.util.math.Vertex
-import org.mt4j.input.inputProcessors.{MTGestureEvent, IGestureEventListener}
+import org.mt4j.input.inputProcessors.{IInputProcessor, MTGestureEvent, IGestureEventListener}
 import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent
 import scala.collection.mutable.ArrayBuffer
 import org.lodsb.reakt.sync.VarS
 import org.mt4j.util.SessionLogger
+import org.mt4j.input.inputData.MTInputEvent
+import org.mt4j.input.inputProcessors.MTGestureEvent._
+import org.mt4j.util.SessionLogger.SessionEvent
 
 /**
  * This is the class, which contains the pitch-controllers
@@ -121,6 +124,18 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
     addChild(baseline)
   }
 
+  def logDragEvent(event: DragEvent) {
+    event.getId match {
+      case GESTURE_DETECTED =>
+        SessionLogger.log("Started drag gesture", SessionEvent.Event, this, null, null)
+      case GESTURE_ENDED =>
+        SessionLogger.log("Stopped drag gesture", SessionEvent.Event, this, null, null)
+      case GESTURE_UPDATED =>
+        SessionLogger.log("Updated drag gesture", SessionEvent.Event, this, null, null)
+      case _ =>
+    }
+  }
+
   /**
    * This methods gets passed GestureEvents from controllers,
    * which don't want to process their DragEvents, because
@@ -131,6 +146,8 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
    **/
   override def processGestureEvent(ge: MTGestureEvent): Boolean = {
     val drag = ge.asInstanceOf[DragEvent]
+
+    logDragEvent(drag)
 
     if(containsPointGlobal(drag.getTo)) {
       getChildren.foreach( child => {

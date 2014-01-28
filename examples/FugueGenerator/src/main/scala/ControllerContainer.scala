@@ -34,6 +34,9 @@ class ControllerContainer(val widthValue: Float, var heightValue: Float)
    **/
   override def processGestureEvent(ge: MTGestureEvent): Boolean = {
     val drag = ge.asInstanceOf[DragEvent]
+
+    parent.logDragEvent(drag)
+
     if(this.containsPointGlobal(drag.getTo) || controller.containsPointGlobal(drag.getTo)) {
       controller.processGestureEvent(ge)
     } else {

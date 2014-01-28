@@ -44,6 +44,9 @@ class Controller(var widthValue: Float, var heightValue: Float)
    */
   override def processGestureEvent(ge: MTGestureEvent): Boolean = {
     val drag = ge.asInstanceOf[DragEvent]
+
+    parent.parent.logDragEvent(drag)
+
     if(parent.containsPointGlobal(drag.getTo) || this.containsPointGlobal(drag.getTo)) {
       height() = parent.getNewHeight(drag.getTo)
     } else {
