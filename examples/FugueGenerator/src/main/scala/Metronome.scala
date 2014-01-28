@@ -136,12 +136,12 @@ object Harmony {
 
 object Scales {
   val scales = new ArrayBuffer[Scale]()
-  scales += Scale("Lydian").get
-  scales += Scale("Major").get
-  scales += Scale("Mixolydian").get
-  scales += Scale("Dorian").get
-  scales += Scale("Minor").get
   scales += Scale("Phrygian").get
+  scales += Scale("Minor").get
+  scales += Scale("Dorian").get
+  scales += Scale("Mixolydian").get
+  scales += Scale("Major").get
+  scales += Scale("Lydian").get
 
   val tuning = Tuning("Equal").get
 

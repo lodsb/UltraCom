@@ -74,7 +74,8 @@ class Synthi {
     val gate = "gate".kr(1)
     val volume = "volume".kr(0.9)
     val activity = "activity".kr(0.5)
-    val valence = "valence".kr(0.5)+0.0001
+    val valenceIn = 1-"valence".kr(0.5)
+    val valence = valenceIn+0.0001
     val frequency = "frequency".kr(0)
     val bass = "bass".kr(0.5)
     val beatDuration = ( "beatDuration".kr(100) / 1000.0 ) // beat duration in seconds

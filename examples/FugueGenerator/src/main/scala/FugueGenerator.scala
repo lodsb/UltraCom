@@ -191,8 +191,8 @@ class FugueGeneratorScene extends Scene(app, "FugueGenerator") {
   canvas += Icon("arousal_high.png",  Vec3d(65, app.height/2+230), 0.1f, 90f)
   canvas += Icon("arousal_low.png",   Vec3d(app.width-65, app.height/2+230), 0.1f, 270f)
   canvas += Icon("arousal_high.png",  Vec3d(app.width-65, app.height/2-230), 0.1f, 270f)
-  canvas += Icon("valence_low_mirrored.png",   Vec3d(app.width/2f, app.height/2f+230), 0.1f, 90f)
-  canvas += Icon("valence_high_mirrored.png",  Vec3d(app.width/2f, app.height/2f-230), 0.1f, 90f)
+  canvas += Icon("valence_high_mirrored.png",   Vec3d(app.width/2f, app.height/2f+230), 0.1f, 90f)
+  canvas += Icon("valence_low_mirrored.png",  Vec3d(app.width/2f, app.height/2f-230), 0.1f, 90f)
 
 
   // start Metronome

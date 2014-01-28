@@ -167,29 +167,32 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
     containers.synchronized {
       stepLength = Metronome.totalSteps/containers.length
 
-
         // Logging (disgusting hack) , taking place every bar
         if(step == stepLength -1) {
 
           var min = Float.MaxValue
           var max = Float.MinValue
-          var cnt = 0
-          var avg = 0.0
+          var avgHeight = 0.0
+          var avgHeightDistance = 0.0
+          var oldHeight = containers.last.controller.getHeight
+          var newHeight = containers(0).controller.getHeight
 
           containers.foreach({ container =>
 
-            val h = container.controller.getHeight
+            oldHeight = newHeight
+            newHeight = container.controller.getHeight
 
-            if(min  > h) min = h
-            if(max  < h) max = h
+            if(min  > newHeight) min = newHeight
+            if(max  < newHeight) max = newHeight
 
-            avg = avg + h
-            cnt = cnt + 1
+            avgHeight += newHeight
+            avgHeightDistance += (newHeight - oldHeight)
+
           })
 
-          avg = avg / cnt
+          avgHeight = avgHeight / containers.size
 
-          SessionLogger.log("Steps ", SessionLogger.SessionEvent.Event, this, this, (min, max, avg, stepLength))
+          SessionLogger.log("Steps ", SessionLogger.SessionEvent.Event, this, this, (min, max, avgHeight, avgHeightDistance, stepLength))
       }
     }
     var i = 1
@@ -240,11 +243,11 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
   private def decide(step: Int, timeSignature: Int): Boolean = {
     val act: Double =
     if (synthi.activity() == 1d) {
-      24.99999999
+      0.2499999999
     } else {
       synthi.activity() % 0.25
     }
-    val valence = 1 - synthi.valence()
+    val valence = synthi.valence()
     timeSignature match {
       case  4 => {
         val complexity = math.round((act * 8).toInt * valence)
@@ -265,6 +268,7 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
       }
       case 16 => {
         val complexity = math.round((act * 16).toInt * valence)
+        println("- complexity="+complexity+", activity="+act)
         if (
           ((step-1)/2)%2 == 0 ||
           //step == 1 2  5 6  9 10  13 14  17 18  21 22  25 26  29 30
@@ -327,7 +331,7 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
 
   def valence(value: Float) = {
     if(synthi != null) {
-      synthi.valence() = value;
+      synthi.valence() = value
     }
   }
 
