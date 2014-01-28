@@ -86,6 +86,7 @@ class Synthi {
     val invValence = 1-valence
                                           // activity
     val noteLength = ( beatDuration*(32.0/timeSignature) ) // slightly overlapping notes
+    // staccato: change 0.5 to something else
     val dec = ( noteLength * invActivity * LinLin(invValence, 0,1,0.5,2.0));
     val atk = (0.02 * invActivity)
 
@@ -108,13 +109,17 @@ class Synthi {
 
     val distFade = (activity-0.01)*(valence-0.01)
     val distIn = HPF.ar(chorusSig, activity*440+10)*8
-    val amount = distFade
-    val amCoef = 2.0*amount/(1.0-amount)
+    val amount = distFade*EnvGen.kr(Env.perc(0.001, dec*1.7,curve= Curve.sine), Changed1.kr(gate), doneAction=1)
+    val amCoef = (2.0*amount/(1.0-amount))
     var dist = MidEQ.ar(LPF.ar((amCoef+1.0)*distIn/((amCoef*distIn.abs)+1.0), Seq(3800, 3900))*0.5, 120, 0.7, 8);
     dist = MidEQ.ar(LPF.ar((amCoef+1.0)*dist/((amCoef*dist.abs)+1.0), Seq(1800, 1900))*0.5, 120, 0.7, 8);
     dist = MidEQ.ar(LPF.ar((amCoef+1.0)*dist/((amCoef*dist.abs)+1.0), Seq(2500, 2600))*0.5, 120, 0.7, 8);
-    val distOut = (dist + dist.tanh + dist.cos)/6
+    val distOut = (dist + dist.tanh + dist.cos)/3.5
 
+    // comment this out
+    //var asrEnv = Env.perc(0.005, dec*1.8, curve= Curve.sine);
+    //val distOut = 1.5*dista *EnvGen.kr(asrEnv, Changed1.kr(gate), doneAction = 1)
+    // 'till here
 
     bing = XFade2.ar(SplayAz.ar(2, bing/0.325), SplayAz.ar(2, distOut/0.325), 2*(distFade)-1)
 

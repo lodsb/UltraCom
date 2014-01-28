@@ -189,7 +189,7 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
 
           avg = avg / cnt
 
-          SessionLogger.log("Steps ", SessionLogger.SessionEvent.Event, this, this, (min, max, avg))
+          SessionLogger.log("Steps ", SessionLogger.SessionEvent.Event, this, this, (min, max, avg, stepLength))
       }
     }
     var i = 1
