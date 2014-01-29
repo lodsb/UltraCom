@@ -127,11 +127,11 @@ class ControllerCanvas(val widthValue: Float, val heightValue: Float, howMany: I
   def logDragEvent(event: DragEvent) {
     event.getId match {
       case GESTURE_DETECTED =>
-        SessionLogger.log("Started drag gesture", SessionEvent.Event, this, null, null)
+        SessionLogger.log("Started drag gesture at "+event.getFrom, SessionEvent.BeginGesture, this, null, null)
       case GESTURE_ENDED =>
-        SessionLogger.log("Stopped drag gesture", SessionEvent.Event, this, null, null)
+        SessionLogger.log("Stopped drag gesture at "+event.getTo, SessionEvent.EndGesture, this, null, null)
       case GESTURE_UPDATED =>
-        SessionLogger.log("Updated drag gesture", SessionEvent.Event, this, null, null)
+        SessionLogger.log("Updated drag gesture at "+event.getFrom, SessionEvent.Event, this, null, null)
       case _ =>
     }
   }
