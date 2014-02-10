@@ -1,3 +1,5 @@
+package mutator
+
 /*
  ++1>>  This source code is licensed as GPLv3 if not stated otherwise.
     >>  NO responsibility taken for ANY harm, damage done
@@ -30,26 +32,24 @@ import org.mt4j.{Scene, Application}
 import org.mt4j.util.Color
 import org.mt4j.util.math.Vector3D
 import org.mt4j.components.ComponentImplicits._
-import org.mt4j.stateMachine.StateMachine
 import org.mt4j.components.visibleComponents.widgets._
 import org.mt4j.types.{Vec3d, Rotation}
 import org.lodsb.reakt.Implicits._
 import scala.actors.Actor._
 import org.mt4j.components.visibleComponents.shapes.{Line, MTLine}
 import java.util.Random
+import org.mt4j.components.MTLight
 
 
 object Mutator extends Application {
-	/*
-			Settings, such as <b>the application name<b>, display properties, etc are set in Settings.txt
-	 */
+  var scene: MutatorScene = null
 
 	def main(args: Array[String]): Unit = {
 		this.execute(false)
 	}
 
 	override def startUp() = {
-		val scene = new MutatorScene(this, "Mutator");
+    scene = new MutatorScene(this, "Mutator");
 		this.addScene(scene)
 	}
 
@@ -57,6 +57,12 @@ object Mutator extends Application {
 
 
 class MutatorScene(app: Application, name: String) extends Scene(app,name) {
+
+  val  center = Vec3d(app.width/2f, app.height/2f)
+
+  MTLight.enableLightningAndAmbient(app, 250, 250, 250, 255)
+  //val l  = new MTLight(app,1, center.getAdded(this.getSceneCam.getPosition))
+  //l.enable()
 
 	// Show touches
 	showTracer(true)
@@ -77,7 +83,7 @@ class MutatorScene(app: Application, name: String) extends Scene(app,name) {
 
   textField.globalPosition := Vec3d(100,100)
   textField2.globalPosition := Vec3d(100,300)
-
+  /*
 
   val oscTransmit = OSCCommunication.createOSCTransmitter(UDP, new InetSocketAddress("131.159.200.144", 1338))
 
@@ -91,8 +97,12 @@ class MutatorScene(app: Application, name: String) extends Scene(app,name) {
 
   textField.text := "foo"
   textField2.text := "bar"
+    */
 
+  var bassNode = RandomNodeForm(Vec3d(100,100))
+  var chordNode = RandomNodeForm(Vec3d(220,220))
+  var melodyNode = RandomNodeForm(Vec3d(320,320))
 
-
+  canvas += bassNode ++ chordNode ++ melodyNode
 
 }
