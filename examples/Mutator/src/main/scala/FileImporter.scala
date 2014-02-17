@@ -114,76 +114,85 @@ import org.mt4j.util.math.Tools3D
 
       println(file.getName)
 
-      /*
+
       val mat: NodeMaterial = file.getName match {
-        case "angular_something_material.scala" => new NodeMaterial(Tools3D.getGL(Mutator)) {
-                                              setAmbient(Array( 0.33f, 0.39f, 0.43f, 0.95f ));
-                                              setDiffuse(Array( 0.33f, 0.39f, 0.43f, 0.95f ));
+        case "angular_something_material.scala" => new NodeMaterial(Tools3D.getGL()) {
+          override val name = "angular_something_material.scala"
+                                              setAmbient(Array( 1.00f, 0.39f, 0.43f, 0.95f ));
+                                              setDiffuse(Array( 1.00f, 0.39f, 0.43f, 0.95f ));
                                               setSpecular(Array( 2*0.33f, 2*0.39f, 2*0.43f, 0.95f ))
-                                              setEmission(Array( 0.1f, 0.1f, 0.1f, 0.0f ));;
+                                              setEmission(Array( .8f, 0.29f, 0.33f, 0.95f ));
                                               setShininess(80);
                                             }
 
 
-        case  "center_material.scala" => new NodeMaterial(Tools3D.getGL(Mutator)) {
-
+        case  "center_material.scala" => new NodeMaterial(Tools3D.getGL()) {
+                                            override val name = "center_material.scala"
                                             setAmbient(Array( 0.8f, 0.8f, 0.8f, 1f ));
                                             setDiffuse(Array( 0.8f, 0.8f, 0.8f, 1f ));
                                             setSpecular(Array( 0.8f, 0.8f, 0.8f, 1f ))
-                                            setEmission(Array( 0.0f, 0.0f, 0.0f, 1f ));;
+                                            setEmission(Array( 0.5f, 0.5f, 0.5f, 1f ));;
                                             setShininess(80);
                                           }
-       case  "cube_material.scala" => new NodeMaterial(Tools3D.getGL(Mutator)) {
+       case  "cube_material.scala" => new NodeMaterial(Tools3D.getGL()) {
+         override val name = "cube_material.scala"
                                              setAmbient(Array( 78f/255f,205f/255f,196f/255f, 0.95f ));
                                              setDiffuse(Array( 78f/255f,205f/255f,196f/255f, 0.95f ));
                                              setSpecular(Array( 78f/255f,205f/255f,196f/255f, 0.9f ));
-                                             setEmission(Array( 0.0f, 0.0f, 0.0f, 1f ));
+                                             setEmission(Array( 78f/355f,205f/355f,196f/355f, 0.95f ));
                                              setShininess(80);
                                            }
-        case  "decimate_material.scala" => new NodeMaterial(Tools3D.getGL(Mutator)) {
+        case  "decimate_material.scala" => new NodeMaterial(Tools3D.getGL()) {
+          override val name = "decimate_material.scala"
                                                 setAmbient(Array( 199f/255f,244f/255f,100f/255f, 0.95f ));
                                                 setDiffuse(Array( 199f/255f,244f/255f,100f/255f, 0.95f ));
                                                 setSpecular(Array( 199f/255f,244f/255f,100f/255f, 0.95f ))
-                                                setEmission(Array( 0.0f, 0.0f, 0.0f, 1f ));;
+                                                setEmission(Array( 199f/355f,244f/355f,100f/355f, 0.95f ));;
                                                 setShininess(80);
                                               }
 
-        case  "iconosphere_material.scala" => new NodeMaterial(Tools3D.getGL(Mutator)) {
+        case  "iconosphere_material.scala" => new NodeMaterial(Tools3D.getGL()) {
+          override val name = "iconosphere_material.scala"
                                                 setAmbient(Array( 0f, 0f, 1f, 0.95f));
                                                 setDiffuse(Array( 0f, 0f, 1f, 0.95f ));
                                                 setSpecular(Array( 0f, 0f, 1f, 0.95f ))
-                                                setEmission(Array( 0.0f, 0.0f, 0.0f, 1f ));;
+                                                setEmission(Array( 0f, 0f, 1f, 0.95f ));;
                                                 setShininess(80);
                                               }
-        case  "pentagon_material.scala"   => new NodeMaterial(Tools3D.getGL(Mutator)) {
+        case  "pentagon_material.scala"   => new NodeMaterial(Tools3D.getGL()) {
+          override val name = "pentagon_material.scala"
                                             setAmbient(Array( 255f/255f,107f/255f,107f/255f, 0.95f ));
                                             setDiffuse(Array( 255f/255f,107f/255f,107f/255f, 0.95f ));
                                             setSpecular(Array( 255f/255f,107f/255f,107f/255f, 0.95f ))
-                                            setEmission(Array( 0.0f, 0.0f, 0.0f, 1f ));;
+                                            setEmission(Array( 255f/355f,107f/355f,107f/355f, 0.95f ));;
                                             setShininess(80);
                                           }
-        case  "tetrahedron_material.scala" => new NodeMaterial(Tools3D.getGL(Mutator)) {
+        case  "tetrahedron_material.scala" => new NodeMaterial(Tools3D.getGL()) {
+          override val name = "tetrahedron_material.scala"
                                     setAmbient(Array( 5/255f,77f/255f,88f/255f, 0.9f ));
                                     setDiffuse(Array( 50/255f,77f/255f,88f/255f, 0.9f ));
                                     setSpecular(Array( 100/255f,77f/255f,88f/255f, 0.9f ));
-                                    setEmission(Array( 0.0f, 0.0f, 0.0f, 1f ));
+                                    setEmission(Array( 50/355f,77f/355f,88f/355f, 0.9f ));
                                     setShininess(80);
                                   }
-      }*/
-
-      val mat = new NodeMaterial(Tools3D.getGL(Mutator)) {
-        setAmbient(Array( 5/255f,77f/255f,88f/255f, 0.9f ));
-        setDiffuse(Array( 50/255f,77f/255f,88f/255f, 0.9f ));
-        setSpecular(Array( 100/255f,77f/255f,88f/255f, 0.9f ));
-        setEmission(Array( 0.0f, 0.0f, 0.0f, 1f ));
-        setShininess(80);
       }
 
-      println("mat " + mat)
+      /*
+      mat = new NodeMaterial(Tools3D.getGL(Mutator)) {
+        override val name = "test"
+        setAmbient(Array( 1f, 0f, 0f, 0.9f ));
+        setDiffuse(Array( 1f, 0f, 0f, 0.9f ));
+        setSpecular(Array( 1f, 0f, 0f, 0.9f ));
+        setEmission(Array( .15f, .15f, .15f, 0.9f ));
+        setShininess(10);
+      } */
+
+     // mat.setDefaults
+      println("mat " + mat.name)
       materialCache(file) = mat
     }
 
-    materialCache(file).copy
+    materialCache(file)
   }
 
   def cacheMTTriangleMesh(file: File): Array[MTTriangleMesh] = {

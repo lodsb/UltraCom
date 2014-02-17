@@ -23,7 +23,6 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
 import org.lodsb.reakt.property.Deferable;
 import org.lodsb.reakt.property.Property;
-import org.lodsb.reakt.property.VarDeferor;
 import org.mt4j.components.PickResult.PickEntry;
 import org.mt4j.components.bounds.IBoundingShape;
 import org.mt4j.components.clipping.Clip;
@@ -46,10 +45,11 @@ import org.mt4j.util.ColorTransformation;
 import org.mt4j.util.MT4jSettings;
 import org.mt4j.util.camera.IFrustum;
 import org.mt4j.util.camera.Icamera;
-import org.mt4j.util.math.*;
+import org.mt4j.util.math.Matrix;
+import org.mt4j.util.math.Ray;
+import org.mt4j.util.math.Tools3D;
+import org.mt4j.util.math.Vector3D;
 import processing.core.PApplet;
-import processing.core.PGraphics;
-import processing.opengl.PGraphics3D;
 import processing.opengl.PGraphicsOpenGL;
 
 import javax.media.opengl.GL2;
@@ -2012,7 +2012,6 @@ public class MTComponent extends BaseComponent implements IMTComponent3D, IGestu
 
         MTLight aLight = this.getLight();
         if (aLight != null) {
-
             GL2 gl = GLU.getCurrentGL().getGL2();
             gl.glEnable(GL2.GL_LIGHTING); //this is expensive
             aLight.enable();

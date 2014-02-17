@@ -17,30 +17,22 @@
  ***********************************************************************/
 package org.mt4j.components.visibleComponents.shapes.mesh;
 
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.media.opengl.GL2;
-
 import org.mt4j.components.bounds.BoundingSphere;
 import org.mt4j.components.bounds.IBoundingShape;
 import org.mt4j.components.visibleComponents.GeometryInfo;
 import org.mt4j.components.visibleComponents.shapes.AbstractShape;
 import org.mt4j.util.MT4jSettings;
 import org.mt4j.util.MTColor;
-import org.mt4j.util.math.BezierVertex;
-import org.mt4j.util.math.Ray;
-import org.mt4j.util.math.Tools3D;
-import org.mt4j.util.math.ToolsBuffers;
-import org.mt4j.util.math.ToolsMath;
-import org.mt4j.util.math.Vector3D;
-import org.mt4j.util.math.Vertex;
+import org.mt4j.util.math.*;
 import org.mt4j.util.opengl.GLTexture;
-
 import processing.core.PApplet;
 import processing.opengl.PGraphicsOpenGL;
+
+import javax.media.opengl.GL2;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A mesh class for drawing triangle meshes.
@@ -491,7 +483,7 @@ public class MTTriangleMesh extends AbstractShape {
     public void drawComponent(PGraphicsOpenGL g) {
         PApplet pa = this.getRenderer();
 
-        if (this.isUseDirectGL()) {
+        if (true) {
             GL2 gl = Tools3D.beginGLAndGetGL(g);
             this.drawComponent(gl);
             Tools3D.endGL(g);

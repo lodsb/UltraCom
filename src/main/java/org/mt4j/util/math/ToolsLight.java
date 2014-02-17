@@ -17,15 +17,13 @@
  ***********************************************************************/
 package org.mt4j.util.math;
 
+import processing.core.PApplet;
+
+import javax.media.opengl.GL2;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-
-import javax.media.opengl.GL2;
-
-import processing.core.PApplet;
-import processing.opengl.PGraphicsOpenGL;
 
 /**
  * The Class ToolsLight.
@@ -160,7 +158,7 @@ public class ToolsLight {
         gl.glLightfv(GLLightHandle, GL2.GL_AMBIENT, ambientColor); // color of the scattered light (darker)
         gl.glLightfv(GLLightHandle, GL2.GL_POSITION, ltPosition);
 
-//        gl.glEnable(GLLightHandle);	// Enable the light (GL_LIGHT1 - 7)
+       // gl.glEnable(GLLightHandle);	// Enable the light (GL_LIGHT1 - 7)
     }
 
 
@@ -195,10 +193,13 @@ public class ToolsLight {
         FloatBuffer ltSpecular = allocFloats(specularLightColor);
         FloatBuffer ltPosition = allocFloats(position);
 
+
         gl.glLightfv(GLLightHandle, GL2.GL_DIFFUSE, ltDiffuse);   // color of the direct illumination
         gl.glLightfv(GLLightHandle, GL2.GL_AMBIENT, ltAmbient);   // color of the reflected light
         gl.glLightfv(GLLightHandle, GL2.GL_SPECULAR, ltSpecular); // color of the highlight (same as direct light)
         gl.glLightfv(GLLightHandle, GL2.GL_POSITION, ltPosition); //FIXME ENABLE!
+      //  gl.glEnable(GLLightHandle);
+       // gl.glLightf(GLLightHandle, GL2.GL_QUADRATIC_ATTENUATION, 0.5f);
 
 //            gl.glEnable(GLLightHandle);	// Enable the light (GL_LIGHT1 - 7)
         //GL11.glLightf(GLLightHandle, GL11.GL_QUADRATIC_ATTENUATION, .005F);    // how light beam drops off

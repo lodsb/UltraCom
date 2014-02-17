@@ -17,11 +17,10 @@
  ***********************************************************************/
 package org.mt4j.util.opengl;
 
+import javax.media.opengl.GL2;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-
-import javax.media.opengl.GL2;
 
 /**
  * Abstracts usage of OpenGL materials.
@@ -207,9 +206,9 @@ public class GLMaterial {
     public void setDefaults() {
         this.setDiffuse(colorDefaultDiffuse);
         this.setAmbient(colorDefaultAmbient);
-        this.setSpecular(colorNone);
-        this.setEmission(colorNone);
-        this.setShininess(minShine);
+        this.setSpecular(colorBlue);
+        this.setEmission(colorBlue);
+        this.setShininess(maxShine);
     }
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

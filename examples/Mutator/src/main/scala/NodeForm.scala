@@ -1,7 +1,7 @@
 package mutator
 
 import org.mt4j.MTApplication
-import org.mt4j.util.math.Vector3D
+import org.mt4j.util.math.{Tools3D, Vector3D}
 import org.mt4j.components.visibleComponents.shapes.mesh.MTTriangleMesh
 import org.mt4j.components.{TransformSpace, MTComponent}
 import java.io.File
@@ -61,7 +61,7 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
   var rotationZ = new VarS[Float](0f)
 
   private val appCenter = Vec3d(app.height/2,app.width/2)
-  private val nodeZ = 100
+  private val nodeZ = -20
 
 
   setName(file.getName)
@@ -69,6 +69,8 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
 
   // Set up a material to react to the light
   var material = FileImporter.cacheGLMaterial(new File(file.getAbsolutePath.replace(".obj", "_material.scala")))
+
+  println("MY MATERIAL "+material.name + " this "+this)
 
   val materialCopy = material.copy
 
@@ -100,10 +102,14 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
     //if (mesh.getVertexCount > 20) {
     //  mesh.setUseVBOs(true)
     //}
+    //material.setDefaults
 
     //Set the material to the mesh  (determines the reaction to the lightning)
+    println(material.getAmbient)
+    println("loaded ... "+material.name)
     mesh.setMaterial(material)
     mesh.setDrawNormals(false)
+    //mesh.fillColor() = MTColor.BLUE
 
     // translate to center
     mesh.translateGlobal(appCenter.getSubtracted(position))
@@ -324,7 +330,7 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
   }
 
   def makeGrey(makeItGrey: Boolean) {
-    if (makeItGrey && !isGrey) {
+/*    if (makeItGrey && !isGrey) {
       isGrey = true
       material.setAmbient(Array(0.8f,0.8f,0.8f,1f))
       material.setSpecular(Array(0.8f,0.8f,0.8f,1f))
@@ -334,8 +340,9 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
       material.setAmbient(materialCopy.getAmbient)
       material.setSpecular(materialCopy.getSpecular)
       material.setDiffuse(materialCopy.getDiffuse)
-    }
+    }*/
   }
+
 
   /**
    * Syntactic sugar

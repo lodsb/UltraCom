@@ -30,7 +30,7 @@ import org.mt4j.input.osc.OSCCommunication
 import org.mt4j.input.osc.OSCCommunication.UDP
 import org.mt4j.{Scene, Application}
 import org.mt4j.util.Color
-import org.mt4j.util.math.Vector3D
+import org.mt4j.util.math.{Tools3D, Vector3D}
 import org.mt4j.components.ComponentImplicits._
 import org.mt4j.components.visibleComponents.widgets._
 import org.mt4j.types.{Vec3d, Rotation}
@@ -39,6 +39,8 @@ import scala.actors.Actor._
 import org.mt4j.components.visibleComponents.shapes.{Line, MTLine}
 import java.util.Random
 import org.mt4j.components.MTLight
+import javax.media.opengl.GL2
+import processing.core.PApplet
 
 
 object Mutator extends Application {
@@ -60,8 +62,8 @@ class MutatorScene(app: Application, name: String) extends Scene(app,name) {
 
   val  center = Vec3d(app.width/2f, app.height/2f)
 
-  MTLight.enableLightningAndAmbient(app, 250, 250, 250, 255)
-  //val l  = new MTLight(app,1, center.getAdded(this.getSceneCam.getPosition))
+  val l  = new MTLight(app, 3, center.getAdded(this.getSceneCam.getPosition))
+  MTLight.enableLightningAndAmbient(app, 5, 5, 5, 255)
   //l.enable()
 
 	// Show touches
@@ -99,10 +101,22 @@ class MutatorScene(app: Application, name: String) extends Scene(app,name) {
   textField2.text := "bar"
     */
 
-  var bassNode = RandomNodeForm(Vec3d(100,100))
-  var chordNode = RandomNodeForm(Vec3d(220,220))
-  var melodyNode = RandomNodeForm(Vec3d(320,320))
+  var bassNode = RandomNodeForm(Vec3d(100,100,-20))
+  var chordNode = RandomNodeForm(Vec3d(220,220,20))
+  var melodyNode = RandomNodeForm(Vec3d(320,320,120))
+
+  bassNode.setLight(l)
+  chordNode.setLight(l)
+  melodyNode.setLight(l)
+
+  //bassNode.scale(1.4f)
+  //chordNode.scale(1.4f)
+  //melodyNode.scale(1.4f)
 
   canvas += bassNode ++ chordNode ++ melodyNode
+
+  canvas += bassNode.xCircle ++ bassNode.yCircle ++ bassNode.zCircle
+  canvas += chordNode.xCircle ++ chordNode.yCircle ++ chordNode.zCircle
+  canvas += melodyNode.xCircle ++ melodyNode.yCircle ++ melodyNode.zCircle
 
 }

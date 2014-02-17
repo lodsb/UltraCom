@@ -17,14 +17,13 @@
  ***********************************************************************/
 package org.mt4j.components;
 
-import javax.media.opengl.GL2;
-import javax.media.opengl.glu.GLU;
-
+import org.mt4j.util.math.Tools3D;
 import org.mt4j.util.math.ToolsLight;
 import org.mt4j.util.math.Vector3D;
-
 import processing.core.PApplet;
-import processing.opengl.PGraphicsOpenGL;
+
+import javax.media.opengl.GL2;
+import javax.media.opengl.glu.GLU;
 
 /**
  * The Class MTLight. Abstracts the opengl lightning.
@@ -118,15 +117,27 @@ public class MTLight {
      */
     public MTLight(PApplet pa, int lightId, Vector3D position) {
         super();
-        this.lightId = lightId;
-        this.gl = GLU.getCurrentGL().getGL2();
 
-        this.lightAmbient = new float[]{.2f, .2f, .2f, 1f}; // scattered light
-        this.lightDiffuse = new float[]{1.0f, 1.0f, 1.0f, 1f}; // direct light
-        this.lightSpecular = new float[]{1.0f, 1.0f, 1.0f, 1f};
+        switch(lightId) {
+            case 0: this.lightId = GL2.GL_LIGHT0; break;
+            case 1: this.lightId = GL2.GL_LIGHT1; break;
+            case 2: this.lightId = GL2.GL_LIGHT2; break;
+            case 3: this.lightId = GL2.GL_LIGHT3; break;
+            case 4: this.lightId = GL2.GL_LIGHT4; break;
+            case 5: this.lightId = GL2.GL_LIGHT5; break;
+            case 6: this.lightId = GL2.GL_LIGHT6; break;
+            case 7: this.lightId = GL2.GL_LIGHT7; break;
+            default: this.lightId = GL2.GL_LIGHT0;
+        }
+
+        this.gl = Tools3D.getGL(pa);
+
+        this.lightAmbient = new float[]{.1f, .1f, .1f, 1f}; // scattered light
+        this.lightDiffuse = new float[]{0.7f, 0.7f, 0.7f, 1f}; // direct light
+        this.lightSpecular = new float[]{.3f, .3f, .3f, 1f};
         this.lightPosition = new float[]{position.x, position.y, position.z, 1.000f};
 
-        this.initLight(lightId);
+        this.initLight(this.lightId);
     }
 
     /**

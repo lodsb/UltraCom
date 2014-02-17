@@ -25,6 +25,7 @@ import java.nio.FloatBuffer
 
 
 class NodeMaterial(val gl: GL2) extends GLMaterial(gl) {
+   val name = "";
 
   private var _diffuse: Array[Float] = null
   private var _ambient: Array[Float] = null
