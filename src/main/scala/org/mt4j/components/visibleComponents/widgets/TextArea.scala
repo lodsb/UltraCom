@@ -25,7 +25,7 @@ package org.mt4j.components.visibleComponents.widgets
 import org.mt4j.MTApplication
 import org.mt4j.util.math.Vector3D
 import com.jogamp.graph.font.FontFactory
-import org.mt4j.components.visibleComponents.font.FontManager
+import org.mt4j.components.visibleComponents.font.{Font, FontManager}
 import java.io.File
 import org.mt4j.components.MTComponent
 import processing.opengl.PGraphicsOpenGL
@@ -59,7 +59,7 @@ object TextArea {
 		val x = app.width / 2f;
 		val y = app.height / 2f;
 
-		val textArea = new MTTextArea(app);
+		val textArea = new MTTextArea(app, Font());
 		textArea.setPositionGlobal(new Vector3D(app.width / 2f, app.height / 2f));
 		textArea.setNoFill(true);
 

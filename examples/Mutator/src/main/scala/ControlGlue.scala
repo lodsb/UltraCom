@@ -20,6 +20,8 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
 
   var locked = false
 
+  private val deviation = 3;
+
   parameters.zip(ranges).zipWithIndex.foreach({ x =>
     val index = x._2
     val parm = x._1._1
@@ -123,10 +125,10 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
     val encSeq: List[IntegerEncoding] = ranges.zipWithIndex.map{ x=>
       x._2 match {
         // basic deviation is 1
-        case 0 => new IntegerEncoding(xRot, new IntegerEncodingMutation(x._1._1, x._1._2, 1))
-        case 1 => new IntegerEncoding(yRot, new IntegerEncodingMutation(x._1._1, x._1._2, 1))
-        case 2 => new IntegerEncoding(zRot, new IntegerEncodingMutation(x._1._1, x._1._2, 1))
-        case 3 => new IntegerEncoding(scale, new IntegerEncodingMutation(x._1._1, x._1._2, 1))
+        case 0 => new IntegerEncoding(xRot, new IntegerEncodingMutation(x._1._1, x._1._2, deviation))
+        case 1 => new IntegerEncoding(yRot, new IntegerEncodingMutation(x._1._1, x._1._2, deviation))
+        case 2 => new IntegerEncoding(zRot, new IntegerEncodingMutation(x._1._1, x._1._2, deviation))
+        case 3 => new IntegerEncoding(scale, new IntegerEncodingMutation(x._1._1, x._1._2, deviation))
         case _ =>  throw new Exception("Too many mappings given!")
       }
     }

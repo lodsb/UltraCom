@@ -26,6 +26,7 @@ import org.lodsb.reakt.property.Attribute;
 import org.mt4j.components.bounds.BoundsZPlaneRectangle;
 import org.mt4j.components.bounds.IBoundingShape;
 import org.mt4j.components.interfaces.IclickableButton;
+import org.mt4j.components.visibleComponents.font.IFont;
 import org.mt4j.components.visibleComponents.shapes.AbstractShape;
 import org.mt4j.components.visibleComponents.widgets.MTTextArea;
 import org.mt4j.input.gestureAction.DefaultButtonClickAction;
@@ -60,6 +61,15 @@ public class MTTextButton extends MTTextArea implements IclickableButton {
         this.registerAttribute(pressed);
         _init(pApplet, label);
     }
+
+    public MTTextButton(PApplet pApplet, String label, IFont font) {
+        super(pApplet, font);
+
+        this.pressed = Attribute.ofType(Boolean.class, "pressed", false);
+        this.registerAttribute(pressed);
+        _init(pApplet, label);
+    }
+
 
     public MTTextButton(PApplet pApplet, String label, float x, float y, float width, float height) {
         super(pApplet, x, y, width, height);

@@ -27,6 +27,7 @@ import processing.core.PImage
 import org.mt4j.MTApplication
 import org.mt4j.util.math.Vector3D
 import java.io.File
+import org.mt4j.components.visibleComponents.font.Font
 
 object Button {
 
@@ -56,7 +57,7 @@ object Button {
 		val x = 200+app.width / 2f;
 		val y = app.height / 2f;
 
-		val textButton = new MTTextButton(app,text);
+		val textButton = new MTTextButton(app,text, Font());
 		textButton.setPositionGlobal(new Vector3D(app.width / 2f, app.height / 2f));
 
 		textButton

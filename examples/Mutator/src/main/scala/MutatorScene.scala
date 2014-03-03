@@ -52,6 +52,8 @@ import mutant5000.{Chromosome, SimpleChromosomeScore, Population}
 
 object Mutator extends Application {
 
+  val noVoters = 3
+
   val oscTransmit = OSCCommunication.createOSCTransmitter(UDP, new InetSocketAddress("127.0.0.1", 1338))
 
   // relative coordinates, the absolute ones are taken from the bg file
@@ -90,6 +92,25 @@ object Mutator extends Application {
   );
 
   var controllerGlue : List[ControlGlue] = List();
+  var voters : List[VotingPanel] = List()
+
+  var votes : List[Float] = List.empty
+
+  def vote(vote: Float) = {
+    votes = votes :+ vote
+
+    if(voters.forall(p => !p.isPanelEnabled)){
+      var mean = votes.sum / votes.size
+
+      println("votes" + votes + " -> "+mean)
+
+      runGameCycle(mean)
+
+      voters.foreach{x => x.enablePanel(true)}
+
+      votes = List()
+    }
+  }
 
   var population : Population = new Population(Seq.empty, None)
 
@@ -102,6 +123,7 @@ object Mutator extends Application {
 
     val chromosome = new Chromosome(genes)
 
+    population.add(chromosome, score)
     population.add(chromosome, score)
   }
 
@@ -120,7 +142,7 @@ object Mutator extends Application {
 
     updatePopulation(score)
 
-    val chromosome = GameCycle.evolve(population,0.1,0.99, 0.9)
+    val chromosome = GameCycle.evolve(population,0.25,0.99, 0.99)
 
     println("my new chromosome "+chromosome.toString() + "   " + chromosome.genes.size )
 
@@ -194,5 +216,15 @@ class MutatorScene(app: Application, name: String) extends Scene(app,name) {
   // send triggers to pd
   Mutator.oscTransmit.send() = Message("/start", 1)
   Mutator.oscTransmit.send() = Message("/audio", 1)
+
+  (1 to Mutator.noVoters).foreach {  x =>
+    val vPanel = new VotingPanel(Vec3d(2,3,4))
+
+    Mutator.voters = Mutator.voters :+ vPanel
+
+    vPanel.voted.observe({x => Mutator.vote(x); true})
+
+    canvas += vPanel
+  }
 
 }
