@@ -41,9 +41,100 @@ import java.util.Random
 import org.mt4j.components.MTLight
 import javax.media.opengl.GL2
 import processing.core.PApplet
+import org.mt4j.input.inputProcessors.componentProcessors.rotate3DProcessor.Rotate3DProcessor
+import org.mt4j.input.inputProcessors.componentProcessors.rotateProcessor.RotateProcessor
+import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleProcessor
+import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProcessor
+import org.mt4j.input.inputProcessors.{MTGestureEvent, IGestureEventListener}
+import scala._
+import mutant5000.{Chromosome, SimpleChromosomeScore, Population}
 
 
 object Mutator extends Application {
+
+  val oscTransmit = OSCCommunication.createOSCTransmitter(UDP, new InetSocketAddress("127.0.0.1", 1338))
+
+  // relative coordinates, the absolute ones are taken from the bg file
+  val widgetCoordinates = List(
+    (1783f/1920f, 539f/1080f),
+    (1655f/1920f, 274f/1080f),
+    (1391f/1920f, 146f/1080f),
+    (1072f/1920f , 108f/1080f),
+    (732f/1920f , 116f/1080f),
+    (417f/1920f , 203f/1080f),
+    (153f/1920f  , 380f/1080f),
+    (153f/1920f  , 698f/1080f),
+    (397f/1920f , 868f/1080f),
+    (676f/1920f , 962f/1080f),
+    (989f/1920f , 979f/1080f),
+    (1288f/1920f, 952f/1080f),
+    (1575f/1920f, 852f/1080f)
+  // convert to absolute coordinates, flip y first
+  ).map(x => ( x._1 , (1.0f - x._2) ) )
+
+  // mapping definition
+  val mappings = List(
+    (List("/shuffle","/tempo"), List((0,1),(50,300))),
+    (List("/rootnote","/scale"), List((40,52),(1,8))),
+    (List("/drum_kick_bar1","/drum_snare_bar1","/drum_hh_bar1"), List((1,4),(1,4),(1,8))),
+    (List("/drum_kick_bar2","/drum_snare_bar2","/drum_hh_bar2"), List((1,4),(1,4),(1,8))),
+    (List("/drum_kick_bar3","/drum_snare_bar3","/drum_hh_bar3"), List((1,4),(1,4),(1,8))),
+    (List("/drum_kick_bar4","/drum_snare_bar4","/drum_hh_bar4"), List((1,4),(1,4),(1,8))),
+    (List("/ch_rhyt1","/ch_root1","/ch_voic1"), List((1,4), (0,6), (1,8))),
+    (List("/ch_rhyt2","/ch_root2","/ch_voic2"), List((1,4), (0,6), (1,8))),
+    (List("/ch_rhyt3","/ch_root3","/ch_voic3"), List((1,4), (0,6), (1,8))),
+    (List("/ch_rhyt4","/ch_root4","/ch_voic4"), List((1,4), (0,6), (1,8))),
+    (List("/ch_indices"), List((1,7))),
+    (List("/mel_bar1","/mel_bar2","/mel_bar3","/mel_bar4"),List((1,16),(1,16),(1,16),(1,16))),
+    (List("/bass_bar1","/bass_bar2","/bass_bar3","/bass_bar4"),List((1,16),(1,16),(1,16),(1,16)))
+  );
+
+  var controllerGlue : List[ControlGlue] = List();
+
+  var population : Population = new Population(Seq.empty, None)
+
+  def updatePopulation(score: Double) = {
+    val genes = controllerGlue.map( {x=>
+    // also update gene pool fitnessess from voting
+      val gene = x.generateGene()
+      gene
+    })
+
+    val chromosome = new Chromosome(genes)
+
+    population.add(chromosome, score)
+  }
+
+  def initializePopulation = {
+    val r = new Random
+
+    (0 to 100).foreach{ x =>
+      val score = 1.0 - (r.nextDouble()*0.001) // high scores = bad fitness
+      updatePopulation(score)
+    }
+  }
+
+  def runGameCycle(fitness: Double) = {
+    // score is the inverted fitness
+    val score = 1.0-fitness
+
+    updatePopulation(score)
+
+    val chromosome = GameCycle.evolve(population,0.1,0.99, 0.9)
+
+    println("my new chromosome "+chromosome.toString() + "   " + chromosome.genes.size )
+
+    chromosome.genes.zip(controllerGlue).foreach{x =>
+      x._2.updateFromGene(x._1)
+    }
+  }
+
+
+
+
+
+
+
   var scene: MutatorScene = null
 
 	def main(args: Array[String]): Unit = {
@@ -59,8 +150,18 @@ object Mutator extends Application {
 
 
 class MutatorScene(app: Application, name: String) extends Scene(app,name) {
+  // mapping class -> item , coords, map func
 
-  val  center = Vec3d(app.width/2f, app.height/2f)
+  val center = Vec3d(app.width/2f, app.height/2f)
+  val width = app.width
+  val height= app.height
+  val margin = 100.0f
+
+  val image = app.loadImage("drawing.png")
+  image.resize(app.width, app.height)
+  val backgroundImage = new MTBackgroundImage(app, image, false)
+  canvas().addChild(backgroundImage)
+
 
   val l  = new MTLight(app, 3, center.getAdded(this.getSceneCam.getPosition))
   MTLight.enableLightningAndAmbient(app, 5, 5, 5, 255)
@@ -69,54 +170,29 @@ class MutatorScene(app: Application, name: String) extends Scene(app,name) {
 	// Show touches
 	showTracer(true)
 
-	/*
-		Basics
 
-		- component creation
-		- changing properties
-	 */
+  Mutator.widgetCoordinates.zip(Mutator.mappings).foreach { mapping =>
+    val x = mapping._1
+    println(x)
+    val form = RandomNodeForm(Vec3d(x._1*width, x._2*height,20))
+    form.setLight(l)
 
-	// Create two UI components ...
-	var textField = TextArea();
-  var textField2 = TextArea();
-	var slider = Slider(0,100);
+    val glue = new ControlGlue(Mutator.oscTransmit,form, mapping._2._1, mapping._2._2)
+    Mutator.controllerGlue = Mutator.controllerGlue :+ glue
 
-  canvas += slider ++ textField ++ textField2
 
-  textField.globalPosition := Vec3d(100,100)
-  textField2.globalPosition := Vec3d(100,300)
-  /*
+    canvas += form;
+    canvas += form.xCircle ++ form.yCircle ++ form.zCircle
 
-  val oscTransmit = OSCCommunication.createOSCTransmitter(UDP, new InetSocketAddress("131.159.200.144", 1338))
 
-  oscTransmit.send <~ slider.value.map( x => Message("/foo",x))
+  }
 
- textField.text <~ slider.value + ""
+  // create an initial population
+  Mutator.initializePopulation
+  Mutator.runGameCycle(0.0);
 
-  val oscReceive = OSCCommunication.createOSCReceiver(UDP, new InetSocketAddress("127.0.0.1", 1340))
-
-  textField2.text <~ oscReceive.receipt.map(x => x)+""
-
-  textField.text := "foo"
-  textField2.text := "bar"
-    */
-
-  var bassNode = RandomNodeForm(Vec3d(100,100,-20))
-  var chordNode = RandomNodeForm(Vec3d(220,220,20))
-  var melodyNode = RandomNodeForm(Vec3d(320,320,120))
-
-  bassNode.setLight(l)
-  chordNode.setLight(l)
-  melodyNode.setLight(l)
-
-  //bassNode.scale(1.4f)
-  //chordNode.scale(1.4f)
-  //melodyNode.scale(1.4f)
-
-  canvas += bassNode ++ chordNode ++ melodyNode
-
-  canvas += bassNode.xCircle ++ bassNode.yCircle ++ bassNode.zCircle
-  canvas += chordNode.xCircle ++ chordNode.yCircle ++ chordNode.zCircle
-  canvas += melodyNode.xCircle ++ melodyNode.yCircle ++ melodyNode.zCircle
+  // send triggers to pd
+  Mutator.oscTransmit.send() = Message("/start", 1)
+  Mutator.oscTransmit.send() = Message("/audio", 1)
 
 }

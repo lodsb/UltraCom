@@ -9,10 +9,10 @@ import org.lodsb.reakt.async.VarA
 import org.lodsb.reakt.sync.VarS
 import org.mt4j.input.inputProcessors.MTGestureEvent
 import org.mt4j.input.inputProcessors.MTGestureEvent._
-import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.ScaleEvent
-import org.mt4j.input.inputProcessors.componentProcessors.rotateProcessor.RotateEvent
-import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent
-import org.mt4j.input.inputProcessors.componentProcessors.rotate3DProcessor.Rotate3DEvent
+import org.mt4j.input.inputProcessors.componentProcessors.scaleProcessor.{ScaleProcessor, ScaleEvent}
+import org.mt4j.input.inputProcessors.componentProcessors.rotateProcessor.{RotateProcessor, RotateEvent}
+import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.{DragProcessor, DragEvent}
+import org.mt4j.input.inputProcessors.componentProcessors.rotate3DProcessor.{Rotate3DProcessor, Rotate3DEvent}
 import java.awt.event.KeyEvent._
 import scala.math._
 import org.mt4j.types.Vec3d
@@ -53,6 +53,8 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
   var isGrey = false
   val minimumScaleFactor = 0.8f
   val maximumScaleFactor = 3f
+
+  var isMoveable = false;
 
   //using synchronous signals to circumvent huge delays by scheduliung and message passing
   var scaleFactor = new VarS[Float](1f)
@@ -123,6 +125,15 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
   // scale 3d object to adequate size on screen
   scaleGlobal(scale, scale, scale, position)
 
+  // register input listeners
+  this.registerInputProcessor(new Rotate3DProcessor(app, this))
+  this.addGestureListener(classOf[Rotate3DProcessor], this)
+  this.registerInputProcessor(new RotateProcessor(app))
+  this.addGestureListener(classOf[RotateProcessor], this)
+  this.registerInputProcessor(new ScaleProcessor(app))
+  this.addGestureListener(classOf[ScaleProcessor], this)
+  this.registerInputProcessor(new DragProcessor(app))
+
 
 
   val xCircle = createCircle(biggestMesh.getWidthXY(TransformSpace.GLOBAL)*3f/5f)
@@ -159,7 +170,27 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
 
   // stuff for rotator
 
-  def handleEvent(e: MTGestureEvent) {
+  def updateXRoation(rot : Float) = {
+    println("update rot "+rot)
+    rotationX.update(rot)
+  }
+
+  def updateYRoation(rot : Float) = {
+    rotationY.update(rot)
+  }
+
+  def updateZRoation(rot : Float) = {
+    rotationZ.update(rot)
+  }
+
+  def updateScale(s: Float) = {
+    scale(s, s)
+  }
+
+
+  override def processGestureEvent(e: MTGestureEvent) : Boolean = {
+    println("GOT EVENT"+ e)
+
     e match {
 
       case e: ScaleEvent =>
@@ -177,6 +208,7 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
         */
 
       case e: DragEvent =>
+        println(e)
         if (e.getId == GESTURE_UPDATED && app.keyPressed) {
           // when a key is pressed -> emulate multi-touch via mouse actions
 
@@ -242,7 +274,7 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
               }
           }
 
-        } else {
+        } else if(isMoveable) {
           // if no key ist pressed, make a simple translation, just as usual...
           translateGlobal(e.getTranslationVect)
           xCircle.translateGlobal(e.getTranslationVect)
@@ -297,6 +329,8 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
 
       case _ =>
     }
+
+    true
   }
 
   /**
@@ -351,6 +385,7 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
   def position = getCenterPointGlobal
 
   def createCircle(radius: Float): WrapperEllipse = {
+    println("CIRCLE CREATED")
     val circle = new WrapperEllipse(app, appCenter, radius, radius)
     circle.setNoFill(true)
     circle.setStrokeColor(new MTColor(255,255,255))

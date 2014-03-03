@@ -17,7 +17,10 @@ scalacOptions <++= scalaVersion map { version =>
  	else Nil
 }
 
+
 libraryDependencies += "org.lodsb" %% "ultracom" % "0.2-PROC2"
+
+libraryDependencies += "org.lodsb" %% "mutant5000" % "0.1-SNAPSHOT"
 
 resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
 
