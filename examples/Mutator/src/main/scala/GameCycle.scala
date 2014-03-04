@@ -14,7 +14,7 @@ object GameCycle {
              elitism: Double,
              crossOverProbability: Double,
              mutationProbability: Double,
-             keepBest: Int = 10,
+             keepBest: Int = 6,
              prettyPrint: Boolean = true,
              earlyStop: Boolean = true) : Chromosome = {
 
@@ -50,7 +50,7 @@ object GameCycle {
 
         // if we have some offspring, then we are done, they are added to the pool externally before the next round
         done = true
-        ret = offspring(r.nextInt(offspring.size-1))
+        ret = offspring(0)//r.nextInt(offspring.size-1))
         println("offspring")
         offspring.foreach({x=> println(x.chckString)})
 
@@ -75,7 +75,7 @@ object SimpleChromosomeMutation2 extends ChromosomeMutation {
 
   override def apply(v1: Chromosome, prob: Double): Chromosome = {
 
-    val probability = prob// / v1.genes.length
+    val probability = prob / v1.genes.length
     println("\n\n\n!!!!!!!!!!!!!!!!!!!!! overall prob !!!!!!!!!!!! "+prob)
     println("\n\n\n")
     val smuta = v1.genes.map(x => x.mutate(probability))

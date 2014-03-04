@@ -15,7 +15,7 @@ import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.{DragPro
 import org.mt4j.input.inputProcessors.componentProcessors.rotate3DProcessor.{Rotate3DProcessor, Rotate3DEvent}
 import java.awt.event.KeyEvent._
 import scala.math._
-import org.mt4j.types.Vec3d
+import org.mt4j.types.{Rotation, Vec3d}
 import org.mt4j.util.SessionLogger._
 import org.mt4j.util.{MTColor, SessionLogger}
 import org.mt4j.util.opengl.GLMaterial
@@ -170,17 +170,40 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
 
   // stuff for rotator
 
+  def reset() = {
+    //this.scaleGlobal(minimumScaleFactor,minimumScaleFactor,minimumScaleFactor, position)
+    //this.scaleFactor() = 1.0f
+    //this.scale(1.0f)
+
+    rotationX() = 0f
+    rotationY() = 0f
+    rotationZ() = 0f
+
+    //this.rotateXGlobal(position, -this.globalRotation().degreeX)
+    //this.rotateYGlobal(position, -this.globalRotation().degreeX)
+    //this.rotateZGlobal(position, -this.globalRotation().degreeX)
+
+
+
+    val r = this.globalRotation()
+    val rn = Rotation(position, -r.degreeX, -r.degreeY, -r.degreeZ)
+    this.globalRotation() = rn
+
+  }
+
   def updateXRoation(rot : Float) = {
-    println("update rot "+rot)
     rotationX.update(rot)
+    rotateXGlobal(position, rot)
   }
 
   def updateYRoation(rot : Float) = {
     rotationY.update(rot)
+    rotateYGlobal(position, rot)
   }
 
   def updateZRoation(rot : Float) = {
     rotationZ.update(rot)
+    rotateZGlobal(position, rot)
   }
 
   def updateScale(s: Float) = {

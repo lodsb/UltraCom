@@ -123,8 +123,10 @@ object Mutator extends Application {
 
     val chromosome = new Chromosome(genes, mutation = SimpleChromosomeMutation2)
 
+    println("ADDED NEW CHROMOSOME "+chromosome.chckString + " with score "+score)
+
     population.add(chromosome, score)
-    population.add(chromosome, score)
+    population.add(chromosome, score*0.00001)
   }
 
   def initializePopulation = {
@@ -137,18 +139,25 @@ object Mutator extends Application {
   }
 
 
-  val mutationDeviation = 0.2
+  val mutationDeviation = 0.1
   def runGameCycle(fitness: Double) = {
     // score is the inverted fitness
     val score = 1.0-fitness
 
     controllerGlue.foreach(x => x.locked = true)
 
+    // we give a slight preference to new specimen by successively degrading the population
+    // this also helps overfitting
+
+    population.degradePopulationScoresBy(0.2)
+
     updatePopulation(score)
 
-    val chromosome = GameCycle.evolve(population,0.25,0.99, 0.99)
+    val chromosome = GameCycle.evolve(population,0.0,0.99, 0.99)
 
     println("my new chromosome "+chromosome.chckString + "   " + chromosome.genes.size )
+
+    population.printChromosomeChck
 
     controllerGlue.foreach(x => x.locked = false)
 

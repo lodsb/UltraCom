@@ -669,6 +669,7 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
     private void drawCharactersGL(GL2 gl, List<IFontCharacter> characterList, int charListSize, int lastXAdv, int lineTotalAdv) {
         int lastXAdvancement = lastXAdv;
         int thisLineTotalXAdvancement = lineTotalAdv;
+        try {
         for (int i = 0; i < charListSize; i++) {
             IFontCharacter character = characterList.get(i);
             //Step to the right by the amount of the last characters x advancement
@@ -698,6 +699,9 @@ public class MTTextArea extends MTRectangle implements IdragClusterable, ITextIn
                     lastXAdvancement = character.getHorizontalDist();
                 }
             }
+        }
+        } catch(Exception e) {
+            e.printStackTrace();
         }
     }
 

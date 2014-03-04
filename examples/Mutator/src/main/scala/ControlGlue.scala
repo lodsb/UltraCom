@@ -137,7 +137,9 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
   }
 
   def updateFromGene(gene: Gene) {
-    val r = new Random
+
+    nodeForm.reset()
+
     gene.sequence.zip(ranges).zip(parameters).zipWithIndex.foreach({ x=>
       val index = x._2
       val enc = x._1._1._1
