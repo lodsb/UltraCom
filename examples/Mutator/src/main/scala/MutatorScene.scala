@@ -76,19 +76,20 @@ object Mutator extends Application {
 
   // mapping definition
   val mappings = List(
-    (List("/shuffle","/tempo"), List((0,1),(50,300))),
-    (List("/rootnote","/scale"), List((40,52),(1,8))),
-    (List("/drum_kick_bar1","/drum_snare_bar1","/drum_hh_bar1"), List((1,4),(1,4),(1,8))),
-    (List("/drum_kick_bar2","/drum_snare_bar2","/drum_hh_bar2"), List((1,4),(1,4),(1,8))),
-    (List("/drum_kick_bar3","/drum_snare_bar3","/drum_hh_bar3"), List((1,4),(1,4),(1,8))),
-    (List("/drum_kick_bar4","/drum_snare_bar4","/drum_hh_bar4"), List((1,4),(1,4),(1,8))),
-    (List("/ch_rhyt1","/ch_root1","/ch_voic1"), List((1,4), (0,6), (1,8))),
-    (List("/ch_rhyt2","/ch_root2","/ch_voic2"), List((1,4), (0,6), (1,8))),
-    (List("/ch_rhyt3","/ch_root3","/ch_voic3"), List((1,4), (0,6), (1,8))),
-    (List("/ch_rhyt4","/ch_root4","/ch_voic4"), List((1,4), (0,6), (1,8))),
-    (List("/ch_indices"), List((1,7))),
-    (List("/mel_bar1","/mel_bar2","/mel_bar3","/mel_bar4"),List((1,16),(1,16),(1,16),(1,16))),
-    (List("/bass_bar1","/bass_bar2","/bass_bar3","/bass_bar4"),List((1,16),(1,16),(1,16),(1,16)))
+    // encoding osc name, value range, deviation range (for mutation)
+    (List("/shuffle","/tempo"), List((0,1),(50,300)), List(1, 10)),
+    (List("/rootnote","/scale"), List((40,52),(1,8)), List(3, 1)),
+    (List("/drum_kick_bar1","/drum_snare_bar1","/drum_hh_bar1"), List((1,4),(1,4),(1,8)), List(1,1,2)),
+    (List("/drum_kick_bar2","/drum_snare_bar2","/drum_hh_bar2"), List((1,4),(1,4),(1,8)), List(1,1,2)),
+    (List("/drum_kick_bar3","/drum_snare_bar3","/drum_hh_bar3"), List((1,4),(1,4),(1,8)), List(1,1,2)),
+    (List("/drum_kick_bar4","/drum_snare_bar4","/drum_hh_bar4"), List((1,4),(1,4),(1,8)), List(1,1,2)),
+    (List("/ch_rhyt1","/ch_root1","/ch_voic1"), List((1,4), (0,6), (1,8)), List(1,1,2)),
+    (List("/ch_rhyt2","/ch_root2","/ch_voic2"), List((1,4), (0,6), (1,8)), List(1,1,2)),
+    (List("/ch_rhyt3","/ch_root3","/ch_voic3"), List((1,4), (0,6), (1,8)), List(1,1,2)),
+    (List("/ch_rhyt4","/ch_root4","/ch_voic4"), List((1,4), (0,6), (1,8)), List(1,1,2)),
+    (List("/ch_indices"), List((1,7)), List(1)),
+    (List("/mel_bar1","/mel_bar2","/mel_bar3","/mel_bar4"),List((1,16),(1,16),(1,16),(1,16)), List(3,3,3,3)),
+    (List("/bass_bar1","/bass_bar2","/bass_bar3","/bass_bar4"),List((1,16),(1,16),(1,16),(1,16)), List(3,3,3,3))
   );
 
   var controllerGlue : List[ControlGlue] = List();
@@ -138,8 +139,6 @@ object Mutator extends Application {
     }
   }
 
-
-  val mutationDeviation = 0.1
   def runGameCycle(fitness: Double) = {
     // score is the inverted fitness
     val score = 1.0-fitness
@@ -152,8 +151,8 @@ object Mutator extends Application {
     population.degradePopulationScoresBy(0.2)
 
     updatePopulation(score)
-
-    val chromosome = GameCycle.evolve(population,0.0,0.99, 0.99)
+                                                                // no elitism
+    val chromosome = GameCycle.evolve(population,0.0,0.99, 0.1) // 10% mutation probability given to each gene!
 
     println("my new chromosome "+chromosome.chckString + "   " + chromosome.genes.size )
 
@@ -214,7 +213,7 @@ class MutatorScene(app: Application, name: String) extends Scene(app,name) {
     val form = RandomNodeForm(Vec3d(x._1*width, x._2*height,20))
     form.setLight(l)
 
-    val glue = new ControlGlue(Mutator.oscTransmit,form, mapping._2._1, mapping._2._2)
+    val glue = new ControlGlue(Mutator.oscTransmit,form, mapping._2._1, mapping._2._2, mapping._2._3)
     Mutator.controllerGlue = Mutator.controllerGlue :+ glue
 
 
@@ -232,8 +231,18 @@ class MutatorScene(app: Application, name: String) extends Scene(app,name) {
   Mutator.oscTransmit.send() = Message("/start", 1)
   Mutator.oscTransmit.send() = Message("/audio", 1)
 
+  val appCenter = Vec3d(app.width/2, app.height/2)
+
   (1 to Mutator.noVoters).foreach {  x =>
-    val vPanel = new VotingPanel(Vec3d(2,3,4))
+
+    val coord = appCenter.subtractLocal(Vec3d((( x+1 ) % 2 )*100,(( x ) % 2 )*100 ) )
+
+    val vPanel = new VotingPanel(Vec3d(0,0,0))
+    val vPanelCenter = vPanel.getCenterPointGlobal
+
+    vPanel.rotateZ(vPanelCenter, 90f*x)
+    vPanel.setPositionGlobal(coord)
+
 
     Mutator.voters = Mutator.voters :+ vPanel
 

@@ -50,6 +50,12 @@ object RandomNodeForm {
 
 class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(app) {
 
+  // for locking certain parameters from being modified
+  var xRotLocked = true
+  var yRotLocked = true
+  var zRotLocked = true
+  var scaleLocked = true
+
   var isGrey = false
   val minimumScaleFactor = 0.8f
   val maximumScaleFactor = 3f
@@ -217,11 +223,15 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
     e match {
 
       case e: ScaleEvent =>
-        scale(e.getScaleFactorX, e.getScaleFactorY)
+        if(!scaleLocked) {
+          scale(e.getScaleFactorX, e.getScaleFactorY)
+        }
 
       case e: RotateEvent =>
-        rotateZGlobal(position, e.getRotationDegrees)
-        rotationZ() += e.getRotationDegrees
+        if(!zRotLocked) {
+          rotateZGlobal(position, e.getRotationDegrees)
+          rotationZ() += e.getRotationDegrees
+        }
         /*
         if (e.getId == GESTURE_UPDATED) {
           zRot.degrees(e.getRotationDegrees)
@@ -237,11 +247,12 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
 
           app.keyCode match {
             case VK_SHIFT => // scale while holding shift-key
-
-              if (position.distance(e.getFrom) < position.distance(e.getTo)) {
-                scale(1.03f)
-              } else {
-                scale(0.97f)
+              if(!scaleLocked) {
+                if (position.distance(e.getFrom) < position.distance(e.getTo)) {
+                  scale(1.03f)
+                } else {
+                  scale(0.97f)
+                }
               }
 
             case VK_CONTROL => // rotate while holding ctrl-key
@@ -266,8 +277,11 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
               // transform angle in radians to degrees
               angle *= 180/Pi.toFloat
 
-              rotateZGlobal(position, angle)
-              rotationZ() += angle
+              if(!zRotLocked) {
+                rotateZGlobal(position, angle)
+                rotationZ() += angle
+              }
+
               //zRot.degrees(angle)
 
             case VK_ALT => // rotate 3D while pressing Alt-key
@@ -286,12 +300,16 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
                     rotationAxis = X_AXIS
                   }
                 case X_AXIS =>
-                  rotateXGlobal(position, -direction.getY)
-                  rotationX() += -direction.getY
+                  if(!xRotLocked) {
+                    rotateXGlobal(position, -direction.getY)
+                    rotationX() += -direction.getY
+                  }
                   //zRot.degrees(-direction.getY)
                 case Y_AXIS =>
-                  rotateYGlobal(position, direction.getX)
-                  rotationY() += direction.getX
+                  if(!yRotLocked) {
+                    rotateYGlobal(position, direction.getX)
+                    rotationY() += direction.getX
+                  }
                 //zRot.degrees(direction.getX)
                 case _ =>
               }
@@ -326,19 +344,24 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
         val xNormal = new Vector3D(1,0,0)
         val angle = xNormal.angleBetween(connection)*180f/Pi // to degree
         if ((315<angle || angle<45) || (135<angle && angle<225)) {
-          val degrees = e.getRotationDirection*e.getRotationDegreesX
-          rotateXGlobal(e.getRotationPoint, degrees)
-          rotationX() += degrees
-          /*
+
+          if(!xRotLocked) {
+            val degrees = e.getRotationDirection*e.getRotationDegreesX
+            rotateXGlobal(e.getRotationPoint, degrees)
+            rotationX() += degrees
+          }
+            /*
           if (e.getId == GESTURE_UPDATED) {
             xRot.degrees(degrees)
           }
           */
         } else {
-          val degrees = e.getRotationDirection*e.getRotationDegreesY
-          rotateYGlobal(e.getRotationPoint, degrees)
-          rotationY() += degrees
-          /*
+          if(!yRotLocked) {
+            val degrees = e.getRotationDirection*e.getRotationDegreesY
+            rotateYGlobal(e.getRotationPoint, degrees)
+            rotationY() += degrees
+          }
+            /*
           if (e.getId == GESTURE_UPDATED) {
             xRot.degrees(degrees)
           }

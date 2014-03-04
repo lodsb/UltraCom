@@ -74,8 +74,8 @@ object SimpleChromosomeMutation2 extends ChromosomeMutation {
 
 
   override def apply(v1: Chromosome, prob: Double): Chromosome = {
-
-    val probability = prob / v1.genes.length
+    // hack to increase probability of mutation
+    val probability = prob  // / v1.genes.length
     println("\n\n\n!!!!!!!!!!!!!!!!!!!!! overall prob !!!!!!!!!!!! "+prob)
     println("\n\n\n")
     val smuta = v1.genes.map(x => x.mutate(probability))

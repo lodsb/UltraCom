@@ -10,11 +10,63 @@ import org.mt4j.util.{Color, MTColor}
 import org.mt4j.components.visibleComponents.widgets.Button
 import org.mt4j.util.Color._
 import org.lodsb.reakt.sync.VarS
+import org.mt4j.input.inputProcessors.componentProcessors.rotateProcessor.{RotateEvent, RotateProcessor}
+import org.mt4j.input.inputProcessors.MTGestureEvent
+import scala.math._
+import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragEvent
+import java.awt.event.KeyEvent._
 
 /**
  * Created by lodsb on 3/3/14.
  */
-class VotingPanel(pos: Vector3D) extends MTRoundRectangle(pos.x, pos.y, pos.z, 150, 110, 10, 10, Mutator) {
+class VotingPanel(pos: Vector3D) extends MTRoundRectangle(Mutator,pos.x, pos.y, pos.z, 150, 110, 10, 10) {
+
+  this.registerInputProcessor(new RotateProcessor(Mutator))
+  this.addGestureListener(classOf[RotateProcessor], this)
+
+  def position = this.getCenterPointGlobal
+
+  override def processGestureEvent(e: MTGestureEvent): Boolean  = {
+    e match {
+      case e: RotateEvent =>
+       rotateZGlobal(this.getCenterPointGlobal, e.getRotationDegrees)
+
+
+
+      case e: DragEvent => {
+        if(Mutator.keyPressed && Mutator.keyCode == VK_CONTROL) {
+          // normalize vectors
+          val from = e.getFrom.getSubtracted(position).getNormalized
+          val to = e.getTo.getSubtracted(position).getNormalized
+
+          // set the reference vector,
+          // to know what is the directorion for positive angles.
+          // It's 90 degrees to the positive direction within the x-y-plane.
+          val referenceForward = from.getCross(new Vector3D(0,0,1))
+
+          // get the sign for the angle
+          val sign = if(0<to.dot(referenceForward)) -1f else 1f
+
+          // get the angle
+          var angle = sign * from.angleBetween(to)
+
+          // transform angle in radians to degrees
+          angle *= 180/Pi.toFloat
+
+
+          rotateZGlobal(position, angle)
+
+
+          //zRot.degrees(angle)
+        } else {
+          this.translateGlobal(e.getTranslationVect)
+        }
+      }
+    }
+
+    true
+  }
+
   this.setPickable(true)
 
   var isPanelEnabled = true

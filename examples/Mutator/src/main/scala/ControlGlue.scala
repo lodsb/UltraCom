@@ -11,7 +11,7 @@ import scala.util.Random
  * Created by lodsb on 3/2/14.
  */
 class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
-                   parameters: List[String], ranges: List[(Int,Int)]) {
+                   parameters: List[String], ranges: List[(Int,Int)], deviation: List[Int]) {
 
   var xRot : Int = 0;
   var yRot : Int = 0;
@@ -19,8 +19,6 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
   var scale : Int = 0;
 
   var locked = false
-
-  private val deviation = Mutator.mutationDeviation;
 
   parameters.zip(ranges).zipWithIndex.foreach({ x =>
     val index = x._2
@@ -33,20 +31,21 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
        // x rot
       case 0 => {
 
-        xRot = rangeLo
+        zRot = rangeLo
+        nodeForm.zRotLocked = false
 
-        oscTransmit.send <~ nodeForm.rotationX.map({ v =>
-          println("X rot"+v)
+        oscTransmit.send <~ nodeForm.rotationZ.map({ v =>
+          println("Z rot"+v)
           // clip at angles > 360 and map to parameter range, convert to Integer
           val vMapped = Util.linlin(scala.math.max(0,scala.math.min(v, 360f)), 0, 360, rangeLo, rangeHi).toInt;
 
           if(!locked) {
-            xRot = vMapped
+            zRot = vMapped
 
             // create OSCMessage
             Message(parm, vMapped)
           } else {
-            Message(parm, xRot)
+            Message(parm, zRot)
           }
         })
       }
@@ -54,6 +53,7 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
       case 1 => {
 
         yRot = rangeLo
+        nodeForm.yRotLocked = false
 
         oscTransmit.send <~ nodeForm.rotationY.map({ v =>
         // clip at angles > 360 and map to parameter range, convert to Integer
@@ -72,18 +72,19 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
 
       case 2 => {
 
-        zRot = rangeLo
+        xRot = rangeLo
+        nodeForm.xRotLocked = false
 
-        oscTransmit.send <~ nodeForm.rotationZ.map({ v =>
+        oscTransmit.send <~ nodeForm.rotationX.map({ v =>
         // clip at angles > 360 and map to parameter range, convert to Integer
           val vMapped: Int = Util.linlin(scala.math.max(0,scala.math.min(v, 360f)), 0, 360, rangeLo, rangeHi).toInt;
           if(!locked) {
-            zRot = vMapped
+            xRot = vMapped
 
             // create OSCMessage
             Message(parm, vMapped)
           } else {
-            Message(parm, zRot)
+            Message(parm, xRot)
           }
 
         })
@@ -92,6 +93,7 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
       case 3 => {
 
         scale = rangeLo
+        nodeForm.scaleLocked = false
 
         oscTransmit.send <~ nodeForm.scaleFactor.map({ v =>
         // clip at angles > 360 and map to parameter range, convert to Integer
@@ -122,13 +124,13 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
 
 
   def generateGene :  Gene = {
-    val encSeq: List[IntegerEncoding] = ranges.zipWithIndex.map{ x=>
+    val encSeq: List[IntegerEncoding] = ranges.zip(deviation).zipWithIndex.map{ x=>
       x._2 match {
         // basic deviation is 1
-        case 0 => new IntegerEncoding(xRot, new IntegerEncodingMutation2(x._1._1, x._1._2, 1+(x._1._2*deviation).toInt))
-        case 1 => new IntegerEncoding(yRot, new IntegerEncodingMutation2(x._1._1, x._1._2, 1+(x._1._2*deviation).toInt))
-        case 2 => new IntegerEncoding(zRot, new IntegerEncodingMutation2(x._1._1, x._1._2, 1+(x._1._2*deviation).toInt))
-        case 3 => new IntegerEncoding(scale, new IntegerEncodingMutation2(x._1._1, x._1._2,1+(x._1._2*deviation).toInt))
+        case 0 => new IntegerEncoding(zRot, new IntegerEncodingMutation2(x._1._1._1, x._1._1._2, x._1._2))
+        case 1 => new IntegerEncoding(yRot, new IntegerEncodingMutation2(x._1._1._1, x._1._1._2, x._1._2))
+        case 2 => new IntegerEncoding(xRot, new IntegerEncodingMutation2(x._1._1._1, x._1._1._2, x._1._2))
+        case 3 => new IntegerEncoding(scale, new IntegerEncodingMutation2(x._1._1._1, x._1._1._2, x._1._2))
         case _ =>  throw new Exception("Too many mappings given!")
       }
     }
@@ -157,7 +159,7 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
       // these updates will trigger an update for the controlglue as well (sending the osc message)
       index match {
         case 0 => {
-          nodeForm.updateXRoation( Util.linlin(value, rangeLo, rangeHi, 0, 360).toFloat )
+          nodeForm.updateZRoation( Util.linlin(value, rangeLo, rangeHi, 0, 360).toFloat )
         }
 
         case 1 => {
@@ -165,7 +167,7 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
         }
 
         case 2 => {
-          nodeForm.updateZRoation( Util.linlin(value, rangeLo, rangeHi, 0, 360).toFloat )
+          nodeForm.updateXRoation( Util.linlin(value, rangeLo, rangeHi, 0, 360).toFloat )
         }
 
         case 3 => {
