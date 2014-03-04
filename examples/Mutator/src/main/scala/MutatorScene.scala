@@ -121,7 +121,7 @@ object Mutator extends Application {
       gene
     })
 
-    val chromosome = new Chromosome(genes)
+    val chromosome = new Chromosome(genes, mutation = SimpleChromosomeMutation2)
 
     population.add(chromosome, score)
     population.add(chromosome, score)
@@ -136,15 +136,21 @@ object Mutator extends Application {
     }
   }
 
+
+  val mutationDeviation = 0.2
   def runGameCycle(fitness: Double) = {
     // score is the inverted fitness
     val score = 1.0-fitness
+
+    controllerGlue.foreach(x => x.locked = true)
 
     updatePopulation(score)
 
     val chromosome = GameCycle.evolve(population,0.25,0.99, 0.99)
 
-    println("my new chromosome "+chromosome.toString() + "   " + chromosome.genes.size )
+    println("my new chromosome "+chromosome.chckString + "   " + chromosome.genes.size )
+
+    controllerGlue.foreach(x => x.locked = false)
 
     chromosome.genes.zip(controllerGlue).foreach{x =>
       x._2.updateFromGene(x._1)
