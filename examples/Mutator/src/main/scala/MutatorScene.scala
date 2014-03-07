@@ -127,7 +127,7 @@ object Mutator extends Application {
     println("ADDED NEW CHROMOSOME "+chromosome.chckString + " with score "+score)
 
     population.add(chromosome, score)
-    population.add(chromosome, score*0.00001)
+    //population.add(chromosome, score*0.00001)
   }
 
   def initializePopulation = {

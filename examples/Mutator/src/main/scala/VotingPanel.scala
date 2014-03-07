@@ -62,6 +62,8 @@ class VotingPanel(pos: Vector3D) extends MTRoundRectangle(Mutator,pos.x, pos.y, 
           this.translateGlobal(e.getTranslationVect)
         }
       }
+
+      case _ =>
     }
 
     true
