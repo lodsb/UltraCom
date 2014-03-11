@@ -48,6 +48,7 @@ import org.mt4j.input.inputProcessors.componentProcessors.dragProcessor.DragProc
 import org.mt4j.input.inputProcessors.{MTGestureEvent, IGestureEventListener}
 import scala._
 import mutant5000.{Chromosome, SimpleChromosomeScore, Population}
+import java.io.File
 
 
 object Mutator extends Application {
@@ -55,6 +56,19 @@ object Mutator extends Application {
   val noVoters = 3
 
   val oscTransmit = OSCCommunication.createOSCTransmitter(UDP, new InetSocketAddress("127.0.0.1", 1338))
+  val oscRecv = OSCCommunication.createOSCReceiver(UDP, new InetSocketAddress("127.0.0.1", 1339))
+
+  oscRecv.receipt.observe({ x=>
+    println("got msg "+x._1.toString())
+    val msg = x._1
+
+    if(msg.name.contains("64")) {
+      println(msg.args)
+      this.updateHighlighting(msg.args(0).asInstanceOf[Int])
+    }
+
+    true
+  })
 
   // relative coordinates, the absolute ones are taken from the bg file
   val widgetCoordinates = List(
@@ -76,20 +90,20 @@ object Mutator extends Application {
 
   // mapping definition
   val mappings = List(
-    // encoding osc name, value range, deviation range (for mutation)
-    (List("/shuffle","/tempo"), List((0,1),(50,300)), List(1, 10)),
-    (List("/rootnote","/scale"), List((40,52),(1,8)), List(3, 1)),
-    (List("/drum_kick_bar1","/drum_snare_bar1","/drum_hh_bar1"), List((1,4),(1,4),(1,8)), List(1,1,2)),
-    (List("/drum_kick_bar2","/drum_snare_bar2","/drum_hh_bar2"), List((1,4),(1,4),(1,8)), List(1,1,2)),
-    (List("/drum_kick_bar3","/drum_snare_bar3","/drum_hh_bar3"), List((1,4),(1,4),(1,8)), List(1,1,2)),
-    (List("/drum_kick_bar4","/drum_snare_bar4","/drum_hh_bar4"), List((1,4),(1,4),(1,8)), List(1,1,2)),
-    (List("/ch_rhyt1","/ch_root1","/ch_voic1"), List((1,4), (0,6), (1,8)), List(1,1,2)),
-    (List("/ch_rhyt2","/ch_root2","/ch_voic2"), List((1,4), (0,6), (1,8)), List(1,1,2)),
-    (List("/ch_rhyt3","/ch_root3","/ch_voic3"), List((1,4), (0,6), (1,8)), List(1,1,2)),
-    (List("/ch_rhyt4","/ch_root4","/ch_voic4"), List((1,4), (0,6), (1,8)), List(1,1,2)),
-    (List("/ch_indices"), List((1,7)), List(1)),
-    (List("/mel_bar1","/mel_bar2","/mel_bar3","/mel_bar4"),List((1,16),(1,16),(1,16),(1,16)), List(3,3,3,3)),
-    (List("/bass_bar1","/bass_bar2","/bass_bar3","/bass_bar4"),List((1,16),(1,16),(1,16),(1,16)), List(3,3,3,3))
+    // encoding osc name, value range, deviation range (for mutation), tick when active in bar
+    (List("/shuffle","/tempo"), List((0,1),(70,150)), List(1, 10), None),
+    (List("/rootnote","/scale"), List((40,52),(1,8)), List(3, 1), None),
+    (List("/drum_kick_bar1","/drum_snare_bar1","/drum_hh_bar1"), List((1,4),(1,4),(1,8)), List(1,1,2), Some(0,15 )),
+    (List("/drum_kick_bar2","/drum_snare_bar2","/drum_hh_bar2"), List((1,4),(1,4),(1,8)), List(1,1,2), Some(16,31)),
+    (List("/drum_kick_bar3","/drum_snare_bar3","/drum_hh_bar3"), List((1,4),(1,4),(1,8)), List(1,1,2), Some(32,47)),
+    (List("/drum_kick_bar4","/drum_snare_bar4","/drum_hh_bar4"), List((1,4),(1,4),(1,8)), List(1,1,2), Some(48,64)),
+    (List("/ch_rhyt1","/ch_root1","/ch_voic1"), List((1,4), (0,6), (1,8)), List(1,1,2), Some(0,15 )),
+    (List("/ch_rhyt2","/ch_root2","/ch_voic2"), List((1,4), (0,6), (1,8)), List(1,1,2), Some(16,31)),
+    (List("/ch_rhyt3","/ch_root3","/ch_voic3"), List((1,4), (0,6), (1,8)), List(1,1,2), Some(32,47)),
+    (List("/ch_rhyt4","/ch_root4","/ch_voic4"), List((1,4), (0,6), (1,8)), List(1,1,2), Some(48,64)),
+    (List("/ch_indices"), List((1,7)), List(1), None),
+    (List("/mel_bar1","/mel_bar2","/mel_bar3","/mel_bar4"),List((1,16),(1,16),(1,16),(1,16)), List(3,3,3,3), None),
+    (List("/bass_bar1","/bass_bar2","/bass_bar3","/bass_bar4"),List((1,16),(1,16),(1,16),(1,16)), List(3,3,3,3), None)
   );
 
   var controllerGlue : List[ControlGlue] = List();
@@ -127,14 +141,14 @@ object Mutator extends Application {
     println("ADDED NEW CHROMOSOME "+chromosome.chckString + " with score "+score)
 
     population.add(chromosome, score)
-    //population.add(chromosome, score*0.00001)
+    //population.add(chromosome, score-0.01)
   }
 
   def initializePopulation = {
     val r = new Random
 
-    (0 to 100).foreach{ x =>
-      val score = 1.0 - (r.nextDouble()*0.001) // high scores = bad fitness
+    (0 to 10).foreach{ x =>
+      val score = 0.8 - (r.nextDouble()*0.1) // high scores = bad fitness
       updatePopulation(score)
     }
   }
@@ -163,10 +177,14 @@ object Mutator extends Application {
     chromosome.genes.zip(controllerGlue).foreach{x =>
       x._2.updateFromGene(x._1)
     }
+
+    // force sending current values again
+    controllerGlue.foreach(x => x.bang)
   }
 
-
-
+  def updateHighlighting(currentSubdivision: Int) = {
+    controllerGlue.foreach{x => x.updateHighlighting(currentSubdivision)}
+  }
 
 
 
@@ -186,6 +204,13 @@ object Mutator extends Application {
 
 
 class MutatorScene(app: Application, name: String) extends Scene(app,name) {
+
+  // scale factors: forms & ellipse layout
+  val ftr = 0.8f
+  val sftr = 1.3f
+
+  val mftr= (1.0f-ftr)/2f
+
   // mapping class -> item , coords, map func
 
   val center = Vec3d(app.width/2f, app.height/2f)
@@ -209,17 +234,23 @@ class MutatorScene(app: Application, name: String) extends Scene(app,name) {
 
   Mutator.widgetCoordinates.zip(Mutator.mappings).foreach { mapping =>
     val x = mapping._1
+
     println(x)
-    val form = RandomNodeForm(Vec3d(x._1*width, x._2*height,20))
+    val form = RandomNodeForm(Vec3d((width*mftr)+x._1*width*ftr, (height*mftr)+x._2*height*ftr,120f))
     form.setLight(l)
 
-    val glue = new ControlGlue(Mutator.oscTransmit,form, mapping._2._1, mapping._2._2, mapping._2._3)
+    val glue = new ControlGlue(Mutator.oscTransmit,form, mapping._2._1, mapping._2._2, mapping._2._3, mapping._2._4)
     Mutator.controllerGlue = Mutator.controllerGlue :+ glue
 
 
     canvas += form;
     canvas += form.xCircle ++ form.yCircle ++ form.zCircle
 
+
+    form.scaleGlobal(sftr, sftr, sftr ,form.getCenterPointGlobal())
+    form.xCircle.scaleGlobal(sftr, sftr, sftr ,form.getCenterPointGlobal())
+    form.yCircle.scaleGlobal(sftr, sftr, sftr ,form.getCenterPointGlobal())
+    form.zCircle.scaleGlobal(sftr, sftr, sftr ,form.getCenterPointGlobal())
 
   }
 
@@ -230,6 +261,28 @@ class MutatorScene(app: Application, name: String) extends Scene(app,name) {
   // send triggers to pd
   Mutator.oscTransmit.send() = Message("/start", 1)
   Mutator.oscTransmit.send() = Message("/audio", 1)
+
+
+  /*
+
+  val foo = new MTSvg(Mutator, "test.svg")
+  canvas += foo
+
+  val fff = new Runnable{
+    var ff = false
+    override def run(): Unit = {
+      while(true){
+      println("eek "+ff)
+      foo.setVisible(ff)
+      ff = ff ^ true
+      Thread.sleep(500)
+      }
+    }
+  }
+
+  (new Thread(fff)).start()
+  */
+
 
   val appCenter = Vec3d(app.width/2, app.height/2)
 
@@ -250,5 +303,7 @@ class MutatorScene(app: Application, name: String) extends Scene(app,name) {
 
     canvas += vPanel
   }
+
+
 
 }

@@ -23,10 +23,17 @@ object GameCycle {
 
     var ret : Chromosome = null
 
-    population.keepBest(keepBest)
+    println("population size..."+population.size)
+
+    if(population.size >= 10) {
+      population.keepBest(keepBest)
+    }
 
     while (!(done && earlyStop)) {
+      println("looking for someone..."+population.size)
+      println(population.printChromosomeChck)
       val mates = population.mates(crossOverProbability, elitism)
+      println("done...")
 
       if (mates.isDefined) {
 
@@ -110,6 +117,23 @@ class IntegerEncodingMutation2(min: Int, max: Int, mutationDeviation: Int) exten
 
       case _ => that
     }
+  }
+}
+
+object MultipleConcatenatingGeneCombination extends GeneCombination {
+  private val random = scala.util.Random
+
+  def combine(x: Gene, y: Gene): Gene = {
+    val pivot1 = random.nextInt(x.sequence.length)
+    val scombination1 = x.sequence.slice(0, pivot1) ++ y.sequence.slice(pivot1, y.sequence.length)
+
+    val pivot2 = random.nextInt(x.sequence.length)
+    val scombination2 = x.sequence.slice(0, pivot2) ++ y.sequence.slice(pivot2, y.sequence.length)
+
+    val pivot3 = random.nextInt(x.sequence.length)
+    val scombination3 = scombination1.slice(0, pivot3) ++ scombination2.slice(pivot3, scombination2.length)
+
+    x.copy(encodings = scombination3)
   }
 }
 

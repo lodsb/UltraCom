@@ -11,7 +11,8 @@ import scala.util.Random
  * Created by lodsb on 3/2/14.
  */
 class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
-                   parameters: List[String], ranges: List[(Int,Int)], deviation: List[Int]) {
+                   parameters: List[String], ranges: List[(Int,Int)], deviation: List[Int],
+                   highlightSubdivision: Option[(Int,Int)]) {
 
   var xRot : Int = 0;
   var yRot : Int = 0;
@@ -19,6 +20,8 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
   var scale : Int = 0;
 
   var locked = false
+
+  private val r = new Random()
 
   parameters.zip(ranges).zipWithIndex.foreach({ x =>
     val index = x._2
@@ -31,10 +34,13 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
        // x rot
       case 0 => {
 
-        zRot = rangeLo
+        zRot = rangeLo + r.nextInt(rangeHi-rangeLo)
+
         nodeForm.zRotLocked = false
 
-        oscTransmit.send <~ nodeForm.rotationZ.map({ v =>
+        oscTransmit.send <~ nodeForm.rotationZ.map({ vv =>
+          val v = scala.math.abs(vv)
+
           println("Z rot"+v)
           // clip at angles > 360 and map to parameter range, convert to Integer
           val vMapped = Util.linlin(scala.math.max(0,scala.math.min(v, 360f)), 0, 360, rangeLo, rangeHi).toInt;
@@ -52,10 +58,12 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
 
       case 1 => {
 
-        yRot = rangeLo
+        yRot = rangeLo + r.nextInt(rangeHi-rangeLo)
         nodeForm.yRotLocked = false
 
-        oscTransmit.send <~ nodeForm.rotationY.map({ v =>
+        oscTransmit.send <~ nodeForm.rotationY.map({ vv =>
+          val v = scala.math.abs(vv)
+
         // clip at angles > 360 and map to parameter range, convert to Integer
           val vMapped: Int = Util.linlin(scala.math.max(0,scala.math.min(v, 360f)), 0, 360, rangeLo, rangeHi).toInt;
 
@@ -72,10 +80,12 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
 
       case 2 => {
 
-        xRot = rangeLo
+        xRot = rangeLo + r.nextInt(rangeHi-rangeLo)
         nodeForm.xRotLocked = false
 
-        oscTransmit.send <~ nodeForm.rotationX.map({ v =>
+        oscTransmit.send <~ nodeForm.rotationX.map({ vv =>
+          val v = scala.math.abs(vv)
+
         // clip at angles > 360 and map to parameter range, convert to Integer
           val vMapped: Int = Util.linlin(scala.math.max(0,scala.math.min(v, 360f)), 0, 360, rangeLo, rangeHi).toInt;
           if(!locked) {
@@ -92,10 +102,12 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
 
       case 3 => {
 
-        scale = rangeLo
+        scale = rangeLo + r.nextInt(rangeHi-rangeLo)
         nodeForm.scaleLocked = false
 
-        oscTransmit.send <~ nodeForm.scaleFactor.map({ v =>
+        oscTransmit.send <~ nodeForm.scaleFactor.map({ vv =>
+          val v = scala.math.abs(vv)
+
         // clip at angles > 360 and map to parameter range, convert to Integer
           println("SCALE "+v)
           val vMapped: Int = Util.linlin(scala.math.max(0,scala.math.min(v, 3)), 0.8, 3, rangeLo, rangeHi).toInt;
@@ -119,6 +131,34 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
 
   })
 
+  def bang = {
+    // message conv functions auslagern?
+    parameters.zipWithIndex.foreach{ x=>
+      x._2 match {
+        case 0 =>  nodeForm.rotationZ.bang
+        case 1 =>  nodeForm.rotationY.bang
+        case 2 =>  nodeForm.rotationX.bang
+        case 3 =>  nodeForm.scaleFactor.bang
+      }
+    }
+  }
+
+
+  def updateHighlighting(currentSubdivision: Int) = {
+    if(highlightSubdivision.isDefined) {
+      val highlightWhen = highlightSubdivision.get
+
+      println(highlightSubdivision.get + " --- "+currentSubdivision)
+
+      if(highlightWhen._1 <= currentSubdivision && highlightWhen._2 >= currentSubdivision) {
+        nodeForm.setHighlighted(0, true)
+        println("set highlighted")
+      } else {
+        nodeForm.setHighlighted(0, false)
+        println("disable highlighted")
+      }
+    }
+  }
 
   def name = parameters.toString
 
@@ -135,7 +175,7 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
       }
     }
 
-    Gene(this.name, encSeq, SimpleGeneMutation, ConcatenatingGeneCombination)
+    Gene(this.name, encSeq, SimpleGeneMutation, MultipleConcatenatingGeneCombination)
   }
 
   def updateFromGene(gene: Gene) {

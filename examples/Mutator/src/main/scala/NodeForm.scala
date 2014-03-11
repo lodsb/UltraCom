@@ -17,7 +17,7 @@ import java.awt.event.KeyEvent._
 import scala.math._
 import org.mt4j.types.{Rotation, Vec3d}
 import org.mt4j.util.SessionLogger._
-import org.mt4j.util.{MTColor, SessionLogger}
+import org.mt4j.util.{Color, MTColor, SessionLogger}
 import org.mt4j.util.opengl.GLMaterial
 import org.mt4j.components.visibleComponents.shapes.MTEllipse
 
@@ -50,6 +50,8 @@ object RandomNodeForm {
 
 class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(app) {
 
+  val defaultFill = Color(80,80,80,255)
+
   // for locking certain parameters from being modified
   var xRotLocked = true
   var yRotLocked = true
@@ -76,7 +78,7 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
   //setLight(app.light)
 
   // Set up a material to react to the light
-  var material = FileImporter.cacheGLMaterial(new File(file.getAbsolutePath.replace(".obj", "_material.scala")))
+  var material = (FileImporter.cacheGLMaterial(new File(file.getAbsolutePath.replace(".obj", "_material.scala")))).copy
 
   println("MY MATERIAL "+material.name + " this "+this)
 
@@ -99,6 +101,7 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
   var scale = app.width*0.08f/biggestWidth
 
   meshes.foreach( mesh => {
+    println("meshes "+meshes.size)
     addChild(mesh)
 
     mesh.unregisterAllInputProcessors()
@@ -117,7 +120,7 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
     println("loaded ... "+material.name)
     mesh.setMaterial(material)
     mesh.setDrawNormals(false)
-    //mesh.fillColor() = MTColor.BLUE
+    mesh.setFillColor(defaultFill)
 
     // translate to center
     mesh.translateGlobal(appCenter.getSubtracted(position))
@@ -216,6 +219,61 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
     scale(s, s)
   }
 
+  val highlightColor = Color(255,255,255,255)
+  val highlightMaterialRGB=Array(0.0f,0.0f,1f,1f)
+  var isHighlighted = false;
+
+
+  def setHighlighted(component: Int, enable: Boolean) = {
+    // highlight different components of a form,
+    // main form 0 and cycles 1-3
+
+    component match {
+      case 0 => { // form
+        if(enable && !isHighlighted){
+          println("highlighting..."+enable)
+
+          meshes.foreach{x => x.setFillColor(highlightColor)}
+          isHighlighted = true
+
+        } else if(!enable && isHighlighted) {
+          isHighlighted = false
+
+          meshes.foreach{x => x.setFillColor(defaultFill)}
+        }
+      }
+
+      case 1 => {
+        if(enable) {
+          this.zCircle.setStrokeColor(highlightColor)
+        } else {
+          this.zCircle.setStrokeColor(Color.WHITE)
+        }
+      }
+
+      case 2 => {
+        if(enable) {
+          this.yCircle.setStrokeColor(highlightColor)
+        } else {
+          this.yCircle.setStrokeColor(Color.WHITE)
+        }
+      }
+
+      case 3 => {
+        if(enable) {
+          this.xCircle.setStrokeColor(highlightColor)
+        } else {
+          this.xCircle.setStrokeColor(Color.WHITE)
+        }
+      }
+
+      case 4 => {//ignored for now, should be scaling
+      }
+
+      case _ => throw new Exception("Wrong component")
+    }
+  }
+
 
   override def processGestureEvent(e: MTGestureEvent) : Boolean = {
     println("GOT EVENT"+ e)
@@ -229,8 +287,13 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
 
       case e: RotateEvent =>
         if(!zRotLocked) {
-          rotateZGlobal(position, e.getRotationDegrees)
-          rotationZ() += e.getRotationDegrees
+
+          val nextRot = rotationZ() + e.getRotationDegrees
+          if(scala.math.abs(nextRot) <= 360) {
+            rotateZGlobal(position, e.getRotationDegrees)
+            rotationZ() += e.getRotationDegrees
+          }
+
         }
         /*
         if (e.getId == GESTURE_UPDATED) {
@@ -346,10 +409,16 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
         if ((315<angle || angle<45) || (135<angle && angle<225)) {
 
           if(!xRotLocked) {
-            val degrees = e.getRotationDirection*e.getRotationDegreesX
-            rotateXGlobal(e.getRotationPoint, degrees)
-            rotationX() += degrees
+            val nextRot = rotationY() + e.getRotationDegreesY
+            if(scala.math.abs(nextRot) <= 360) {
+              val degrees = e.getRotationDirection*e.getRotationDegreesX
+              rotateXGlobal(e.getRotationPoint, degrees)
+              rotationX() += degrees
+            }
+
           }
+
+
             /*
           if (e.getId == GESTURE_UPDATED) {
             xRot.degrees(degrees)
@@ -357,9 +426,14 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
           */
         } else {
           if(!yRotLocked) {
-            val degrees = e.getRotationDirection*e.getRotationDegreesY
-            rotateYGlobal(e.getRotationPoint, degrees)
-            rotationY() += degrees
+
+            val nextRot = rotationY() + e.getRotationDegreesY
+            if(scala.math.abs(nextRot) <= 360) {
+              val degrees = e.getRotationDirection*e.getRotationDegreesY
+              rotateYGlobal(e.getRotationPoint, degrees)
+              rotationY() += degrees
+            }
+
           }
             /*
           if (e.getId == GESTURE_UPDATED) {
@@ -378,6 +452,7 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
 
     true
   }
+
 
   /**
    * Modified scaling function, that also saves the global scale factor.
