@@ -231,7 +231,6 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
     component match {
       case 0 => { // form
         if(enable && !isHighlighted){
-          println("highlighting..."+enable)
 
           meshes.foreach{x => x.setFillColor(highlightColor)}
           isHighlighted = true

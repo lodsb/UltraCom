@@ -152,10 +152,8 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
 
       if(highlightWhen._1 <= currentSubdivision && highlightWhen._2 >= currentSubdivision) {
         nodeForm.setHighlighted(0, true)
-        println("set highlighted")
       } else {
         nodeForm.setHighlighted(0, false)
-        println("disable highlighted")
       }
     }
   }
