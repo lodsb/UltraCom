@@ -89,7 +89,7 @@ object Mutator extends Application {
   // mapping definition
   val mappings = List(
     // encoding osc name, value range, deviation range (for mutation), tick when active in bar
-    (List("/shuffle","/tempo"), List((0,1),(70,150)), List(1, 10), None),
+    (List("/shuffle","/tempo"), List((0,1),(120,300)), List(1, 10), None),
     (List("/rootnote","/scale"), List((40,52),(1,8)), List(3, 1), None),
     (List("/drum_kick_bar1","/drum_snare_bar1","/drum_hh_bar1"), List((1,4),(1,4),(1,8)), List(1,1,2), Some(0,15 )),
     (List("/drum_kick_bar2","/drum_snare_bar2","/drum_hh_bar2"), List((1,4),(1,4),(1,8)), List(1,1,2), Some(16,31)),
