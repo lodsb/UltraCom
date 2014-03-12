@@ -23,6 +23,12 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
 
   private val r = new Random()
 
+  /*
+  if(highlightSubdivision.isEmpty) {
+    nodeForm.setHighlighted(0, true)
+  }
+  */
+
   parameters.zip(ranges).zipWithIndex.foreach({ x =>
     val index = x._2
     val parm = x._1._1

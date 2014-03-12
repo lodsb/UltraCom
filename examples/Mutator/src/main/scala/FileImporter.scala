@@ -96,6 +96,12 @@ import org.mt4j.util.math.Tools3D
     formFiles(random)
   }
 
+  def numFormFile(no: Int) : File = {
+    val num = no % formFiles.size
+
+    formFiles(num)
+  }
+
   def randomSynthiFile = {
     synthiFiles(random)
   }
@@ -195,6 +201,10 @@ import org.mt4j.util.math.Tools3D
     materialCache(file)
   }
 
+  def getMaterialFromNo(id: Int) : NodeMaterial = {
+    materialCache.toList(id)._2
+  }
+
   def cacheMTTriangleMesh(file: File): Array[MTTriangleMesh] = {
     if (FileImporter.formCache.get(file).isEmpty) {
       FileImporter.formCache += ((file,ModelImporterFactory.loadModel(Mutator, file.getAbsolutePath, 180, true, false)))
@@ -205,6 +215,21 @@ import org.mt4j.util.math.Tools3D
     for (i <- 0 to cachedMeshes.size-1) {
       meshes(i) = new MTTriangleMesh(Mutator, formCache.get(file).get(i).getGeometryInfo)
     }
+
+    formCache.clear
+
+    meshes
+  }
+
+  def triangleMesh(file: File): Array[MTTriangleMesh] = {
+    val model = ModelImporterFactory.loadModel(Mutator, file.getAbsolutePath, 180, true, false)
+
+    val meshes = new Array[MTTriangleMesh](model.size)
+    for (i <- 0 to model.size-1) {
+      meshes(i) = new MTTriangleMesh(Mutator, model(i).getGeometryInfo)
+    }
+
+
     meshes
   }
 

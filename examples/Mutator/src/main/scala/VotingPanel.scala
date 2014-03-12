@@ -29,7 +29,7 @@ class VotingPanel(pos: Vector3D) extends MTRoundRectangle(Mutator,pos.x, pos.y, 
   override def processGestureEvent(e: MTGestureEvent): Boolean  = {
     e match {
       case e: RotateEvent =>
-       rotateZGlobal(e.getRotationPoint, e.getRotationDegrees)
+       rotateZGlobal(this.getCenterPointGlobal, e.getRotationDegrees)
 
 
 

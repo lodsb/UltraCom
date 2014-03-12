@@ -36,7 +36,7 @@ import org.mt4j.components.visibleComponents.widgets._
 import org.mt4j.types.{Vec3d, Rotation}
 import org.lodsb.reakt.Implicits._
 import scala.actors.Actor._
-import org.mt4j.components.visibleComponents.shapes.{Line, MTLine}
+import org.mt4j.components.visibleComponents.shapes.{MTEllipse, Line, MTLine}
 import java.util.Random
 import org.mt4j.components.MTLight
 import javax.media.opengl.GL2
@@ -55,6 +55,8 @@ object Mutator extends Application {
 
   val noVoters = 3
 
+  var progressCircle : Option[MTEllipse] = None
+
   val oscTransmit = OSCCommunication.createOSCTransmitter(UDP, new InetSocketAddress("127.0.0.1", 1338))
   val oscRecv = OSCCommunication.createOSCReceiver(UDP, new InetSocketAddress("127.0.0.1", 1339))
 
@@ -62,7 +64,17 @@ object Mutator extends Application {
     val msg = x._1
 
     if(msg.name.contains("64")) {
-      this.updateHighlighting(msg.args(0).asInstanceOf[Int])
+      val tick = msg.args(0).asInstanceOf[Int]
+      this.updateHighlighting(tick)
+
+      if(progressCircle.isDefined) {
+        val circle = progressCircle.get
+        val deg = (tick.toFloat/64f)*360f
+
+        circle.setDegrees(deg)
+        circle.create()
+
+      }
     }
 
     true
@@ -89,19 +101,19 @@ object Mutator extends Application {
   // mapping definition
   val mappings = List(
     // encoding osc name, value range, deviation range (for mutation), tick when active in bar
-    (List("/shuffle","/tempo"), List((0,1),(120,300)), List(1, 10), None),
-    (List("/rootnote","/scale"), List((40,52),(1,8)), List(3, 1), None),
-    (List("/drum_kick_bar1","/drum_snare_bar1","/drum_hh_bar1"), List((1,4),(1,4),(1,8)), List(1,1,2), Some(0,15 )),
-    (List("/drum_kick_bar2","/drum_snare_bar2","/drum_hh_bar2"), List((1,4),(1,4),(1,8)), List(1,1,2), Some(16,31)),
-    (List("/drum_kick_bar3","/drum_snare_bar3","/drum_hh_bar3"), List((1,4),(1,4),(1,8)), List(1,1,2), Some(32,47)),
-    (List("/drum_kick_bar4","/drum_snare_bar4","/drum_hh_bar4"), List((1,4),(1,4),(1,8)), List(1,1,2), Some(48,64)),
-    (List("/ch_rhyt1","/ch_root1","/ch_voic1"), List((1,4), (0,6), (1,8)), List(1,1,2), Some(0,15 )),
-    (List("/ch_rhyt2","/ch_root2","/ch_voic2"), List((1,4), (0,6), (1,8)), List(1,1,2), Some(16,31)),
-    (List("/ch_rhyt3","/ch_root3","/ch_voic3"), List((1,4), (0,6), (1,8)), List(1,1,2), Some(32,47)),
-    (List("/ch_rhyt4","/ch_root4","/ch_voic4"), List((1,4), (0,6), (1,8)), List(1,1,2), Some(48,64)),
-    (List("/ch_indices"), List((1,7)), List(1), None),
-    (List("/mel_bar1","/mel_bar2","/mel_bar3","/mel_bar4"),List((1,16),(1,16),(1,16),(1,16)), List(3,3,3,3), None),
-    (List("/bass_bar1","/bass_bar2","/bass_bar3","/bass_bar4"),List((1,16),(1,16),(1,16),(1,16)), List(3,3,3,3), None)
+    (List("/shuffle","/tempo"), List((0,1),(120,300)), List(1, 10), None, 0),
+    (List("/rootnote","/scale"), List((40,52),(1,8)), List(3, 1), None , 0),
+    (List("/drum_kick_bar1","/drum_snare_bar1","/drum_hh_bar1"), List((1,4),(1,4),(1,8)), List(1,1,2), Some(0,15 ), 2),
+    (List("/drum_kick_bar2","/drum_snare_bar2","/drum_hh_bar2"), List((1,4),(1,4),(1,8)), List(1,1,2), Some(16,31), 2),
+    (List("/drum_kick_bar3","/drum_snare_bar3","/drum_hh_bar3"), List((1,4),(1,4),(1,8)), List(1,1,2), Some(32,47), 2),
+    (List("/drum_kick_bar4","/drum_snare_bar4","/drum_hh_bar4"), List((1,4),(1,4),(1,8)), List(1,1,2), Some(48,64), 2),
+    (List("/ch_rhyt1","/ch_root1","/ch_voic1"), List((1,4), (0,6), (1,8)), List(1,1,2), Some(0,15 ), 3),
+    (List("/ch_rhyt2","/ch_root2","/ch_voic2"), List((1,4), (0,6), (1,8)), List(1,1,2), Some(16,31), 3),
+    (List("/ch_rhyt3","/ch_root3","/ch_voic3"), List((1,4), (0,6), (1,8)), List(1,1,2), Some(32,47), 3),
+    (List("/ch_rhyt4","/ch_root4","/ch_voic4"), List((1,4), (0,6), (1,8)), List(1,1,2), Some(48,64), 3),
+    (List("/ch_indices"), List((1,7)), List(1), None, 4),
+    (List("/mel_bar1","/mel_bar2","/mel_bar3","/mel_bar4"),List((1,16),(1,16),(1,16),(1,16)), List(3,3,3,3), None , 5),
+    (List("/bass_bar1","/bass_bar2","/bass_bar3","/bass_bar4"),List((1,16),(1,16),(1,16),(1,16)), List(3,3,3,3), None, 1)
   );
 
   var controllerGlue : List[ControlGlue] = List();
@@ -234,7 +246,9 @@ class MutatorScene(app: Application, name: String) extends Scene(app,name) {
     val x = mapping._1
 
     println(x)
-    val form = RandomNodeForm(Vec3d((width*mftr)+x._1*width*ftr, (height*mftr)+x._2*height*ftr,120f))
+
+    val form = SeqNodeForm(Vec3d((width*mftr)+x._1*width*ftr, (height*mftr)+x._2*height*ftr,120f), mapping._2._5)
+    //val form = RandomNodeForm(Vec3d((width*mftr)+x._1*width*ftr, (height*mftr)+x._2*height*ftr,120f))
     form.setLight(l)
 
     val glue = new ControlGlue(Mutator.oscTransmit,form, mapping._2._1, mapping._2._2, mapping._2._3, mapping._2._4)
@@ -282,13 +296,17 @@ class MutatorScene(app: Application, name: String) extends Scene(app,name) {
   */
 
 
-  val appCenter = Vec3d(app.width/2, app.height/2)
+  val appCenter = Vec3d(Mutator.width/2f, Mutator.height/2f)
 
   (1 to Mutator.noVoters).foreach {  x =>
 
-    val coord = appCenter.subtractLocal(Vec3d((( x+1 ) % 2 )*100,(( x ) % 2 )*100 ) )
+    val coord = (appCenter.getSubtracted(Vec3d((( x+1 ) % 2 )*100,(( x ) % 2 )*100) ))
+    coord.setZ(300);
+
 
     val vPanel = new VotingPanel(Vec3d(0,0,0))
+    vPanel.scale(0.7f,0.7f,0.7f, vPanel.getCenterPointGlobal)
+
     val vPanelCenter = vPanel.getCenterPointGlobal
 
     vPanel.rotateZ(vPanelCenter, 90f*x)
@@ -301,6 +319,14 @@ class MutatorScene(app: Application, name: String) extends Scene(app,name) {
 
     canvas += vPanel
   }
+
+  var ellipse = new WrapperEllipse(Mutator, appCenter, Mutator.height/6, Mutator.height/6)
+  //ellipse.setPositionGlobal(appCenter)
+  ellipse.setPickable(false)
+  ellipse.setFillColor(Color.PURPLE.opacity(0.4f))
+  canvas += ellipse
+
+  Mutator.progressCircle = Some(ellipse)
 
 
 

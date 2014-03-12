@@ -48,9 +48,17 @@ object RandomNodeForm {
   }
 }
 
+object SeqNodeForm {
+  def apply(pos: Vector3D, no: Int): NodeForm = {
+    val node = Import.form(FileImporter.numFormFile(no))
+    node.setPositionGlobal(pos)
+    node
+  }
+}
+
 class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(app) {
 
-  val defaultFill = Color(80,80,80,255)
+  val defaultFill = Color.WHITE;//Color(80,80,80,255)
 
   // for locking certain parameters from being modified
   var xRotLocked = true
@@ -85,7 +93,7 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
   val materialCopy = material.copy
 
   // meshes, that build the form
-  val meshes = FileImporter.cacheMTTriangleMesh(file)
+  val meshes = FileImporter.triangleMesh(file)
 
   // Get the biggest mesh and extract its width
   private var biggestWidth = Float.MinValue
@@ -219,7 +227,7 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
     scale(s, s)
   }
 
-  val highlightColor = Color(255,255,255,255)
+  val highlightColor = Color.PURPLE;//(255,255,255,255)
   val highlightMaterialRGB=Array(0.0f,0.0f,1f,1f)
   var isHighlighted = false;
 
