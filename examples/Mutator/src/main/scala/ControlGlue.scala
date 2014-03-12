@@ -148,8 +148,6 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
     if(highlightSubdivision.isDefined) {
       val highlightWhen = highlightSubdivision.get
 
-      println(highlightSubdivision.get + " --- "+currentSubdivision)
-
       if(highlightWhen._1 <= currentSubdivision && highlightWhen._2 >= currentSubdivision) {
         nodeForm.setHighlighted(0, true)
       } else {
