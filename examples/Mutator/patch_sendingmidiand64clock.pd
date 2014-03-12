@@ -1,12 +1,12 @@
-#N canvas 0 0 1362 670 10;
+#N canvas 0 0 1350 670 10;
 #X declare -lib mrpeach;
-#X obj 149 134 tgl 30 0 empty start empty 17 7 0 15 -4034 -1 -1 0 1
+#X obj 149 134 tgl 30 0 empty start empty 17 7 0 15 -4034 -1 -1 1 1
 ;
 #X msg 22 114 \; pd dsp \$1;
 #X obj 22 86 tgl 15 0 empty audio_onoff Audio_on/off 17 7 0 10 -4034
 -1 -1 0 1;
 #X obj 378 132 hsl 128 25 50 300 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 7214 1;
+-1 -1 3556 1;
 #X obj 379 260 hsl 128 25 0.5 4 0 0 empty empty empty -2 -8 0 10 -262144
 -1 -1 1814 1;
 #X obj 149 256 metro;
@@ -516,7 +516,7 @@ b8 0;
 #X connect 40 0 36 0;
 #X restore 554 902 pd chord2;
 #X floatatom 220 525 5 0 0 0 64-clock - 64-clock;
-#N canvas 0 0 1362 686 chord 1;
+#N canvas 0 0 1362 686 chord 0;
 #X obj 176 361 sel 1;
 #X obj 176 409 bng 15 250 50 0 chord_bang1 empty empty 17 7 0 10 -262144
 -1 -1;
@@ -1588,29 +1588,29 @@ b8 0;
 1;
 #X obj 1034 433 tgl 25 0 empty cr19 empty 17 7 0 10 -204800 -1 -1 0
 1;
-#X obj 1079 432 tgl 25 0 empty cr20 empty 17 7 0 10 -204800 -1 -1 0
+#X obj 1079 432 tgl 25 0 empty cr20 empty 17 7 0 10 -204800 -1 -1 1
 1;
 #X obj 1131 433 tgl 25 0 empty cr21 empty 17 7 0 10 -204800 -1 -1 0
 1;
 #X obj 1175 433 tgl 25 0 empty cr22 empty 17 7 0 10 -204800 -1 -1 0
 1;
-#X obj 1222 433 tgl 25 0 empty cr23 empty 17 7 0 10 -204800 -1 -1 0
+#X obj 1222 433 tgl 25 0 empty cr23 empty 17 7 0 10 -204800 -1 -1 1
 1;
 #X obj 1265 433 tgl 25 0 empty cr24 empty 17 7 0 10 -204800 -1 -1 0
 1;
-#X obj 1325 432 tgl 25 0 empty cr25 empty 17 7 0 10 -204800 -1 -1 0
+#X obj 1325 432 tgl 25 0 empty cr25 empty 17 7 0 10 -204800 -1 -1 1
 1;
 #X obj 1376 428 tgl 25 0 empty cr26 empty 17 7 0 10 -204800 -1 -1 0
 1;
 #X obj 1432 429 tgl 25 0 empty cr27 empty 17 7 0 10 -204800 -1 -1 0
 1;
-#X obj 1476 429 tgl 25 0 empty cr28 empty 17 7 0 10 -204800 -1 -1 0
+#X obj 1476 429 tgl 25 0 empty cr28 empty 17 7 0 10 -204800 -1 -1 1
 1;
 #X obj 1536 429 tgl 25 0 empty cr29 empty 17 7 0 10 -204800 -1 -1 0
 1;
 #X obj 1580 429 tgl 25 0 empty cr30 empty 17 7 0 10 -204800 -1 -1 0
 1;
-#X obj 1630 426 tgl 25 0 empty cr31 empty 17 7 0 10 -204800 -1 -1 0
+#X obj 1630 426 tgl 25 0 empty cr31 empty 17 7 0 10 -204800 -1 -1 1
 1;
 #X obj 1685 429 tgl 25 0 empty cr32 empty 17 7 0 10 -204800 -1 -1 0
 1;
@@ -1724,7 +1724,7 @@ b8 0;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -1796,7 +1796,7 @@ b8 0;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -1844,7 +1844,7 @@ b8 0;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -1916,7 +1916,7 @@ b8 0;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -1988,7 +1988,7 @@ b8 0;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -2038,7 +2038,7 @@ b8 0;
 1;
 #X obj 1041 697 tgl 25 0 empty cr35 empty 17 7 0 10 -204800 -1 -1 0
 1;
-#X obj 1086 696 tgl 25 0 empty cr36 empty 17 7 0 10 -204800 -1 -1 0
+#X obj 1086 696 tgl 25 0 empty cr36 empty 17 7 0 10 -204800 -1 -1 1
 1;
 #X obj 1138 697 tgl 25 0 empty cr37 empty 17 7 0 10 -204800 -1 -1 0
 1;
@@ -2048,19 +2048,19 @@ b8 0;
 1;
 #X obj 1272 697 tgl 25 0 empty cr40 empty 17 7 0 10 -204800 -1 -1 0
 1;
-#X obj 1332 696 tgl 25 0 empty cr41 empty 17 7 0 10 -204800 -1 -1 0
+#X obj 1332 696 tgl 25 0 empty cr41 empty 17 7 0 10 -204800 -1 -1 1
 1;
 #X obj 1383 692 tgl 25 0 empty cr42 empty 17 7 0 10 -204800 -1 -1 0
 1;
 #X obj 1439 693 tgl 25 0 empty cr43 empty 17 7 0 10 -204800 -1 -1 0
 1;
-#X obj 1483 693 tgl 25 0 empty cr44 empty 17 7 0 10 -204800 -1 -1 0
+#X obj 1483 693 tgl 25 0 empty cr44 empty 17 7 0 10 -204800 -1 -1 1
 1;
-#X obj 1543 693 tgl 25 0 empty cr45 empty 17 7 0 10 -204800 -1 -1 1
+#X obj 1543 693 tgl 25 0 empty cr45 empty 17 7 0 10 -204800 -1 -1 0
 1;
 #X obj 1587 693 tgl 25 0 empty cr46 empty 17 7 0 10 -204800 -1 -1 0
 1;
-#X obj 1637 690 tgl 25 0 empty cr47 empty 17 7 0 10 -204800 -1 -1 0
+#X obj 1637 690 tgl 25 0 empty cr47 empty 17 7 0 10 -204800 -1 -1 1
 1;
 #X obj 1692 693 tgl 25 0 empty cr48 empty 17 7 0 10 -204800 -1 -1 0
 1;
@@ -2174,7 +2174,7 @@ b8 0;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -2294,7 +2294,7 @@ b8 0;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -2366,7 +2366,7 @@ b8 0;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -2390,7 +2390,7 @@ b8 0;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -2438,7 +2438,7 @@ b8 0;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -4724,7 +4724,7 @@ b8 0;
 #X connect 15 0 8 1;
 #X restore 577 491 pd selectChord4;
 #X obj 757 14 r drum-clock;
-#N canvas 0 1 1362 685 playChord 1;
+#N canvas 0 1 1362 685 playChord 0;
 #X obj 578 123 inlet;
 #X text 674 119 Just a bang as input;
 #X obj 410 296 r currentChordNote1;
@@ -5113,7 +5113,7 @@ b8 0;
 #X connect 246 0 247 0;
 #X connect 247 0 244 0;
 #X restore 110 702 pd chord;
-#N canvas 0 0 1362 686 melody 1;
+#N canvas -8 -8 1366 686 melody 1;
 #X floatatom 1163 444 5 0 0 0 - current-scale-1 -;
 #X floatatom 1164 467 5 0 0 0 - current-scale-2 -;
 #X floatatom 1164 489 5 0 0 0 - current-scale-3 -;
@@ -5124,37 +5124,37 @@ b8 0;
 #X text 1127 419 Current (global) scale;
 #X floatatom 1279 574 5 0 0 0 - current-root -;
 #X text 1240 557 Current root note;
-#X obj 49 268 tgl 25 0 empty mel1 empty 17 7 0 10 -204800 -1 -1 1 1
+#X obj 49 268 tgl 25 0 empty mel1 empty 17 7 0 10 -204800 -1 -1 0 1
 ;
-#X obj 97 268 tgl 25 0 empty mel2 empty 17 7 0 10 -204800 -1 -1 0 1
+#X obj 97 268 tgl 25 0 empty mel2 empty 17 7 0 10 -204800 -1 -1 1 1
 ;
 #X obj 159 267 tgl 25 0 empty mel3 empty 17 7 0 10 -204800 -1 -1 0
 1;
-#X obj 204 266 tgl 25 0 empty mel4 empty 17 7 0 10 -204800 -1 -1 1
+#X obj 204 266 tgl 25 0 empty mel4 empty 17 7 0 10 -204800 -1 -1 0
 1;
 #X obj 256 267 tgl 25 0 empty mel5 empty 17 7 0 10 -204800 -1 -1 0
 1;
-#X obj 300 267 tgl 25 0 empty mel6 empty 17 7 0 10 -204800 -1 -1 0
+#X obj 300 267 tgl 25 0 empty mel6 empty 17 7 0 10 -204800 -1 -1 1
 1;
 #X obj 346 267 tgl 25 0 empty mel7 empty 17 7 0 10 -204800 -1 -1 0
 1;
-#X obj 390 267 tgl 25 0 empty mel8 empty 17 7 0 10 -204800 -1 -1 1
+#X obj 390 267 tgl 25 0 empty mel8 empty 17 7 0 10 -204800 -1 -1 0
 1;
 #X obj 450 266 tgl 25 0 empty mel9 empty 17 7 0 10 -204800 -1 -1 0
 1;
-#X obj 501 262 tgl 25 0 empty mel10 empty 17 7 0 10 -204800 -1 -1 0
+#X obj 501 262 tgl 25 0 empty mel10 empty 17 7 0 10 -204800 -1 -1 1
 1;
-#X obj 557 263 tgl 25 0 empty mel11 empty 17 7 0 10 -204800 -1 -1 1
+#X obj 557 263 tgl 25 0 empty mel11 empty 17 7 0 10 -204800 -1 -1 0
 1;
 #X obj 601 263 tgl 25 0 empty mel12 empty 17 7 0 10 -204800 -1 -1 0
 1;
 #X obj 661 263 tgl 25 0 empty mel13 empty 17 7 0 10 -204800 -1 -1 0
 1;
-#X obj 705 263 tgl 25 0 empty mel14 empty 17 7 0 10 -204800 -1 -1 0
+#X obj 705 263 tgl 25 0 empty mel14 empty 17 7 0 10 -204800 -1 -1 1
 1;
 #X obj 755 260 tgl 25 0 empty mel15 empty 17 7 0 10 -204800 -1 -1 0
 1;
-#X obj 809 257 tgl 25 0 empty mel16 empty 17 7 0 10 -204800 -1 -1 0
+#X obj 809 257 tgl 25 0 empty mel16 empty 17 7 0 10 -204800 -1 -1 1
 1;
 #X obj 51 223 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
@@ -5235,7 +5235,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -5263,7 +5263,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -5319,7 +5319,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -5375,7 +5375,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -5431,7 +5431,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -5487,7 +5487,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -5515,7 +5515,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -5599,7 +5599,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -5655,7 +5655,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -5687,25 +5687,25 @@ varje gång???;
 1;
 #X obj 135 682 tgl 25 0 empty mel19 empty 17 7 0 10 -204800 -1 -1 0
 1;
-#X obj 180 681 tgl 25 0 empty mel20 empty 17 7 0 10 -204800 -1 -1 0
+#X obj 180 681 tgl 25 0 empty mel20 empty 17 7 0 10 -204800 -1 -1 1
 1;
-#X obj 232 682 tgl 25 0 empty mel21 empty 17 7 0 10 -204800 -1 -1 1
+#X obj 232 682 tgl 25 0 empty mel21 empty 17 7 0 10 -204800 -1 -1 0
 1;
 #X obj 276 682 tgl 25 0 empty mel22 empty 17 7 0 10 -204800 -1 -1 0
 1;
 #X obj 322 682 tgl 25 0 empty mel23 empty 17 7 0 10 -204800 -1 -1 0
 1;
-#X obj 366 682 tgl 25 0 empty mel24 empty 17 7 0 10 -204800 -1 -1 0
+#X obj 366 682 tgl 25 0 empty mel24 empty 17 7 0 10 -204800 -1 -1 1
 1;
-#X obj 426 681 tgl 25 0 empty mel25 empty 17 7 0 10 -204800 -1 -1 1
+#X obj 426 681 tgl 25 0 empty mel25 empty 17 7 0 10 -204800 -1 -1 0
 1;
 #X obj 477 677 tgl 25 0 empty mel26 empty 17 7 0 10 -204800 -1 -1 0
 1;
-#X obj 533 678 tgl 25 0 empty mel27 empty 17 7 0 10 -204800 -1 -1 0
+#X obj 533 678 tgl 25 0 empty mel27 empty 17 7 0 10 -204800 -1 -1 1
 1;
 #X obj 577 678 tgl 25 0 empty mel28 empty 17 7 0 10 -204800 -1 -1 0
 1;
-#X obj 637 678 tgl 25 0 empty mel29 empty 17 7 0 10 -204800 -1 -1 1
+#X obj 637 678 tgl 25 0 empty mel29 empty 17 7 0 10 -204800 -1 -1 0
 1;
 #X obj 681 678 tgl 25 0 empty mel30 empty 17 7 0 10 -204800 -1 -1 0
 1;
@@ -5837,7 +5837,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -5865,7 +5865,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -5949,7 +5949,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -5977,7 +5977,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -6033,7 +6033,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -6089,7 +6089,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -6195,37 +6195,37 @@ varje gång???;
 #X connect 13 0 11 0;
 #X connect 13 0 9 1;
 #X restore 857 765 pd mel32;
-#X obj 10 1101 tgl 25 0 empty mel17 empty 17 7 0 10 -204800 -1 -1 1
+#X obj 10 1101 tgl 25 0 empty mel33 empty 17 7 0 10 -204800 -1 -1 1
 1;
-#X obj 58 1101 tgl 25 0 empty mel18 empty 17 7 0 10 -204800 -1 -1 0
+#X obj 58 1101 tgl 25 0 empty mel34 empty 17 7 0 10 -204800 -1 -1 1
 1;
-#X obj 120 1100 tgl 25 0 empty mel19 empty 17 7 0 10 -204800 -1 -1
-0 1;
-#X obj 165 1099 tgl 25 0 empty mel20 empty 17 7 0 10 -204800 -1 -1
-0 1;
-#X obj 217 1100 tgl 25 0 empty mel21 empty 17 7 0 10 -204800 -1 -1
+#X obj 120 1100 tgl 25 0 empty mel35 empty 17 7 0 10 -204800 -1 -1
 1 1;
-#X obj 261 1100 tgl 25 0 empty mel22 empty 17 7 0 10 -204800 -1 -1
-0 1;
-#X obj 307 1100 tgl 25 0 empty mel23 empty 17 7 0 10 -204800 -1 -1
-0 1;
-#X obj 351 1100 tgl 25 0 empty mel24 empty 17 7 0 10 -204800 -1 -1
-0 1;
-#X obj 411 1099 tgl 25 0 empty mel25 empty 17 7 0 10 -204800 -1 -1
+#X obj 165 1099 tgl 25 0 empty mel36 empty 17 7 0 10 -204800 -1 -1
 1 1;
-#X obj 462 1095 tgl 25 0 empty mel26 empty 17 7 0 10 -204800 -1 -1
-0 1;
-#X obj 518 1096 tgl 25 0 empty mel27 empty 17 7 0 10 -204800 -1 -1
-0 1;
-#X obj 562 1096 tgl 25 0 empty mel28 empty 17 7 0 10 -204800 -1 -1
-0 1;
-#X obj 622 1096 tgl 25 0 empty mel29 empty 17 7 0 10 -204800 -1 -1
+#X obj 217 1100 tgl 25 0 empty mel37 empty 17 7 0 10 -204800 -1 -1
 1 1;
-#X obj 666 1096 tgl 25 0 empty mel30 empty 17 7 0 10 -204800 -1 -1
+#X obj 261 1100 tgl 25 0 empty mel38 empty 17 7 0 10 -204800 -1 -1
+1 1;
+#X obj 307 1100 tgl 25 0 empty mel39 empty 17 7 0 10 -204800 -1 -1
+1 1;
+#X obj 351 1100 tgl 25 0 empty mel40 empty 17 7 0 10 -204800 -1 -1
+1 1;
+#X obj 411 1099 tgl 25 0 empty mel41 empty 17 7 0 10 -204800 -1 -1
+1 1;
+#X obj 462 1095 tgl 25 0 empty mel42 empty 17 7 0 10 -204800 -1 -1
 0 1;
-#X obj 716 1093 tgl 25 0 empty mel31 empty 17 7 0 10 -204800 -1 -1
+#X obj 518 1096 tgl 25 0 empty mel43 empty 17 7 0 10 -204800 -1 -1
 0 1;
-#X obj 770 1090 tgl 25 0 empty mel32 empty 17 7 0 10 -204800 -1 -1
+#X obj 562 1096 tgl 25 0 empty mel44 empty 17 7 0 10 -204800 -1 -1
+0 1;
+#X obj 622 1096 tgl 25 0 empty mel45 empty 17 7 0 10 -204800 -1 -1
+0 1;
+#X obj 666 1096 tgl 25 0 empty mel46 empty 17 7 0 10 -204800 -1 -1
+0 1;
+#X obj 716 1093 tgl 25 0 empty mel47 empty 17 7 0 10 -204800 -1 -1
+0 1;
+#X obj 770 1090 tgl 25 0 empty mel48 empty 17 7 0 10 -204800 -1 -1
 0 1;
 #X obj 12 1056 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
@@ -6295,7 +6295,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -6323,7 +6323,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -6351,7 +6351,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -6407,7 +6407,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -6435,7 +6435,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -6463,7 +6463,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -6603,7 +6603,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -6709,38 +6709,38 @@ varje gång???;
 #X connect 13 0 11 0;
 #X connect 13 0 9 1;
 #X restore 842 1183 pd mel48;
-#X obj 18 1495 tgl 25 0 empty mel17 empty 17 7 0 10 -204800 -1 -1 1
+#X obj 18 1495 tgl 25 0 empty mel49 empty 17 7 0 10 -204800 -1 -1 1
 1;
-#X obj 66 1495 tgl 25 0 empty mel18 empty 17 7 0 10 -204800 -1 -1 0
+#X obj 66 1495 tgl 25 0 empty mel50 empty 17 7 0 10 -204800 -1 -1 1
 1;
-#X obj 128 1494 tgl 25 0 empty mel19 empty 17 7 0 10 -204800 -1 -1
-0 1;
-#X obj 173 1493 tgl 25 0 empty mel20 empty 17 7 0 10 -204800 -1 -1
-0 1;
-#X obj 225 1494 tgl 25 0 empty mel21 empty 17 7 0 10 -204800 -1 -1
+#X obj 128 1494 tgl 25 0 empty mel51 empty 17 7 0 10 -204800 -1 -1
 1 1;
-#X obj 269 1494 tgl 25 0 empty mel22 empty 17 7 0 10 -204800 -1 -1
-0 1;
-#X obj 315 1494 tgl 25 0 empty mel23 empty 17 7 0 10 -204800 -1 -1
-0 1;
-#X obj 359 1494 tgl 25 0 empty mel24 empty 17 7 0 10 -204800 -1 -1
-0 1;
-#X obj 419 1493 tgl 25 0 empty mel25 empty 17 7 0 10 -204800 -1 -1
+#X obj 173 1493 tgl 25 0 empty mel52 empty 17 7 0 10 -204800 -1 -1
 1 1;
-#X obj 470 1489 tgl 25 0 empty mel26 empty 17 7 0 10 -204800 -1 -1
-0 1;
-#X obj 526 1490 tgl 25 0 empty mel27 empty 17 7 0 10 -204800 -1 -1
-0 1;
-#X obj 570 1490 tgl 25 0 empty mel28 empty 17 7 0 10 -204800 -1 -1
-0 1;
-#X obj 630 1490 tgl 25 0 empty mel29 empty 17 7 0 10 -204800 -1 -1
+#X obj 225 1494 tgl 25 0 empty mel53 empty 17 7 0 10 -204800 -1 -1
 1 1;
-#X obj 674 1490 tgl 25 0 empty mel30 empty 17 7 0 10 -204800 -1 -1
-0 1;
-#X obj 724 1487 tgl 25 0 empty mel31 empty 17 7 0 10 -204800 -1 -1
-0 1;
-#X obj 778 1484 tgl 25 0 empty mel32 empty 17 7 0 10 -204800 -1 -1
-0 1;
+#X obj 269 1494 tgl 25 0 empty mel54 empty 17 7 0 10 -204800 -1 -1
+1 1;
+#X obj 315 1494 tgl 25 0 empty mel55 empty 17 7 0 10 -204800 -1 -1
+1 1;
+#X obj 359 1494 tgl 25 0 empty mel56 empty 17 7 0 10 -204800 -1 -1
+1 1;
+#X obj 419 1493 tgl 25 0 empty mel57 empty 17 7 0 10 -204800 -1 -1
+1 1;
+#X obj 470 1489 tgl 25 0 empty mel58 empty 17 7 0 10 -204800 -1 -1
+1 1;
+#X obj 526 1490 tgl 25 0 empty mel59 empty 17 7 0 10 -204800 -1 -1
+1 1;
+#X obj 570 1490 tgl 25 0 empty mel60 empty 17 7 0 10 -204800 -1 -1
+1 1;
+#X obj 630 1490 tgl 25 0 empty mel61 empty 17 7 0 10 -204800 -1 -1
+1 1;
+#X obj 674 1490 tgl 25 0 empty mel62 empty 17 7 0 10 -204800 -1 -1
+1 1;
+#X obj 724 1487 tgl 25 0 empty mel63 empty 17 7 0 10 -204800 -1 -1
+1 1;
+#X obj 778 1484 tgl 25 0 empty mel64 empty 17 7 0 10 -204800 -1 -1
+1 1;
 #X obj 20 1450 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X obj 71 1451 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
@@ -6809,7 +6809,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -6837,7 +6837,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -6865,7 +6865,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -6921,7 +6921,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -6949,7 +6949,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -6977,7 +6977,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -7033,7 +7033,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -7061,7 +7061,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -7089,7 +7089,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -7145,7 +7145,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -7173,7 +7173,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -7201,7 +7201,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -7223,7 +7223,7 @@ varje gång???;
 #X connect 13 0 11 0;
 #X connect 13 0 9 1;
 #X restore 850 1577 pd mel64;
-#N canvas 3 5 1362 642 playMelNote 1;
+#N canvas 15 14 1350 642 playMelNote 0;
 #X obj 556 110 inlet;
 #X floatatom 446 126 5 0 0 0 - - -;
 #X text 626 78 Input: index of current chord note to play (1-6);
@@ -7270,7 +7270,7 @@ varje gång???;
 #X obj 454 491 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X msg 414 532 127;
-#X msg 476 522 400;
+#X msg 476 522 1000;
 #X connect 0 0 1 0;
 #X connect 0 0 3 0;
 #X connect 3 0 25 0;
@@ -7598,7 +7598,7 @@ varje gång???;
 #X connect 227 0 226 0;
 #X restore 194 701 pd melody;
 #X obj 221 465 counter 1 64;
-#N canvas 0 0 1362 686 bass 1;
+#N canvas -8 -8 1366 686 bass 0;
 #X obj 253 286 tgl 25 0 empty bassr1 empty 17 7 0 10 -204800 -1 -1
 1 1;
 #X obj 307 286 tgl 25 0 empty bassr2 empty 17 7 0 10 -204800 -1 -1
@@ -8186,7 +8186,7 @@ varje gång???;
 #X restore 999 10 pd playbassnote;
 #X text 1013 -9 Old version;
 #X obj 777 17 r 64-clock;
-#N canvas 0 0 1362 670 playBassNote 1;
+#N canvas 0 0 1362 670 playBassNote 0;
 #X obj 556 110 inlet;
 #X floatatom 446 126 5 0 0 0 - - -;
 #X text 626 78 Input: index of current chord note to play (1-6);
@@ -8774,33 +8774,33 @@ varje gång???;
 #X obj 283 805 tgl 25 0 empty bassr34 empty 17 7 0 10 -204800 -1 -1
 0 1;
 #X obj 337 805 tgl 25 0 empty bassr35 empty 17 7 0 10 -204800 -1 -1
-0 1;
+1 1;
 #X obj 386 805 tgl 25 0 empty bassr36 empty 17 7 0 10 -204800 -1 -1
-0 1;
+1 1;
 #X obj 438 805 tgl 25 0 empty bassr37 empty 17 7 0 10 -204800 -1 -1
 1 1;
 #X obj 482 805 tgl 25 0 empty bassr38 empty 17 7 0 10 -204800 -1 -1
 0 1;
 #X obj 533 805 tgl 25 0 empty bassr39 empty 17 7 0 10 -204800 -1 -1
-0 1;
+1 1;
 #X obj 578 805 tgl 25 0 empty bassr40 empty 17 7 0 10 -204800 -1 -1
 0 1;
 #X obj 627 805 tgl 25 0 empty bassr41 empty 17 7 0 10 -204800 -1 -1
 1 1;
 #X obj 680 805 tgl 25 0 empty bassr42 empty 17 7 0 10 -204800 -1 -1
-0 1;
+1 1;
 #X obj 740 805 tgl 25 0 empty bassr43 empty 17 7 0 10 -204800 -1 -1
 0 1;
 #X obj 795 805 tgl 25 0 empty bassr44 empty 17 7 0 10 -204800 -1 -1
-0 1;
+1 1;
 #X obj 849 805 tgl 25 0 empty bassr45 empty 17 7 0 10 -204800 -1 -1
 1 1;
 #X obj 896 805 tgl 25 0 empty bassr46 empty 17 7 0 10 -204800 -1 -1
 0 1;
 #X obj 942 805 tgl 25 0 empty bassr47 empty 17 7 0 10 -204800 -1 -1
-0 1;
+1 1;
 #X obj 988 805 tgl 25 0 empty bassr48 empty 17 7 0 10 -204800 -1 -1
-0 1;
+1 1;
 #X obj 237 781 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X obj 288 781 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
@@ -8894,7 +8894,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -8920,7 +8920,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -8998,7 +8998,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -9076,7 +9076,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -9128,7 +9128,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -9206,7 +9206,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -9232,7 +9232,7 @@ varje gång???;
 #X text 163 38 Selected?;
 #X obj 157 66 inlet;
 #X msg 76 110 1;
-#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 139 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 111 157 ==;
 #X obj 111 194 sel 1;
@@ -10000,9 +10000,9 @@ varje gång???;
 #X connect 208 0 192 0;
 #X connect 209 0 192 0;
 #X restore 276 700 pd bass;
-#N canvas 0 86 1362 678 controlpanel 1;
+#N canvas 0 93 1362 678 controlpanel 0;
 #X msg 338 -30 131.159.24.59;
-#N canvas 0 0 1362 686 OSC-receiver 1;
+#N canvas 0 0 1350 670 OSC-receiver 1;
 #X obj 443 66 unpackOSC;
 #X obj 390 92 print;
 #X obj 443 14 udpreceive 1338;
@@ -10018,7 +10018,7 @@ varje gång???;
 #X restore 424 315 pd tempo_shuffle_route;
 #X obj -31 59 route /drum_hh_bar1 /drum_snare_bar1 /drum_kick_bar1
 ;
-#N canvas 0 0 1366 686 drum_bar1_route 0;
+#N canvas 1864 200 1366 686 drum_bar1_route 0;
 #X obj -82 -34 inlet;
 #X obj 178 -32 inlet;
 #X obj 502 -42 inlet;
@@ -10084,7 +10084,7 @@ varje gång???;
 #X connect 6 0 1 0;
 #X restore 142 16 pd snare_converter;
 #X obj 624 -320 vsl 15 128 1 4 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
+-1 -1 12700 1;
 #X obj 573 -188 int;
 #X floatatom -231 335 5 0 0 0 - - -;
 #X obj -232 313 int;
@@ -10651,11 +10651,11 @@ varje gång???;
 #X text 12 11 1-8;
 #X floatatom 625 -136 5 0 0 0 - - -;
 #X obj 359 -346 vsl 15 128 1 4 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
+-1 -1 12700 1;
 #X obj 308 -214 int;
 #X floatatom 360 -162 5 0 0 0 - - -;
 #X obj 93 -323 vsl 15 128 1 8 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
+-1 -1 7500 1;
 #X obj 42 -191 int;
 #X floatatom 94 -139 5 0 0 0 - - -;
 #X text 316 -378 Sliders for testing;
@@ -10686,7 +10686,7 @@ varje gång???;
 #X restore -23 168 pd drum_bar1_route;
 #X obj -46 294 route /drum_hh_bar2 /drum_snare_bar2 /drum_kick_bar2
 ;
-#N canvas 0 0 1366 686 drum_bar2_route 0;
+#N canvas 1358 -8 1920 1158 drum_bar2_route 0;
 #X obj -82 -34 inlet;
 #X obj 178 -32 inlet;
 #X obj 468 -54 inlet;
@@ -11280,7 +11280,7 @@ varje gång???;
 #X obj 583 -178 int;
 #X floatatom 635 -126 5 0 0 0 - - -;
 #X obj 369 -336 vsl 15 128 1 4 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
+-1 -1 9300 1;
 #X obj 318 -204 int;
 #X floatatom 370 -152 5 0 0 0 - - -;
 #X obj 103 -313 vsl 15 128 1 8 0 0 empty empty empty 0 -9 0 10 -262144
@@ -11353,7 +11353,7 @@ varje gång???;
 #X restore -37 403 pd drum_bar2_route;
 #X obj -30 463 route /drum_hh_bar3 /drum_snare_bar3 /drum_kick_bar3
 ;
-#N canvas 0 0 1366 686 drum_bar3_route 0;
+#N canvas 1657 256 1366 686 drum_bar3_route 0;
 #X obj -82 -34 inlet;
 #X obj 178 -32 inlet;
 #X obj 502 -42 inlet;
@@ -11947,7 +11947,7 @@ varje gång???;
 #X obj 593 -168 int;
 #X floatatom 645 -116 5 0 0 0 - - -;
 #X obj 379 -326 vsl 15 128 1 4 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
+-1 -1 10200 1;
 #X obj 328 -194 int;
 #X floatatom 380 -142 5 0 0 0 - - -;
 #X obj 113 -303 vsl 15 128 1 8 0 0 empty empty empty 0 -9 0 10 -262144
@@ -12019,7 +12019,7 @@ varje gång???;
 #X restore -21 572 pd drum_bar3_route;
 #X obj -27 645 route /drum_hh_bar4 /drum_snare_bar4 /drum_kick_bar4
 ;
-#N canvas 0 0 1366 686 drum_bar4_route 0;
+#N canvas 1358 -8 1920 1158 drum_bar4_route 0;
 #X obj -82 -34 inlet;
 #X obj 178 -32 inlet;
 #X obj 485 -46 inlet;
@@ -12613,11 +12613,11 @@ varje gång???;
 #X obj 603 -158 int;
 #X floatatom 655 -106 5 0 0 0 - - -;
 #X obj 389 -316 vsl 15 128 1 4 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
+-1 -1 8600 1;
 #X obj 338 -184 int;
 #X floatatom 390 -132 5 0 0 0 - - -;
 #X obj 123 -293 vsl 15 128 1 8 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
+-1 -1 200 1;
 #X obj 72 -161 int;
 #X floatatom 124 -109 5 0 0 0 - - -;
 #X text 346 -348 Sliders for testing;
@@ -16610,7 +16610,7 @@ pattern - OBS sets pattern for bar 2;
 #X connect 26 16 21 0;
 #X connect 27 0 25 0;
 #X restore 410 417 pd melody_bar_2_route;
-#N canvas 0 0 1362 686 melody_bar_3_route 1;
+#N canvas 0 0 1362 686 melody_bar_3_route 0;
 #X obj 140 331 hsl 1000 50 0 65535 0 0 empty empty empty -2 -8 0 10
 -262144 -1 -1 0 1;
 #X obj 137 386 int;
@@ -16817,7 +16817,7 @@ pattern - OBS sets pattern for bar 3;
 #X connect 63 0 55 1;
 #X connect 64 0 58 1;
 #X restore 85 150 pd extract-bits-for-melody-bar-3;
-#N canvas -50 61 1362 686 melody-pattern-sparsepatterns 0;
+#N canvas 0 61 1362 686 melody-pattern-sparsepatterns 0;
 #X obj 471 9 inlet;
 #X obj 475 53 route 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16;
 #N canvas 0 0 1366 686 melpatterns1to4 0;
@@ -18507,10 +18507,6 @@ pattern - OBS sets pattern for bar 3;
 #X connect 26 0 24 0;
 #X restore 489 436 pd melody_bar_3_route;
 #N canvas 0 0 1366 686 melody_bar_4_route 0;
-#X obj 140 331 hsl 1000 50 0 65535 0 0 empty empty empty -2 -8 0 10
--262144 -1 -1 0 1;
-#X obj 137 386 int;
-#X floatatom 137 408 5 0 0 0 - - -;
 #X obj 558 -67 inlet;
 #X floatatom 288 77 5 0 0 0 - - melnoteBar4Note1;
 #X floatatom 353 78 5 0 0 0 - - melnoteBar4Note2;
@@ -18532,8 +18528,6 @@ pattern - OBS sets pattern for bar 3;
 #X text 401 -95 A number 1-16 that specifies the pattern for this bar
 ;
 #X floatatom 465 -68 5 0 0 0 - - -;
-#X text 146 296 Melody rhythm - for now always set to full 16th note
-pattern - OBS sets pattern for bar 4;
 #N canvas 0 0 1366 686 extract-bits-for-melody-bar-4 0;
 #X obj 175 19 inlet;
 #X obj -127 133 &;
@@ -20379,28 +20373,26 @@ pattern - OBS sets pattern for bar 4;
 #X restore 564 -34 pd melody-pattern-sparsepatterns ------------------------------------------------------------------------------------------------------------------------
 ;
 #X floatatom 171 41 5 0 0 0 - - -;
-#X connect 0 0 1 0;
-#X connect 1 0 2 0;
-#X connect 3 0 25 0;
-#X connect 22 0 25 0;
-#X connect 25 0 26 0;
-#X connect 25 1 4 0;
-#X connect 25 2 5 0;
-#X connect 25 3 6 0;
-#X connect 25 4 7 0;
-#X connect 25 5 8 0;
-#X connect 25 6 9 0;
-#X connect 25 7 10 0;
-#X connect 25 8 11 0;
-#X connect 25 9 12 0;
-#X connect 25 10 13 0;
-#X connect 25 11 14 0;
-#X connect 25 12 15 0;
-#X connect 25 13 16 0;
-#X connect 25 14 17 0;
-#X connect 25 15 18 0;
-#X connect 25 16 20 0;
-#X connect 26 0 24 0;
+#X connect 0 0 21 0;
+#X connect 19 0 21 0;
+#X connect 21 0 22 0;
+#X connect 21 1 1 0;
+#X connect 21 2 2 0;
+#X connect 21 3 3 0;
+#X connect 21 4 4 0;
+#X connect 21 5 5 0;
+#X connect 21 6 6 0;
+#X connect 21 7 7 0;
+#X connect 21 8 8 0;
+#X connect 21 9 9 0;
+#X connect 21 10 10 0;
+#X connect 21 11 11 0;
+#X connect 21 12 12 0;
+#X connect 21 13 13 0;
+#X connect 21 14 14 0;
+#X connect 21 15 15 0;
+#X connect 21 16 17 0;
+#X connect 22 0 20 0;
 #X restore 558 467 pd melody_bar_4_route;
 #N canvas 0 0 1366 686 chord_route 0;
 #N canvas 1330 275 1920 415 chord-voicings 0;
@@ -22530,7 +22522,7 @@ pattern - OBS sets pattern for bar 4;
 #X connect 77 0 44 0;
 #X restore 798 324 pd chord_route ________________________________________________________________________________________________________________________
 ;
-#N canvas 0 0 1366 686 bass_bar_4_route 0;
+#N canvas 1358 -8 1920 1158 bass_bar_4_route 0;
 #X text 664 46 A number 1-16 specifying the bass pattern (notes and
 rhythm) for this bar;
 #X obj 568 82 inlet;
@@ -23896,7 +23888,7 @@ rhythm) for this bar;
 #X connect 18 16 17 0;
 #X connect 19 0 18 0;
 #X restore 1077 522 pd bass_bar_4_route;
-#N canvas 0 0 1366 686 bass_bar_3_route 0;
+#N canvas 1358 -8 1920 1158 bass_bar_3_route 0;
 #X text 664 46 A number 1-16 specifying the bass pattern (notes and
 rhythm) for this bar;
 #X obj 568 82 inlet;
@@ -25262,7 +25254,7 @@ rhythm) for this bar;
 #X connect 18 16 17 0;
 #X connect 19 0 18 0;
 #X restore 953 554 pd bass_bar_3_route;
-#N canvas 0 0 1366 686 bass_bar_2_route 0;
+#N canvas 1650 51 1366 686 bass_bar_2_route 0;
 #X text 664 46 A number 1-16 specifying the bass pattern (notes and
 rhythm) for this bar;
 #X obj 568 82 inlet;
@@ -26628,7 +26620,7 @@ rhythm) for this bar;
 #X connect 18 16 17 0;
 #X connect 19 0 18 0;
 #X restore 813 563 pd bass_bar_2_route;
-#N canvas 0 0 1366 686 bass_bar_1_route 0;
+#N canvas 1695 32 1366 686 bass_bar_1_route 0;
 #X text 664 46 A number 1-16 specifying the bass pattern (notes and
 rhythm) for this bar;
 #X obj 568 82 inlet;
@@ -26692,7 +26684,7 @@ rhythm) for this bar;
 #X obj 1204 585 outlet;
 #X obj -80 573 outlet;
 #X text -92 596 Rhythm outlet;
-#N canvas 0 0 1366 686 bassPattern1---------------------------------------------
+#N canvas 0 2 1361 684 bassPattern1---------------------------------------------
 0;
 #X obj 421 40 inlet;
 #X msg 211 118 1;
@@ -28071,9 +28063,6 @@ rhythm) for this bar;
 #X obj 863 510 int;
 #X obj 957 513 int;
 #X obj 1058 494 int;
-#X msg 346 59 1;
-#X msg 682 123 45;
-#X msg 392 242 250;
 #X connect 0 0 1 0;
 #X connect 0 0 12 0;
 #X connect 2 0 0 0;
@@ -28162,55 +28151,16 @@ rhythm) for this bar;
 #X connect 73 0 31 0;
 #X connect 74 0 30 0;
 #X connect 75 0 29 0;
-#X connect 76 0 5 2;
-#X connect 76 0 5 1;
-#X connect 76 0 5 0;
-#X connect 76 0 7 2;
-#X connect 76 0 7 1;
-#X connect 76 0 7 0;
-#X connect 76 0 9 2;
-#X connect 76 0 9 1;
-#X connect 76 0 9 0;
-#X connect 76 0 11 2;
-#X connect 76 0 11 1;
-#X connect 76 0 11 0;
-#X connect 76 0 24 0;
-#X connect 76 0 25 0;
-#X connect 76 0 26 0;
-#X connect 76 0 27 0;
-#X connect 76 0 21 0;
-#X connect 76 0 28 0;
-#X connect 76 0 28 1;
-#X connect 76 0 28 2;
-#X connect 76 0 28 3;
-#X connect 76 0 28 4;
-#X connect 76 0 28 5;
-#X connect 76 0 28 6;
-#X connect 76 0 28 7;
-#X connect 76 0 28 8;
-#X connect 76 0 28 9;
-#X connect 76 0 28 10;
-#X connect 76 0 28 11;
-#X connect 76 0 28 12;
-#X connect 76 0 32 0;
-#X connect 76 0 31 0;
-#X connect 76 0 30 0;
-#X connect 76 0 29 0;
-#X connect 76 0 3 1;
-#X connect 76 0 36 0;
-#X connect 76 0 37 0;
-#X connect 77 0 21 1;
-#X connect 78 0 3 0;
 #X restore 59 81 pd OSC-receiver;
 #X obj 54 -55 import mrpeach;
 #X obj 54 -76 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X obj 54 -21 print;
-#N canvas 43 60 1362 686 OSC-sender 1;
+#N canvas 43 60 1362 686 OSC-sender 0;
 #X obj 128 411 udpsend;
 #X obj 282 334 packOSC;
 #X msg 151 220 disconnect;
-#X obj 129 449 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 129 449 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X msg 129 164 connect localhost 1339;
 #X obj 128 101 loadbang;
@@ -28237,7 +28187,7 @@ rhythm) for this bar;
 #X text 404 18 Andreas Lindström;
 #X text 406 35 Niclas Klügel;
 #X text 526 27 comment;
-#N canvas 0 19 1361 304 drums 0;
+#N canvas -8 -8 1366 686 drums 1;
 #X obj 474 63 cnv 15 900 200 empty empty Drum_sequencer 1 10 0 12 -261682
 -66577 0;
 #X obj 562 155 tgl 25 0 empty s1 empty 17 7 0 10 -204786 -1 -1 0 1
@@ -28302,7 +28252,7 @@ rhythm) for this bar;
 ;
 #X obj 694 99 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
-#X obj 749 156 tgl 25 0 empty s5 empty 17 7 0 10 -204786 -1 -1 0 1
+#X obj 749 156 tgl 25 0 empty s5 empty 17 7 0 10 -204786 -1 -1 1 1
 ;
 #X obj 748 119 tgl 25 0 empty h5 empty 17 7 0 10 -261234 -1 -1 1 1
 ;
@@ -28322,7 +28272,7 @@ rhythm) for this bar;
 ;
 #X obj 838 119 tgl 25 0 empty h7 empty 17 7 0 10 -261234 -1 -1 1 1
 ;
-#X obj 838 192 tgl 25 0 empty b7 empty 17 7 0 10 -204800 -1 -1 0 1
+#X obj 838 192 tgl 25 0 empty b7 empty 17 7 0 10 -204800 -1 -1 1 1
 ;
 #X obj 836 100 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
@@ -28334,11 +28284,11 @@ rhythm) for this bar;
 ;
 #X obj 882 95 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
-#X obj 931 157 tgl 25 0 empty s9 empty 17 7 0 10 -204786 -1 -1 1 1
+#X obj 931 157 tgl 25 0 empty s9 empty 17 7 0 10 -204786 -1 -1 0 1
 ;
 #X obj 931 121 tgl 25 0 empty h9 empty 17 7 0 10 -261234 -1 -1 1 1
 ;
-#X obj 931 193 tgl 25 0 empty b9 empty 17 7 0 10 -204800 -1 -1 0 1
+#X obj 931 193 tgl 25 0 empty b9 empty 17 7 0 10 -204800 -1 -1 1 1
 ;
 #X obj 926 100 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
@@ -28354,7 +28304,7 @@ rhythm) for this bar;
 1;
 #X obj 1021 120 tgl 25 0 empty h11 empty 17 7 0 10 -261234 -1 -1 1
 1;
-#X obj 1021 193 tgl 25 0 empty b11 empty 17 7 0 10 -204800 -1 -1 0
+#X obj 1021 193 tgl 25 0 empty b11 empty 17 7 0 10 -204800 -1 -1 1
 1;
 #X obj 1019 101 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
@@ -28366,7 +28316,7 @@ rhythm) for this bar;
 1;
 #X obj 1063 101 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 1117 158 tgl 25 0 empty s13 empty 17 7 0 10 -204786 -1 -1 0
+#X obj 1117 158 tgl 25 0 empty s13 empty 17 7 0 10 -204786 -1 -1 1
 1;
 #X obj 1117 121 tgl 25 0 empty h13 empty 17 7 0 10 -261234 -1 -1 1
 1;
@@ -28378,7 +28328,7 @@ rhythm) for this bar;
 1;
 #X obj 1161 121 tgl 25 0 empty h14 empty 17 7 0 10 -261234 -1 -1 0
 1;
-#X obj 1161 194 tgl 25 0 empty b14 empty 17 7 0 10 -204800 -1 -1 0
+#X obj 1161 194 tgl 25 0 empty b14 empty 17 7 0 10 -204800 -1 -1 1
 1;
 #X obj 1159 102 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
@@ -28434,7 +28384,7 @@ rhythm) for this bar;
 ;
 #X obj 702 399 tgl 25 0 empty h20 empty 17 7 0 10 -261234 -1 -1 0 1
 ;
-#X obj 702 472 tgl 25 0 empty b20 empty 17 7 0 10 -204800 -1 -1 0 1
+#X obj 702 472 tgl 25 0 empty b20 empty 17 7 0 10 -204800 -1 -1 1 1
 ;
 #X obj 700 380 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
@@ -28442,7 +28392,7 @@ rhythm) for this bar;
 ;
 #X obj 754 400 tgl 25 0 empty h21 empty 17 7 0 10 -261234 -1 -1 1 1
 ;
-#X obj 754 473 tgl 25 0 empty b21 empty 17 7 0 10 -204800 -1 -1 0 1
+#X obj 754 473 tgl 25 0 empty b21 empty 17 7 0 10 -204800 -1 -1 1 1
 ;
 #X obj 752 381 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
@@ -28458,7 +28408,7 @@ rhythm) for this bar;
 ;
 #X obj 844 400 tgl 25 0 empty h23 empty 17 7 0 10 -261234 -1 -1 1 1
 ;
-#X obj 844 473 tgl 25 0 empty b23 empty 17 7 0 10 -204800 -1 -1 0 1
+#X obj 844 473 tgl 25 0 empty b23 empty 17 7 0 10 -204800 -1 -1 1 1
 ;
 #X obj 842 381 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
@@ -28474,7 +28424,7 @@ rhythm) for this bar;
 ;
 #X obj 937 401 tgl 25 0 empty h25 empty 17 7 0 10 -261234 -1 -1 1 1
 ;
-#X obj 937 474 tgl 25 0 empty b25 empty 17 7 0 10 -204800 -1 -1 0 1
+#X obj 937 474 tgl 25 0 empty b25 empty 17 7 0 10 -204800 -1 -1 1 1
 ;
 #X obj 932 381 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
@@ -28482,7 +28432,7 @@ rhythm) for this bar;
 ;
 #X obj 981 401 tgl 25 0 empty h26 empty 17 7 0 10 -261234 -1 -1 0 1
 ;
-#X obj 981 473 tgl 25 0 empty b26 empty 17 7 0 10 -204800 -1 -1 0 1
+#X obj 981 473 tgl 25 0 empty b26 empty 17 7 0 10 -204800 -1 -1 1 1
 ;
 #X obj 979 382 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
@@ -28498,7 +28448,7 @@ rhythm) for this bar;
 1;
 #X obj 1071 401 tgl 25 0 empty h28 empty 17 7 0 10 -261234 -1 -1 0
 1;
-#X obj 1071 474 tgl 25 0 empty b28 empty 17 7 0 10 -204800 -1 -1 0
+#X obj 1071 474 tgl 25 0 empty b28 empty 17 7 0 10 -204800 -1 -1 1
 1;
 #X obj 1069 382 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
@@ -28522,7 +28472,7 @@ rhythm) for this bar;
 1;
 #X obj 1213 402 tgl 25 0 empty h31 empty 17 7 0 10 -261234 -1 -1 1
 1;
-#X obj 1213 475 tgl 25 0 empty b31 empty 17 7 0 10 -204800 -1 -1 0
+#X obj 1213 475 tgl 25 0 empty b31 empty 17 7 0 10 -204800 -1 -1 1
 1;
 #X obj 1211 383 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
@@ -28530,7 +28480,7 @@ rhythm) for this bar;
 1;
 #X obj 1257 402 tgl 25 0 empty h32 empty 17 7 0 10 -261234 -1 -1 0
 1;
-#X obj 1257 475 tgl 25 0 empty b32 empty 17 7 0 10 -204800 -1 -1 0
+#X obj 1257 475 tgl 25 0 empty b32 empty 17 7 0 10 -204800 -1 -1 1
 1;
 #X obj 1255 383 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
@@ -28548,7 +28498,7 @@ rhythm) for this bar;
 ;
 #X text 508 744 Snare;
 #X text 484 775 Bass drum;
-#X obj 569 701 tgl 25 0 empty h33 empty 17 7 0 10 -261234 -1 -1 1 1
+#X obj 569 701 tgl 25 0 empty h33 empty 17 7 0 10 -261234 -1 -1 0 1
 ;
 #X obj 568 773 tgl 25 0 empty b33 empty 17 7 0 10 -204800 -1 -1 1 1
 ;
@@ -28557,7 +28507,7 @@ rhythm) for this bar;
 #X text 505 709 Hi-hat;
 #X obj 612 737 tgl 25 0 empty s34 empty 17 7 0 10 -204786 -1 -1 0 1
 ;
-#X obj 612 700 tgl 25 0 empty h34 empty 17 7 0 10 -261234 -1 -1 0 1
+#X obj 612 700 tgl 25 0 empty h34 empty 17 7 0 10 -261234 -1 -1 1 1
 ;
 #X obj 612 772 tgl 25 0 empty b34 empty 17 7 0 10 -204800 -1 -1 0 1
 ;
@@ -28565,7 +28515,7 @@ rhythm) for this bar;
 -1 -1;
 #X obj 658 737 tgl 25 0 empty s35 empty 17 7 0 10 -204786 -1 -1 0 1
 ;
-#X obj 658 700 tgl 25 0 empty h35 empty 17 7 0 10 -261234 -1 -1 1 1
+#X obj 658 700 tgl 25 0 empty h35 empty 17 7 0 10 -261234 -1 -1 0 1
 ;
 #X obj 658 773 tgl 25 0 empty b35 empty 17 7 0 10 -204800 -1 -1 0 1
 ;
@@ -28579,7 +28529,7 @@ rhythm) for this bar;
 ;
 #X obj 700 681 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 754 738 tgl 25 0 empty s37 empty 17 7 0 10 -204786 -1 -1 0 1
+#X obj 754 738 tgl 25 0 empty s37 empty 17 7 0 10 -204786 -1 -1 1 1
 ;
 #X obj 754 701 tgl 25 0 empty h37 empty 17 7 0 10 -261234 -1 -1 1 1
 ;
@@ -28603,7 +28553,7 @@ rhythm) for this bar;
 ;
 #X obj 842 682 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 888 738 tgl 25 0 empty s40 empty 17 7 0 10 -204786 -1 -1 0 1
+#X obj 888 738 tgl 25 0 empty s40 empty 17 7 0 10 -204786 -1 -1 1 1
 ;
 #X obj 888 701 tgl 25 0 empty h40 empty 17 7 0 10 -261234 -1 -1 0 1
 ;
@@ -28611,7 +28561,7 @@ rhythm) for this bar;
 ;
 #X obj 886 682 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 937 739 tgl 25 0 empty s41 empty 17 7 0 10 -204786 -1 -1 1 1
+#X obj 937 739 tgl 25 0 empty s41 empty 17 7 0 10 -204786 -1 -1 0 1
 ;
 #X obj 937 702 tgl 25 0 empty h41 empty 17 7 0 10 -261234 -1 -1 1 1
 ;
@@ -28619,7 +28569,7 @@ rhythm) for this bar;
 ;
 #X obj 932 682 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 981 739 tgl 25 0 empty s42 empty 17 7 0 10 -204786 -1 -1 0 1
+#X obj 981 739 tgl 25 0 empty s42 empty 17 7 0 10 -204786 -1 -1 1 1
 ;
 #X obj 981 702 tgl 25 0 empty h42 empty 17 7 0 10 -261234 -1 -1 0 1
 ;
@@ -28643,9 +28593,9 @@ rhythm) for this bar;
 1;
 #X obj 1069 683 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 1123 740 tgl 25 0 empty s45 empty 17 7 0 10 -204786 -1 -1 0
+#X obj 1123 740 tgl 25 0 empty s45 empty 17 7 0 10 -204786 -1 -1 1
 1;
-#X obj 1123 703 tgl 25 0 empty h45 empty 17 7 0 10 -261234 -1 -1 1
+#X obj 1123 703 tgl 25 0 empty h45 empty 17 7 0 10 -261234 -1 -1 0
 1;
 #X obj 1123 776 tgl 25 0 empty b45 empty 17 7 0 10 -204800 -1 -1 0
 1;
@@ -28653,7 +28603,7 @@ rhythm) for this bar;
 -1 -1;
 #X obj 1167 740 tgl 25 0 empty s46 empty 17 7 0 10 -204786 -1 -1 0
 1;
-#X obj 1167 703 tgl 25 0 empty h46 empty 17 7 0 10 -261234 -1 -1 0
+#X obj 1167 703 tgl 25 0 empty h46 empty 17 7 0 10 -261234 -1 -1 1
 1;
 #X obj 1167 776 tgl 25 0 empty b46 empty 17 7 0 10 -204800 -1 -1 0
 1;
@@ -28661,15 +28611,15 @@ rhythm) for this bar;
 -1 -1;
 #X obj 1213 740 tgl 25 0 empty s47 empty 17 7 0 10 -204786 -1 -1 0
 1;
-#X obj 1213 703 tgl 25 0 empty h47 empty 17 7 0 10 -261234 -1 -1 1
+#X obj 1213 703 tgl 25 0 empty h47 empty 17 7 0 10 -261234 -1 -1 0
 1;
 #X obj 1213 776 tgl 25 0 empty b47 empty 17 7 0 10 -204800 -1 -1 0
 1;
 #X obj 1211 684 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 1257 740 tgl 25 0 empty s48 empty 17 7 0 10 -204786 -1 -1 0
+#X obj 1257 740 tgl 25 0 empty s48 empty 17 7 0 10 -204786 -1 -1 1
 1;
-#X obj 1257 703 tgl 25 0 empty h48 empty 17 7 0 10 -261234 -1 -1 0
+#X obj 1257 703 tgl 25 0 empty h48 empty 17 7 0 10 -261234 -1 -1 1
 1;
 #X obj 1257 776 tgl 25 0 empty b48 empty 17 7 0 10 -204800 -1 -1 0
 1;
@@ -28691,7 +28641,7 @@ rhythm) for this bar;
 #X obj 562 947 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X text 501 975 Hi-hat;
-#X obj 608 1003 tgl 25 0 empty s50 empty 17 7 0 10 -204786 -1 -1 1
+#X obj 608 1003 tgl 25 0 empty s50 empty 17 7 0 10 -204786 -1 -1 0
 1;
 #X obj 608 966 tgl 25 0 empty h50 empty 17 7 0 10 -261234 -1 -1 1 1
 ;
@@ -28715,7 +28665,7 @@ rhythm) for this bar;
 1;
 #X obj 696 947 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 750 1004 tgl 25 0 empty s53 empty 17 7 0 10 -204786 -1 -1 1
+#X obj 750 1004 tgl 25 0 empty s53 empty 17 7 0 10 -204786 -1 -1 0
 1;
 #X obj 750 967 tgl 25 0 empty h53 empty 17 7 0 10 -261234 -1 -1 1 1
 ;
@@ -28723,7 +28673,7 @@ rhythm) for this bar;
 1;
 #X obj 748 948 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 794 1004 tgl 25 0 empty s54 empty 17 7 0 10 -204786 -1 -1 1
+#X obj 794 1004 tgl 25 0 empty s54 empty 17 7 0 10 -204786 -1 -1 0
 1;
 #X obj 794 967 tgl 25 0 empty h54 empty 17 7 0 10 -261234 -1 -1 0 1
 ;
@@ -28739,7 +28689,7 @@ rhythm) for this bar;
 1;
 #X obj 838 948 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 884 1004 tgl 25 0 empty s56 empty 17 7 0 10 -204786 -1 -1 1
+#X obj 884 1004 tgl 25 0 empty s56 empty 17 7 0 10 -204786 -1 -1 0
 1;
 #X obj 884 967 tgl 25 0 empty h56 empty 17 7 0 10 -261234 -1 -1 0 1
 ;
@@ -28747,7 +28697,7 @@ rhythm) for this bar;
 1;
 #X obj 882 948 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 930 1005 tgl 25 0 empty s57 empty 17 7 0 10 -204786 -1 -1 0
+#X obj 930 1005 tgl 25 0 empty s57 empty 17 7 0 10 -204786 -1 -1 1
 1;
 #X obj 933 968 tgl 25 0 empty h57 empty 17 7 0 10 -261234 -1 -1 1 1
 ;
@@ -28763,7 +28713,7 @@ rhythm) for this bar;
 1;
 #X obj 975 949 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 1023 1005 tgl 25 0 empty s59 empty 17 7 0 10 -204786 -1 -1 1
+#X obj 1023 1005 tgl 25 0 empty s59 empty 17 7 0 10 -204786 -1 -1 0
 1;
 #X obj 1023 968 tgl 25 0 empty h59 empty 17 7 0 10 -261234 -1 -1 1
 1;
@@ -28771,7 +28721,7 @@ rhythm) for this bar;
 1;
 #X obj 1021 949 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 1067 1005 tgl 25 0 empty s60 empty 17 7 0 10 -204786 -1 -1 1
+#X obj 1067 1005 tgl 25 0 empty s60 empty 17 7 0 10 -204786 -1 -1 0
 1;
 #X obj 1067 968 tgl 25 0 empty h60 empty 17 7 0 10 -261234 -1 -1 0
 1;
@@ -28779,7 +28729,7 @@ rhythm) for this bar;
 1;
 #X obj 1065 949 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 1119 1006 tgl 25 0 empty s61 empty 17 7 0 10 -204786 -1 -1 1
+#X obj 1119 1006 tgl 25 0 empty s61 empty 17 7 0 10 -204786 -1 -1 0
 1;
 #X obj 1119 969 tgl 25 0 empty h61 empty 17 7 0 10 -261234 -1 -1 0
 1;
@@ -28787,7 +28737,7 @@ rhythm) for this bar;
 1;
 #X obj 1117 950 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 1163 1006 tgl 25 0 empty s62 empty 17 7 0 10 -204786 -1 -1 1
+#X obj 1163 1006 tgl 25 0 empty s62 empty 17 7 0 10 -204786 -1 -1 0
 1;
 #X obj 1163 969 tgl 25 0 empty h62 empty 17 7 0 10 -261234 -1 -1 1
 1;
@@ -28795,7 +28745,7 @@ rhythm) for this bar;
 1;
 #X obj 1161 950 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 1209 1006 tgl 25 0 empty s63 empty 17 7 0 10 -204786 -1 -1 1
+#X obj 1209 1006 tgl 25 0 empty s63 empty 17 7 0 10 -204786 -1 -1 0
 1;
 #X obj 1209 969 tgl 25 0 empty h63 empty 17 7 0 10 -261234 -1 -1 0
 1;
@@ -28803,7 +28753,7 @@ rhythm) for this bar;
 1;
 #X obj 1207 950 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 1253 1006 tgl 25 0 empty s64 empty 17 7 0 10 -204786 -1 -1 1
+#X obj 1253 1006 tgl 25 0 empty s64 empty 17 7 0 10 -204786 -1 -1 0
 1;
 #X obj 1253 969 tgl 25 0 empty h64 empty 17 7 0 10 -261234 -1 -1 1
 1;
