@@ -59,11 +59,9 @@ object Mutator extends Application {
   val oscRecv = OSCCommunication.createOSCReceiver(UDP, new InetSocketAddress("127.0.0.1", 1339))
 
   oscRecv.receipt.observe({ x=>
-    println("got msg "+x._1.toString())
     val msg = x._1
 
     if(msg.name.contains("64")) {
-      println(msg.args)
       this.updateHighlighting(msg.args(0).asInstanceOf[Int])
     }
 
