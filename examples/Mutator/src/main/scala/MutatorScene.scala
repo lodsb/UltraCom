@@ -29,7 +29,7 @@ import java.net.InetSocketAddress
 import org.mt4j.input.osc.OSCCommunication
 import org.mt4j.input.osc.OSCCommunication.UDP
 import org.mt4j.{Scene, Application}
-import org.mt4j.util.Color
+import org.mt4j.util.{SessionLogger, Color}
 import org.mt4j.util.math.{Tools3D, Vector3D}
 import org.mt4j.components.ComponentImplicits._
 import org.mt4j.components.visibleComponents.widgets._
@@ -128,6 +128,8 @@ object Mutator extends Application {
       var mean = votes.sum / votes.size
 
       println("votes" + votes + " -> "+mean)
+      SessionLogger.log("Voting", SessionLogger.SessionEvent.Event, this, this, votes)
+
 
       runGameCycle(mean)
 
@@ -308,7 +310,7 @@ class MutatorScene(app: Application, name: String) extends Scene(app,name) {
 
   (1 to Mutator.noVoters).foreach {  x =>
 
-    val coord = (appCenter.getSubtracted(Vec3d((( x+1 ) % 2 )*100,(( x ) % 2 )*100) ))
+    val coord = (appCenter.getSubtracted(Vec3d((( x+1 ) % 3 )*100,(( x ) % 3 )*100) ))
     coord.setZ(300);
 
 

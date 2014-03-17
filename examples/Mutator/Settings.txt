@@ -23,3 +23,5 @@ Vertical_sync=false
 MultiMiceEnabled=false
 #Anti aliasing multisampling - '0' disables it - 2,4,8 determines the quality of the a.a.
 OpenGLAntialiasing=1
+
+DefaultSessionLogName=logs/mutator_
