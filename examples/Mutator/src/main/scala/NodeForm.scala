@@ -69,7 +69,7 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
   var isGrey = false
   val minimumScaleFactor = 0.5f
   val maximumScaleFactor = 2f
-  val maxDef = 362.0
+  val maxDeg = 362.0
 
   var isMoveable = false;
 
