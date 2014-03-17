@@ -69,6 +69,7 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
   var isGrey = false
   val minimumScaleFactor = 0.5f
   val maximumScaleFactor = 2f
+  val maxDef = 362.0
 
   var isMoveable = false;
 
@@ -296,7 +297,7 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
         if(!zRotLocked) {
 
           val nextRot = rotationZ() + e.getRotationDegrees
-          if(scala.math.abs(nextRot) <= 360) {
+          if(scala.math.abs(nextRot) <= maxDeg) {
             rotateZGlobal(position, e.getRotationDegrees)
             rotationZ() += e.getRotationDegrees
           }
@@ -417,7 +418,7 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
 
           if(!xRotLocked) {
             val nextRot = rotationY() + e.getRotationDegreesY
-            if(scala.math.abs(nextRot) <= 360) {
+            if(scala.math.abs(nextRot) <= maxDeg) {
               val degrees = e.getRotationDirection*e.getRotationDegreesX
               rotateXGlobal(e.getRotationPoint, degrees)
               rotationX() += degrees
@@ -435,7 +436,7 @@ class NodeForm(val file: File, app: org.mt4j.Application) extends MTComponent(ap
           if(!yRotLocked) {
 
             val nextRot = rotationY() + e.getRotationDegreesY
-            if(scala.math.abs(nextRot) <= 360) {
+            if(scala.math.abs(nextRot) <= maxDeg) {
               val degrees = e.getRotationDirection*e.getRotationDegreesY
               rotateYGlobal(e.getRotationPoint, degrees)
               rotationY() += degrees
