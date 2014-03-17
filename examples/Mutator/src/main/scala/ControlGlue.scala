@@ -37,7 +37,7 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
 
 
     index match {
-       // x rot
+
       case 1 => {
 
         zRot = rangeLo + r.nextInt(rangeHi-rangeLo)
@@ -116,7 +116,7 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
 
         // clip at angles > 360 and map to parameter range, convert to Integer
           println("SCALE "+v)
-          val vMapped: Int = Util.linlin(scala.math.max(0,scala.math.min(v, 3)), 0.8, 3, rangeLo, rangeHi).toInt;
+          val vMapped: Int = Util.linlin(scala.math.max(0,scala.math.min(v, 3)), nodeForm.minimumScaleFactor, nodeForm.maximumScaleFactor, rangeLo, rangeHi).toInt;
           if(!locked) {
             scale = vMapped
 
