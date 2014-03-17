@@ -93,15 +93,15 @@ object Mutator extends Application {
     (397f/1920f , 868f/1080f),
     (676f/1920f , 962f/1080f),
     (989f/1920f , 979f/1080f),
-    (1288f/1920f, 952f/1080f),
-    (1575f/1920f, 852f/1080f)
+    (1288f/1920f, 952f/1080f)
+//    (1575f/1920f, 852f/1080f)
   // convert to absolute coordinates, flip y first
   ).map(x => ( x._1 , (1.0f - x._2) ) )
 
   // mapping definition
   val mappings = List(
     // encoding osc name, value range, deviation range (for mutation), tick when active in bar
-    (List("/shuffle","/tempo"), List((0,1),(120,300)), List(1, 10), None, 0),
+    (List("/tempo"), List((120,300)), List(10), None, 0),
     (List("/rootnote","/scale"), List((40,52),(1,8)), List(3, 1), None , 0),
     (List("/drum_kick_bar1","/drum_snare_bar1","/drum_hh_bar1"), List((1,4),(1,4),(1,8)), List(1,1,2), Some(0,15 ), 2),
     (List("/drum_kick_bar2","/drum_snare_bar2","/drum_hh_bar2"), List((1,4),(1,4),(1,8)), List(1,1,2), Some(16,31), 2),
@@ -111,7 +111,7 @@ object Mutator extends Application {
     (List("/ch_rhyt2","/ch_root2","/ch_voic2"), List((1,4), (0,6), (1,8)), List(1,1,2), Some(16,31), 3),
     (List("/ch_rhyt3","/ch_root3","/ch_voic3"), List((1,4), (0,6), (1,8)), List(1,1,2), Some(32,47), 3),
     (List("/ch_rhyt4","/ch_root4","/ch_voic4"), List((1,4), (0,6), (1,8)), List(1,1,2), Some(48,64), 3),
-    (List("/ch_indices"), List((1,7)), List(1), None, 4),
+//    (List("/ch_indices"), List((1,7)), List(1), None, 4),
     (List("/mel_bar1","/mel_bar2","/mel_bar3","/mel_bar4"),List((1,16),(1,16),(1,16),(1,16)), List(3,3,3,3), None , 5),
     (List("/bass_bar1","/bass_bar2","/bass_bar3","/bass_bar4"),List((1,16),(1,16),(1,16),(1,16)), List(3,3,3,3), None, 1)
   );
@@ -159,7 +159,15 @@ object Mutator extends Application {
 
     (0 to 10).foreach{ x =>
       val score = 0.8 - (r.nextDouble()*0.1) // high scores = bad fitness
-      updatePopulation(score)
+    val genes = controllerGlue.map( {x=>
+      // also update gene pool fitnessess from voting
+        val gene = x.generateRandomGene()
+        gene
+      })
+
+      val chromosome = new Chromosome(genes, mutation = SimpleChromosomeMutation2)
+
+      population.add(chromosome, score)
     }
   }
 

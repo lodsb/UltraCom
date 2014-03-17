@@ -38,7 +38,7 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
 
     index match {
        // x rot
-      case 0 => {
+      case 1 => {
 
         zRot = rangeLo + r.nextInt(rangeHi-rangeLo)
 
@@ -62,7 +62,7 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
         })
       }
 
-      case 1 => {
+      case 2 => {
 
         yRot = rangeLo + r.nextInt(rangeHi-rangeLo)
         nodeForm.yRotLocked = false
@@ -84,7 +84,7 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
         })
       }
 
-      case 2 => {
+      case 3 => {
 
         xRot = rangeLo + r.nextInt(rangeHi-rangeLo)
         nodeForm.xRotLocked = false
@@ -106,7 +106,7 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
         })
       }
 
-      case 3 => {
+      case 0 => {
 
         scale = rangeLo + r.nextInt(rangeHi-rangeLo)
         nodeForm.scaleLocked = false
@@ -141,10 +141,10 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
     // message conv functions auslagern?
     parameters.zipWithIndex.foreach{ x=>
       x._2 match {
-        case 0 =>  nodeForm.rotationZ.bang
-        case 1 =>  nodeForm.rotationY.bang
-        case 2 =>  nodeForm.rotationX.bang
-        case 3 =>  nodeForm.scaleFactor.bang
+        case 1 =>  nodeForm.rotationZ.bang
+        case 2 =>  nodeForm.rotationY.bang
+        case 3 =>  nodeForm.rotationX.bang
+        case 0 =>  nodeForm.scaleFactor.bang
       }
     }
   }
@@ -169,10 +169,30 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
     val encSeq: List[IntegerEncoding] = ranges.zip(deviation).zipWithIndex.map{ x=>
       x._2 match {
         // basic deviation is 1
-        case 0 => new IntegerEncoding(zRot, new IntegerEncodingMutation2(x._1._1._1, x._1._1._2, x._1._2))
-        case 1 => new IntegerEncoding(yRot, new IntegerEncodingMutation2(x._1._1._1, x._1._1._2, x._1._2))
-        case 2 => new IntegerEncoding(xRot, new IntegerEncodingMutation2(x._1._1._1, x._1._1._2, x._1._2))
-        case 3 => new IntegerEncoding(scale, new IntegerEncodingMutation2(x._1._1._1, x._1._1._2, x._1._2))
+        case 1 => new IntegerEncoding(zRot, new IntegerEncodingMutation2(x._1._1._1, x._1._1._2, x._1._2))
+        case 2 => new IntegerEncoding(yRot, new IntegerEncodingMutation2(x._1._1._1, x._1._1._2, x._1._2))
+        case 3 => new IntegerEncoding(xRot, new IntegerEncodingMutation2(x._1._1._1, x._1._1._2, x._1._2))
+        case 0 => new IntegerEncoding(scale, new IntegerEncodingMutation2(x._1._1._1, x._1._1._2, x._1._2))
+        case _ =>  throw new Exception("Too many mappings given!")
+      }
+    }
+
+    Gene(this.name, encSeq, SimpleGeneMutation, MultipleConcatenatingGeneCombination)
+  }
+
+  def generateRandomGene :  Gene = {
+    val encSeq: List[IntegerEncoding] = ranges.zip(deviation).zipWithIndex.map{ x=>
+      val rangeLo = x._1._1._1
+      val rangeHi = x._1._1._2
+
+      val randomValue = scala.math.max(scala.math.min(rangeLo + r.nextInt(rangeHi-rangeLo), rangeHi),rangeLo)
+
+      x._2 match {
+        // basic deviation is 1
+        case 1 => new IntegerEncoding(randomValue, new IntegerEncodingMutation2(x._1._1._1, x._1._1._2, x._1._2))
+        case 2 => new IntegerEncoding(randomValue, new IntegerEncodingMutation2(x._1._1._1, x._1._1._2, x._1._2))
+        case 3 => new IntegerEncoding(randomValue, new IntegerEncodingMutation2(x._1._1._1, x._1._1._2, x._1._2))
+        case 0 => new IntegerEncoding(randomValue, new IntegerEncodingMutation2(x._1._1._1, x._1._1._2, x._1._2))
         case _ =>  throw new Exception("Too many mappings given!")
       }
     }
@@ -200,20 +220,20 @@ class ControlGlue(oscTransmit: OSCTransmitter, nodeForm: NodeForm,
 
       // these updates will trigger an update for the controlglue as well (sending the osc message)
       index match {
-        case 0 => {
+        case 1 => {
           nodeForm.updateZRoation( Util.linlin(value, rangeLo, rangeHi, 0, 360).toFloat )
         }
 
-        case 1 => {
+        case 2 => {
           nodeForm.updateYRoation( Util.linlin(value, rangeLo, rangeHi, 0, 360).toFloat )
         }
 
-        case 2 => {
+        case 3 => {
           nodeForm.updateXRoation( Util.linlin(value, rangeLo, rangeHi, 0, 360).toFloat )
         }
 
-        case 3 => {
-          nodeForm.updateScale( Util.linlin(value, rangeLo, rangeHi, 0.8, 3).toFloat )
+        case 0 => {
+          nodeForm.updateScale( Util.linlin(value, rangeLo, rangeHi, nodeForm.minimumScaleFactor, nodeForm.maximumScaleFactor).toFloat )
         }
 
         case _ =>  throw new Exception("Too many mappings given!")
