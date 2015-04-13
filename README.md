@@ -1,9 +1,16 @@
+## note:
+The original example projects / prototypical applications that have been referenced in the publications have moved to separate repositories:
+SoundDesigner: https://github.com/lodsb/SoundDesigner
+TreeQuencer: https://github.com/lodsb/TreeQuencer
+Mutator: https://github.com/lodsb/Mutator
+FugueGenerator: https://github.com/lodsb/FugueGenerator
+
 *************
 Update:
     1. uses processing 2.1 now
     2. all components can now be treated with Style, this works as all reakt properties can be looked up at runtime
     and properly matched to the Style description
-    ```scala
+```scala
       val slider = new Slider
 
       slider use Style(
@@ -11,31 +18,31 @@ Update:
         "strokeColor":= Color.TEAL - Alpha(20)
       )
       canvas += slider
-      ```
+```
 
     3. tweening & transitions; tweens are more generic animations, can be connected to any reakt signal;
         easings are also supported (lifted from Ani); start&stop&reset is done via the respective properties
 
-        ```scala
+```scala
             val otherEasing = QuartInOut()
             val tween = Tween(3f, LoopRepetitions(1))
             slider.globalPosition <~ tween2.step.map(x=>otherEasing.map(y=>Interpolation(y, rect.globalPosition(), Vec3d(100,100,100)))(x))
             tween.start <~ button.pressed
-        ```
+```
 
        tweens and transitions can be sequenced
         val tween = Tween(2.0f, LoopRepetitions(1))
-        ```scala
+```scala
            val tween2 = Tween(...)
 
            tween before tween2 before tween // sequential composition, results in a loop
 
-        ```
+```
 
         Transitions are more high-level and can be also chained
-          ```scala
+```scala
             val transition = Vector3DTransition(slider2.globalPosition, Vec3d(0,0), Vec3d(400,400), 4f)
-          ```
+```
 
 
 
