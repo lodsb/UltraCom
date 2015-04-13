@@ -1,9 +1,0 @@
-modelist = [Phrygian, Aolian, Dorian, Mixolydian, Ionian, Lydian]
-
-val scaleCollection = new ArrayBuffer[Scale]()
-scaleCollection += Scale("Phrygian").get
-scaleCollection += Scale("Aolian").get
-scaleCollection += Scale("Dorian").get
-scaleCollection += Scale("Mixolydian").get
-scaleCollection += Scale("Ionian").get
-scaleCollection += Scale("Lydian").get
