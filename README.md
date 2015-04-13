@@ -1,9 +1,9 @@
 ## note:
 The original example projects / prototypical applications that have been referenced in the publications have moved to separate repositories:
-SoundDesigner: https://github.com/lodsb/SoundDesigner
-TreeQuencer: https://github.com/lodsb/TreeQuencer
-Mutator: https://github.com/lodsb/Mutator
-FugueGenerator: https://github.com/lodsb/FugueGenerator
+- SoundDesigner: https://github.com/lodsb/SoundDesigner
+- TreeQuencer: https://github.com/lodsb/TreeQuencer
+- Mutator: https://github.com/lodsb/Mutator
+- FugueGenerator: https://github.com/lodsb/FugueGenerator
 
 *************
 Update:
